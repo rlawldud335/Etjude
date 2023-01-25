@@ -26,11 +26,11 @@ public class Follow {
     @Builder
     public Follow(
             @NotNull Long likeId,
-            User follwerId,
+            User followerId,
             User followingId
     ){
         this.likeId = likeId;
-        this.followerId = FollowerId();
+        this.followerId = followerId;
         this.followingId = followingId;
     }
 
