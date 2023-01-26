@@ -10,23 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "story")
+@Table(name = "film")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Film {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "film_id")
-    private Long id;
+    private Long filmId;
 
     @Column(name = "film_title")
     @Size(max = 30)
-    private String title;
+    private String filmTitle;
 
     @Column(name = "film_video_url")
-    private String filmUrl;
+    private String filmVideoUrl;
 
     @Column(name = "film_created_date")
-    private LocalDate date;
+    private LocalDate filmCreatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -40,11 +40,11 @@ public class Film {
     private List<Article> articles = new ArrayList<>();
 
     @Builder
-    public Film(Long id, String title, String filmUrl, LocalDate date, Team team, List<Article> articles) {
-        this.id = id;
-        this.title = title;
-        this.filmUrl = filmUrl;
-        this.date = date;
+    public Film(Long filmId, String filmTitle, String filmVideoUrl, LocalDate filmCreatedDate, Team team, List<Article> articles) {
+        this.filmId = filmId;
+        this.filmTitle = filmTitle;
+        this.filmVideoUrl = filmVideoUrl;
+        this.filmCreatedDate = filmCreatedDate;
         this.team = team;
     }
 

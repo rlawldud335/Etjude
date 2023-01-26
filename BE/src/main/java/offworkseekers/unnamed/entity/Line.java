@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -15,25 +16,25 @@ public class Line {
 
     @Id @GeneratedValue
     @Column(name = "line_id")
-    private int id;
+    private int lineId;
 
     @NonNull
     @Column(name = "line_timestamp")
-    private String timestamp;
+    private LocalTime lineTimestamp;
 
     @NonNull
     @Column(name = "line_script")
-    private String script;
+    private String lineScript;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scene_id")
     private Scene scene;
 
     @Builder
-    public Line(int id, @NonNull String timestamp, @NonNull String script, Scene scene) {
-        this.id = id;
-        this.timestamp = timestamp;
-        this.script = script;
+    public Line(int lineId, @NonNull LocalTime lineTimestamp, @NonNull String lineScript, Scene scene) {
+        this.lineId = lineId;
+        this.lineTimestamp = lineTimestamp;
+        this.lineScript = lineScript;
         this.scene = scene;
     }
 }

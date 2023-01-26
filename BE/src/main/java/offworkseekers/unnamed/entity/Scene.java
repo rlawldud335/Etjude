@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +19,18 @@ public class Scene {
 
     @Id @GeneratedValue
     @Column(name = "scene_id")
-    private int id;
+    private int sceneId;
 
-    @NonNull
     @Column(name = "scene_number")
-    private int number;
+    private int sceneNumber;
 
     @NonNull
     @Column(name = "scene_timestamp")
-    private String timestamp;
+    private LocalTime sceneTimestamp;
 
     @NonNull
     @Column(name = "scene_file_name")
-    private String fileName;
+    private String sceneFileName;
 
     @OneToMany(mappedBy = "scene")
     private List<Line> lines = new ArrayList<>();
@@ -43,12 +44,13 @@ public class Scene {
     private Story story;
 
     @Builder
-    public Scene(int id, @NonNull int number, @NonNull String timestamp, @NonNull String fileName, List<Line> lines, Role role) {
-        this.id = id;
-        this.number = number;
-        this.timestamp = timestamp;
-        this.fileName = fileName;
+    public Scene(int sceneId, int sceneNumber, @NonNull LocalTime sceneTimestamp, @NonNull String sceneFileName, List<Line> lines, Role role, Story story) {
+        this.sceneId = sceneId;
+        this.sceneNumber = sceneNumber;
+        this.sceneTimestamp = sceneTimestamp;
+        this.sceneFileName = sceneFileName;
         this.lines = lines;
         this.role = role;
+        this.story = story;
     }
 }

@@ -15,19 +15,19 @@ public class Work {
 
     @Id @GeneratedValue
     @Column(name = "work_id")
-    private int id;
+    private int workId;
 
     @NonNull
     @Column(name = "work_title")
-    private String title;
+    private String workTitle;
 
     @NonNull
     @Column(name = "work_desc")
-    private String desc;
+    private String workDesc;
 
     @NonNull
     @Column(name = "work_thumbnail_url")
-    private String thumbnailUrl;
+    private String workThumbnailUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -38,11 +38,12 @@ public class Work {
     private Story story;
 
     @Builder
-    public Work(int id, @NonNull String title, @NonNull String desc, @NonNull String thumbnailUrl, Category category) {
-        this.id = id;
-        this.title = title;
-        this.desc = desc;
-        this.thumbnailUrl = thumbnailUrl;
+    public Work(int workId, @NonNull String workTitle, @NonNull String desc, @NonNull String workThumbnailUrl, Category category, Story story) {
+        this.workId = workId;
+        this.workTitle = workTitle;
+        this.workDesc = desc;
+        this.workThumbnailUrl = workThumbnailUrl;
         this.category = category;
+        this.story = story;
     }
 }

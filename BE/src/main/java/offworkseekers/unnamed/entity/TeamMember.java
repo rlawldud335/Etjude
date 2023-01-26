@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class TeamMember {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "team_member_id")
-    private Long id;
+    private Long teamMemberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -22,9 +22,9 @@ public class TeamMember {
     private User user;
 
     @Builder
-    public TeamMember(Long id, Team team) {
-        this.id = id;
+    public TeamMember(Long teamMemberId, Team team, User user) {
+        this.teamMemberId = teamMemberId;
         this.team = team;
-//        this.user = user;
+        this.user = user;
     }
 }
