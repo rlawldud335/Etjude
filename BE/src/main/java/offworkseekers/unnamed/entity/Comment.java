@@ -20,7 +20,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
@@ -30,12 +30,12 @@ public class Comment {
     public Comment(
             @NotNull Long commentId,
             String commentContents,
-            User userId,
+            User user,
             Article articleId
     ){
         this.commentId = commentId;
         this.commentContents = commentContents;
-        this.userId = userId;
+        this.user = user;
         this.articleId = articleId;
     }
 

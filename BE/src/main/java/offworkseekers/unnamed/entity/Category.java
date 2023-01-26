@@ -17,11 +17,11 @@ public class Category {
 
     @Id @GeneratedValue
     @Column(name = "category_id")
-    private int id;
+    private int categoryId;
 
     @NonNull
     @Column(name = "category_name")
-    private String name;
+    private String categoryName;
 
     @OneToMany(mappedBy = "category")
     private List<Work> works = new ArrayList<>();
@@ -30,9 +30,9 @@ public class Category {
     private List<Story> stories = new ArrayList<>();
 
     @Builder
-    public Category(int id, @NonNull String name, List<Work> works) {
-        this.id = id;
-        this.name = name;
+    public Category(int categoryId, @NonNull String categoryName, List<Work> works) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
         this.works = works;
     }
 }

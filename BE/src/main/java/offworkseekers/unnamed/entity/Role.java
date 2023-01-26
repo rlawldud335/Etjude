@@ -17,33 +17,34 @@ public class Role {
 
     @Id @GeneratedValue
     @Column(name = "role_id")
-    private int id;
+    private int roleId;
 
     @NonNull
     @Column(name = "role_name")
-    private String name;
+    private String roleName;
 
     @NonNull
     @Column(name = "role_desc")
-    private String desc;
+    private String roleDesc;
 
-    @Column(name = "story_id")
-    private int storyId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "story_id")
+    private Story story;
 
     @NonNull
     @Column(name = "role_photo_url")
-    private String photoUrl;
+    private String rolePhotoUrl;
 
     @OneToMany(mappedBy = "role")
     private List<Scene> scenes = new ArrayList<>();
 
     @Builder
-    public Role(int id, @NonNull String name, @NonNull String desc, @NonNull int storyId, @NonNull String photoUrl, List<Scene> scenes) {
-        this.id = id;
-        this.name = name;
-        this.desc = desc;
-        this.storyId = storyId;
-        this.photoUrl = photoUrl;
+    public Role(int roleId, @NonNull String roleName, @NonNull String roleDesc, Story story, @NonNull String rolePhotoUrl, List<Scene> scenes) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.roleDesc = roleDesc;
+        this.story = story;
+        this.rolePhotoUrl = rolePhotoUrl;
         this.scenes = scenes;
     }
 }

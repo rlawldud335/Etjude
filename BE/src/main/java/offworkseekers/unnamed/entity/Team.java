@@ -4,30 +4,30 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-@Table(name = "story")
+@Table(name = "team")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "team_id")
-    private int id;
+    private Long teamId;
 
     @Column(name = "team_end_date")
-    private LocalDateTime endDate;
+    private LocalDate teamEndDate;
 
     @Column(name = "team_repository")
-    private String repository;
+    private String teamRepository;
 
     @Column(name = "team_title")
     @Size(max = 20)
-    private String title;
+    private String teamTitle;
 
     @Column(name = "captain_id")
     private int captainId;
@@ -43,11 +43,11 @@ public class Team {
     private List<Film> films = new ArrayList<>();
 
     @Builder
-    public Team(int id, LocalDateTime endDate, String repository, String title, int captainId, Story story, List<TeamMember> teamMembers, List<Film> films) {
-        this.id = id;
-        this.endDate = endDate;
-        this.repository = repository;
-        this.title = title;
+    public Team(Long teamId, LocalDate teamEndDate, String teamRepository, String teamTitle, int captainId, Story story, List<TeamMember> teamMembers, List<Film> films) {
+        this.teamId = teamId;
+        this.teamEndDate = teamEndDate;
+        this.teamRepository = teamRepository;
+        this.teamTitle = teamTitle;
         this.captainId = captainId;
         this.story = story;
         this.teamMembers = teamMembers;

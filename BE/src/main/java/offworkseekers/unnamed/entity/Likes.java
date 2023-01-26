@@ -6,16 +6,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "like")
+@Table(name = "likes")
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Like {
+public class Likes {
 
     @Id
     @GeneratedValue
-    @Column(name = "division")
-    private Long likeId;
+    @Column(name = "likes_id")
+    private Long likesId;
 
     @Column(name = "division")
     private int division;
@@ -25,19 +25,19 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @Builder
-    public Like(
-            @NotNull Long likeId,
+    public Likes(
+            @NotNull Long likesId,
             int division,
             int videoId,
-            User userId
+            User user
     ){
-        this.userId = userId;
+        this.likesId = likesId;
         this.division = division;
         this.videoId = videoId;
-        this.userId = userId;
+        this.user = user;
     }
 
 

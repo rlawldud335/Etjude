@@ -27,11 +27,11 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id")
-    private Film file;
+    private Film film;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @Builder
     public Article(
@@ -39,14 +39,12 @@ public class Article {
             String articleContent,
             String articleTitle,
             String articleThumbnailUrl,
-            Film ?,
             User userId
     ){
         this.articleId = articleId;
         this.articleContent = articleContent;
         this.articleTitle = articleTitle;
         this.articleThumbnailUrl = articleThumbnailUrl;
-        this.? = ?
-        this.userId = userId;
+        this.user = user;
     }
 }

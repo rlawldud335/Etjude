@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 public class Follow {
     @Id
     @GeneratedValue
-    @Column(name = "like_id")
-    private Long likeId;
+    @Column(name = "follow_id")
+    private Long followId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follower_id")
@@ -25,11 +25,11 @@ public class Follow {
 
     @Builder
     public Follow(
-            @NotNull Long likeId,
+            @NotNull Long followId,
             User followerId,
             User followingId
     ){
-        this.likeId = likeId;
+        this.followId = followId;
         this.followerId = followerId;
         this.followingId = followingId;
     }

@@ -3,7 +3,6 @@ package offworkseekers.unnamed.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,22 +15,23 @@ public class Story {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "story_id")
-    private Long id;
+    private Long storyId;
+
     @Column(name = "story_title")
     @Size(max = 15)
-    private String title;
+    private String storyTitle;
 
     @Column(name = "story_video_url")
-    private String videoUrl;
+    private String storyVideoUrl;
 
     @Column(name = "story_desc")
-    private String desc;
+    private String storyDesc;
 
     @Column(name = "story_summary")
-    private String summary;
+    private String storySummary;
 
     @Column(name = "story_thumbnail_url")
-    private String thumbnailUrl;
+    private String storyThumbnailUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_id")
@@ -45,15 +45,18 @@ public class Story {
     private List<Scene> scenes = new ArrayList<>();
 
     @OneToMany(mappedBy = "story")
+    private List<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "story")
     private List<Team> teams = new ArrayList<>();
     @Builder
-    public Story(Long id, String title, String videoUrl, String desc, String summary, String thumbnailUrl, Work work, List<Scene> scenes, List<Team> teams) {
-        this.id = id;
-        this.title = title;
-        this.videoUrl = videoUrl;
-        this.desc = desc;
-        this.summary = summary;
-        this.thumbnailUrl = thumbnailUrl;
+    public Story(Long storyId, String storyTitle, String storyVideoUrl, String storyDesc, String storySummary, String storyThumbnailUrl, Work work, Category category, List<Scene> scenes, List<Team> teams) {
+        this.storyId = storyId;
+        this.storyTitle = storyTitle;
+        this.storyVideoUrl = storyVideoUrl;
+        this.storyDesc = storyDesc;
+        this.storySummary = storySummary;
+        this.storyThumbnailUrl = storyThumbnailUrl;
         this.work = work;
         this.category = category;
         this.scenes = scenes;
