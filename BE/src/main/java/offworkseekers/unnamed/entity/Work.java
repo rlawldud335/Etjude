@@ -17,7 +17,7 @@ public class Work {
 
     @Id @GeneratedValue
     @Column(name = "work_id")
-    private int workId;
+    private Long workId;
 
     @NonNull
     @Column(name = "work_title")
@@ -39,7 +39,7 @@ public class Work {
     private List<Story> stories = new ArrayList<>();
 
     @Builder
-    public Work(int workId, @NonNull String workTitle, @NonNull String desc, @NonNull String workThumbnailUrl, Category category, List<Story> stories) {
+    public Work(Long workId, @NonNull String workTitle, @NonNull String desc, @NonNull String workThumbnailUrl, Category category, List<Story> stories) {
         this.workId = workId;
         this.workTitle = workTitle;
         this.workDesc = desc;

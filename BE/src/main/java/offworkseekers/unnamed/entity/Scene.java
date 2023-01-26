@@ -19,7 +19,7 @@ public class Scene {
 
     @Id @GeneratedValue
     @Column(name = "scene_id")
-    private int sceneId;
+    private Long sceneId;
 
     @Column(name = "scene_number")
     private int sceneNumber;
@@ -44,7 +44,7 @@ public class Scene {
     private Story story;
 
     @Builder
-    public Scene(int sceneId, int sceneNumber, @NonNull LocalTime sceneTimestamp, @NonNull String sceneFileName, List<Line> lines, Role role, Story story) {
+    public Scene(Long sceneId, int sceneNumber, @NonNull LocalTime sceneTimestamp, @NonNull String sceneFileName, List<Line> lines, Role role, Story story) {
         this.sceneId = sceneId;
         this.sceneNumber = sceneNumber;
         this.sceneTimestamp = sceneTimestamp;
