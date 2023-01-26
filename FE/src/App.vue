@@ -1,7 +1,9 @@
 <template>
   <nav class="header">
-    <div class="header__logo">
-      <span>Logo</span>
+    <div class="header__logo-nav">
+      <div class="header__logo">
+        <p>Logo</p>
+      </div>
       <div class="header__nav">
         <router-link to="/" class="header__nav-item">검색</router-link>
         <router-link to="/about" class="header__nav-item">카테고리</router-link>
@@ -28,37 +30,51 @@ nav {
     color: #2c3e50;
     text-decoration: none;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+    // &.router-link-exact-active {
+    //   color: #42b983;
+    // }
   }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 24px;
+}
+
+.header__logo-nav {
+  display: flex;
+  align-items: center;
+  color: $bana-pink;
+  margin-left: 30px;
 }
 
 .header__logo {
   display: flex;
-  color: $bana-pink;
-  font-weight: 1001;
+  align-items: center;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 .header__nav {
   display: flex;
+  margin-left: 100px;
+  align-items: center;
 }
 
 .header__nav-item {
-  font-family: Spoqa Han Sans Neo;
-  color: black;
-  margin: 3px;
+  font-size: 18px;
+  margin-right: 60px;
 }
 
 .header__login-button {
   border: none;
+  color: white;
+  background-color: $bana-pink;
   width: 87px;
   height: 32px;
   border-radius: 4px;
+  margin-right: 20px;
 }
 </style>
