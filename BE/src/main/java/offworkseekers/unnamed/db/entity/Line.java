@@ -1,4 +1,4 @@
-package offworkseekers.unnamed.entity;
+package offworkseekers.unnamed.db.entity;
 
 import lombok.Builder;
 import lombok.Getter;
