@@ -24,19 +24,19 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
-    private Article articleId;
+    private Article article;
 
     @Builder
     public Comment(
             @NotNull Long commentId,
             String commentContents,
             User user,
-            Article articleId
+            Article article
     ){
         this.commentId = commentId;
         this.commentContents = commentContents;
         this.user = user;
-        this.articleId = articleId;
+        this.article = article;
     }
 
 
