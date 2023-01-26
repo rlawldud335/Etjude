@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,17 +35,16 @@ public class Work {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "story_id")
-    private Story story;
+    @OneToMany(mappedBy = "work")
+    private List<Story> stories = new ArrayList<>();
 
     @Builder
-    public Work(int workId, @NonNull String workTitle, @NonNull String desc, @NonNull String workThumbnailUrl, Category category, Story story) {
+    public Work(int workId, @NonNull String workTitle, @NonNull String desc, @NonNull String workThumbnailUrl, Category category, List<Story> stories) {
         this.workId = workId;
         this.workTitle = workTitle;
         this.workDesc = desc;
         this.workThumbnailUrl = workThumbnailUrl;
         this.category = category;
-        this.story = story;
+        this.stories = stories;
     }
 }

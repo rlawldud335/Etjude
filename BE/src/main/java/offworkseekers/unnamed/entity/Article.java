@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "article")
@@ -33,13 +35,16 @@ public class Article {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
     public Article(
             @NotNull Long articleId,
             String articleContent,
             String articleTitle,
             String articleThumbnailUrl,
-            User userId
+            User user
     ){
         this.articleId = articleId;
         this.articleContent = articleContent;
