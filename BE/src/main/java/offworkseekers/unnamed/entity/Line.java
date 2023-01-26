@@ -16,7 +16,7 @@ public class Line {
 
     @Id @GeneratedValue
     @Column(name = "line_id")
-    private int lineId;
+    private Long lineId;
 
     @NonNull
     @Column(name = "line_timestamp")
@@ -31,7 +31,7 @@ public class Line {
     private Scene scene;
 
     @Builder
-    public Line(int lineId, @NonNull LocalTime lineTimestamp, @NonNull String lineScript, Scene scene) {
+    public Line(Long lineId, @NonNull LocalTime lineTimestamp, @NonNull String lineScript, Scene scene) {
         this.lineId = lineId;
         this.lineTimestamp = lineTimestamp;
         this.lineScript = lineScript;

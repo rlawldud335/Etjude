@@ -17,7 +17,7 @@ public class Role {
 
     @Id @GeneratedValue
     @Column(name = "role_id")
-    private int roleId;
+    private Long roleId;
 
     @NonNull
     @Column(name = "role_name")
@@ -39,7 +39,7 @@ public class Role {
     private List<Scene> scenes = new ArrayList<>();
 
     @Builder
-    public Role(int roleId, @NonNull String roleName, @NonNull String roleDesc, Story story, @NonNull String rolePhotoUrl, List<Scene> scenes) {
+    public Role(Long roleId, @NonNull String roleName, @NonNull String roleDesc, Story story, @NonNull String rolePhotoUrl, List<Scene> scenes) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.roleDesc = roleDesc;

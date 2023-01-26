@@ -17,7 +17,7 @@ public class Category {
 
     @Id @GeneratedValue
     @Column(name = "category_id")
-    private int categoryId;
+    private Long categoryId;
 
     @NonNull
     @Column(name = "category_name")
@@ -30,7 +30,7 @@ public class Category {
     private List<Story> stories = new ArrayList<>();
 
     @Builder
-    public Category(int categoryId, @NonNull String categoryName, List<Work> works) {
+    public Category(Long categoryId, @NonNull String categoryName, List<Work> works) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.works = works;
