@@ -1,0 +1,60 @@
+[
+  {
+    "name": "sunyang1",
+    "index": 1,
+    "img": "./images/profile.jpg",
+    "team": "왼손은 거들 뿐",
+    "title": "난 포기를 모르는 남자!",
+    "date": "2023.01.12 ~ 2023.01.26",
+    "dday": "D - 4"
+  },
+  {
+    "name": "sunyang2",
+    "index": 2,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt2",
+    "comment2": "exampleeeeeeeeeeee"
+  },
+  {
+    "name": "sunyang3",
+    "index": 3,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt3",
+    "comment2": "exampleeeeeeeeeeee"
+  },
+  {
+    "name": "sunyang4",
+    "index": 4,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt4",
+    "comment2": "exampleeeeeeeeeeee"
+  },
+  {
+    "name": "sunyang5",
+    "index": 5,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt5",
+    "comment2": "exampleeeeeeeeeeee"
+  },
+  {
+    "name": "sunyang6",
+    "index": 6,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt6",
+    "comment2": "exampleeeeeeeeeeee"
+  },
+  {
+    "name": "sunyang7",
+    "index": 7,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt7",
+    "comment2": "exampleeeeeeeeeeee"
+  },
+  {
+    "name": "sunyang8",
+    "index": 8,
+    "img": "./images/profile.jpg",
+    "comment1": "testtttttttttttt8",
+    "comment2": "exampleeeeeeeeeeee"
+  }
+]
