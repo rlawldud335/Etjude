@@ -42,7 +42,7 @@ nav {
 .header__logo {
   display: flex;
   color: $bana-pink;
-  font-weight: 1000;
+  font-weight: 1001;
 }
 
 .header__nav {
@@ -50,6 +50,7 @@ nav {
 }
 
 .header__nav-item {
+  font-family: Spoqa Han Sans Neo;
   color: black;
   margin: 3px;
 }
