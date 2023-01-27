@@ -41,6 +41,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   height: 24px;
+  padding: 16px;
 }
 
 .header__logo-nav {
@@ -59,13 +60,13 @@ nav {
 
 .header__nav {
   display: flex;
-  margin-left: 100px;
+  margin-left: 8rem;
   align-items: center;
 }
 
 .header__nav-item {
   font-size: 18px;
-  margin-right: 60px;
+  margin-right: 5rem;
 }
 
 .header__login-button {
