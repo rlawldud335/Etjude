@@ -1,5 +1,6 @@
 package offworkseekers.unnamed.db.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.db.entity.Article;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepositorySupport {
 
-//    private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Article> getAllList() {
