@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,14 @@ public class Article {
     @Column(name = "article_title", length = 25)
     private String articleTitle;
 
-    @Column(name = "article_tumbnail_url")
+    @Column(name = "article_thumbnail_url")
     private String articleThumbnailUrl;
+
+    @Column(name = "article_view_count")
+    private int articleViewCount;
+
+    @Column(name = "article_created_date")
+    private LocalDate articleCreatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id")
@@ -44,12 +51,18 @@ public class Article {
             String articleContent,
             String articleTitle,
             String articleThumbnailUrl,
+            LocalDate articleCreatedDate,
+            int articleViewCount,
+            Film flim,
             User user
     ){
         this.articleId = articleId;
         this.articleContent = articleContent;
         this.articleTitle = articleTitle;
         this.articleThumbnailUrl = articleThumbnailUrl;
+        this.articleCreatedDate = articleCreatedDate;
+        this.articleViewCount = articleViewCount;
+        this.film = flim;
         this.user = user;
     }
 }
