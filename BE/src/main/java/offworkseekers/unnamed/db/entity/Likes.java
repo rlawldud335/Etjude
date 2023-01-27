@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class Likes {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "likes_id")
     private Long likesId;
 

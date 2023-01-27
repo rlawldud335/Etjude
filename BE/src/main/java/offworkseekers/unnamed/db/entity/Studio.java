@@ -10,24 +10,24 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "team")
+@Table(name = "studio")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team {
+public class Studio {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "team_id")
-    private Long teamId;
+    @Column(name = "studio_id")
+    private Long studioId;
 
-    @Column(name = "team_end_date")
-    private LocalDate teamEndDate;
+    @Column(name = "studio_end_date")
+    private LocalDate studioEndDate;
 
-    @Column(name = "team_repository")
-    private String teamRepository;
+    @Column(name = "studio_repository")
+    private String studioRepository;
 
-    @Column(name = "team_title")
+    @Column(name = "studio_title")
     @Size(max = 20)
-    private String teamTitle;
+    private String studioTitle;
 
     @Column(name = "captain_id")
     private int captainId;
@@ -36,18 +36,18 @@ public class Team {
     @JoinColumn(name = "story_id")
     private Story story;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "studio")
     private List<TeamMember> teamMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "studio")
     private List<Film> films = new ArrayList<>();
 
     @Builder
-    public Team(Long teamId, LocalDate teamEndDate, String teamRepository, String teamTitle, int captainId, Story story, List<TeamMember> teamMembers, List<Film> films) {
-        this.teamId = teamId;
-        this.teamEndDate = teamEndDate;
-        this.teamRepository = teamRepository;
-        this.teamTitle = teamTitle;
+    public Studio(Long studioId, LocalDate studioEndDate, String studioRepository, String studioTitle, int captainId, Story story, List<TeamMember> teamMembers, List<Film> films) {
+        this.studioId = studioId;
+        this.studioEndDate = studioEndDate;
+        this.studioRepository = studioRepository;
+        this.studioTitle = studioTitle;
         this.captainId = captainId;
         this.story = story;
         this.teamMembers = teamMembers;

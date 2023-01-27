@@ -14,17 +14,17 @@ public class TeamMember {
     private Long teamMemberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @JoinColumn(name = "studio_id")
+    private Studio studio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public TeamMember(Long teamMemberId, Team team, User user) {
+    public TeamMember(Long teamMemberId, Studio studio, User user) {
         this.teamMemberId = teamMemberId;
-        this.team = team;
+        this.studio = studio;
         this.user = user;
     }
 }

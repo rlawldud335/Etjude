@@ -1,5 +1,6 @@
 server:
   port: 8081
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/unnamed?useSSL=false&&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
