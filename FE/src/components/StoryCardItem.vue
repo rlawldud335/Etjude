@@ -1,100 +1,100 @@
-<template lang="">
-  <div>
-    <ul class="card-wrapper">
-      <li class="card" v-for="(item, index) in testdatas" :key="index">
-        <img :src="require(`@/images/profile.jpg`)" alt="" />
-        <h3>
-          <a href="">{{ item.comment1 }}</a>
-        </h3>
-        <p>{{ item.comment2 }}</p>
-        <p>{{ item.img }}</p>
-      </li>
-    </ul>
-  </div>
+<template>
+  <Carousel :settings="settings" :breakpoints="breakpoints">
+    <Slide v-for="slide in testdatas" :key="slide">
+      <div class="carousel__item">
+        <router-link to="/">
+          <img class="itemimg" :src="slide.img" alt="" />
+          <div class="itemtext">
+            <div class="itemtexttitle">{{ slide.title }}</div>
+            <div class="itemtextcategory">{{ slide.category }}</div>
+            <div class="itemtextfavor">좋아요 {{ slide.favor }}</div>
+          </div>
+        </router-link>
+      </div>
+    </Slide>
+
+    <template #addons>
+      <Navigation />
+    </template>
+  </Carousel>
 </template>
+
 <script>
-import testdata from "./testdata.json";
+import { defineComponent } from "vue";
+import { Carousel, Navigation, Slide } from "vue3-carousel";
+import StoryCardItemData from "./StoryCardItemData.json";
 
-export default {
-  data() {
-    return {
-      testdatas: testdata,
-    };
+import "vue3-carousel/dist/carousel.css";
+
+export default defineComponent({
+  name: "StoryCardItem",
+  components: {
+    Carousel,
+    Slide,
+    Navigation,
   },
-};
+  data: () => ({
+    // dummy data
+    testdatas: StoryCardItemData,
+    // carousel settings
+    settings: {
+      itemsToShow: 5,
+      snapAlign: "start",
+      wrapAround: true,
+    },
+    breakpoints: {
+      480: {
+        itemsToShow: 1,
+      },
+      960: {
+        itemsToShow: 3,
+      },
+      1440: {},
+    },
+  }),
+});
 </script>
-<style lang="scss">
-/* // Full tutorial coming soon! */
-
-.card {
-  // --card-gradient: rgba(0, 0, 0, 0.8);
-  // --card-gradient: #5e9ad9, #e271ad;
-  // --card-blend-mode: overlay;
-
+<style scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
+.carousel__item {
   background-color: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0.05rem 0.1rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
-  padding: 2rem;
-  padding-bottom: 1rem;
-  background-image: linear-gradient(var(--card-gradient), white max(9.5rem, 27vh));
-  overflow: hidden;
-
-  img {
-    border-radius: 0.5rem 0.5rem 0 0;
-    width: 100%;
-    object-fit: cover;
-    /* // height: max(10rem, 25vh); */
-    max-height: max(10rem, 30vh);
-    aspect-ratio: 4/3;
-    mix-blend-mode: var(--card-blend-mode);
-    /* // filter: grayscale(100); */
-
-    ~ * {
-      margin-left: 1rem;
-      margin-right: 1rem;
-    }
-  }
-
-  > :last-child {
-    margin-bottom: 0;
-  }
+  /* border-radius: 0.5rem; */
+  /* box-shadow: 0.05rem 0.15rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45); */
+  margin: 10px;
 }
-
-/* Additional demo display styles */
-* {
-  box-sizing: border-box;
+.itemimg {
+  border-radius: 0.5rem 0.5rem 0 0;
+  height: 134px;
+  width: 257px;
+  object-fit: fill;
+  /* // height: max(10rem, 25vh); */
+  max-height: max(10rem, 30vh);
+  aspect-ratio: 4/3;
+  mix-blend-mode: var(--card-blend-mode);
+  /* // filter: grayscale(100); */
 }
-
-body {
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  min-height: 100vh;
-  margin: 0;
-  padding: 1rem;
-  line-height: 1.5;
-  color: #444;
-  background-color: #e1faf1;
+.itemtext {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 26px;
+  padding-right: 26px;
 }
-
-.card h3 {
-  margin-top: 1rem;
-  font-size: 1.25rem;
+.itemtexttitle {
+  margin-bottom: 3px;
+  padding: 1px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
 }
-
-.card a {
-  color: inherit;
-}
-
-.card-wrapper {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
-  max-width: 100vw;
-  width: 200ch;
-  padding-left: 1rem;
-  padding-right: 1rem;
+.itemtextcategory,
+.itemtextfavor {
+  margin: 3.5px;
+  text-align: left;
+  font-size: 12px;
 }
 </style>

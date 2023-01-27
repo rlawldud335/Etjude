@@ -18,7 +18,9 @@
     "vue-loader": "^17.0.1",
     "vue-router": "^4.0.13",
     "vue3-carousel": "^0.2.9",
-    "vuex": "^4.0.0"
+    "vue3-icon": "^2.1.0",
+    "vuex": "^4.0.0",
+    "webfonts-generator": "^0.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

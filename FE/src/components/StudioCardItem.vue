@@ -3,12 +3,16 @@
     <Slide v-for="slide in testdatas" :key="slide">
       <div class="carousel__item">
         <router-link to="/">
-          <img :src="require(`@/images/profile.jpg`)" alt="" />
+          <img class="itemimg" :src="require(`@/images/profile.jpg`)" alt="" />
           <div class="itemtext">
-            <div class="itemtextteamname">{{ slide.team }}</div>
-            <div class="itemtextdday">{{ slide.dday }}</div>
-            <div class="itemtexttitle">{{ slide.title }}</div>
-            <div class="itemtextdate">{{ slide.date }}</div>
+            <div class="rightitem">
+              <div class="itemtextteamname">{{ slide.team }}</div>
+              <div class="itemtexttitle">{{ slide.title }}</div>
+              <div class="itemtextdate">{{ slide.date }}</div>
+            </div>
+            <div class="leftitem">
+              <div class="itemtextdday">{{ slide.dday }}</div>
+            </div>
           </div>
         </router-link>
       </div>
@@ -28,43 +32,45 @@ import testdata from "./testdata.json";
 import "vue3-carousel/dist/carousel.css";
 
 export default defineComponent({
-  name: "startBreakpoints",
+  name: "StuidoCardItem",
   components: {
     Carousel,
     Slide,
     Navigation,
   },
   data: () => ({
+    // dummy data
     testdatas: testdata,
     // carousel settings
     settings: {
-      itemsToShow: 1,
-      snapAlign: "center",
+      itemsToShow: 5,
+      snapAlign: "start",
+      wrapAround: true,
     },
-    // breakpoints are mobile first
-    // any settings not specified will fallback to the carousel settings
     breakpoints: {
-      // 700px and up
-      700: {
-        itemsToShow: 3.5,
-        snapAlign: "center",
+      480: {
+        itemsToShow: 1,
       },
-      // 1024 and up
-      1024: {
-        itemsToShow: 4,
-        snapAlign: "start",
+      960: {
+        itemsToShow: 3,
       },
+      1440: {},
     },
   }),
 });
 </script>
-<style>
+<style scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
 .carousel__item {
   background-color: #fff;
   border-radius: 0.5rem;
-  box-shadow: 0.05rem 0.1rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
+  box-shadow: 0.05rem 0.15rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
+  margin: 10px;
 }
-img {
+.itemimg {
   border-radius: 0.5rem 0.5rem 0 0;
   height: 134px;
   width: 257px;
@@ -79,24 +85,28 @@ img {
   display: flex;
   padding-top: 16px;
   padding-bottom: 16px;
-  padding-left: 32px;
+  padding-left: 26px;
+  padding-right: 26px;
+  justify-content: space-between;
 }
 .itemtextteamname {
   margin-bottom: 3px;
   text-align: left;
   font-size: 16px;
+  font-weight: bold;
 }
 .itemtexttitle,
 .itemtextdate {
-  padding-left: 3px;
+  margin: 2px;
+  padding-left: 5px;
   text-align: left;
   font-size: 12px;
 }
 
 .itemtextdday {
-  margin-left: auto;
+  display: inline;
   padding-left: 3px;
   text-align: left;
-  font-size: 12px;
+  font-size: 16px;
 }
 </style>
