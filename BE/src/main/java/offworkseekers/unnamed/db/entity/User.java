@@ -16,7 +16,7 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
     @Column(name = "email", length = 50)
@@ -30,9 +30,9 @@ public class User {
     @Column(name = "picture")
     private String picture;
 
-//    @Column(name = "role_type")
-//    @Enumerated(EnumType.STRING)
-//    private RoleType roleType;
+    @Column(name = "role_type")
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
 
     @OneToMany(mappedBy = "user")
     private List<TeamMember> teamMemberIds = new ArrayList<>();
@@ -58,14 +58,14 @@ public class User {
             @NotNull Long userId,
             @NotNull @Size(max = 50) String email,
             @Size(max = 20) String nickName,
-            String picture
-//            RoleType roleType
+            String picture,
+            RoleType roleType
     ){
         this.userId = userId;
         this.email = email;
         this.nickName = nickName;
         this.picture = picture;
-//        this.roleType = roleType;
+        this.roleType = roleType;
     }
 
 
@@ -75,7 +75,7 @@ public class User {
         return this;
     }
 
-//    public String getRoleKey(){
-//        return this.roleType.getKey();
-//    }
+    public String getRoleKey(){
+        return this.roleType.getKey();
+    }
 }

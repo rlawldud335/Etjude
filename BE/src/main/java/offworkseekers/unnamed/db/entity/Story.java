@@ -48,9 +48,9 @@ public class Story {
     private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "story")
-    private List<Team> teams = new ArrayList<>();
+    private List<Studio> studios = new ArrayList<>();
     @Builder
-    public Story(Long storyId, String storyTitle, String storyVideoUrl, String storyDesc, String storySummary, String storyThumbnailUrl, Work work, Category category, List<Scene> scenes, List<Team> teams) {
+    public Story(Long storyId, String storyTitle, String storyVideoUrl, String storyDesc, String storySummary, String storyThumbnailUrl, Work work, Category category, List<Scene> scenes, List<Studio> studios) {
         this.storyId = storyId;
         this.storyTitle = storyTitle;
         this.storyVideoUrl = storyVideoUrl;
@@ -60,15 +60,15 @@ public class Story {
         this.work = work;
         this.category = category;
         this.scenes = scenes;
-        this.teams = teams;
+        this.studios = studios;
     }
 
     public void addScene(Scene scene) {
         scenes.add(scene);
     }
 
-    public void addTeam(Team team) {
-        teams.add(team);
+    public void addStudio(Studio studio) {
+        studios.add(studio);
     }
 
 }

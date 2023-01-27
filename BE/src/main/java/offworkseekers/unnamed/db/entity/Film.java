@@ -28,8 +28,8 @@ public class Film {
     private LocalDate filmCreatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team ;
+    @JoinColumn(name = "studio_id")
+    private Studio studio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -39,12 +39,12 @@ public class Film {
     private List<Article> articles = new ArrayList<>();
 
     @Builder
-    public Film(Long filmId, String filmTitle, String filmVideoUrl, LocalDate filmCreatedDate, Team team, List<Article> articles) {
+    public Film(Long filmId, String filmTitle, String filmVideoUrl, LocalDate filmCreatedDate, Studio studio, List<Article> articles) {
         this.filmId = filmId;
         this.filmTitle = filmTitle;
         this.filmVideoUrl = filmVideoUrl;
         this.filmCreatedDate = filmCreatedDate;
-        this.team = team;
+        this.studio = studio;
     }
 
     public void addArticle(Article article) {

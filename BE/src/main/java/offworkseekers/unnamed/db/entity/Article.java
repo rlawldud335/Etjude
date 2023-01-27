@@ -15,7 +15,7 @@ import java.util.List;
 public class Article {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "article_id")
     private Long articleId;
 
