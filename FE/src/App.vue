@@ -78,4 +78,14 @@ nav {
   border-radius: 4px;
   margin-right: 20px;
 }
+
+.footer {
+  color: $efefe-gray;
+  height: 263px;
+  background-color: #303740;
+}
+
+.footer__section {
+  margin: 30px;
+}
 </style>
