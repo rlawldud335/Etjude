@@ -12,6 +12,12 @@
     <div>
       <button class="header__login-button">Login</button>
     </div>
+    <div class="header__categoty--dropdown">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+    </div>
   </nav>
   <router-view />
   <div class="footer">
@@ -93,6 +99,10 @@ nav {
   height: 32px;
   border-radius: 4px;
   margin-right: 20px;
+}
+
+.header__category--dropdown {
+  position: absolute;
 }
 
 .footer {
