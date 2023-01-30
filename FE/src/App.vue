@@ -1,11 +1,11 @@
 <template>
   <nav class="header">
     <div class="header__logo-nav">
-      <div class="header__logo">
+      <router-link :to="{ name: 'main' }" class="header__logo">
         <p>Logo</p>
-      </div>
+      </router-link>
       <div class="header__nav">
-        <router-link to="/" class="header__nav-item">검색</router-link>
+        <router-link to="/search" class="header__nav-item">검색</router-link>
         <router-link
           to="/about"
           class="header__nav-item header__dropdown-button"
@@ -21,12 +21,12 @@
             <li><span>연극</span></li>
           </ul>
         </router-link>
-        <router-link to="/" class="header__nav-item">필름 공유</router-link>
+        <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
       </div>
     </div>
-    <div>
+    <router-link to="/login">
       <button class="header__login-button">Login</button>
-    </div>
+    </router-link>
   </nav>
   <router-view />
   <div class="footer">
@@ -169,6 +169,7 @@ nav {
   height: 32px;
   border-radius: 4px;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .footer {
