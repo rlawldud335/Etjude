@@ -20,5 +20,10 @@ module.exports = {
       process.env.NODE_ENV === "production"
         ? "warn"
         : "off",
+        "import/no-unresolved": "off",
+"import/no-extraneous-dependencies": [
+  "error",
+  { devDependencies: false, optionalDependencies: false, peerDependencies: false },
+],
   },
 };

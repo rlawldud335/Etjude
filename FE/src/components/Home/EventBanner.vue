@@ -1,6 +1,6 @@
 <!-- eslint-disable vuejs-accessibility/alt-text -->
 <template>
-    <Carousel ref="myCarousel" v-model="currentSlide" :items-to-show="1.6" :wrap-around="true" :autoplay="2000" class="event-banner" >
+    <Carousel ref="myCarousel" v-model="currentSlide" :items-to-show="1.6" :wrap-around="true" :autoplay="20000" class="event-banner" >
         <Slide v-for="slide in slideList" :key="slide" class="event-banner__slide">
             <div class="event-card">
                 <img :src="require(`@/assets/images/${slide.image}`)" class="event-card__image" />
@@ -12,7 +12,6 @@
             <div>
                 <span>{{currentSlide+1}} / {{ slideList.length }}</span>
                 <div><Prev/><Stop/><Next/></div>
-                
             </div>
 
         </div>
@@ -59,11 +58,15 @@
 }
 
 .event-banner__slide {
-    width: 100%;
+    background-color: antiquewhite;
+    width: 1000px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
+
 .event-card{
     height: 400px;
-    width: calc(100% - 14px);
+    width: 1240px;
     border-radius: 10px;
     background-color: #ACD3E6;
 }
