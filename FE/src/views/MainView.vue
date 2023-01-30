@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import EventBanner from "@/components/home/EventBanner.vue";
+import EventBanner from "@/components/main/EventBanner.vue";
 import StudioCard from "@/components/main/StudioCard.vue";
 import StoryCard from "@/components/main/StoryCard.vue";
 import PieceCard from "@/components/main/PieceCard.vue";
-import ShortcutFlim from "@/components/home/ShortcutFlim.vue";
-import SearchSession from "@/components/home/SearchSession.vue";
+import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
+import SearchSession from "@/components/main/SearchSession.vue";
 
 export default {
   name: "MainView",

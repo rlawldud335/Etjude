@@ -4,7 +4,7 @@ import FilmView from "@/views/FilmView.vue";
 
 const routes = [
   {
-    path: "/main",
+    path: "/",
     name: "main",
     component: MainView,
   },
