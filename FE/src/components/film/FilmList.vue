@@ -17,9 +17,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .film-list {
   display: flex;
-  margin: 200px auto;
+  margin: 20px 10px;
+  // width: 90%;
+  justify-content: space-between;
 }
 </style>

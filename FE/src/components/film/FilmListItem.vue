@@ -21,10 +21,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .film__card {
-  width: 250px;
-  min-width: 250px;
+  width: 300px;
+  min-width: 300px;
   margin: 20px;
   img {
     width: 100%;

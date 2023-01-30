@@ -3,6 +3,10 @@
     <h1 class="film__popular-title">인기필름</h1>
     <FilmList></FilmList>
   </div>
+  <div class="film__all">
+    <h1 class="film__popular-title">전체필름</h1>
+    <FilmList></FilmList>
+  </div>
 </template>
 
 <script>
@@ -18,19 +22,21 @@ export default {
 
 <style scoped lang="scss">
 .film__popular {
-  margin: 60px 100px;
+  margin: 60px 200px;
   display: flex;
   flex-direction: column;
+  // margin-left: 9%;
 }
 
 .film__popular-title {
   min-width: 150px;
   font-weight: 600;
   font-size: 24px;
-  margin-left: 7%;
 }
 
-.film__list {
-  padding: 600px;
+.film__all {
+  margin: 60px 200px;
+  display: flex;
+  flex-direction: column;
 }
 </style>
