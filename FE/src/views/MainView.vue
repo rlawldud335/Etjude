@@ -2,11 +2,10 @@
   <div class="main">
     <div class="main__fullwidth">
       <event-banner />
-      <SharingDtail></SharingDtail>
     </div>
 
     <div class="main__1136width">
-      <search-session />
+      <SearchSession />
     </div>
 
     <div class="main__1136width">
@@ -28,7 +27,7 @@
     </div>
 
     <div class="main__fullwidth">
-      <div class="shortcut-film">Shortcut Film</div>
+      <ShortcutFlim/>
     </div>
   </div>
 </template>
@@ -38,7 +37,8 @@ import EventBanner from "@/components/Home/EventBanner.vue";
 import StudioCard from "@/components/Main/StudioCard.vue";
 import StoryCard from "@/components/Main/StoryCard.vue";
 import PieceCard from "@/components/Main/PieceCard.vue";
-import SharingDtail from "@/components/Share/SharingDtail.vue";
+import ShortcutFlim from "@/components/Home/ShortcutFlim.vue";
+import SearchSession from "@/components/Home/SearchSession.vue";
 
 export default {
   name: "MainView",
@@ -47,7 +47,8 @@ export default {
     StudioCard,
     StoryCard,
     PieceCard,
-    SharingDtail,
+    ShortcutFlim,
+    SearchSession
   },
 };
 </script>
@@ -65,7 +66,7 @@ export default {
 }
 
 .main__1136width {
-  background-color: pink;
+
   width: 1136px;
 }
 .search-session {
