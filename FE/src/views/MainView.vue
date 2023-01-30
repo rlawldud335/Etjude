@@ -2,11 +2,11 @@
     <div class="main" >
 
         <div class="main__fullwidth">
-            <EventBanner/>
+            <event-banner/>
         </div>
 
         <div class="main__1136width">
-            <div class="search-session">Search Session</div>
+            <search-session/>
         </div>
 
         <div class="main__1136width">
@@ -22,18 +22,22 @@
         </div>
 
         <div class="main__fullwidth">
-            <div class="shortcut-film">Shortcut Film</div>
+            <ShortcutFlim/>
         </div>
     </div>
 </template>
 
 <script>
 import EventBanner from '@/components/Home/EventBanner.vue';
+import SearchSession from "@/components/Home/SearchSession.vue";
+import ShortcutFlim from './ShortcutFlim.vue';
 
 export default {
     name: 'MainView',
     components: {
-    EventBanner
+    EventBanner,
+    SearchSession,
+    ShortcutFlim
   },
 }
 </script>
@@ -51,18 +55,8 @@ export default {
 }
 
 .main__1136width {
-    background-color: pink;
+
     width: 1136px;
 }
-.search-session {
-    height: 250px;
-}
 
-.my-studio{
-    height: 300px;
-}
-
-.recommended-story{
-    height: 300px;
-}
 </style>
