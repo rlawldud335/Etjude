@@ -1,12 +1,13 @@
 <template lang="">
-  <div class="main">
-    <div class="main__fullwidth">
-      <EventBanner />
-    </div>
+    <div class="main" >
 
-    <div class="main__1136width">
-      <div class="search-session">Search Session</div>
-    </div>
+        <div class="main__fullwidth">
+            <event-banner/>
+        </div>
+
+        <div class="main__1136width">
+            <search-session/>
+        </div>
 
     <div class="main__1136width">
       <div class="my-studio">
@@ -26,25 +27,19 @@
       </div>
     </div>
 
-    <div class="main__fullwidth">
-      <div class="shortcut-film">Shortcut Film</div>
+        <div class="main__fullwidth">
+            <div class="shortcut-film">Shortcut Film</div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-import EventBanner from "@/components/Home/EventBanner.vue";
-import StudioCard from "@/components/Main/StudioCard.vue";
-import StoryCard from "@/components/Main/StoryCard.vue";
-import PieceCard from "@/components/Main/PieceCard.vue";
+import EventBanner from '@/components/Home/EventBanner.vue';
 
 export default {
-  name: "MainView",
-  components: {
-    EventBanner,
-    StudioCard,
-    StoryCard,
-    PieceCard,
+    name: 'MainView',
+    components: {
+    EventBanner
   },
 };
 </script>
@@ -62,23 +57,18 @@ export default {
 }
 
 .main__1136width {
-  background-color: pink;
-  width: 1136px;
+    background-color: pink;
+    width: 1136px;
 }
 .search-session {
-  height: 250px;
+    height: 250px;
 }
 
-.my-studio {
-  height: 300px;
+.my-studio{
+    height: 300px;
 }
 
-.recommended-story {
-  height: 300px;
-}
-
-a {
-  text-decoration: none;
-  color: black;
+.recommended-story{
+    height: 300px;
 }
 </style>
