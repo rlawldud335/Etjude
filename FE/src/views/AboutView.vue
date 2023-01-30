@@ -7,9 +7,9 @@
   </div>
 </template>
 <script>
-import storycard from "@/components/Main/StoryCard.vue";
-import studiocard from "@/components/Main/StudioCard.vue";
-import piececard from "@/components/Main/PieceCard.vue";
+import storycard from "@/components/main/StoryCard.vue";
+import studiocard from "@/components/main/StudioCard.vue";
+import piececard from "@/components/main/PieceCard.vue";
 
 export default {
   name: "AboutView",
