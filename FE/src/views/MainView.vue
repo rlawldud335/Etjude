@@ -1,13 +1,13 @@
 <template lang="">
-    <div class="main" >
+  <div class="main">
+    <div class="main__fullwidth">
+      <event-banner />
+      <SharingDtail></SharingDtail>
+    </div>
 
-        <div class="main__fullwidth">
-            <event-banner/>
-        </div>
-
-        <div class="main__1136width">
-            <search-session/>
-        </div>
+    <div class="main__1136width">
+      <search-session />
+    </div>
 
     <div class="main__1136width">
       <div class="my-studio">
@@ -27,19 +27,27 @@
       </div>
     </div>
 
-        <div class="main__fullwidth">
-            <div class="shortcut-film">Shortcut Film</div>
-        </div>
+    <div class="main__fullwidth">
+      <div class="shortcut-film">Shortcut Film</div>
     </div>
+  </div>
 </template>
 
 <script>
-import EventBanner from '@/components/Home/EventBanner.vue';
+import EventBanner from "@/components/Home/EventBanner.vue";
+import StudioCard from "@/components/Main/StudioCard.vue";
+import StoryCard from "@/components/Main/StoryCard.vue";
+import PieceCard from "@/components/Main/PieceCard.vue";
+import SharingDtail from "@/components/Share/SharingDtail.vue";
 
 export default {
-    name: 'MainView',
-    components: {
-    EventBanner
+  name: "MainView",
+  components: {
+    EventBanner,
+    StudioCard,
+    StoryCard,
+    PieceCard,
+    SharingDtail,
   },
 };
 </script>
@@ -57,18 +65,18 @@ export default {
 }
 
 .main__1136width {
-    background-color: pink;
-    width: 1136px;
+  background-color: pink;
+  width: 1136px;
 }
 .search-session {
-    height: 250px;
+  height: 250px;
 }
 
-.my-studio{
-    height: 300px;
+.my-studio {
+  height: 300px;
 }
 
-.recommended-story{
-    height: 300px;
+.recommended-story {
+  height: 300px;
 }
 </style>

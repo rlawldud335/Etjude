@@ -2,8 +2,8 @@
   <Carousel :settings="settings" :breakpoints="breakpoints">
     <Slide v-for="slide in testdatas" :key="slide">
       <div class="carousel__item">
-        <router-link to="/">
-          <img class="itemimg" :src="require(`@/images/더글로리.jpg`)" alt="" />
+        <router-link to="/main">
+          <img class="itemimg" :src="require(`@/assets/images/더글로리.jpg`)" alt="" />
           <div class="itemtext">
             <div class="itemtexttitle">{{ slide.title }}</div>
             <div class="itemtextcategory">{{ slide.category }}</div>
