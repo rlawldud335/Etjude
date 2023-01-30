@@ -1,14 +1,12 @@
 <template lang="">
   <div class="main">
     <div class="main__fullwidth">
-      <EventBanner />
+      <event-banner />
+      <SharingDtail></SharingDtail>
     </div>
 
     <div class="main__1136width">
-      <div class="search-session">
-        Search Session
-        <SharingDtail></SharingDtail>
-      </div>
+      <search-session />
     </div>
 
     <div class="main__1136width">
@@ -80,10 +78,5 @@ export default {
 
 .recommended-story {
   height: 300px;
-}
-
-a {
-  text-decoration: none;
-  color: black;
 }
 </style>
