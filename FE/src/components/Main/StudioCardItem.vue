@@ -43,7 +43,7 @@ export default defineComponent({
     testdatas: testdata,
     // carousel settings
     settings: {
-      itemsToShow: 5,
+      itemsToShow: 4,
       snapAlign: "start",
       wrapAround: true,
     },
@@ -52,7 +52,7 @@ export default defineComponent({
         itemsToShow: 1,
       },
       960: {
-        itemsToShow: 3,
+        itemsToShow: 2,
       },
       1440: {},
     },

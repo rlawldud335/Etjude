@@ -3,16 +3,16 @@
     <Slide v-for="slide in testdatas" :key="slide">
       <div class="carousel__item">
         <router-link to="/">
-          <img class="itemimg" :src="require(`@/images/더글로리.jpg`)" alt="" />
+          <img class="itemimg" :src="require(`@/images/헤어질결심.jpg`)" alt="" />
           <div class="itemtext">
-            <div class="itemtexttitle">{{ slide.title }}</div>
-            <div class="itemtextcategory">{{ slide.category }}</div>
-            <div class="itemtextfavor">좋아요 {{ slide.favor }}</div>
+            <div class="rightitem">
+              <div class="itemtextteamname">{{ slide.team }}</div>
+              <div class="itemtexttitle">{{ slide.title }}</div>
+            </div>
           </div>
         </router-link>
       </div>
     </Slide>
-
     <template #addons>
       <Navigation />
     </template>
@@ -22,12 +22,12 @@
 <script>
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
-import StoryCardItemData from "./StoryCardItemData.json";
+import testdata from "./PieceCardItemData.json";
 
 import "vue3-carousel/dist/carousel.css";
 
 export default defineComponent({
-  name: "StoryCardItem",
+  name: "PieceCardItem",
   components: {
     Carousel,
     Slide,
@@ -35,7 +35,7 @@ export default defineComponent({
   },
   data: () => ({
     // dummy data
-    testdatas: StoryCardItemData,
+    testdatas: testdata,
     // carousel settings
     settings: {
       itemsToShow: 5,
@@ -61,13 +61,12 @@ a {
 }
 .carousel__item {
   background-color: #fff;
-  /* border-radius: 0.5rem; */
-  /* box-shadow: 0.05rem 0.15rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45); */
+  box-shadow: 0.01rem 0.05rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
   margin: 10px;
 }
 .itemimg {
-  height: 134px;
-  width: 257px;
+  height: 187px;
+  width: 165px;
   object-fit: fill;
   /* // height: max(10rem, 25vh); */
   max-height: max(10rem, 30vh);
@@ -77,22 +76,18 @@ a {
 }
 .itemtext {
   display: flex;
-  flex-direction: column;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 26px;
-  padding-right: 26px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.itemtextteamname {
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 14px;
   font-weight: bold;
 }
 .itemtexttitle {
-  margin-bottom: 3px;
-  padding: 1px;
-  text-align: left;
-  font-size: 16px;
-}
-.itemtextcategory,
-.itemtextfavor {
-  margin: 3.5px;
   text-align: left;
   font-size: 12px;
 }
