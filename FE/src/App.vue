@@ -35,7 +35,7 @@
 <style lang="scss">
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * {
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-family: "Spoqa Han Sans Neo", "sans-serif" !important;
 }
 
 nav {
