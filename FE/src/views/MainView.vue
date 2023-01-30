@@ -5,7 +5,10 @@
     </div>
 
     <div class="main__1136width">
-      <div class="search-session">Search Session</div>
+      <div class="search-session">
+        Search Session
+        <SharingDtail></SharingDtail>
+      </div>
     </div>
 
     <div class="main__1136width">
@@ -37,6 +40,7 @@ import EventBanner from "@/components/Home/EventBanner.vue";
 import StudioCard from "@/components/Main/StudioCard.vue";
 import StoryCard from "@/components/Main/StoryCard.vue";
 import PieceCard from "@/components/Main/PieceCard.vue";
+import SharingDtail from "@/components/Share/SharingDtail.vue";
 
 export default {
   name: "MainView",
@@ -45,6 +49,7 @@ export default {
     StudioCard,
     StoryCard,
     PieceCard,
+    SharingDtail,
   },
 };
 </script>
