@@ -1,6 +1,6 @@
 <template lang="">
   <div class="studiogate">
-    <router-link to="/">
+    <router-link to="/main">
       <div class="studiotitle">
         추천 작품
         <div class="icon">icon</div>
