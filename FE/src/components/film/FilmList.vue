@@ -20,8 +20,7 @@ export default {
 <style scoped lang="scss">
 .film-list {
   display: flex;
-  margin: 20px 10px;
-  // width: 90%;
+  margin: 20px 60px;
   justify-content: space-between;
 }
 </style>
