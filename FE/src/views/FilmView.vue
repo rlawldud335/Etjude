@@ -34,12 +34,12 @@ export default {
 .film__popular-box {
   width: 100%;
   background-color: transparentize($color: $bana-pink, $amount: 0.9);
+  margin: auto auto;
 }
 .film__popular {
   margin: 60px 0px;
   display: flex;
   flex-direction: column;
-  // margin-left: 9%;
 }
 
 .film__popular-title {
