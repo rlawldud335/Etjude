@@ -1,11 +1,15 @@
 <template>
-  <div class="film__popular">
-    <h1 class="film__popular-title">인기필름</h1>
-    <FilmList></FilmList>
-  </div>
-  <div class="film__all">
-    <h1 class="film__popular-title">전체필름</h1>
-    <FilmList></FilmList>
+  <div class="film full-page">
+    <div class="film__popular-box full-page">
+      <div class="film__popular main__1136width">
+        <h1 class="film__popular-title">인기필름</h1>
+        <FilmList></FilmList>
+      </div>
+    </div>
+    <div class="film__all main__1136width">
+      <h1 class="film__popular-title">전체필름</h1>
+      <FilmList></FilmList>
+    </div>
   </div>
 </template>
 
@@ -21,8 +25,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.full-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.film__popular-box {
+  width: 100%;
+  background-color: transparentize($color: $bana-pink, $amount: 0.9);
+}
 .film__popular {
-  margin: 60px 200px;
+  margin: 60px 0px;
   display: flex;
   flex-direction: column;
   // margin-left: 9%;
@@ -35,7 +49,7 @@ export default {
 }
 
 .film__all {
-  margin: 60px 200px;
+  margin: 60px 0px;
   display: flex;
   flex-direction: column;
 }

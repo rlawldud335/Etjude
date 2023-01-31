@@ -25,9 +25,8 @@ export default {
 
 <style scoped lang="scss">
 .film__card {
-  width: 300px;
-  min-width: 300px;
-  margin: 20px;
+  width: 240px;
+  min-width: 240px;
   img {
     width: 100%;
   }
@@ -39,9 +38,9 @@ export default {
 }
 
 .film__card-author-profile {
-  margin: 10px;
+  margin: 8px;
   img {
-    width: 50px;
+    width: 40px;
     height: auto;
     width: 100%;
     height: 100%;
@@ -49,8 +48,8 @@ export default {
 }
 
 .film__profile-frame {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 70%;
   overflow: hidden;
   display: flex;
@@ -64,14 +63,14 @@ export default {
   }
 }
 .film__card-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   justify-content: space-between;
 }
 .film__card-author {
-  font-size: 16px;
+  font-size: 14px;
 }
 .film__card-history {
-  font-size: 14px;
+  font-size: 10px;
 }
 </style>
