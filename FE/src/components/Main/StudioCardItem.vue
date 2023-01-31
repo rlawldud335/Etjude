@@ -27,7 +27,7 @@
 <script>
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
-import testdata from "./testdata.json";
+import testdata from "@/dummy/testdata.json";
 
 import "vue3-carousel/dist/carousel.css";
 

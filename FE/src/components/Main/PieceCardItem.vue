@@ -22,7 +22,7 @@
 <script>
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
-import testdata from "./PieceCardItemData.json";
+import testdata from "@/dummy/PieceCardItemData.json";
 
 import "vue3-carousel/dist/carousel.css";
 
