@@ -9,21 +9,15 @@
     </div>
 
     <div class="main__1136width">
-      <div class="my-studio">
-        <StudioCard></StudioCard>
-      </div>
+      <StudioCard></StudioCard>
     </div>
 
     <div class="main__1136width">
-      <div class="recommended-story">
-        <StoryCard></StoryCard>
-      </div>
+      <StoryCard></StoryCard>
     </div>
 
     <div class="main__1136width">
-      <div class="recommended-piece">
-        <PieceCard></PieceCard>
-      </div>
+      <PieceCard></PieceCard>
     </div>
 
     <div class="main__fullwidth">
@@ -69,15 +63,5 @@ export default {
 
   width: 1136px;
 }
-.search-session {
-  height: 250px;
-}
 
-.my-studio {
-  height: 300px;
-}
-
-.recommended-story {
-  height: 300px;
-}
 </style>

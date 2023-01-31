@@ -3,7 +3,7 @@
     <router-link to="/main">
       <div class="studiotitle">
         추천 작품
-        <div class="icon">icon</div>
+        <YayIcon/>
         >
       </div>
     </router-link>
@@ -11,12 +11,14 @@
   </div>
 </template>
 <script>
+import YayIcon from "@/assets/icons/Yay.svg";
 import PieceCardItem from "./PieceCardItem.vue";
 
 export default {
   name: "PieceCard",
   components: {
     PieceCardItem,
+    YayIcon
   },
 };
 </script>

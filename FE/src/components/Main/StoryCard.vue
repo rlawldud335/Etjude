@@ -2,19 +2,20 @@
   <div class="studiogate">
     <div class="studiotitle">
       <div class="">추천 스토리</div>
-      <div class="icon">icon</div>
+      <YumIcon/>
       <div class="">></div>
     </div>
     <StoryCardItem></StoryCardItem>
   </div>
 </template>
 <script>
+import YumIcon from "@/assets/icons/Yum.svg";
 import StoryCardItem from "./StoryCardItem.vue";
 
 export default {
   name: "StoryCard",
   components: {
-    StoryCardItem,
+    StoryCardItem,YumIcon
   },
 };
 </script>
