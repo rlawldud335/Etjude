@@ -1,20 +1,27 @@
 <template lang="">
   <vue-final-modal v-model="showModal" classes="modal-contain" content-class="modal-cont">
     <div class="video_container">
-      <h1>영상구역 테스트</h1>
+      <video src="https://youtu.be/tp6NKAK9p7E" controls>
+        <track kind="captions" />
+      </video>
     </div>
     <div class="community_container">
-      <div class="profile_container"></div>
-      <div class="post_container">
-        <h2>커뮤니티구역 테스트</h2>
-      </div>
+      <UserProfile></UserProfile>
+      <UserPost></UserPost>
     </div>
   </vue-final-modal>
   <button @click="showModal = true">Open modal</button>
 </template>
 <script>
+import UserProfile from "./UserProfile.vue";
+import UserPost from "./UserPost.vue";
+
 export default {
   name: "FilmSharingDtail",
+  components: {
+    UserProfile,
+    UserPost,
+  },
   data: () => ({
     showModal: false,
   }),
@@ -28,6 +35,7 @@ export default {
 }
 ::v-deep .modal-cont {
   display: flex;
+  height: 786px;
   // flex-direction: column;
   // margin: 0 1rem;
   // padding: 1rem;
@@ -37,19 +45,29 @@ export default {
 }
 .video_container {
   width: 738px;
-  height: 786px;
-  background-color: green;
+}
+video {
+  width: 100%;
+  height: 100%;
 }
 .community_container {
   width: 582px;
+  background-color: white;
 }
-.profile_container {
-  height: 82px;
-  background-color: aliceblue;
+UserProfile {
+  display: flex;
+  height: 56px;
 }
-.post_container {
+.video_container img {
+  width: 100%;
+  height: 100%;
+}
+.profile_container img {
+  object-fit: cover;
+  width: auto;
+}
+UserPost {
   height: 704px;
-  background-color: aqua;
 }
 </style>
 
