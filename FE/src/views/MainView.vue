@@ -2,7 +2,8 @@
   <div class="main">
     <div class="main__fullwidth">
       <event-banner />
-      <SharingDtail></SharingDtail>
+      <!-- <SharingDtail></SharingDtail> -->
+      <FilmSharingDtail></FilmSharingDtail>
     </div>
 
     <div class="main__1136width">
@@ -38,7 +39,8 @@ import EventBanner from "@/components/Home/EventBanner.vue";
 import StudioCard from "@/components/Main/StudioCard.vue";
 import StoryCard from "@/components/Main/StoryCard.vue";
 import PieceCard from "@/components/Main/PieceCard.vue";
-import SharingDtail from "@/components/Share/SharingDtail.vue";
+// import SharingDtail from "@/components/Share/SharingDtail.vue";
+import FilmSharingDtail from "@/components/Share/FilmSharingDtail.vue";
 
 export default {
   name: "MainView",
@@ -47,7 +49,8 @@ export default {
     StudioCard,
     StoryCard,
     PieceCard,
-    SharingDtail,
+    // SharingDtail,
+    FilmSharingDtail,
   },
 };
 </script>
