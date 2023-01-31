@@ -2,43 +2,37 @@
   <div class="main">
     <div class="main__fullwidth">
       <event-banner />
-      <SharingDtail></SharingDtail>
     </div>
 
     <div class="main__1136width">
-      <search-session />
+      <SearchSession />
     </div>
 
     <div class="main__1136width">
-      <div class="my-studio">
-        <StudioCard></StudioCard>
-      </div>
+      <StudioCard></StudioCard>
     </div>
 
     <div class="main__1136width">
-      <div class="recommended-story">
-        <StoryCard></StoryCard>
-      </div>
+      <StoryCard></StoryCard>
     </div>
 
     <div class="main__1136width">
-      <div class="recommended-piece">
-        <PieceCard></PieceCard>
-      </div>
+      <PieceCard></PieceCard>
     </div>
 
     <div class="main__fullwidth">
-      <div class="shortcut-film">Shortcut Film</div>
+      <ShortcutFlim/>
     </div>
   </div>
 </template>
 
 <script>
-import EventBanner from "@/components/Home/EventBanner.vue";
-import StudioCard from "@/components/Main/StudioCard.vue";
-import StoryCard from "@/components/Main/StoryCard.vue";
-import PieceCard from "@/components/Main/PieceCard.vue";
-import SharingDtail from "@/components/Share/SharingDtail.vue";
+import EventBanner from "@/components/main/EventBanner.vue";
+import StudioCard from "@/components/main/StudioCard.vue";
+import StoryCard from "@/components/main/StoryCard.vue";
+import PieceCard from "@/components/main/PieceCard.vue";
+import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
+import SearchSession from "@/components/main/SearchSession.vue";
 
 export default {
   name: "MainView",
@@ -47,7 +41,8 @@ export default {
     StudioCard,
     StoryCard,
     PieceCard,
-    SharingDtail,
+    ShortcutFlim,
+    SearchSession
   },
 };
 </script>
@@ -65,18 +60,8 @@ export default {
 }
 
 .main__1136width {
-  background-color: pink;
+
   width: 1136px;
 }
-.search-session {
-  height: 250px;
-}
 
-.my-studio {
-  height: 300px;
-}
-
-.recommended-story {
-  height: 300px;
-}
 </style>

@@ -3,7 +3,7 @@
     <router-link to="/main">
       <div class="studiotitle">
         내 스튜디오
-        <div class="icon">icon</div>
+        <HeheheIcon/>
         >
       </div>
     </router-link>
@@ -11,12 +11,14 @@
   </div>
 </template>
 <script>
+import HeheheIcon from "@/assets/icons/Hehehe.svg";
 import StudioCardItem from "./StudioCardItem.vue";
 
 export default {
   name: "StudioCard",
   components: {
     StudioCardItem,
+    HeheheIcon
   },
 };
 </script>
