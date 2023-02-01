@@ -1,18 +1,22 @@
 <template>
   <div class="film-list">
-    <FilmListItem v-for="film in films" :key="film.id" :film="film"> </FilmListItem>
+    <FilmListItem v-for="film in allFilms" :key="film.id" :film="film"> </FilmListItem>
   </div>
 </template>
 <script>
 import FilmListItem from "@/components/film/FilmListItem.vue";
+import allFilms from "@/dummy/filmdummydata/page1.json";
 
 export default {
   name: "FilmList",
   components: {
     FilmListItem,
   },
-  props: {
-    films: Array,
+
+  setup() {
+    return {
+      allFilms,
+    };
   },
 };
 </script>

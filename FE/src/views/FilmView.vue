@@ -3,7 +3,7 @@
     <div class="film__popular-box full-page">
       <div class="film__popular main__1136width">
         <h1 class="film__popular-title">인기필름</h1>
-        <PopularFilmList :films="popularFilms"> </PopularFilmList>
+        <PopularFilmList> </PopularFilmList>
       </div>
     </div>
     <div class="film__all main__1136width">
@@ -23,7 +23,7 @@
       <div class="upload">
         <button class="upload__button">업로드</button>
       </div>
-      <AllFilmList :films="allFilms"> </AllFilmList>
+      <AllFilmList> </AllFilmList>
     </div>
   </div>
 </template>
@@ -34,21 +34,12 @@ import AllFilmList from "@/components/film/AllFilmList.vue";
 
 import Search from "@/assets/icons/search.svg";
 
-import popularFilms from "@/dummy/popularFilmDummyData.json";
-import allFilms from "@/dummy/filmDummyData.json";
-
 export default {
   name: "FilmView",
   components: {
     PopularFilmList,
     AllFilmList,
     Search,
-  },
-  setup() {
-    return {
-      popularFilms,
-      allFilms,
-    };
   },
 };
 </script>
