@@ -1,10 +1,18 @@
 <template>
-  <div class="script-tab"></div>
+  <div class="script-tab">
+    <ScriptTabScene></ScriptTabScene>
+    <ScriptTabScene></ScriptTabScene>
+  </div>
 </template>
 
 <script>
+import ScriptTabScene from "@/components/studio/ScriptTabScene.vue";
+
 export default {
-  components: {},
+  name: "ScriptTab",
+  components: {
+    ScriptTabScene,
+  },
 };
 </script>
 
