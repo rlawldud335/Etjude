@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="main">
+  <div class="main full-page">
     <div class="main__fullwidth">
       <event-banner />
     </div>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="main__fullwidth">
-      <ShortcutFlim/>
+      <ShortcutFlim />
     </div>
   </div>
 </template>
@@ -42,26 +42,7 @@ export default {
     StoryCard,
     PieceCard,
     ShortcutFlim,
-    SearchSession
+    SearchSession,
   },
 };
 </script>
-
-<style lang="scss">
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.main__fullwidth {
-  width: 100%;
-}
-
-.main__1136width {
-
-  width: 1136px;
-}
-
-</style>

@@ -161,6 +161,7 @@ export default {
   width: 100%;
   height: 7%;
   font-size: 18px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: space-between;

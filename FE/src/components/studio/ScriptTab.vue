@@ -1,22 +1,16 @@
 <template>
-    <div class="script-tab">
-        스크립트 내용
-    </div>
+  <div class="script-tab"></div>
 </template>
 
 <script>
-
 export default {
-    components:{
-        
-    }    
-}
+  components: {},
+};
 </script>
 
 <style lang="scss">
-    .script-tab{
-        background-color: white;
-        width: 100%;
-        height: 100%;
-    }
+.script-tab {
+  width: 100%;
+  height: 100%;
+}
 </style>
