@@ -6,13 +6,13 @@
     <div class="film__card-info">
       <div class="film__card-author-profile">
         <div class="film__profile-frame">
-          <img class="film__profile-image" src="@/assets/images/profile.jpg" alt="" />
+          <img class="film__profile-image" :src="film.author.profile_url" alt="" />
         </div>
       </div>
       <div class="film__card-body">
         <span class="film__card-title">{{ film.title }}</span>
         <span class="film__card-author">{{ film.author.name }}</span>
-        <span class="film__card-history">조회수 {{ film.view }} ▪ {{ diffCreated }}</span>
+        <span class="film__card-history">조회수 {{ film.view }}회 ▪ {{ diffCreated }}</span>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@ export default {
 .film__card {
   width: 240px;
   min-width: 240px;
-  margin: 15px 0px;
+  margin: 15px 7px;
 }
 .film__card-image {
   width: 100%;
@@ -72,6 +72,7 @@ export default {
 .film__card-info {
   display: flex;
   align-items: center;
+  margin-top: 3px;
 }
 
 .film__card-author-profile {

@@ -3,7 +3,7 @@
     <div class="film__popular-box full-page">
       <div class="film__popular main__1136width">
         <h1 class="film__popular-title">인기필름</h1>
-        <FilmList></FilmList>
+        <PopularFilmList :films="popularFilms"> </PopularFilmList>
       </div>
     </div>
     <div class="film__all main__1136width">
@@ -23,20 +23,32 @@
       <div class="upload">
         <button class="upload__button">업로드</button>
       </div>
-      <FilmList></FilmList>
+      <AllFilmList :films="allFilms"> </AllFilmList>
     </div>
   </div>
 </template>
 
 <script>
-import FilmList from "@/components/film/FilmList.vue";
+import PopularFilmList from "@/components/film/PopularFilmList.vue";
+import AllFilmList from "@/components/film/AllFilmList.vue";
+
 import Search from "@/assets/icons/search.svg";
+
+import popularFilms from "@/dummy/popularFilmDummyData.json";
+import allFilms from "@/dummy/filmDummyData.json";
 
 export default {
   name: "FilmView",
   components: {
-    FilmList,
+    PopularFilmList,
+    AllFilmList,
     Search,
+  },
+  setup() {
+    return {
+      popularFilms,
+      allFilms,
+    };
   },
 };
 </script>
@@ -63,6 +75,7 @@ export default {
   min-width: 150px;
   font-weight: 600;
   font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .film__all {
@@ -71,6 +84,7 @@ export default {
   flex-direction: column;
 }
 .search__section {
+  margin: 50px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,6 +112,7 @@ export default {
 }
 .search__glass-icon {
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .search__tag {
@@ -115,7 +130,7 @@ export default {
   border: none;
   color: white;
   font-size: 14px;
-  background-color: $bana-pink;
+  background-color: black;
   width: 85px;
   height: 32px;
   border-radius: 20px;
@@ -125,9 +140,10 @@ export default {
 .upload__button {
   border: none;
   color: white;
-  background-color: $newjeans-blue;
+  background-color: $bana-pink;
   width: 120px;
   height: 32px;
   border-radius: 4px;
+  cursor: pointer;
 }
 </style>
