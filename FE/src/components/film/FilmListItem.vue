@@ -63,6 +63,8 @@ export default {
 .film__card-image {
   width: 100%;
   height: 120px;
+  border-radius: 6px;
+  overflow: hidden;
   img {
     width: 100%;
     height: 100%;
@@ -104,7 +106,7 @@ export default {
   font-size: 14px;
   font-weight: 600;
   justify-content: space-between;
-  max-width: calc(100% - 30px);
+  max-width: calc(100% - 15px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

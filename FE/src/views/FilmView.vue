@@ -32,7 +32,7 @@
 import PopularFilmList from "@/components/film/PopularFilmList.vue";
 import AllFilmList from "@/components/film/AllFilmList.vue";
 
-import Search from "@/assets/icons/search.svg";
+import Search from "@/assets/icons/search-large.svg";
 
 export default {
   name: "FilmView",
@@ -129,6 +129,7 @@ export default {
   cursor: pointer;
 }
 .upload__button {
+  font-size: 14px;
   border: none;
   color: white;
   background-color: $bana-pink;
