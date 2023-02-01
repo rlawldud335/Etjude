@@ -1,5 +1,5 @@
 <template>
-  <div class="film__card">
+  <div class="film__card" @click="modalopen()" @keydown="none">
     <div class="film__card-image">
       <img src="@/assets/images/더글로리.jpg" alt="thumbnail" />
     </div>
@@ -16,10 +16,24 @@
       </div>
     </div>
   </div>
+  <FilmSharingDtail></FilmSharingDtail>
 </template>
 <script>
+import FilmSharingDtail from "@/components/Share/FilmSharingDtail.vue";
+
 export default {
   name: "FilmListItem",
+  components: {
+    FilmSharingDtail,
+  },
+  data: () => ({
+    showModal: false,
+  }),
+  // methods: {
+  //   modalopen: () => {
+  //     showModal = true;
+  //   },
+  // },
 };
 </script>
 

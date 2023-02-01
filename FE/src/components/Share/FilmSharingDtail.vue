@@ -8,6 +8,7 @@
     <div class="community_container">
       <UserProfile></UserProfile>
       <UserPost></UserPost>
+      <UserPostInput></UserPostInput>
     </div>
   </vue-final-modal>
   <button @click="showModal = true">Open modal</button>
@@ -15,13 +16,18 @@
 <script>
 import UserProfile from "./UserProfile.vue";
 import UserPost from "./UserPost.vue";
+import UserPostInput from "./UserPostInput.vue";
 
 export default {
   name: "FilmSharingDtail",
   components: {
     UserProfile,
     UserPost,
+    UserPostInput,
   },
+  // props: {
+  //   showModal: Boolean
+  // }
   data: () => ({
     showModal: false,
   }),
@@ -54,10 +60,6 @@ video {
   width: 582px;
   background-color: white;
 }
-UserProfile {
-  display: flex;
-  height: 56px;
-}
 .video_container img {
   width: 100%;
   height: 100%;
@@ -65,9 +67,6 @@ UserProfile {
 .profile_container img {
   object-fit: cover;
   width: auto;
-}
-UserPost {
-  height: 704px;
 }
 </style>
 

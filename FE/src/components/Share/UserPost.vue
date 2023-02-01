@@ -5,7 +5,7 @@
         게시글의 제목이 들어가는 공간
         <div class="post_date">2023-01-31 17:59</div>
       </div>
-      <div class="post_menu">icon</div>
+      <div class="post_menu"><hamburger></hamburger></div>
     </div>
     <div class="post_main">
       <div class="post_text">
@@ -13,24 +13,60 @@
         폰트, 타이포그래피, 레이아웃 같은 그래픽 요소나 시각적 연출을 보여줄 때 사용하는 표준 채우기
         텍스트
       </div>
-      <div class="post_icon">icon</div>
+      <div class="post_icon">
+        <heart class="heart"></heart><talk class="talk"></talk><share class="share"></share>
+      </div>
       <div class="post_favor">좋아요 9321개</div>
     </div>
     <div class="post_comment">
-      <div class="comment_read">댓글 1</div>
-      <div class="comment_write">댓글쓰기</div>
+      <div class="comment_list" v-for="(item, index) in profilelist" :key="index">
+        <img :src="item.profileimg" alt="profileImg" />
+        <div class="comment_nickname">{{ item.nickname }}</div>
+        {{ item.content }}
+      </div>
     </div>
   </div>
 </template>
+oo
 <script>
+import hamburger from "@/assets/icons/hamburger.svg";
+import heart from "@/assets/icons/heart.svg";
+import talk from "@/assets/icons/talk.svg";
+import share from "@/assets/icons/share.svg";
+
 export default {
   name: "UserPost",
+  components: {
+    hamburger,
+    heart,
+    talk,
+    share,
+  },
+  data() {
+    return {
+      profilelist: [
+        {
+          // eslint-disable-next-line global-require
+          profileimg: require("@/assets/images/profile.jpg"),
+          nickname: "jung_DM",
+          content: "농구가 하고 싶어요...",
+        },
+        {
+          // eslint-disable-next-line global-require
+          profileimg: require("@/assets/images/profile.jpg"),
+          nickname: "jung_DM",
+          content: "코딩도... 하고 싶어요",
+        },
+      ],
+    };
+  },
 };
 </script>
 <style lang="scss" scoped>
 .post_container {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   padding: 24px;
 }
 .post_header {
@@ -58,27 +94,47 @@ export default {
   padding: 16px 3px 0 7px;
   font-weight: 300;
 }
+.post_menu {
+  margin-bottom: 24px;
+}
 .post_text {
-  min-height: 200px;
+  height: 184px;
   //   box-shadow: 0 0 0 1px #000 inset;
 }
 .post_icon {
-  margin-top: 16px;
+  box-sizing: content-box;
+  .heart,
+  .talk,
+  .share {
+    margin: 8px;
+  }
 }
 .post_favor {
+  margin-left: 8px;
   margin-top: 8px;
 }
 .post_comment {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  min-height: 272px;
   margin-top: 16px;
   padding: 16px 3px 0 7px;
-  box-shadow: 0 0 0 1px #000 inset;
-  .comment_read {
-    min-height: 272px;
+  border-top: 1px solid gray;
+  // background-color: coral;
+  // box-shadow: 0 0 0 1px #000 inset;
+}
+.comment_list {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
   }
-  .comment_write {
+  .comment_nickname {
+    margin-left: 24px;
+    margin-right: 24px;
   }
 }
 </style>

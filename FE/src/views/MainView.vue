@@ -2,8 +2,6 @@
   <div class="main">
     <div class="main__fullwidth">
       <event-banner />
-      <!-- <SharingDtail></SharingDtail> -->
-      <FilmSharingDtail></FilmSharingDtail>
     </div>
 
     <div class="main__1136width">
@@ -34,7 +32,6 @@ import StudioCard from "@/components/main/StudioCard.vue";
 import StoryCard from "@/components/main/StoryCard.vue";
 import PieceCard from "@/components/main/PieceCard.vue";
 import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
-import FilmSharingDtail from "@/components/Share/FilmSharingDtail.vue";
 import SearchSession from "@/components/main/SearchSession.vue";
 
 export default {
@@ -44,8 +41,6 @@ export default {
     StudioCard,
     StoryCard,
     PieceCard,
-    // SharingDtail,
-    FilmSharingDtail,
     ShortcutFlim,
     SearchSession,
   },

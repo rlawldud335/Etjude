@@ -4,12 +4,17 @@
       <img :src="require(`@/assets/images/체인소맨.jpg`)" alt="" />
       <div class="nickname">KingGod_doo</div>
     </div>
-    <div>icon</div>
+    <QuitButton></QuitButton>
   </div>
 </template>
 <script>
+import QuitButton from "@/assets/icons/Quit Button.svg";
+
 export default {
   name: "UserProfile",
+  components: {
+    QuitButton,
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -19,6 +24,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
   border-bottom: 1px solid gray;
   background-color: rgb(219, 218, 218);
 }
@@ -27,8 +34,8 @@ export default {
   align-items: center;
 }
 img {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   object-fit: cover;
   border-radius: 50%;
 }
