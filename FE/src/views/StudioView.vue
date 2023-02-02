@@ -15,7 +15,7 @@
         </div>
         <div class="openTab__body">
           <ScriptTab :scenes="scriptDummyData.scene" v-show="state.selectTab == '0'" />
-          <SsinTab v-show="state.selectTab == '1'" />
+          <SsinTab :scenes="scriptDummyData.scene" v-show="state.selectTab == '1'" />
           <FilmTab v-show="state.selectTab == '2'" />
         </div>
       </div>

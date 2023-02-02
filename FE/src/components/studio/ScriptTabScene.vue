@@ -1,6 +1,5 @@
 <template>
   <div class="studio__scene">
-    <!-- {{ scene.line }} -->
     <div class="studio__scene-actor-image">
       <div class="actor__profile-frame">
         <img class="actor__profile-image" :src="scene.role.photo_url" alt="" />
