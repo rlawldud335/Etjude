@@ -19,8 +19,8 @@
           "script": "쩝쩝쩌업"
         }
       ],
-      "film": {
-        "film_url": "무언가 있음",
+      "video": {
+        "video_url": "무언가 있음",
         "user": {
           "name": "김싸피",
           "profile_url": "https://cdn.cpnews.kr/news/photo/202202/4268_3139_2344.jpg"
@@ -46,8 +46,8 @@
           "script": "쩝쩝쩌업쩌어업"
         }
       ],
-      "film": {
-        "film_url": "",
+      "video": {
+        "video_url": "",
         "user": {
           "name": "",
           "profile_img": ""
@@ -73,13 +73,27 @@
           "script": "쩝"
         }
       ],
-      "film": {
-        "film_url": "무언가 있음",
+      "video": {
+        "video_url": "무언가 있음",
         "user": {
           "name": "박싸피",
           "profile_url": "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg"
         }
       }
+    }
+  ],
+  "film": [
+    {
+      "id": 1,
+      "created": "2021-03-10",
+      "deleted": "2022-03-10",
+      "film_url": "있음"
+    },
+    {
+      "id": 2,
+      "created": "2021-03-10",
+      "deleted": "2022-03-10",
+      "film_url": "있음"
     }
   ]
 }
