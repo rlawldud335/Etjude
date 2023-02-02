@@ -33,7 +33,7 @@ public class RoleRepositoryImpl implements RoleRepositorySupport{
     @Override
     public List<RoleWithLineOfSceneResponse> getRoleWithLines(Long storyId) {
         List<Tuple> fetch = queryFactory
-                .select(scene.sceneId, scene.sceneNumber, scene.role.roleId)
+                .select(scene.sceneId, scene.sceneNumber, scene.role.roleId, scene.sceneFileName)
                 .from(scene)
                 .where(scene.story.storyId.eq(storyId))
                 .orderBy(
@@ -58,6 +58,7 @@ public class RoleRepositoryImpl implements RoleRepositorySupport{
                             .roleName(nowRole.get(role.roleName))
                             .sceneId(tuple.get(scene.sceneId))
                             .sceneNumber(tuple.get(scene.sceneNumber))
+                            .sceneFileName(tuple.get(scene.sceneFileName))
                             .lines(
                                     getFetch(tuple.get(scene.sceneId))
                             )
