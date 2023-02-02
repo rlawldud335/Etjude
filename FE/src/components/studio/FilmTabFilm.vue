@@ -1,7 +1,7 @@
 <template>
   <div class="studio__film-tab">
-    <div class="studio__film-image">
-      <img src="" alt="" />
+    <div class="studio__film-thumbnail">
+      <video src="" controls><track kind="captions" /></video>
     </div>
     <div class="studio__film-section">
       <div class="studio__film-info">
@@ -36,5 +36,12 @@ export default {
   padding: 18px;
   border-radius: 10px;
   background-color: $efefe-gray;
+}
+.studio__film-thumbnail {
+  width: 30px;
+}
+.studio__film-thumbnail {
+  width: 100%;
+  height: 100%;
 }
 </style>
