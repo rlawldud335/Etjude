@@ -1,4 +1,3 @@
-<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <template>
   <div class="studio">
     <div class="studio__header">
@@ -9,39 +8,41 @@
         <div class="studio__video__video"><VideoArea /></div>
         <div class="studio__video__script"><ScriptArea /></div>
       </div>
-      <div class="studio__openTab" v-show="isOpenTab">
+      <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
-          <span>{{ this.tabs[this.selectTab].tabName }}</span>
-          <div class="close-btn" @click="closeTab()"><QuitButton /></div>
+          <span>{{ tabs[state.selectTab].tabName }}</span>
+          <button class="close-btn" @click="closeTab()"><QuitButton /></button>
         </div>
         <div class="openTab__body">
-          <ScriptTab v-show="this.selectTab == '0'" />
-          <SsinTab v-show="this.selectTab == '1'" />
-          <FilmTab v-show="this.selectTab == '2'" />
+          <ScriptTab :scenes="scriptDummyData.scene" v-show="state.selectTab == '0'" />
+          <SsinTab v-show="state.selectTab == '1'" />
+          <FilmTab v-show="state.selectTab == '2'" />
         </div>
       </div>
       <div class="studio__tab">
-        <div
+        {{ scenes }}
+        <button
           class="studio__tab__btn"
           @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': isOpenTab && this.selectTab == '0' }"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
         >
           <Scripts />
-        </div>
-        <div
+        </button>
+        <button
           class="studio__tab__btn"
           @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': isOpenTab && this.selectTab == '1' }"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
         >
           <Ssin />
-        </div>
-        <div
+        </button>
+
+        <button
           class="studio__tab__btn"
           @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': isOpenTab && this.selectTab == '2' }"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
         >
           <Film />
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -58,6 +59,8 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
+import scriptDummyData from "@/dummy/studioScriptDummyData.json";
+import { reactive, ref } from "vue";
 
 export default {
   components: {
@@ -72,23 +75,46 @@ export default {
     ScriptArea,
     VideoArea,
   },
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       isOpenTab: false,
       selectTab: 0,
-      tabs: [{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }],
+    });
+    const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }]);
+    const clickTab = (idx) => {
+      console.log = idx;
+      if (state.selectTab === idx) state.isOpenTab = !state.isOpenTab;
+      else if (state.isOpenTab) state.isOpenTab = true;
+      state.selectTab = idx;
+    };
+    const closeTab = () => {
+      state.isOpenTab = false;
+    };
+    return {
+      scriptDummyData,
+      state,
+      tabs,
+      clickTab,
+      closeTab,
     };
   },
-  methods: {
-    clickTab(idx) {
-      if (this.selectTab === idx) this.isOpenTab = !this.isOpenTab;
-      else if (!this.isOpenTab) this.isOpenTab = true;
-      this.selectTab = idx;
-    },
-    closeTab() {
-      this.isOpenTab = false;
-    },
-  },
+  // data() {
+  //   return {
+  //     isOpenTab: false,
+  //     selectTab: 0,
+  //     tabs: [{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }],
+  //   };
+  // },
+  // methods: {
+  //   clickTab(idx) {
+  //     if (this.selectTab === idx) this.isOpenTab = !this.isOpenTab;
+  //     else if (!this.isOpenTab) this.isOpenTab = true;
+  //     this.selectTab = idx;
+  //   },
+  //   closeTab() {
+  //     this.isOpenTab = false;
+  //   },
+  // },
 };
 </script>
 
@@ -142,6 +168,7 @@ export default {
 }
 
 .studio__tab__btn {
+  border: none;
   width: 65px;
   height: 65px;
   background-color: $aha-gray;
@@ -174,5 +201,7 @@ export default {
 }
 .close-btn {
   cursor: pointer;
+  background-color: white;
+  border: none;
 }
 </style>
