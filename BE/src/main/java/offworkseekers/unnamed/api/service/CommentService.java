@@ -36,6 +36,7 @@ public class CommentService {
     }
 
     public void updateComment(Long commentId, String commentContents){
+        
         commentRepository.updateComment(commentId, commentContents);
     }
 

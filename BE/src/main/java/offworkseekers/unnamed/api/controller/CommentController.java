@@ -17,6 +17,7 @@ public class CommentController {
 
     @PostMapping("/api/v1/comment")
     public void createComment(@RequestBody CreateCommentRequest request){
+
         commentService.createComment(request.getUserId(), request.getArticleId(), request.getCommentContents());
     }
 
