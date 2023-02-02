@@ -1,5 +1,7 @@
 <template>
-  <div><SsinTabScene v-for="scene in scenes" :key="scene.id" :scene="scene"></SsinTabScene></div>
+  <div class="studio__ssin-tab">
+    <SsinTabScene v-for="scene in scenes" :key="scene.id" :scene="scene"></SsinTabScene>
+  </div>
 </template>
 <script>
 import SsinTabScene from "@/components/studio/SsinTabScene.vue";
@@ -10,4 +12,9 @@ export default {
   props: { scenes: Array },
 };
 </script>
-<style lang=""></style>
+<style lang="scss">
+.studio__ssin-tab {
+  display: flex;
+  flex-direction: column;
+}
+</style>

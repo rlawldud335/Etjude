@@ -35,7 +35,8 @@ export default {
 .studio__scene {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  margin: 5px;
+  margin-bottom: 15px;
 }
 .studio__scene-actor-image {
   width: 15%;

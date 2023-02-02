@@ -59,7 +59,7 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import scriptDummyData from "@/dummy/studioScriptDummyData.json";
+import scriptDummyData from "@/dummy/studioDummyData.json";
 import { reactive, ref } from "vue";
 
 export default {

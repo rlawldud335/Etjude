@@ -58,5 +58,6 @@ export default {
   margin-left: 10px;
   display: block;
   word-break: break-all;
+  line-height: 120%;
 }
 </style>
