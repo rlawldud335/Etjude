@@ -1,27 +1,28 @@
 package offworkseekers.unnamed.db.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "likes")
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Likes {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "likes_id")
     private Long likesId;
 
     @Column(name = "division")
     private int division;
 
-    @Column(name = "video_id")
-    private int videoId;
+    @Column(name = "article_story_id")
+    private int articleStoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -29,14 +30,14 @@ public class Likes {
 
     @Builder
     public Likes(
-            @NotNull Long likesId,
+            Long likesId,
             int division,
-            int videoId,
+            int articleStoryId,
             User user
     ){
         this.likesId = likesId;
         this.division = division;
-        this.videoId = videoId;
+        this.articleStoryId = articleStoryId;
         this.user = user;
     }
 
