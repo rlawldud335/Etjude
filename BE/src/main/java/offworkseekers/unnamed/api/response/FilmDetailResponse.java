@@ -15,7 +15,6 @@ public class FilmDetailResponse {
     String articleTitle;
     String articleContent;
     LocalDate articleCreatedDate;
-    int articleLikeCount;
     String writerId;
     String writerNickName;
     String writerPhotoUrl;
@@ -27,11 +26,10 @@ public class FilmDetailResponse {
     List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public FilmDetailResponse(String articleTitle, String articleContent, LocalDate articleCreatedDate, int articleLikeCount,String writerId, String writerNickName, String writerPhotoUrl, String filmVideoUrl, String studioTitle){
+    public FilmDetailResponse(String articleTitle, String articleContent, LocalDate articleCreatedDate, String writerId, String writerNickName, String writerPhotoUrl, String filmVideoUrl, String studioTitle){
         this.articleTitle = articleTitle;
         this.articleContent = articleContent;
         this.articleCreatedDate = articleCreatedDate;
-        this.articleLikeCount = articleLikeCount;
         this.writerId = writerId;
         this.writerNickName = writerNickName;
         this.writerPhotoUrl = writerPhotoUrl;

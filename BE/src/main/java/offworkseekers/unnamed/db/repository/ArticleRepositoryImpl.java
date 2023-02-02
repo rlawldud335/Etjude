@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.Comment;
 import offworkseekers.unnamed.db.entity.Story;
+import offworkseekers.unnamed.db.entity.Studio;
 import offworkseekers.unnamed.db.entity.User;
 
 import java.util.ArrayList;
@@ -73,6 +74,11 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                 .from(article)
                 .where(article.articleId.eq(articleId))
                 .fetchOne();
+        Studio studio = queryFactory
+                .select(article.film.studio)
+                .from(article)
+                .fetchOne();
+        Long storyId = studio.getStory().getStoryId();
 
         List<Comment> comments = queryFactory
                 .select(comment)
@@ -100,6 +106,7 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                 .where(article.articleId.eq(articleId))
                 .fetchOne();
 
+        result.addWorkTitle(searchWorkTitle(storyId));
         result.addStoryTitle(story.getStoryTitle());
         for (User user : users) {
             result.addTeamMember(
