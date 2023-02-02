@@ -6,34 +6,25 @@
       </video>
     </div>
     <div class="community_container">
-      <h1>{{ changemodal }}</h1>
-      <UserProfile></UserProfile>
+      <!-- <UserProfile></UserProfile>
       <UserPost></UserPost>
-      <UserPostInput></UserPostInput>
+      <UserPostInput></UserPostInput> -->
     </div>
   </vue-final-modal>
   <button @click="showModal = true">Open modal</button>
 </template>
 <script>
-import UserProfile from "./UserProfile.vue";
-import UserPost from "./UserPost.vue";
-import UserPostInput from "./UserPostInput.vue";
+// import UserProfile from "./UserProfile.vue";
+// import UserPost from "./UserPost.vue";
+// import UserPostInput from "./UserPostInput.vue";
 
 export default {
-  name: "FilmSharingDtail",
+  name: "FilmShareUpload",
   components: {
-    UserProfile,
-    UserPost,
-    UserPostInput,
+    // UserProfile,
+    // UserPost,
+    // UserPostInput,
   },
-  // props: ["showModal"],
-  // emits: ["showModal"],
-
-  // methods: {
-  //   closed(event) {
-  //     this.$emit("input", event.target.value);
-  //   },
-  // },
   data: () => ({
     showModal: false,
   }),

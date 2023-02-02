@@ -15,5 +15,6 @@ module.exports = {
       "error",
       { devDependencies: false, optionalDependencies: false, peerDependencies: false },
     ],
+    "vue/no-mutating-props": "off",
   },
 };
