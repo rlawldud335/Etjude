@@ -15,5 +15,7 @@ module.exports = {
       "error",
       { devDependencies: false, optionalDependencies: false, peerDependencies: false },
     ],
+    "global-require": 0,
+    "vuejs-accessibility/click-events-have-key-events": "off",
   },
 };
