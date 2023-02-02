@@ -1,9 +1,9 @@
 <template>
   <div class="studio-line">
-    <div v-if="isFirstLine" class="studio-line__actor-name">{{ actor }}</div>
+    <div v-if="isFirstLine" class="studio-line__actor-name">{{ role.name }}</div>
     <div class="studio-line__line">
-      <a class="studio-line__time-stamp">1:00</a>
-      <span class="studio-line__text">쩝쩝</span>
+      <a class="studio-line__time-stamp">{{ line.timestamp }}</a>
+      <span class="studio-line__text">{{ line.script }}</span>
     </div>
   </div>
 </template>
@@ -15,13 +15,13 @@ export default {
   name: "ScriptTabSceneLine",
   components: {},
   props: {
-    index: Number,
-    actor: String,
+    line: Object,
+    role: Object,
   },
   setup(props) {
     const isFirstLine = ref(false);
     const lineFirst = onMounted(() => {
-      if (props.index === 1) {
+      if (props.line.id === 1) {
         isFirstLine.value = true;
       }
     });

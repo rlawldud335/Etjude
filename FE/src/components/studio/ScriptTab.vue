@@ -1,7 +1,6 @@
 <template>
   <div class="script-tab">
-    <ScriptTabScene></ScriptTabScene>
-    <ScriptTabScene></ScriptTabScene>
+    <ScriptTabScene v-for="scene in scenes" :key="scene.id" :scene="scene"></ScriptTabScene>
   </div>
 </template>
 
@@ -12,6 +11,9 @@ export default {
   name: "ScriptTab",
   components: {
     ScriptTabScene,
+  },
+  props: {
+    scenes: Array,
   },
 };
 </script>
