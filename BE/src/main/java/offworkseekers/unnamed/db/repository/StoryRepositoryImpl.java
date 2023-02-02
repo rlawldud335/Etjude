@@ -120,8 +120,8 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .likeCount(
                             getStoryLikeCount(tuple.get(story.storyId))
                     )
-                    .categoryName(tuple.get(category.categoryName))
-                    .workTitle(tuple.get(work.workTitle))
+                    .categoryName(tuple.get(story.category.categoryName))
+                    .workTitle(tuple.get(story.work.workTitle))
                     .build()
             );
         }
