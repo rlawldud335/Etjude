@@ -1,32 +1,35 @@
 <template lang="">
-  <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
+  <vue-final-modal v-model="showModal" classes="modal-contain" content-class="modal-cont">
     <div class="video_container">
       <video src="https://youtu.be/tp6NKAK9p7E" controls>
         <track kind="captions" />
       </video>
     </div>
     <div class="community_container">
-      <UserProfile></UserProfile>
+      <!-- <UserProfile></UserProfile>
       <UserPost></UserPost>
-      <UserPostInput></UserPostInput>
+      <UserPostInput></UserPostInput> -->
     </div>
   </vue-final-modal>
+  <button @click="showModal = true">Open modal</button>
 </template>
 <script>
-import UserProfile from "./UserProfile.vue";
-import UserPost from "./UserPost.vue";
-import UserPostInput from "./UserPostInput.vue";
+// import UserProfile from "./UserProfile.vue";
+// import UserPost from "./UserPost.vue";
+// import UserPostInput from "./UserPostInput.vue";
 
 export default {
-  name: "FilmSharingDtail",
+  name: "FilmShareUpload",
   components: {
-    UserProfile,
-    UserPost,
-    UserPostInput,
+    // UserProfile,
+    // UserPost,
+    // UserPostInput,
   },
-  data: () => ({}),
+  data: () => ({
+    showModal: false,
+  }),
   props: {
-    showModal: Boolean,
+    changemodal: Boolean,
   },
 };
 </script>
