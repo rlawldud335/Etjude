@@ -21,16 +21,18 @@
         </div>
       </div>
       <div class="upload">
-        <button class="upload__button">업로드</button>
+        <button class="upload__button" @click="showModal = true">업로드</button>
       </div>
       <AllFilmList> </AllFilmList>
     </div>
   </div>
+  <FilmSharingUpload v-model="showModal"></FilmSharingUpload>
 </template>
 
 <script>
 import PopularFilmList from "@/components/film/PopularFilmList.vue";
 import AllFilmList from "@/components/film/AllFilmList.vue";
+import FilmSharingUpload from "@/components/shareupload/FilmSharingUpload.vue";
 
 import Search from "@/assets/icons/search-large.svg";
 
@@ -40,7 +42,11 @@ export default {
     PopularFilmList,
     AllFilmList,
     Search,
+    FilmSharingUpload,
   },
+  data: () => ({
+    showModal: false,
+  }),
 };
 </script>
 
