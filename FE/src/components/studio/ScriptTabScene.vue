@@ -5,7 +5,7 @@
         <img class="actor__profile-image" src="@/assets/images/profile2.jpg" alt="" />
       </div>
     </div>
-    <div class="studio__line-section">
+    <div class="studio__tab-line-section">
       <ScriptTabSceneLine :index="1" actor="진양철"></ScriptTabSceneLine>
       <ScriptTabSceneLine :index="2" actor="진양철"></ScriptTabSceneLine>
       <ScriptTabSceneLine :index="3" actor="진양철"></ScriptTabSceneLine>
@@ -29,16 +29,18 @@ export default {
 .studio__scene {
   display: flex;
   flex-direction: row;
+  margin-bottom: 20px;
 }
 .studio__scene-actor-image {
-  width: 50px;
+  width: 15%;
   display: flex;
   justify-content: center;
 }
-.studio__line-section {
-  width: 290px;
+.studio__tab-line-section {
+  width: 85%;
 }
 .actor__profile-frame {
+  margin-top: 12px;
   width: 40px;
   height: 40px;
   border-radius: 70%;

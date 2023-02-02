@@ -1,9 +1,9 @@
 <template>
   <div class="studio-line">
-    <span v-if="isFirstLine" class="studio-line__actor">{{ actor }}</span>
+    <div v-if="isFirstLine" class="studio-line__actor-name">{{ actor }}</div>
     <div class="studio-line__line">
-      <span class="studio-line__time-stamp">1:00</span>
-      <span class="studio-line__text">안녕</span>
+      <a class="studio-line__time-stamp">1:00</a>
+      <span class="studio-line__text">쩝쩝</span>
     </div>
   </div>
 </template>
@@ -35,14 +35,28 @@ export default {
 
 <style lang="scss">
 .studio-line {
-  width: 100%;
+  width: 90%;
   border-radius: 10px;
   background-color: $efefe-gray;
   padding: 15px 10px;
   margin-bottom: 10px;
 }
 
+.studio-line__actor-name {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.studio-line__line {
+  display: flex;
+}
+.studio-line__time-stamp {
+  color: $newjeans-blue;
+  cursor: pointer;
+}
+
 .studio-line__text {
-  padding: 10px;
+  margin-left: 10px;
+  display: block;
+  word-break: break-all;
 }
 </style>
