@@ -89,8 +89,8 @@ export default {
   display: flex;
   justify-content: center;
   img {
-    // width: auto;
-    // height: auto;
+    max-width: auto;
+    height: auto;
   }
 }
 
