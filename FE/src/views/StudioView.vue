@@ -14,13 +14,12 @@
           <button class="close-btn" @click="closeTab()"><QuitButton /></button>
         </div>
         <div class="openTab__body">
-          <ScriptTab :scenes="scriptDummyData.scene" v-show="state.selectTab == '0'" />
-          <SsinTab :scenes="scriptDummyData.scene" v-show="state.selectTab == '1'" />
-          <FilmTab v-show="state.selectTab == '2'" />
+          <ScriptTab :scenes="studioDummyData.scene" v-show="state.selectTab === 0" />
+          <SsinTab :scenes="studioDummyData.scene" v-show="state.selectTab === 1" />
+          <FilmTab :films="studioDummyData.film" v-show="state.selectTab === 2" />
         </div>
       </div>
       <div class="studio__tab">
-        {{ scenes }}
         <button
           class="studio__tab__btn"
           @click="clickTab(0)"
@@ -59,7 +58,7 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import scriptDummyData from "@/dummy/studioDummyData.json";
+import studioDummyData from "@/dummy/studioDummyData.json";
 import { reactive, ref } from "vue";
 
 export default {
@@ -91,7 +90,7 @@ export default {
       state.isOpenTab = false;
     };
     return {
-      scriptDummyData,
+      studioDummyData,
       state,
       tabs,
       clickTab,

@@ -4,7 +4,7 @@
       <div class="studio-tab__scene-id">#{{ scene.id }}.&nbsp;{{ scene.role.name }}</div>
       <div class="studio-tab__scene-icon">
         <div class="studio-tab__scene-profile-frame">
-          <img :src="scene.film.user.profile_url" alt="" />
+          <img :src="scene.video.user.profile_url" alt="" />
         </div>
         <playIcon />
         <button class="studio-tab__dropdown-button" @click="toggleOpen">
@@ -51,10 +51,17 @@ export default {
 
 <style lang="scss">
 .studio-ssin-tab {
-  margin: 5px 5%;
+  margin: 3px 5%;
   padding: 16px 18px 18px 18px;
   border-radius: 10px;
   background-color: transparentize($bana-pink, 0.8);
+  border: 2px solid $white;
+  cursor: pointer;
+}
+
+.studio-ssin-tab:hover {
+  background-color: $efefe-gray;
+  border: 2px solid $bana-pink;
 }
 
 .studio-tab__scene-head {
@@ -93,6 +100,7 @@ export default {
   display: flex;
   > * {
     margin: 0px 4px;
+    cursor: pointer;
   }
 }
 

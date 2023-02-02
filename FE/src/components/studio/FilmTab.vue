@@ -1,13 +1,24 @@
 <template>
-    <div>
-        필름 영역
-    </div>
+  <div class="studio__film-tab">
+    <FilmTabFilm v-for="film in films" :key="film.id" :film="film"></FilmTabFilm>
+  </div>
 </template>
 <script>
+import FilmTabFilm from "@/components/studio/FilmTabFilm.vue";
+
 export default {
-    
-}
+  name: "FilmTab",
+  components: {
+    FilmTabFilm,
+  },
+  props: {
+    films: Array,
+  },
+};
 </script>
-<style lang="">
-    
+<style scoped lang="scss">
+.studio__film-tab {
+  display: flex;
+  flex-direction: column;
+}
 </style>

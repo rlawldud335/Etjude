@@ -52,6 +52,7 @@ export default {
 .studio-line__time-stamp {
   color: $newjeans-blue;
   cursor: pointer;
+  line-height: 120%;
 }
 
 .studio-line__text {
