@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.request.StoryLikeRequest;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
@@ -55,13 +56,27 @@ public class StoryController {
 
     @PutMapping(value = "/api/v1/story/like")
     public ResponseEntity storyLike(@RequestBody @Valid Map<String, Object> param) {
+
+        if (param.get("story_id") == null || !(param.get("story_id") instanceof Integer)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!(param.get("user_id") instanceof String)) {
+            return ResponseEntity.badRequest().build();
+        } else if (param.get("user_id") instanceof String && ((String) param.get("user_id")).replaceAll(" ", "") == ""){
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (param.get("division") == null || !(param.get("division") instanceof Integer)) {
+            return ResponseEntity.badRequest().build();
+        } else if (param.get("division") instanceof String && ((Integer) param.get("division")) != 1){
+            return ResponseEntity.badRequest().build();
+        }
+
         int storyId = (int) param.get("story_id");
         int division = (int) param.get("division");
         String userId = (String) param.get("user_id");
 
-        if (userId == null || userId.replaceAll(" ", "").equals("")) {
-            return ResponseEntity.badRequest().build();
-        }
         storyService.editStoryLike(storyId, division, userId);
         return ResponseEntity.ok().build();
     }

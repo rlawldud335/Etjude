@@ -80,7 +80,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
 
         StoryDetailResponse storyDetail = StoryDetailResponse.builder()
                 .storyLikeCount(
-                        getStoryLikeCount(tuple.get(story.storyId))
+                        getStoryLikeCount(storyId)
                 )
                 .studioStack(Math.toIntExact(studioStack))
                 .storySummary(tuple.get(story.storySummary))
@@ -120,8 +120,8 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .likeCount(
                             getStoryLikeCount(tuple.get(story.storyId))
                     )
-                    .categoryName(tuple.get(category.categoryName))
-                    .workTitle(tuple.get(work.workTitle))
+                    .categoryName(tuple.get(story.category.categoryName))
+                    .workTitle(tuple.get(story.work.workTitle))
                     .build()
             );
         }
