@@ -16,10 +16,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/api/v1/comment")
-    public Comment createComment(@RequestBody CreateCommentRequest request){
+    public void createComment(@RequestBody CreateCommentRequest request){
 
-        Comment comment = commentService.createComment(request.getUserId(), request.getArticleId(), request.getCommentContents());
-        return comment;
+        commentService.createComment(request.getUserId(), request.getArticleId(), request.getCommentContents());
     }
 
     @DeleteMapping("/api/v1/comment")

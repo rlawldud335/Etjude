@@ -19,7 +19,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
-    public Comment createComment(String userId, Long articleId, String commentContents){
+    public void createComment(String userId, Long articleId, String commentContents){
 
         Comment comment = Comment.builder()
                 .commentContents(commentContents)
@@ -28,7 +28,7 @@ public class CommentService {
                 .article(articleRepository.findById(articleId).get())
                 .build();
 
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
     }
 
     public void deleteComment(Long commentId){
@@ -36,6 +36,7 @@ public class CommentService {
     }
 
     public void updateComment(Long commentId, String commentContents){
+        
         commentRepository.updateComment(commentId, commentContents);
     }
 
