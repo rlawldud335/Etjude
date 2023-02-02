@@ -82,12 +82,29 @@ public class StoryController {
     }
 
     @DeleteMapping(value = "/api/v1/story/like")
-    public void storyLikeCancel(@RequestBody @Valid Map<String, Object> param) {
+    public ResponseEntity storyLikeCancel(@RequestBody @Valid Map<String, Object> param) {
+        if (param.get("story_id") == null || !(param.get("story_id") instanceof Integer)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!(param.get("user_id") instanceof String)) {
+            return ResponseEntity.badRequest().build();
+        } else if (param.get("user_id") instanceof String && ((String) param.get("user_id")).replaceAll(" ", "") == ""){
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (param.get("division") == null || !(param.get("division") instanceof Integer)) {
+            return ResponseEntity.badRequest().build();
+        } else if (param.get("division") instanceof String && ((Integer) param.get("division")) != 1){
+            return ResponseEntity.badRequest().build();
+        }
+
         int storyId = (int) param.get("story_id");
         int division = (int) param.get("division");
         String userId = (String) param.get("user_id");
 
         storyService.deleteStoryLike(storyId, division, userId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/api/v1/story/like")
