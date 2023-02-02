@@ -1,18 +1,21 @@
 <template>
   <div class="film-list">
-    <FilmListItem></FilmListItem>
-    <FilmListItem></FilmListItem>
-    <FilmListItem></FilmListItem>
-    <FilmListItem></FilmListItem>
+    <FilmListItem v-for="film in dummyPopularFilms" :key="film.id" :film="film"> </FilmListItem>
   </div>
 </template>
 <script>
 import FilmListItem from "@/components/film/FilmListItem.vue";
+import dummyPopularFilms from "@/dummy/popularFilmDummyData.json";
 
 export default {
   name: "FilmList",
   components: {
     FilmListItem,
+  },
+  setup() {
+    return {
+      dummyPopularFilms,
+    };
   },
 };
 </script>
@@ -20,7 +23,7 @@ export default {
 <style scoped lang="scss">
 .film-list {
   display: flex;
-  margin: 20px 60px;
-  justify-content: space-between;
+  margin: 0px 60px;
+  flex-wrap: wrap;
 }
 </style>
