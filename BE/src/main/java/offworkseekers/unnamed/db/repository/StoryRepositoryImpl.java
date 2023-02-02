@@ -52,13 +52,11 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
 
     private int getStoryLikeCount(Long storyId) {
 
-        System.out.println("getstoryLikeCount storyId = " + storyId);
         Long result = queryFactory.select(likes.count())
                 .from(likes)
                 .where(likes.division.eq(1),
                         likes.articleStoryId.eq(Math.toIntExact(storyId)))
                 .fetchOne();
-        System.out.println("result = " + result);
 
         return Math.toIntExact(result);
     }
