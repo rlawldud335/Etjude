@@ -21,7 +21,7 @@
     </div>
 
     <div class="main__fullwidth">
-      <ShortcutFlim/>
+      <ShortcutFlim />
     </div>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
     StoryCard,
     PieceCard,
     ShortcutFlim,
-    SearchSession
+    SearchSession,
   },
 };
 </script>
@@ -60,8 +60,6 @@ export default {
 }
 
 .main__1136width {
-
   width: 1136px;
 }
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="film__card">
+  <div class="film__card" @click="modalopen()" @keydown="none">
     <div class="film__card-image">
       <img :src="film.thumbnail_url" alt="thumbnail" />
     </div>
@@ -16,6 +16,7 @@
       </div>
     </div>
   </div>
+  <FilmSharingDtail></FilmSharingDtail>
 </template>
 <script>
 import { computed } from "vue";
