@@ -30,27 +30,33 @@ public class Studio {
     private String studioTitle;
 
     @Column(name = "captain_id")
-    private int captainId;
+    private String captainId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "story_id")
     private Story story;
 
-    @OneToMany(mappedBy = "studio")
+    @OneToMany(mappedBy = "studio", cascade = CascadeType.ALL)
     private List<TeamMember> teamMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studio")
+    @OneToMany(mappedBy = "studio", cascade = CascadeType.ALL)
     private List<Film> films = new ArrayList<>();
 
     @Builder
-    public Studio(Long studioId, LocalDate studioEndDate, String studioRepository, String studioTitle, int captainId, Story story, List<TeamMember> teamMembers, List<Film> films) {
-        this.studioId = studioId;
+    public Studio(LocalDate studioEndDate, String studioRepository, String studioTitle, String captainId) {
         this.studioEndDate = studioEndDate;
         this.studioRepository = studioRepository;
         this.studioTitle = studioTitle;
         this.captainId = captainId;
+    }
+
+    public void addTeamMember(List<User> users) {
+        for (User user : users) {
+            teamMembers.add(new TeamMember(this, user));
+        }
+    }
+
+    public void connectStory(Story story) {
         this.story = story;
-        this.teamMembers = teamMembers;
-        this.films = films;
     }
 }

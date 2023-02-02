@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.db.entity;
 
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "article")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article {
 
@@ -53,7 +55,7 @@ public class Article {
             String articleThumbnailUrl,
             LocalDate articleCreatedDate,
             int articleViewCount,
-            Film flim,
+            Film film,
             User user
     ){
         this.articleId = articleId;
@@ -62,7 +64,7 @@ public class Article {
         this.articleThumbnailUrl = articleThumbnailUrl;
         this.articleCreatedDate = articleCreatedDate;
         this.articleViewCount = articleViewCount;
-        this.film = flim;
+        this.film = film;
         this.user = user;
     }
 }

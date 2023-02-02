@@ -22,8 +22,7 @@ public class TeamMember {
     private User user;
 
     @Builder
-    public TeamMember(Long teamMemberId, Studio studio, User user) {
-        this.teamMemberId = teamMemberId;
+    public TeamMember(Studio studio, User user) {
         this.studio = studio;
         this.user = user;
     }

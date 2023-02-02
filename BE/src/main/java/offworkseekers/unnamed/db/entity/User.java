@@ -17,7 +17,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private String userId;
 
     @Column(name = "email", length = 50)
     @Size(max = 50)
@@ -34,28 +34,28 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "user")
-    private List<TeamMember> teamMemberIds = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<TeamMember> teamMemberIds = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Film> films = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Article> articles = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Film> films = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Article> articles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "followerId")
-    private List<Follow> followerIds = new ArrayList<>();
-
-    @OneToMany(mappedBy = "followingId")
-    private List<Follow> followingIds = new ArrayList<>();
+//    @OneToMany(mappedBy = "follower")
+//    private List<Follow> followerIds = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "following")
+//    private List<Follow> followingIds = new ArrayList<>();
 
 
     @Builder
     public User(
-            @NotNull Long userId,
+            @NotNull String userId,
             @NotNull @Size(max = 50) String email,
             @Size(max = 20) String nickName,
             String picture,

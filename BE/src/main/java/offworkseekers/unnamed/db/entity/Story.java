@@ -33,6 +33,9 @@ public class Story {
     @Column(name = "story_thumbnail_url")
     private String storyThumbnailUrl;
 
+//    @Column(name = "story_like")
+//    private int storyLike;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_id")
     private Work work;
@@ -61,6 +64,7 @@ public class Story {
         this.category = category;
         this.scenes = scenes;
         this.studios = studios;
+//        this.storyLike = storyLike;
     }
 
     public void addScene(Scene scene) {
