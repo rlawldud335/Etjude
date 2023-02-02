@@ -10,13 +10,10 @@
             <CircleSetting />
         </div>
         <div class="studio-users">
-            <div v-for="user in users" :key="user" @click="this.detailUser = user.name">
+            <div v-for="user in users" :key="user">
                 <div :class="{ 'studio-users__detail': this.detailUser == user.name }">
-                    <img class="profile-img" :src="user.imageUrl" alt="" />
+                    <img class="profile-img" :src="user.imageUrl" alt="" @click="this.detailUser = user.name" />
                     <span v-if="this.detailUser == user.name">{{ user.name }}</span>
-                    <div class="icon" v-if="this.detailUser == user.name">
-                        <LinkIcon />
-                    </div>
                 </div>
             </div>
         </div>
@@ -25,11 +22,10 @@
 <script>
 
 import CircleSetting from "@/assets/icons/CircleSetting.svg";
-import LinkIcon from "@/assets/icons/link.svg";
 
 export default {
     components: {
-        CircleSetting, LinkIcon
+        CircleSetting
     },
     data() {
         return {
@@ -110,29 +106,17 @@ export default {
     transition: all 0.5s;
 }
 
+.studio-users__detail>span {
+    margin: 0px 10px;
+    cursor: pointer;
+}
+
 .profile-img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     margin: 0px 5px;
-}
-
-.profile-detail {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.studio-users__detail {
-    background-color: #FFD1D9;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 20px;
-}
-
-.profile-detail>span {
-    margin: 0px 10px;
+    cursor: pointer;
 }
 
 .icon {
