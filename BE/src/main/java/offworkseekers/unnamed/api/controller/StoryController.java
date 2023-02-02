@@ -1,7 +1,6 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.request.StoryLikeRequest;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
