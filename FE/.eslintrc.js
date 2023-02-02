@@ -15,6 +15,7 @@ module.exports = {
       "error",
       { devDependencies: false, optionalDependencies: false, peerDependencies: false },
     ],
-    "vue/no-mutating-props": "off",
+    "global-require": 0,
+    "vuejs-accessibility/click-events-have-key-events": "off",
   },
 };
