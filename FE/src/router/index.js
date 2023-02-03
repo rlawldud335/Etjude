@@ -1,31 +1,37 @@
-import {
-  createRouter,
-  createWebHistory,
-} from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import LogInView from "../views/LogInView.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import MainView from "@/views/MainView.vue";
+import FilmView from "@/views/FilmView.vue";
+import LoginView from "@/views/LogInView.vue";
+import NavFooterView from "@/views/NavFooterView.vue";
+import StudioView from "@/views/StudioView.vue";
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "navFooter",
+    component: NavFooterView,
+    children: [
+      {
+        path: "/",
+        name: "main",
+        component: MainView,
+      },
+      {
+        path: "/film",
+        name: "film",
+        component: FilmView,
+      },
+      {
+        path: "/login",
+        name: "login",
+        component: LoginView,
+      },
+    ],
   },
   {
-    path: "/login",
-    name: "LogInView",
-    component: LogInView,
-  },
-  {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ "../views/AboutView.vue"
-      ),
+    path: "/studio",
+    name: "studio",
+    component: StudioView,
   },
 ];
 
