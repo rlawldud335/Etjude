@@ -32,7 +32,8 @@ const routes = [
     path: "/studio",
     name: "studio",
     component: StudioView,
-  },
+  }
+  ,
 ];
 
 const router = createRouter({

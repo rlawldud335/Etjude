@@ -1,0 +1,78 @@
+<template lang="">
+  <vue-final-modal v-model="showModal" classes="modal-contain" content-class="modal-cont">
+    <div class="video_container">
+      <video src="https://youtu.be/tp6NKAK9p7E" controls>
+        <track kind="captions" />
+      </video>
+    </div>
+    <div class="community_container">
+      <!-- <UserProfile></UserProfile>
+      <UserPost></UserPost>
+      <UserPostInput></UserPostInput> -->
+    </div>
+  </vue-final-modal>
+  <button @click="showModal = true">Open modal</button>
+</template>
+<script>
+// import UserProfile from "./UserProfile.vue";
+// import UserPost from "./UserPost.vue";
+// import UserPostInput from "./UserPostInput.vue";
+
+export default {
+  name: "FilmShareUpload",
+  components: {
+    // UserProfile,
+    // UserPost,
+    // UserPostInput,
+  },
+  data: () => ({
+    showModal: false,
+  }),
+  props: {
+    changemodal: Boolean,
+  },
+};
+</script>
+<style lang="scss" scoped>
+::v-deep .modal-contain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep .modal-cont {
+  display: flex;
+  height: 786px;
+  // flex-direction: column;
+  // margin: 0 1rem;
+  // padding: 1rem;
+  // border: 1px solid #e2e8f0;
+  // border-radius: 0.25rem;
+  // background: rgb(66, 44, 44);
+}
+.video_container {
+  width: 738px;
+}
+video {
+  width: 100%;
+  height: 100%;
+}
+.community_container {
+  width: 582px;
+  background-color: white;
+}
+.video_container img {
+  width: 100%;
+  height: 100%;
+}
+.profile_container img {
+  object-fit: cover;
+  width: auto;
+}
+</style>
+
+<style scoped>
+.dark-mode div::v-deep .modal-cont {
+  border-color: #2d3748;
+  background-color: #1a202c;
+}
+</style>

@@ -1,0 +1,64 @@
+<template lang="">
+  <div class="main full-page">
+    <div class="main__fullwidth">
+      <event-banner />
+    </div>
+
+    <div class="main__1136width">
+      <SearchSession />
+    </div>
+
+    <div class="main__1136width">
+      <StudioCard></StudioCard>
+    </div>
+
+    <div class="main__1136width">
+      <StoryCard></StoryCard>
+    </div>
+
+    <div class="main__1136width">
+      <PieceCard></PieceCard>
+    </div>
+
+    <div class="main__fullwidth">
+      <ShortcutFlim />
+    </div>
+  </div>
+</template>
+
+<script>
+import EventBanner from "@/components/main/EventBanner.vue";
+import StudioCard from "@/components/main/StudioCard.vue";
+import StoryCard from "@/components/main/StoryCard.vue";
+import PieceCard from "@/components/main/PieceCard.vue";
+import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
+import SearchSession from "@/components/main/SearchSession.vue";
+
+export default {
+  name: "MainView",
+  components: {
+    EventBanner,
+    StudioCard,
+    StoryCard,
+    PieceCard,
+    ShortcutFlim,
+    SearchSession,
+  },
+};
+</script>
+<style lang="scss">
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.main__fullwidth {
+  width: 100%;
+}
+
+.main__1136width {
+  width: 1136px;
+}
+</style>
