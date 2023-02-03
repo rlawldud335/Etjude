@@ -45,12 +45,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.full-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
 .film__popular-box {
   width: 100%;
   background-color: transparentize($color: $bana-pink, $amount: 0.9);
