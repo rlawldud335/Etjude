@@ -46,3 +46,19 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.main__fullwidth {
+  width: 100%;
+}
+
+.main__1136width {
+  width: 1136px;
+}
+</style>
