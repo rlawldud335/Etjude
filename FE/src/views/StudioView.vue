@@ -5,12 +5,12 @@
             <StudioNav />
         </div>
         <div class="studio__content">
-            <div class="studio__video">
+            <div class="studio__video" :class="{ 'openTab': !isOpenTab }">
                 <div class="studio__video__video">
                     <VideoArea />
                 </div>
                 <div class="studio__video__script">
-                    <ScriptArea />
+                    <ScriptArea isOpenTab="isOpenTab" />
                 </div>
             </div>
             <div class="studio__openTab" v-show="isOpenTab">
@@ -102,19 +102,27 @@ export default {
 .studio__content {
     display: flex;
     flex-direction: row;
+    justify-content: end;
     width: 100%;
     height: 93%;
 }
 
 .studio__tab {
     height: 100%;
+    width: 4%;
+    min-width: 65px;
     background-color: $aha-gray;
     display: flex;
     flex-direction: column;
 }
 
 .studio__video {
-    width: 100%;
+    width: 70%;
+    height: 100%;
+}
+
+.openTab {
+    width: 96%;
 }
 
 .studio__video__script {
@@ -128,13 +136,12 @@ export default {
 }
 
 .studio__openTab {
-    width: 620px;
+    width: 26%;
     height: 100%;
     background-color: white;
 }
 
 .studio__tab__btn {
-    width: 65px;
     height: 65px;
     background-color: $aha-gray;
     display: flex;
