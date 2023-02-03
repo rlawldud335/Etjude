@@ -1,7 +1,7 @@
 <template>
-  <div class="studio__film-tab">
+  <div class="studio-film-tab__film">
     <div class="studio__film-thumbnail">
-      <video src="" controls><track kind="captions" /></video>
+      <video src="" controls class="studio__film-player"><track kind="captions" /></video>
     </div>
     <div class="studio__film-section">
       <div class="studio__film-info">
@@ -31,17 +31,56 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.studio__film-tab {
-  margin: 3px 5%;
+.studio-film-tab__film {
+  margin: 6px 5%;
   padding: 18px;
-  border-radius: 10px;
+  border-radius: 15px;
   background-color: $efefe-gray;
+  display: flex;
+  flex-direction: row;
 }
+
 .studio__film-thumbnail {
-  width: 30px;
+  cursor: pointer;
 }
-.studio__film-thumbnail {
-  width: 100%;
-  height: 100%;
+.studio__film-player {
+  width: 150px;
+  height: 100px;
+}
+
+.studio__film-section {
+  margin-left: 15px;
+  width: calc(100% - 150px - 15px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.studio__film-info {
+  display: flex;
+  flex-direction: column;
+  .studio__film-id {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  > span {
+    font-size: 14px;
+    line-height: 150%;
+  }
+}
+
+.studio__film-button {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    font-size: 10px;
+    border: none;
+    color: white;
+    background-color: $bana-pink;
+    padding: 6px 10px;
+    border-radius: 15px;
+    margin-left: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
 }
 </style>

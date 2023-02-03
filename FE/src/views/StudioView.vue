@@ -10,7 +10,12 @@
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
-          <span>{{ tabs[state.selectTab].tabName }}</span>
+          <div class="openTab__header-text">
+            <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
+            <span class="openTab__header-notice" v-show="state.selectTab === 2"
+              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
+            >
+          </div>
           <button class="close-btn" @click="closeTab()"><QuitButton /></button>
         </div>
         <div class="openTab__body">
@@ -166,6 +171,14 @@ export default {
   background-color: white;
 }
 
+.openTab__header-tabName {
+  white-space: nowrap;
+}
+.openTab__header-notice {
+  font-size: 12px;
+  color: $bana-pink;
+  margin-left: 10px;
+}
 .studio__tab__btn {
   border: none;
   width: 65px;
