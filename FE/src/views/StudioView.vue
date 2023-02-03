@@ -4,9 +4,9 @@
       <StudioNav />
     </div>
     <div class="studio__content">
-      <div class="studio__video">
+      <div class="studio__video" :class="{ 'openTab': !state.isOpenTab }">
         <div class="studio__video__video"><VideoArea /></div>
-        <div class="studio__video__script"><ScriptArea /></div>
+        <div class="studio__video__script"><ScriptArea isOpenTab="state.isOpenTab"  /></div>
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
@@ -39,7 +39,6 @@
         >
           <Ssin />
         </button>
-
         <button
           class="studio__tab__btn"
           @click="clickTab(2)"
@@ -126,58 +125,48 @@ export default {
 .studio {
   width: 100vw;
   height: 100vh;
-
   display: flex;
   flex-direction: column;
 }
-
 .studio__header {
   width: 100%;
   height: 7%;
 }
-
-.studio__content {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 93%;
-}
-
 .studio__tab {
-  height: 100%;
-  background-color: $aha-gray;
-  display: flex;
-  flex-direction: column;
+    height: 100%;
+    width: 4%;
+    min-width: 65px;
+    background-color: $aha-gray;
+    display: flex;
+    flex-direction: column;
 }
 .studio__video {
-  width: 100%;
+    width: 70%;
+    height: 100%;
 }
-
+.openTab {
+    width: 96%;
+}
 .studio__video__script {
   background-color: gray;
   width: 100%;
   height: 25%;
 }
-
 .studio__video__video {
   background-color: purple;
   width: 100%;
   height: 75%;
 }
-
 .studio__openTab {
   width: 620px;
   height: 100%;
   background-color: white;
 }
-
-.openTab__header-tabName {
-  white-space: nowrap;
+.studio__tab__btn:hover {
+    background-color: #E7E7E7;
 }
-.openTab__header-notice {
-  font-size: 12px;
-  color: $bana-pink;
-  margin-left: 10px;
+.studio__tab__btn--select {
+    background-color: #E7E7E7;
 }
 .studio__tab__btn {
   border: none;
@@ -188,14 +177,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.studio__tab__btn:hover {
-  background-color: #e7e7e7;
-}
-
-.studio__tab__btn--select {
-  background-color: #e7e7e7;
-}
-
 .openTab__header {
   width: 100%;
   height: 7%;
@@ -207,13 +188,23 @@ export default {
   padding: 0px 20px;
   box-sizing: border-box;
 }
+.openTab__header-tabName {
+  white-space: nowrap;
+}
+.openTab__header-notice {
+  font-size: 12px;
+  color: $bana-pink;
+  margin-left: 10px;
+}
 .openTab__body {
   height: 93%;
   width: 100%;
 }
 .close-btn {
-  cursor: pointer;
-  background-color: white;
-  border: none;
+    cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 93%;
 }
 </style>

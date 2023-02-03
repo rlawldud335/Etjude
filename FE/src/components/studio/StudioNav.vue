@@ -24,7 +24,6 @@
 </template>
 <script>
 import CircleSetting from "@/assets/icons/CircleSetting.svg";
-import LinkIcon from "@/assets/icons/link.svg";
 
 export default {
   components: {
@@ -108,11 +107,17 @@ export default {
   transition: all 0.5s;
 }
 
+.studio-users__detail>span {
+    margin: 0px 10px;
+    cursor: pointer;
+}
+
 .profile-img {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   margin: 0px 5px;
+  cursor: pointer;
 }
 
 .profile-detail {
