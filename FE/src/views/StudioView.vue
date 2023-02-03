@@ -173,6 +173,7 @@ export default {
 
 .studio__openTab {
   width: 26%;
+  min-width: 350px;
   height: 100%;
   background-color: white;
 }
