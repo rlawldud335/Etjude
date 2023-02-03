@@ -15,7 +15,6 @@
           <img class="profile-img" :src="user.imageUrl" alt="" />
           <span v-if="this.detailUser == user.name">{{ user.name }}</span>
           <div class="icon" v-if="this.detailUser == user.name">
-            <LinkIcon />
           </div>
         </div>
       </div>
@@ -27,8 +26,7 @@ import CircleSetting from "@/assets/icons/CircleSetting.svg";
 
 export default {
   components: {
-    CircleSetting,
-    LinkIcon,
+    CircleSetting
   },
   data() {
     return {
@@ -84,7 +82,7 @@ export default {
   color: white;
 }
 
-.studio-info__title > span {
+.studio-info__title>span {
   margin: 0px 5px;
 }
 
@@ -108,8 +106,8 @@ export default {
 }
 
 .studio-users__detail>span {
-    margin: 0px 10px;
-    cursor: pointer;
+  margin: 0px 10px;
+  cursor: pointer;
 }
 
 .profile-img {
@@ -134,7 +132,7 @@ export default {
   margin-right: 20px;
 }
 
-.profile-detail > span {
+.profile-detail>span {
   margin: 0px 10px;
 }
 
