@@ -1,5 +1,5 @@
 <template>
-  <div class="film__card">
+  <div class="film__card" @click="showDtailModal = true" @keydown="none">
     <div class="film__card-image">
       <img :src="film.thumbnail_url" alt="thumbnail" />
     </div>
@@ -16,16 +16,23 @@
       </div>
     </div>
   </div>
+  <FilmSharingDtail v-model="showDtailModal"></FilmSharingDtail>
 </template>
 <script>
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import FilmSharingDtail from "@/components/share/FilmSharingDtail.vue";
 
 export default {
   name: "FilmListItem",
   props: {
     film: Object,
   },
+  components: {
+    FilmSharingDtail,
+  },
   setup(props) {
+    const showDtailModal = ref(false);
+
     const diffCreated = computed(() => {
       const createdDate = new Date(props.film.created);
       const now = new Date();
@@ -49,6 +56,8 @@ export default {
     });
     return {
       diffCreated,
+      showDtailModal,
+      // openModal,
     };
   },
 };
