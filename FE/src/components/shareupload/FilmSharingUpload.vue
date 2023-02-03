@@ -1,29 +1,23 @@
 <template lang="">
   <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
-    <div class="video_container">
-      <video src="https://youtu.be/tp6NKAK9p7E" controls>
-        <track kind="captions" />
-      </video>
+    <div class="title_container">
+      <h1>필름 공유 글 업로드</h1>
+      <QuitButton></QuitButton>
     </div>
-    <div class="community_container">
-      <!-- <UserProfile></UserProfile>
-      <UserPost></UserPost>
-      <UserPostInput></UserPostInput> -->
+    <div class="content_container">
+      <UserUpload></UserUpload>
     </div>
   </vue-final-modal>
-  <!-- <button @click="showModal = true">Open modal</button> -->
 </template>
 <script>
-// import UserProfile from "./UserProfile.vue";
-// import UserPost from "./UserPost.vue";
-// import UserPostInput from "./UserPostInput.vue";
+import QuitButton from "@/assets/icons/Quit Button.svg";
+import UserUpload from "./UserUpload.vue";
 
 export default {
   name: "FilmShareUpload",
   components: {
-    // UserProfile,
-    // UserPost,
-    // UserPostInput,
+    QuitButton,
+    UserUpload,
   },
   props: {
     showModal: Boolean,
@@ -38,32 +32,35 @@ export default {
 }
 ::v-deep .modal-cont {
   display: flex;
-  height: 786px;
-  // flex-direction: column;
-  // margin: 0 1rem;
-  // padding: 1rem;
-  // border: 1px solid #e2e8f0;
-  // border-radius: 0.25rem;
-  // background: rgb(66, 44, 44);
+  flex-direction: column;
+  height: 654px;
+  width: 1186px;
 }
-.video_container {
-  width: 738px;
-}
-video {
-  width: 100%;
-  height: 100%;
-}
-.community_container {
-  width: 582px;
+.title_container {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: space-between;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  align-items: center;
+  width: 1186px;
+  height: 100px;
+  padding: 30px 60px;
   background-color: white;
+
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(79, 79, 79);
+  }
 }
-.video_container img {
-  width: 100%;
-  height: 100%;
-}
-.profile_container img {
-  object-fit: cover;
-  width: auto;
+.content_container {
+  height: 554px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 20px 40px;
+  display: flex;
+  background-color: white;
 }
 </style>
 
