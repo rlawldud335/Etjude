@@ -7,15 +7,25 @@
         <span> > </span>
         <span>밥알패밀리 스튜디오</span>
       </div>
-      <CircleSetting />
+      <div class="studio__setting">
+        <CircleSetting />
+        <div class="studio__setting-section">
+          <div class="studio__setting-dropdown">
+            <span>스튜디오 정보</span>
+            <span>스튜디오 이름</span>
+            <span>스튜디오 멤버</span>
+            <span>생성일</span>
+            <span>만료일</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="studio-users">
       <div v-for="user in users" :key="user" @click="this.detailUser = user.name">
         <div :class="{ 'studio-users__detail': this.detailUser == user.name }">
           <img class="profile-img" :src="user.imageUrl" alt="" />
           <span v-if="this.detailUser == user.name">{{ user.name }}</span>
-          <div class="icon" v-if="this.detailUser == user.name">
-          </div>
+          <div class="icon" v-if="this.detailUser == user.name"></div>
         </div>
       </div>
     </div>
@@ -26,7 +36,7 @@ import CircleSetting from "@/assets/icons/CircleSetting.svg";
 
 export default {
   components: {
-    CircleSetting
+    CircleSetting,
   },
   data() {
     return {
@@ -64,7 +74,11 @@ export default {
   background-color: $bana-pink;
   justify-content: space-between;
 }
-
+.studio__setting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .studio-info {
   display: flex;
   flex-direction: row;
@@ -82,10 +96,25 @@ export default {
   color: white;
 }
 
-.studio-info__title>span {
+.studio-info__title > span {
   margin: 0px 5px;
 }
+.studio__setting {
+  position: relative;
+  display: inline-block;
+}
+.studio__setting-section {
+  position: absolute;
+  z-index: 1;
+}
 
+.studio__setting-dropdown {
+  margin-top: 5px;
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  border-radius: 10px;
+}
 .studio-users {
   display: flex;
   flex-direction: row;
@@ -105,7 +134,7 @@ export default {
   transition: all 0.5s;
 }
 
-.studio-users__detail>span {
+.studio-users__detail > span {
   margin: 0px 10px;
   cursor: pointer;
 }
@@ -132,7 +161,7 @@ export default {
   margin-right: 20px;
 }
 
-.profile-detail>span {
+.profile-detail > span {
   margin: 0px 10px;
 }
 
