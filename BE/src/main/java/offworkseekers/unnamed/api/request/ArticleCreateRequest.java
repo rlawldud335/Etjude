@@ -1,28 +1,26 @@
 package offworkseekers.unnamed.api.request;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import offworkseekers.unnamed.db.entity.Article;
-import offworkseekers.unnamed.db.entity.Film;
-import offworkseekers.unnamed.db.entity.User;
 
 @Data
 @Getter
 public class ArticleCreateRequest {
 
-    String userId;
-    Long filmId;
+    Long articleId;
     String articleContent;
     String articleTitle;
     String articleThumbnailUrl;
 
-    @Builder
-    public ArticleCreateRequest(String userId, Long filmId, String articleContent, String articleTitle, String articleThumbnailUrl) {
-        this.userId = userId;
-        this.filmId = filmId;
-        this.articleContent = articleContent;
-        this.articleTitle = articleTitle;
-        this.articleThumbnailUrl = articleThumbnailUrl;
+    public Article toEntity() {
+        return Article.builder()
+                .articleId(articleId)
+                .articleContent(articleContent)
+                .articleTitle(articleTitle)
+                .articleThumbnailUrl(articleThumbnailUrl)
+                .build();
     }
+
+
 }

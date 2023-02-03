@@ -10,29 +10,28 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "follow_id")
     private Long followId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "followerId")
-    private User follower;
+    @JoinColumn(name = "follower_id")
+    private User followerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "followingId")
-    private User following;
+    @JoinColumn(name = "following_id")
+    private User followingId;
 
     @Builder
     public Follow(
             @NotNull Long followId,
-            User follower,
-            User following
+            User followerId,
+            User followingId
     ){
         this.followId = followId;
-        this.follower = follower;
-        this.following = following;
+        this.followerId = followerId;
+        this.followingId = followingId;
     }
 
 }
