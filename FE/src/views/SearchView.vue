@@ -15,7 +15,7 @@
   <router-view />
 </template>
 <script>
-import { ref, watchEffect } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -24,17 +24,24 @@ export default {
   setup() {
     const searchWord = ref("");
     const router = useRouter();
-
-    watchEffect(() => {
-      if (searchWord.value) {
-        router.push({ name: "search-result", params: { keyword: searchWord.value } });
-      } else {
-        router.push({ name: "search" });
+    watch(
+      () => searchWord.value,
+      (newValue) => {
+        console.log(newValue);
+        if (newValue) {
+          router.push({ name: "search-result", params: { keyword: newValue } });
+        } else {
+          router.push({ name: "search" });
+        }
       }
-    });
+    );
     return {
       searchWord,
     };
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.searchWord = to.params.keyword;
+    next();
   },
 };
 </script>
