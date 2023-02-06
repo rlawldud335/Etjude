@@ -6,7 +6,7 @@
           <p>Logo</p>
         </router-link>
         <div class="header__nav">
-          <router-link to="/search" class="header__nav-item">검색</router-link>
+          <router-link :to="{ name: 'search' }" class="header__nav-item">검색</router-link>
           <router-link
             to="/about"
             class="header__nav-item header__dropdown-button"
