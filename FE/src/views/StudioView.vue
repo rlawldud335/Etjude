@@ -1,7 +1,7 @@
 <template>
   <div class="studio">
     <div class="studio__header">
-      <StudioNav />
+      <StudioNav :studio="studioDummyData" />
     </div>
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
@@ -13,7 +13,7 @@
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
             <span class="openTab__header-notice" v-show="state.selectTab === 2"
-              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
+              >팀장에게만 필름 만들기 권한이 있습니다.</span
             >
           </div>
           <button class="close-btn" @click="closeTab()"><QuitButton /></button>
