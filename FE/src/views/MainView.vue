@@ -1,5 +1,5 @@
-<template lang="">
-  <div class="main full-page">
+<template>
+  <div class="main">
     <div class="main__fullwidth">
       <event-banner />
     </div>

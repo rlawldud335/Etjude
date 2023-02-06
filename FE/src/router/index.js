@@ -5,7 +5,9 @@ import LoginView from "@/views/LogInView.vue";
 import NavFooterView from "@/views/NavFooterView.vue";
 import StudioView from "@/views/StudioView.vue";
 import SearchView from "@/views/SearchView.vue";
-// import SearchResult from "@/components/search/SearchResult.vue";
+import SearchResult from "@/components/search/SearchResult.vue";
+import PieceDetailView from "@/views/PieceDetailView.vue";
+import StoryView from "@/views/StoryView.vue";
 
 const routes = [
   {
@@ -24,6 +26,11 @@ const routes = [
         component: FilmView,
       },
       {
+        path: "/story",
+        name: "story",
+        component: StoryView,
+      },
+      {
         path: "/login",
         name: "login",
         component: LoginView,
@@ -36,9 +43,14 @@ const routes = [
           {
             path: "/search/:keyword",
             name: "search-result",
-            component: () => import("@/components/search/SearchResult.vue"),
+            component: SearchResult,
           },
         ],
+      },
+      {
+        path: "/piece",
+        name: "piece",
+        component: PieceDetailView,
       },
     ],
   },

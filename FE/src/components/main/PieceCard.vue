@@ -3,7 +3,7 @@
     <router-link to="/main">
       <div class="studiotitle">
         추천 작품
-        <YayIcon/>
+        <YayIcon />
         >
       </div>
     </router-link>
@@ -18,7 +18,7 @@ export default {
   name: "PieceCard",
   components: {
     PieceCardItem,
-    YayIcon
+    YayIcon,
   },
 };
 </script>
