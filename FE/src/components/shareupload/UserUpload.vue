@@ -20,34 +20,20 @@
     <img ref="preview" :src="files" alt="test" />
   </div>
   <div class="right_container">
-    <Carousel :settings="settings">
-      <Slide v-for="slide in 10" :key="slide">
-        <div class="carousel__item">{{ slide }}</div>
-      </Slide>
-      <template #addons>
-        <Navigation />
-      </template>
-    </Carousel>
+    <UploadCarousel></UploadCarousel>
   </div>
   <div class="main_container"></div>
 </template>
 <script>
 import { ref } from "vue";
-import { Carousel, Navigation, Slide } from "vue3-carousel";
-import "vue3-carousel/dist/carousel.css";
+import UploadCarousel from "./UploadCarousel.vue";
 
 export default {
   name: "UserUpload",
   components: {
-    Carousel,
-    Slide,
-    Navigation,
+    UploadCarousel,
   },
   setup() {
-    const settings = {
-      itemsToShow: 1,
-      snapAlign: "center",
-    };
     const imgUpload = ref();
     const preview = ref();
     let files = ref();
@@ -62,7 +48,6 @@ export default {
     };
 
     return {
-      settings,
       imgUpload,
       preview,
       files,
@@ -83,8 +68,11 @@ export default {
 }
 .right_container {
   flex-grow: 1;
+  width: 524px;
   height: 100%;
-  //   background-color: red;
+  box-sizing: border-box;
+  padding: 20px;
+  // background-color: red;
 }
 .img_upload {
   display: none;

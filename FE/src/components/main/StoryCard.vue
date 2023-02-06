@@ -21,10 +21,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.studiogate {
-  // display: flex;
-  // flex-direction: column;
-}
 .studiotitle {
   display: inline-flex;
   padding: 5px;
