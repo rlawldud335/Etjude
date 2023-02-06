@@ -2,7 +2,7 @@
   <Carousel :settings="settings" :breakpoints="breakpoints">
     <Slide v-for="slide in testdatas" :key="slide">
       <div class="carousel__item">
-        <router-link to="/main">
+        <router-link to="/story">
           <img class="itemimg" :src="require(`@/assets/images/더글로리.jpg`)" alt="" />
           <div class="itemtext">
             <div class="itemtexttitle">{{ slide.title }}</div>

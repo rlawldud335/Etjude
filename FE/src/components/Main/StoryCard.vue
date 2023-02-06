@@ -2,7 +2,7 @@
   <div class="studiogate">
     <div class="studiotitle">
       <div class="">추천 스토리</div>
-      <YumIcon/>
+      <YumIcon />
       <div class="">></div>
     </div>
     <StoryCardItem></StoryCardItem>
@@ -15,7 +15,8 @@ import StoryCardItem from "./StoryCardItem.vue";
 export default {
   name: "StoryCard",
   components: {
-    StoryCardItem,YumIcon
+    StoryCardItem,
+    YumIcon,
   },
 };
 </script>
