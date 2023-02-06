@@ -57,7 +57,6 @@ export default {
     return {
       diffCreated,
       showDtailModal,
-      // openModal,
     };
   },
 };

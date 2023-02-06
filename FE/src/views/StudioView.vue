@@ -1,7 +1,7 @@
 <template>
   <div class="studio">
     <div class="studio__header">
-      <StudioNav />
+      <StudioNav :studio="studioDummyData" />
     </div>
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
