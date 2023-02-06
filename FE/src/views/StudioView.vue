@@ -5,18 +5,22 @@
     </div>
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
-        <div class="studio__video__video"><VideoArea /></div>
-        <div class="studio__video__script"><ScriptArea isOpenTab="state.isOpenTab" /></div>
+        <div class="studio__video__video">
+          <VideoArea />
+        </div>
+        <div class="studio__video__script">
+          <ScriptArea isOpenTab="state.isOpenTab" />
+        </div>
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2"
-              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
-            >
+            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
           </div>
-          <button class="close-btn" @click="closeTab()"><QuitButton /></button>
+          <button class="close-btn" @click="closeTab()">
+            <QuitButton />
+          </button>
         </div>
         <div class="openTab__body">
           <ScriptTab :scenes="studioDummyData.scene" v-show="state.selectTab === 0" />
@@ -25,26 +29,17 @@
         </div>
       </div>
       <div class="studio__tab">
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
           <Scripts />
         </button>
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
           <Ssin />
         </button>
 
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
           <Film />
         </button>
       </div>
@@ -177,14 +172,17 @@ export default {
   height: 100%;
   background-color: white;
 }
+
 .openTab__header-tabName {
   white-space: nowrap;
 }
+
 .openTab__header-notice {
   font-size: 12px;
   color: $bana-pink;
   margin-left: 10px;
 }
+
 .studio__tab__btn {
   border: none;
   height: 65px;

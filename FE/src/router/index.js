@@ -4,6 +4,7 @@ import FilmView from "@/views/FilmView.vue";
 import LoginView from "@/views/LogInView.vue";
 import NavFooterView from "@/views/NavFooterView.vue";
 import StudioView from "@/views/StudioView.vue";
+import PieceDetailView from "@/views/PieceDetailView.vue";
 
 const routes = [
   {
@@ -26,14 +27,18 @@ const routes = [
         name: "login",
         component: LoginView,
       },
+      {
+        path: "/piece",
+        name: "piece",
+        component: PieceDetailView,
+      },
     ],
   },
   {
     path: "/studio",
     name: "studio",
     component: StudioView,
-  }
-  ,
+  },
 ];
 
 const router = createRouter({
