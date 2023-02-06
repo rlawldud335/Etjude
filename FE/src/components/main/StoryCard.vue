@@ -1,31 +1,32 @@
 <template lang="">
-  <div class="studiogate">
+  <div class="studiogate1">
     <div class="studiotitle">
       <div class="">추천 스토리</div>
       <YumIcon />
       <div class="">></div>
     </div>
-    <StoryCardItem></StoryCardItem>
+    <StoryCardList></StoryCardList>
   </div>
 </template>
 <script>
 import YumIcon from "@/assets/icons/Yum.svg";
-import StoryCardItem from "./StoryCardItem.vue";
+import StoryCardList from "./StoryCardList.vue";
 
 export default {
   name: "StoryCard",
   components: {
-    StoryCardItem,
+    StoryCardList,
     YumIcon,
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .studiotitle {
   display: inline-flex;
   padding: 5px;
   padding-left: 4%;
   text-align: left;
+  align-items: center;
   font-size: 24px;
   font-weight: bold;
 }

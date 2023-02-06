@@ -8,15 +8,15 @@
       <SearchSession />
     </div>
 
-    <div class="main__1136width">
+    <div class="content__1136width">
       <StudioCard></StudioCard>
     </div>
-
-    <div class="main__1136width">
+    <div class="line"></div>
+    <div class="content__1136width">
       <StoryCard></StoryCard>
     </div>
 
-    <div class="main__1136width">
+    <div class="content__1136width">
       <PieceCard></PieceCard>
     </div>
 
@@ -57,8 +57,16 @@ export default {
 .main__fullwidth {
   width: 100%;
 }
-
 .main__1136width {
   width: 1136px;
+  margin-top: 30px;
+}
+.content__1136width {
+  width: 1136px;
+  margin: 60px 0px;
+}
+.line {
+  width: 1636px;
+  border: 1px solid rgb(211, 211, 211);
 }
 </style>

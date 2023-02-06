@@ -1,33 +1,32 @@
 <template lang="">
-  <div class="studiogate">
-    <router-link to="/main">
-      <div class="studiotitle">
-        내 스튜디오
-        <HeheheIcon/>
-        >
-      </div>
-    </router-link>
-    <StudioCardItem></StudioCardItem>
+  <div class="studiogate2">
+    <div class="studiotitle">
+      <router-link to="/main"> 내 스튜디오 </router-link>
+      <HeheheIcon />
+      >
+    </div>
+    <StudioCardList></StudioCardList>
   </div>
 </template>
 <script>
 import HeheheIcon from "@/assets/icons/Hehehe.svg";
-import StudioCardItem from "./StudioCardItem.vue";
+import StudioCardList from "./StudioCardList.vue";
 
 export default {
   name: "StudioCard",
   components: {
-    StudioCardItem,
-    HeheheIcon
+    StudioCardList,
+    HeheheIcon,
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .studiotitle {
   display: flex;
   padding: 5px;
   padding-left: 4%;
   text-align: left;
+  align-items: center;
   font-size: 24px;
   font-weight: bold;
 }
