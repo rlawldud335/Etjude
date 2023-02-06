@@ -1,35 +1,35 @@
 <template lang="">
-    <div>
-        <nav class="header">
-    <div class="header__logo-nav">
-      <router-link :to="{ name: 'main' }" class="header__logo">
-        <p>Logo</p>
-      </router-link>
-      <div class="header__nav">
-        <router-link to="/search" class="header__nav-item">검색</router-link>
-        <router-link
-          to="/about"
-          class="header__nav-item header__dropdown-button"
-          @mouseover="categoryHover"
-          @focus="categoryHover"
-          @mouseout="categoryUnhover"
-          @focusout="categoryUnhover"
-          >카테고리
-          <ul v-show="category.isHovered" class="header__dropdown">
-            <li><span>영화</span></li>
-            <li><span>드라마</span></li>
-            <li><span>뮤지컬</span></li>
-            <li><span>연극</span></li>
-          </ul>
+  <div>
+    <nav class="header">
+      <div class="header__logo-nav">
+        <router-link :to="{ name: 'main' }" class="header__logo">
+          <p>Logo</p>
         </router-link>
-        <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
+        <div class="header__nav">
+          <router-link to="/search" class="header__nav-item">검색</router-link>
+          <router-link
+            to="/about"
+            class="header__nav-item header__dropdown-button"
+            @mouseover="categoryHover"
+            @focus="categoryHover"
+            @mouseout="categoryUnhover"
+            @focusout="categoryUnhover"
+            >카테고리
+            <ul v-show="category.isHovered" class="header__dropdown">
+              <li><span>영화</span></li>
+              <li><span>드라마</span></li>
+              <li><span>뮤지컬</span></li>
+              <li><span>연극</span></li>
+            </ul>
+          </router-link>
+          <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
+        </div>
       </div>
-    </div>
-    <router-link to="/login">
-      <button class="header__login-button">Login</button>
-    </router-link>
-  </nav>
-    </div>
+      <router-link to="/login">
+        <button class="header__login-button">Login</button>
+      </router-link>
+    </nav>
+  </div>
 </template>
 <script>
 import { reactive } from "vue";
@@ -49,10 +49,10 @@ export default {
       categoryUnhover,
     };
   },
-}
+};
 </script>
 <style lang="scss">
-    nav {
+nav {
   // padding: 16px;
 
   a {
@@ -149,5 +149,4 @@ export default {
   margin-right: 20px;
   cursor: pointer;
 }
-
 </style>

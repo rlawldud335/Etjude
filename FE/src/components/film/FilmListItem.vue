@@ -87,12 +87,6 @@ export default {
 
 .film__card-author-profile {
   margin: 8px;
-  img {
-    width: 40px;
-    height: auto;
-    width: 100%;
-    height: 100%;
-  }
 }
 
 .film__profile-frame {
@@ -101,6 +95,11 @@ export default {
   border-radius: 70%;
   overflow: hidden;
   display: flex;
+  justify-content: center;
+  img {
+    max-width: auto;
+    height: auto;
+  }
 }
 
 .film__card-body {
