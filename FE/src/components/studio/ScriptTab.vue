@@ -1,25 +1,27 @@
 <template>
-    <div class="script-tab">
-        전체스크립트
-    </div>
+  <div class="script-tab">
+    <ScriptTabScene v-for="scene in scenes" :key="scene.id" :scene="scene"></ScriptTabScene>
+  </div>
 </template>
 
 <script>
+import ScriptTabScene from "@/components/studio/ScriptTabScene.vue";
 
 export default {
-    components: {
-
-    },
-    data() {
-        return {
-        };
-    },
-    methods: {
-
-    }
-}
+  name: "ScriptTab",
+  components: {
+    ScriptTabScene,
+  },
+  props: {
+    scenes: Array,
+  },
+};
 </script>
 
 <style lang="scss">
-
+.script-tab {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 </style>

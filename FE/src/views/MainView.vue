@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="main">
+  <div class="main full-page">
     <div class="main__fullwidth">
       <event-banner />
     </div>
@@ -46,7 +46,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss">
 .main {
   display: flex;
