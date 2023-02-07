@@ -16,7 +16,9 @@
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
+            <span class="openTab__header-notice" v-show="state.selectTab === 2"
+              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
+            >
           </div>
           <button class="close-btn" @click="closeTab()">
             <QuitButton />
@@ -29,17 +31,26 @@
         </div>
       </div>
       <div class="studio__tab">
-        <button class="studio__tab__btn" @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
+        >
           <Scripts />
         </button>
-        <button class="studio__tab__btn" @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
+        >
           <Ssin />
         </button>
 
-        <button class="studio__tab__btn" @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
+        >
           <Film />
         </button>
       </div>
@@ -133,7 +144,7 @@ export default {
 .studio__content {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end;
   width: 100%;
   height: 93%;
 }
