@@ -1,9 +1,13 @@
-<template lang="">
-  <div>스크립트</div>
+<template>
+  <div class="story-account">dada</div>
 </template>
 <script>
 export default {
-  name: "StoryScript",
+  name: "StoryAccount",
+  props: {},
+  setup() {
+    return {};
+  },
 };
 </script>
-<style lang=""></style>
+<style lang="scss"></style>

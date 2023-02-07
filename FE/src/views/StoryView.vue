@@ -1,21 +1,54 @@
 <template lang="">
   <div class="story_container">
     <div class="title_container"></div>
-    <div class="main_container">
+    <div class="main_container main__1136width">
       <div class="left_content">
-        <ul class="filter">
-          <li @click="tab.tabvalue = 'storyaccount'">스토리 설명</li>
-          <li @click="tab.tabvalue = 'stroycharacter'">배역설명</li>
-          <li @click="tab.tabvalue = 'storyscript'">스크립트</li>
-        </ul>
-        <StoryAccount v-show="tab.tabvalue === 'storyaccount'"></StoryAccount>
-        <StroyCharacter v-show="tab.tabvalue === 'stroycharacter'"></StroyCharacter>
+        <div class="story__tab-list">
+          <button
+            :class="{ 'story__tab--active': tab.tabvalue === 'storyaccount' }"
+            @click="tab.tabvalue = 'storyaccount'"
+          >
+            <span>스토리 설명</span>
+          </button>
+          <button
+            :class="{ 'story__tab--active': tab.tabvalue === 'storycharacter' }"
+            @click="tab.tabvalue = 'storycharacter'"
+          >
+            <span>배역설명</span>
+          </button>
+          <button
+            :class="{ 'story__tab--active': tab.tabvalue === 'storyscript' }"
+            @click="tab.tabvalue = 'storyscript'"
+          >
+            <span>스크립트</span>
+          </button>
+          <div class="story__active-bar-area">
+            <div
+              :class="[
+                {
+                  story__storyaccount: tab.tabvalue === 'storyaccount',
+                  story__storycharacter: tab.tabvalue === 'storycharacter',
+                  story__storyscript: tab.tabvalue === 'storyscript',
+                },
+                'active-bar',
+              ]"
+            ></div>
+          </div>
+        </div>
+        <StoryAccount
+          v-show="tab.tabvalue === 'storyaccount'"
+          :describtion="StoryDummyData.describtion"
+        ></StoryAccount>
+        <StoryCharacter
+          v-show="tab.tabvalue === 'storycharacter'"
+          :roles="StoryDummyData.role"
+        ></StoryCharacter>
         <StoryScript v-show="tab.tabvalue === 'storyscript'"></StoryScript>
       </div>
       <div class="right_content">
         <div class="createcard">
           <router-link to="/studio">
-            <button>스튜디오 생성하기</button>
+            <button class="modal-button">스튜디오 생성하기</button>
           </router-link>
         </div>
       </div>
@@ -26,14 +59,15 @@
 import { reactive } from "vue";
 import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
-import StroyCharacter from "@/components/story/StroyCharacter.vue";
+import StoryCharacter from "@/components/story/StoryCharacter.vue";
+import StoryDummyData from "@/dummy/storyDummyData.json";
 
 export default {
   name: "StoryView",
   components: {
     StoryAccount,
     StoryScript,
-    StroyCharacter,
+    StoryCharacter,
   },
   setup() {
     let tab = reactive({
@@ -44,7 +78,7 @@ export default {
       console.log(tab, "스토리설명");
     };
     const stroycharacter = () => {
-      tab = "stroycharacter";
+      tab = "storycharacter";
       console.log(tab, "배역설명");
     };
     const storyscript = () => {
@@ -53,6 +87,7 @@ export default {
     };
     return {
       tab,
+      StoryDummyData,
       storyaccount,
       stroycharacter,
       storyscript,
@@ -64,6 +99,7 @@ export default {
 .story_container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .title_container {
   width: 100%;
@@ -72,29 +108,57 @@ export default {
 }
 .main_container {
   box-sizing: border-box;
-  padding: 50px 100px;
+  padding: 50px 0px;
   display: flex;
 }
 .left_content {
   display: flex;
   flex-direction: column;
-  width: 80%;
-  height: 1000px;
+  width: 80rem;
   //   background-color: aqua;
 }
-ul {
-  list-style: none;
-}
-li {
+
+.story__tab-list {
+  border-bottom: 1px #757575 solid;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 130px;
-  height: 44px;
-  float: left;
-  margin: 5px;
-  border: 1px solid gray;
+  flex-wrap: nowrap;
+  margin-right: 30px;
+  position: relative;
+  button {
+    border: none;
+    background-color: white;
+    padding: 10px;
+    width: 130px;
+    min-width: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .story__tab--active {
+    font-weight: 700;
+  }
 }
+.active-bar {
+  position: absolute;
+  height: 6px;
+  top: 35px;
+  transition: 1s;
+  width: 130px;
+  background: #ff5775;
+  transition: 0.3s ease;
+}
+.story__storyaccount {
+  right: 618px;
+}
+.story__storycharacter {
+  right: 488px;
+}
+.story__storyscript {
+  right: 358px;
+}
+
 .createcard {
   display: flex;
   flex-direction: column;
@@ -103,7 +167,7 @@ li {
   height: 350px;
   background-color: aliceblue;
 }
-button {
+.modal-button {
   width: 315px;
   height: 48px;
   border: none;
