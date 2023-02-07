@@ -29,8 +29,8 @@ public class StoryService {
         return storyListRecommendedByLike;
     }
 
-    public StoryDetailResponse storyDetailResponse(Long storyId) {
-        StoryDetailResponse storyDetail = storyRepository.getStoryDetail(storyId);
+    public StoryDetailResponse storyDetailResponse(Long storyId, String userId) {
+        StoryDetailResponse storyDetail = storyRepository.getStoryDetail(storyId, userId);
         return storyDetail;
     }
 

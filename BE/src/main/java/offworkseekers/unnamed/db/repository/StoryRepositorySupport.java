@@ -9,7 +9,7 @@ public interface StoryRepositorySupport {
 
     List<StoryListResponse> getStoryListRecommendedByLike();
 
-    StoryDetailResponse getStoryDetail(Long storyId);
+    StoryDetailResponse getStoryDetail(Long storyId, String userId);
 
     List<StoryListResponse> getStorySearchList(String keyword, String category);
 }

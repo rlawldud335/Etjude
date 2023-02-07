@@ -27,9 +27,12 @@ public class StoryController {
         return response;
     }
 
-    @GetMapping(value = "/api/v1/story/detail")
-    public StoryDetailResponse storyDetail(@RequestParam(value = "story_id") Long storyId) {
-        StoryDetailResponse storyDetailResponse = storyService.storyDetailResponse(storyId);
+    @PostMapping(value = "/api/v1/story/detail")
+    public StoryDetailResponse storyDetail(@RequestBody @Valid Map<String, Object> param) {
+        Long storyId = Long.valueOf((int) param.get("story_id"));
+        String userId = (String) param.get("user_id");
+
+        StoryDetailResponse storyDetailResponse = storyService.storyDetailResponse(storyId, userId);
         return storyDetailResponse;
     }
 
