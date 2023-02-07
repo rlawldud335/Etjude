@@ -34,10 +34,10 @@ export default {
       inputKeyword,
     };
   },
-  beforeRouteUpdate(to, from, next) {
-    this.searchWord = to.params.keyword;
-    next();
-  },
+  // beforeRouteUpdate(to, from, next) {
+  //   this.searchWord = to.params.keyword;
+  //   next();
+  // },
 };
 </script>
 
