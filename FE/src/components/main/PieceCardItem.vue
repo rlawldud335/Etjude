@@ -1,73 +1,42 @@
-<template>
-  <Carousel :settings="settings" :breakpoints="breakpoints">
-    <Slide v-for="slide in testdatas" :key="slide">
-      <div class="carousel__item">
-        <router-link to="/main">
-          <img class="itemimg" :src="require(`@/assets/images/헤어질결심.jpg`)" alt="" />
-          <div class="itemtext">
-            <div class="rightitem">
-              <div class="itemtextteamname">{{ slide.team }}</div>
-              <div class="itemtexttitle">{{ slide.title }}</div>
-            </div>
-          </div>
-        </router-link>
+<template lang="">
+  <div class="carousel__item">
+    <router-link to="/main">
+      <img class="itemimg" :src="require(`@/assets/images/헤어질결심.jpg`)" alt="" />
+      <div class="itemtext">
+        <div class="rightitem">
+          <div class="itemtextteamname">{{ carditem.team }}</div>
+          <div class="itemtexttitle">{{ carditem.title }}</div>
+        </div>
       </div>
-    </Slide>
-    <template #addons>
-      <Navigation />
-    </template>
-  </Carousel>
+    </router-link>
+  </div>
 </template>
-
 <script>
-import { defineComponent } from "vue";
-import { Carousel, Navigation, Slide } from "vue3-carousel";
-import testdata from "@/dummy/PieceCardItemData.json";
-
-import "vue3-carousel/dist/carousel.css";
-
-export default defineComponent({
+export default {
   name: "PieceCardItem",
-  components: {
-    Carousel,
-    Slide,
-    Navigation,
+  props: {
+    carditem: {},
   },
-  data: () => ({
-    // dummy data
-    testdatas: testdata,
-    // carousel settings
-    settings: {
-      itemsToShow: 5,
-      snapAlign: "start",
-      wrapAround: true,
-    },
-    breakpoints: {
-      480: {
-        itemsToShow: 1,
-      },
-      960: {
-        itemsToShow: 3,
-      },
-      1440: {},
-    },
-  }),
-});
+};
 </script>
-<style scoped>
+<style lang="scss" scoped>
 a {
   text-decoration: none;
   color: black;
 }
 .carousel__item {
   background-color: #fff;
-  box-shadow: 0.01rem 0.05rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
   margin: 10px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  }
 }
 .itemimg {
   height: 187px;
   width: 165px;
-  object-fit: fill;
+  object-fit: cover;
   /* // height: max(10rem, 25vh); */
   max-height: max(10rem, 30vh);
   aspect-ratio: 4/3;

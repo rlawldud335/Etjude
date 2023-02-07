@@ -1,34 +1,37 @@
 <template lang="">
   <div class="studiogate">
-    <router-link to="/main">
-      <div class="studiotitle">
-        추천 작품
-        <YayIcon />
-        >
-      </div>
-    </router-link>
-    <PieceCardItem></PieceCardItem>
+    <div class="studiotitle">
+      <router-link to="/main"> 추천 작품 </router-link>
+      <YayIcon />
+      >
+    </div>
+    <PieceCardList></PieceCardList>
   </div>
 </template>
 <script>
 import YayIcon from "@/assets/icons/Yay.svg";
-import PieceCardItem from "./PieceCardItem.vue";
+import PieceCardList from "./PieceCardList.vue";
 
 export default {
   name: "PieceCard",
   components: {
-    PieceCardItem,
+    PieceCardList,
     YayIcon,
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
 .studiotitle {
   display: flex;
   padding: 5px;
   padding-left: 4%;
   text-align: left;
-  font-size: 24px;
+  align-items: center;
+  font-size: 20px;
   font-weight: bold;
 }
 .icon {

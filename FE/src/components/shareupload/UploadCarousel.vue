@@ -25,7 +25,7 @@ export default {
   },
   setup() {
     const settings = {
-      itemsToShow: 3,
+      itemsToShow: 1,
       snapAlign: "center",
       wrapAround: true,
     };
