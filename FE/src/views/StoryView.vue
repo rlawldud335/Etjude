@@ -5,11 +5,11 @@
       <div class="left_content">
         <ul class="filter">
           <li @click="tab.tabvalue = 'storyaccount'">스토리 설명</li>
-          <li @click="tab.tabvalue = 'stroycharacter'">배역설명</li>
+          <li @click="tab.tabvalue = 'StoryCharacter'">배역설명</li>
           <li @click="tab.tabvalue = 'storyscript'">스크립트</li>
         </ul>
         <StoryAccount v-show="tab.tabvalue === 'storyaccount'"></StoryAccount>
-        <StroyCharacter v-show="tab.tabvalue === 'stroycharacter'"></StroyCharacter>
+        <StoryCharacter v-show="tab.tabvalue === 'StoryCharacter'"></StoryCharacter>
         <StoryScript v-show="tab.tabvalue === 'storyscript'"></StoryScript>
       </div>
       <div class="right_content">
@@ -26,14 +26,14 @@
 import { reactive } from "vue";
 import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
-import StroyCharacter from "@/components/story/StroyCharacter.vue";
+import StoryCharacter from "@/components/story/StoryCharacter.vue";
 
 export default {
   name: "StoryView",
   components: {
     StoryAccount,
     StoryScript,
-    StroyCharacter,
+    StoryCharacter,
   },
   setup() {
     let tab = reactive({

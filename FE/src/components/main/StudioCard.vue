@@ -21,13 +21,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
 .studiotitle {
   display: flex;
   padding: 5px;
   padding-left: 4%;
   text-align: left;
   align-items: center;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 .icon {

@@ -1,18 +1,19 @@
 <template lang="">
   <div class="carousel__item">
-    <router-link to="/story">
-      <img class="itemimg" :src="require(`@/assets/images/더글로리.jpg`)" alt="" />
+    <router-link to="/main">
+      <img class="itemimg" :src="require(`@/assets/images/헤어질결심.jpg`)" alt="" />
       <div class="itemtext">
-        <div class="itemtexttitle">{{ carditem.title }}</div>
-        <div class="itemtextcategory">{{ carditem.category }}</div>
-        <div class="itemtextfavor">좋아요 {{ carditem.favor }}</div>
+        <div class="rightitem">
+          <div class="itemtextteamname">{{ carditem.team }}</div>
+          <div class="itemtexttitle">{{ carditem.title }}</div>
+        </div>
       </div>
     </router-link>
   </div>
 </template>
 <script>
 export default {
-  name: "StoryCardItem",
+  name: "PieceCardItem",
   props: {
     carditem: {},
   },
@@ -25,7 +26,6 @@ a {
 }
 .carousel__item {
   background-color: #fff;
-  /* border-radius: 0.5rem; */
   margin: 10px;
   transition: all 0.3s ease-in-out;
   &:hover {
@@ -34,8 +34,8 @@ a {
   }
 }
 .itemimg {
-  height: 134px;
-  width: 257px;
+  height: 187px;
+  width: 165px;
   object-fit: cover;
   /* // height: max(10rem, 25vh); */
   max-height: max(10rem, 30vh);
@@ -45,22 +45,18 @@ a {
 }
 .itemtext {
   display: flex;
-  flex-direction: column;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 26px;
-  padding-right: 26px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.itemtextteamname {
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 14px;
   font-weight: bold;
 }
 .itemtexttitle {
-  margin-bottom: 3px;
-  padding: 1px;
-  text-align: left;
-  font-size: 16px;
-}
-.itemtextcategory,
-.itemtextfavor {
-  margin: 3.5px;
   text-align: left;
   font-size: 12px;
 }

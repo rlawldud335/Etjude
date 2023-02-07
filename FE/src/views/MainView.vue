@@ -63,10 +63,11 @@ export default {
 }
 .content__1136width {
   width: 1136px;
-  margin: 60px 0px;
+  margin: 30px 0px;
 }
 .line {
   width: 1636px;
   border: 1px solid rgb(211, 211, 211);
+  margin: 30px 0px;
 }
 </style>

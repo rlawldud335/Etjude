@@ -1,18 +1,23 @@
 <template lang="">
   <div class="carousel__item">
-    <router-link to="/story">
-      <img class="itemimg" :src="require(`@/assets/images/더글로리.jpg`)" alt="" />
+    <router-link to="/main">
+      <img class="itemimg" :src="require(`@/assets/images/profile.jpg`)" alt="" />
       <div class="itemtext">
-        <div class="itemtexttitle">{{ carditem.title }}</div>
-        <div class="itemtextcategory">{{ carditem.category }}</div>
-        <div class="itemtextfavor">좋아요 {{ carditem.favor }}</div>
+        <div class="rightitem">
+          <div class="itemtextteamname">{{ carditem.team }}</div>
+          <div class="itemtexttitle">{{ carditem.title }}</div>
+          <div class="itemtextdate">{{ carditem.date }}</div>
+        </div>
+        <div class="leftitem">
+          <div class="itemtextdday">{{ carditem.dday }}</div>
+        </div>
       </div>
     </router-link>
   </div>
 </template>
 <script>
 export default {
-  name: "StoryCardItem",
+  name: "StudioCardItem",
   props: {
     carditem: {},
   },
@@ -25,7 +30,7 @@ a {
 }
 .carousel__item {
   background-color: #fff;
-  /* border-radius: 0.5rem; */
+  //   border-radius: 0.5rem;
   margin: 10px;
   transition: all 0.3s ease-in-out;
   &:hover {
@@ -34,6 +39,7 @@ a {
   }
 }
 .itemimg {
+  border-radius: 0.5rem 0.5rem 0 0;
   height: 134px;
   width: 257px;
   object-fit: cover;
@@ -45,23 +51,30 @@ a {
 }
 .itemtext {
   display: flex;
-  flex-direction: column;
   padding-top: 16px;
   padding-bottom: 16px;
   padding-left: 26px;
   padding-right: 26px;
-  font-weight: bold;
+  justify-content: space-between;
 }
-.itemtexttitle {
+.itemtextteamname {
   margin-bottom: 3px;
-  padding: 1px;
   text-align: left;
   font-size: 16px;
+  font-weight: bold;
 }
-.itemtextcategory,
-.itemtextfavor {
-  margin: 3.5px;
+.itemtexttitle,
+.itemtextdate {
+  margin: 2px;
+  padding-left: 5px;
   text-align: left;
   font-size: 12px;
+}
+
+.itemtextdday {
+  display: inline;
+  padding-left: 3px;
+  text-align: left;
+  font-size: 16px;
 }
 </style>

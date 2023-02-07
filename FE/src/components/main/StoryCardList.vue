@@ -1,9 +1,7 @@
 <template>
   <Carousel :settings="settings" :breakpoints="breakpoints">
     <Slide v-for="slide in testdatas" :key="slide">
-      <div class="carousel__item">
-        <StoryCardItem></StoryCardItem>
-      </div>
+      <StoryCardItem :carditem="slide"></StoryCardItem>
     </Slide>
     <template #addons>
       <Navigation />
@@ -15,12 +13,12 @@
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
 import StoryCardItemData from "@/dummy/StoryCardItemData.json";
-import StoryCardItem from "./StoryCardItem.vue";
+import StoryCardItem from "@/components/main/StoryCardItem.vue";
 
 import "vue3-carousel/dist/carousel.css";
 
 export default defineComponent({
-  name: "StoryCardItem",
+  name: "StoryCardList",
   components: {
     Carousel,
     Slide,
@@ -48,15 +46,4 @@ export default defineComponent({
   }),
 });
 </script>
-<style scoped>
-a {
-  text-decoration: none;
-  color: black;
-}
-.carousel__item {
-  background-color: #fff;
-  /* border-radius: 0.5rem; */
-  /* box-shadow: 0.05rem 0.15rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45); */
-  margin: 10px;
-}
-</style>
+<style scoped></style>
