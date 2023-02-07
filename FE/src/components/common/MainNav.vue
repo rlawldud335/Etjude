@@ -7,21 +7,21 @@
         </router-link>
         <div class="header__nav">
           <router-link :to="{ name: 'search' }" class="header__nav-item">검색</router-link>
-          <router-link
-            to="/about"
+          <a
             class="header__nav-item header__dropdown-button"
             @mouseover="categoryHover"
             @focus="categoryHover"
             @mouseout="categoryUnhover"
             @focusout="categoryUnhover"
-            >카테고리
+          >
+            카테고리
             <ul v-show="category.isHovered" class="header__dropdown">
               <li><span>영화</span></li>
               <li><span>드라마</span></li>
               <li><span>뮤지컬</span></li>
               <li><span>연극</span></li>
             </ul>
-          </router-link>
+          </a>
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
         </div>
       </div>
@@ -123,6 +123,7 @@ nav {
       font-size: 16px;
       color: $aha-gray;
     }
+    cursor: pointer;
   }
   li:nth-child(1) {
     margin-top: 5px;
