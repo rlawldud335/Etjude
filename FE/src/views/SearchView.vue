@@ -2,7 +2,7 @@
   <div class="search">
     <div class="search__section">
       <div class="search__bar">
-        <input class="search__input" placeholder="검색어를 입력해주세요." v-model="searchWord" />
+        <input class="search__input" placeholder="검색어를 입력해주세요." @input="inputKeyword" />
       </div>
       <div class="search__tag">
         <button class="search__tag-button"># 드라마</button>
@@ -15,28 +15,23 @@
   <router-view />
 </template>
 <script>
-import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
   name: "SearchView",
   components: {},
   setup() {
-    const searchWord = ref("");
     const router = useRouter();
-    watch(
-      () => searchWord.value,
-      (newValue) => {
-        console.log(newValue);
-        if (newValue) {
-          router.push({ name: "search-result", params: { keyword: newValue } });
-        } else {
-          router.push({ name: "search" });
-        }
+    const inputKeyword = (event) => {
+      const inputText = event.target.value;
+      if (inputText) {
+        router.push({ name: "search-result", params: { keyword: inputText } });
+      } else {
+        router.push({ name: "search" });
       }
-    );
+    };
     return {
-      searchWord,
+      inputKeyword,
     };
   },
   beforeRouteUpdate(to, from, next) {
