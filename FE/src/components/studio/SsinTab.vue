@@ -1,16 +1,55 @@
+<!-- eslint-disable no-param-reassign -->
+<!-- eslint-disable no-restricted-syntax -->
 <template>
   <div class="studio__ssin-tab-list">
-    <SsinTabScene v-for="scene in scenes" :key="scene.id" :scene="scene"></SsinTabScene>
+    <SsinTabScene v-for="scene in SceneRecordingData.list" :key="scene.index" :scene="scene" @aaaa="changeCount">
+    </SsinTabScene>
+    <span>{{ count }}</span>
   </div>
 </template>
 
 <script>
 import SsinTabScene from "@/components/studio/SsinTabScene.vue";
+import { ref, reactive } from "vue";
 
 export default {
   name: "SsinTab",
   components: { SsinTabScene },
-  props: { scenes: Array },
+  setup() {
+    const SceneRecordingData = reactive({
+      list:
+        [
+          {
+            "index": 1,
+            "role": "진양철",
+            "isRecording": false,
+            "recordedMediaURL": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+            "recordedUser": {
+              "name": "user1",
+              "profile_url": "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg"
+            }
+          },
+          {
+            "index": 2,
+            "role": "송중기",
+            "isRecording": true,
+            "recordedMediaURL": null,
+            "recordedUser": {
+              "name": "user1",
+              "profile_url": "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg"
+            }
+          }
+        ]
+    });
+    let count = ref(0);
+    const changeCount = (c) => {
+      count = c;
+    }
+
+    return {
+      SceneRecordingData, count, changeCount
+    };
+  }
 };
 </script>
 <style lang="scss">

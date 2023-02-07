@@ -24,7 +24,7 @@
         </div>
         <div class="openTab__body">
           <ScriptTab :scenes="studioDummyData.scene" v-show="state.selectTab === 0" />
-          <SsinTab :scenes="studioDummyData.scene" v-show="state.selectTab === 1" />
+          <SsinTab v-show="state.selectTab === 1" />
           <FilmTab :films="studioDummyData.film" v-show="state.selectTab === 2" />
         </div>
       </div>

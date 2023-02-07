@@ -1,49 +1,51 @@
+<!-- eslint-disable vuejs-accessibility/media-has-caption -->
 <template>
   <div class="studio-ssin-tab">
     <div class="studio-tab__scene-head">
-      <div class="studio-tab__scene-id">#{{ scene.id }}.&nbsp;{{ scene.role.name }}</div>
+      <div class="studio-tab__scene-id">#{{ scene.index }}.&nbsp;{{ scene.role }}</div>
       <div class="studio-tab__scene-icon">
-        <div class="studio-tab__scene-profile-frame">
-          <img :src="scene.video.user.profile_url" alt="" />
+        <div class="studio-tab__scene-profile-frame" v-if="scene.recordedMediaURL">
+          <img :src="scene.recordedUser.profile_url" alt="" />
         </div>
-        <playIcon />
+        <RecordingIcon v-if="!scene.isRecording" @click="changeHandler" />
+        <DisableRecordingIcon v-if="scene.isRecording" />
         <button class="studio-tab__dropdown-button" @click="toggleOpen">
           <downIcon v-if="!lines.isOpened" />
           <upIcon v-else />
         </button>
       </div>
     </div>
-    <div class="studio-tab__scene--opened" v-for="line in scene.line" :key="line.id">
-      <div class="studio-tab-scene__line" v-if="lines.isOpened">
-        <div class="studio-tab-scene__line-timestamp">
-          {{ line.timestamp }}
-        </div>
-        <div class="studio-tab-scene__line-script">
-          {{ line.script }}
-        </div>
-      </div>
+    <div class="studio-tab__scene--opened" v-if="lines.isOpened">
+      <video :src="scene.recordedMediaURL" controls></video>
     </div>
   </div>
 </template>
 
 <script>
-import playIcon from "@/assets/icons/studioTabPlay.svg";
+import RecordingIcon from "@/assets/icons/recordingIcon.svg";
+import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
 import downIcon from "@/assets/icons/down.svg";
 import upIcon from "@/assets/icons/up.svg";
 import { reactive } from "vue";
 
 export default {
   name: "SsinTabScene",
-  components: { playIcon, downIcon, upIcon },
+  components: { RecordingIcon, downIcon, upIcon, DisableRecordingIcon },
   props: { scene: Object },
-  setup() {
+  setup(props, { emit }) {
     const lines = reactive({ isOpened: false });
     const toggleOpen = () => {
       lines.isOpened = !lines.isOpened;
     };
+
+    const changeHandler = () => {
+      emit('aaaa', 3);
+    }
+
     return {
       lines,
       toggleOpen,
+      changeHandler
     };
   },
 };
@@ -76,6 +78,7 @@ export default {
   border-radius: 70%;
   overflow: hidden;
   justify-content: center;
+
   img {
     max-width: 100%;
     height: auto;
@@ -96,9 +99,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .studio-tab__scene-icon {
   display: flex;
-  > * {
+
+  >* {
     margin: 0px 4px;
     cursor: pointer;
   }
@@ -121,5 +126,17 @@ export default {
   line-height: 120%;
   font-size: 14px;
   margin-left: 10px;
+}
+
+.studio-tab__scene--opened {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+}
+
+.studio-tab__scene--opened video {
+  width: 250px;
+  height: 150px;
 }
 </style>

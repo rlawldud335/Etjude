@@ -4,53 +4,133 @@
         <div class="video-player">
             <video
                 :class="[{ 'video-zero-size': state.videoMode == 0 }, { 'video-default-size': state.videoMode == 1 }, { 'video-full-size': state.videoMode == 2 },]"
-                src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" controls></video>
+                id="video-output" :src="recordedMediaURL" controls></video>
             <video
                 :class="[{ 'video-zero-size': state.videoMode == 2 }, { 'video-default-size': state.videoMode == 1 }, { 'video-full-size': state.videoMode == 0 },]"
-                :srcObject="stream" id="my-video" autoplay></video>
+                :srcObject="mediaStream" autoplay></video>
         </div>
         <div class="video-controller">
-            <button class="bana-btn">씬 녹화</button>
-            <button class="bana-btn">마이크on/off</button>
-            <button class="bana-btn">카메라on/off</button>
-            <button class="bana-btn" @click="state.videoMode = (state.videoMode + 1) % 3">화면전환</button>
+            <button class="bana-btn" @click="startRecoding()">녹화 시작</button>
+            <button class="bana-btn" @click="endRecording()">녹화 종료</button>
+            <button class="bana-btn" @click="downloadRecording()">다운로드</button>
+            <button class="bana-btn" @click="toggleVideo()">
+                <VideoOn v-show="constraints.video" />
+                <VideoOff v-show="!constraints.video" />
+            </button>
+            <button class="bana-btn" @click="toggleAudio()">
+                <MicOn v-show="constraints.audio" />
+                <MicOff v-show="!constraints.audio" />
+            </button>
+            <button class="bana-btn" @click="state.videoMode = (state.videoMode + 1) % 3">
+                화면전환
+            </button>
         </div>
     </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount, reactive } from 'vue'
+<script>
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+import VideoOn from "@/assets/icons/VideoOn.svg";
+import VideoOff from "@/assets/icons/VideoOff.svg";
+import MicOn from "@/assets/icons/MicOn.svg";
+import MicOff from "@/assets/icons/MicOff.svg";
 
-const stream = ref(null)
-const constraints = {
-    audio: false,
-    video: {
-        width: { min: 500, ideal: 1280, max: 1920 },
-        height: { min: 300, ideal: 720, max: 1080 },
-        facingMode: 'environment',
+export default {
+    components: {
+        VideoOn, VideoOff, MicOn, MicOff
     },
+    setup() {
+        const state = reactive({
+            videoMode: 0
+        });
+        // const videoOutput = document.getElementById("video-output");
+        const mediaStream = ref(null);
+        const constraints = reactive({ video: true, audio: true });
+        let mediaRecorder = null;
+        const recordedMediaURL = ref(null);
+
+        const getStream = async () => {
+            const newMediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+            mediaStream.value = newMediaStream;
+        }
+
+        const stopStream = () => {
+            mediaStream.value.getTracks().forEach(track => {
+                console.log('stopping', track)
+                track.stop()
+            })
+            mediaStream.value = null
+        }
+
+        const toggleVideo = () => {
+            constraints.video = !constraints.video;
+            mediaStream.value.getVideoTracks()[0].enabled = constraints.video;
+        }
+
+        const toggleAudio = () => {
+            constraints.audio = !constraints.audio;
+            mediaStream.value.getAudioTracks()[0].enabled = constraints.audio;
+        }
+
+        const startRecoding = () => {
+            const recordedChunks = [];
+            mediaRecorder = new MediaRecorder(mediaStream.value, {
+                mimeType: "video/webm;",
+            });
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data && event.data.size > 0) {
+                    console.log("ondataavailable");
+                    recordedChunks.push(event.data);
+                }
+            };
+            mediaRecorder.onstop = () => {
+                if (recordedMediaURL.value) {
+                    URL.revokeObjectURL(recordedMediaURL.value);
+                }
+                if (recordedChunks && recordedChunks.length !== 0) {
+                    const blob = new Blob(recordedChunks, { type: "video/webm;" });
+                    recordedMediaURL.value = URL.createObjectURL(blob);
+                    console.log()
+                }
+            };
+            console.log("start recording");
+            mediaRecorder.start();
+        }
+
+        const downloadRecording = () => {
+            if (recordedMediaURL.value) {
+                const link = document.createElement("a");
+                document.body.appendChild(link);
+                link.href = recordedMediaURL.value;
+                link.download = "video.webm";
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        const endRecording = () => {
+            if (mediaRecorder) {
+                console.log("endRecording")
+                mediaRecorder.stop();
+            }
+        }
+
+        onMounted(() => getStream())
+        onBeforeUnmount(() => stopStream())
+
+        return {
+            state,
+            mediaStream,
+            recordedMediaURL,
+            constraints,
+            toggleVideo,
+            toggleAudio,
+            startRecoding,
+            endRecording,
+            downloadRecording
+        };
+    }
 }
-
-const stop = () => {
-    stream.value.getTracks().forEach(track => {
-        console.log('stopping', track)
-        track.stop()
-    })
-    stream.value = null
-}
-
-const play = async () => {
-    const frontCamStream = await navigator.mediaDevices.getUserMedia(constraints)
-    console.log('streaming', frontCamStream)
-    stream.value = frontCamStream
-}
-
-onMounted(() => play())
-onBeforeUnmount(() => stop())
-
-const state = reactive({
-    videoMode: 0
-})
 </script>
 
 <style lang="scss">
