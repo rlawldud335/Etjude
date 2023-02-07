@@ -14,6 +14,7 @@ import static offworkseekers.unnamed.db.entity.QCategory.category;
 import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
+import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
 import static offworkseekers.unnamed.db.entity.QWork.work;
 
 @RequiredArgsConstructor
@@ -62,7 +63,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     }
 
     @Override
-    public StoryDetailResponse getStoryDetail(Long storyId) {
+    public StoryDetailResponse getStoryDetail(Long storyId, String userId) {
         Tuple tuple = queryFactory
                 .select(story.storyVideoUrl, category.categoryName, work.workTitle, story.storyTitle, story.storySummary)
                 .from(story, work, category)
@@ -78,6 +79,22 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                 .where(studio.story.storyId.eq(storyId))
                 .fetchOne();
 
+
+        List<Long> fetch = queryFactory
+                .select(teamMember.studio.studioId)
+                .from(teamMember)
+                .where(teamMember.user.userId.eq(userId))
+                .fetch();
+
+        Long studioIdResponse = 0L;
+        for (Long fetchedStudioId : fetch) {
+            studioIdResponse = queryFactory
+                    .select(studio.studioId)
+                    .from(studio)
+                    .where(studio.studioId.eq(fetchedStudioId))
+                    .fetchOne();
+        }
+
         StoryDetailResponse storyDetail = StoryDetailResponse.builder()
                 .storyLikeCount(
                         getStoryLikeCount(storyId)
@@ -88,6 +105,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                 .storyTitle(tuple.get(story.storyTitle))
                 .categoryName(tuple.get(category.categoryName))
                 .workTitle(tuple.get(work.workTitle))
+                .studioId(studioIdResponse)
                 .build();
 
         return storyDetail;

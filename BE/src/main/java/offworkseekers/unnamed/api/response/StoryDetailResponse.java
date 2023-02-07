@@ -16,9 +16,10 @@ public class StoryDetailResponse {
     private String storySummary;
     private int storyLikeCount;
     private int studioStack;
+    private Long studioId;
 
     @Builder
-    public StoryDetailResponse(String storyVideoUrl, String categoryName, String workTitle, String storyTitle, String storySummary, int storyLikeCount, int studioStack) {
+    public StoryDetailResponse(String storyVideoUrl, String categoryName, String workTitle, String storyTitle, String storySummary, int storyLikeCount, int studioStack, Long studioId) {
         this.storyVideoUrl = storyVideoUrl;
         this.categoryName = categoryName;
         this.workTitle = workTitle;
@@ -26,5 +27,6 @@ public class StoryDetailResponse {
         this.storySummary = storySummary;
         this.storyLikeCount = storyLikeCount;
         this.studioStack = studioStack;
+        this.studioId = studioId;
     }
 }
