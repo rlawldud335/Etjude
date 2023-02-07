@@ -2,7 +2,12 @@
   <div class="search">
     <div class="search__section">
       <div class="search__bar">
-        <input class="search__input" placeholder="검색어를 입력해주세요." v-model="searchWord" />
+        <input
+          class="search__input"
+          placeholder="검색어를 입력해주세요."
+          @input="inputKeyword"
+          @blur="blurInput"
+        />
       </div>
       <div class="search__tag">
         <button class="search__tag-button"># 드라마</button>
@@ -12,35 +17,41 @@
       </div>
     </div>
   </div>
-  <router-view />
+  <SearchResult v-if="inputText" :keyword="inputText"></SearchResult>
 </template>
 <script>
-import { ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import SearchResult from "@/components/search/SearchResult.vue";
 
 export default {
   name: "SearchView",
-  components: {},
+  components: {
+    SearchResult,
+  },
   setup() {
-    const searchWord = ref("");
     const router = useRouter();
-    watch(
-      () => searchWord.value,
-      (newValue) => {
-        console.log(newValue);
-        if (newValue) {
-          router.push({ name: "search-result", params: { keyword: newValue } });
-        } else {
-          router.push({ name: "search" });
-        }
+    const route = useRoute();
+
+    const inputText = ref(route.params.keyword);
+    const inputKeyword = (event) => {
+      inputText.value = event.target.value;
+    };
+    const blurInput = () => {
+      if (inputText.value) {
+        router.push({ name: "search-result", params: { keyword: inputText.value } });
+      } else {
+        router.push({ name: "search" });
       }
-    );
+    };
     return {
-      searchWord,
+      inputText,
+      inputKeyword,
+      blurInput,
     };
   },
   beforeRouteUpdate(to, from, next) {
-    this.searchWord = to.params.keyword;
+    this.inputText = to.params.keyword;
     next();
   },
 };
