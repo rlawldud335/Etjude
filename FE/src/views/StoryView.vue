@@ -1,6 +1,6 @@
 <template lang="">
   <div class="story_container">
-    <div class="title_container">부모 컴퍼넌트 데이터 : {{ emitGet }}</div>
+    <div class="title_container"></div>
     <div class="main_container main__1136width">
       <div class="left_content">
         <div class="story__tab-list">
@@ -45,8 +45,7 @@
         ></StoryCharacter>
         <StoryScript
           v-show="tab.tabvalue === 'storyscript'"
-          @emit-emit="emitEmit"
-          :emitGet="emitGet"
+          :scenes="StoryDummyData.scene"
         ></StoryScript>
       </div>
       <div class="right_content">
@@ -60,7 +59,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
 import StoryCharacter from "@/components/story/StoryCharacter.vue";
@@ -89,18 +88,12 @@ export default {
       tab = "storyscript";
       console.log(tab, "스크립트");
     };
-    const emitGet = ref("에밋 아직 안됨");
-    const emitEmit = (emitData) => {
-      emitGet.value = emitData;
-    };
     return {
       tab,
       StoryDummyData,
       storyaccount,
       stroycharacter,
       storyscript,
-      emitGet,
-      emitEmit,
     };
   },
 };
