@@ -1,7 +1,7 @@
 <template lang="">
   <div class="carousel__item">
     <router-link to="/story">
-      <img class="itemimg" :src="require(`@/assets/images/더글로리.jpg`)" alt="" />
+      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
       <div class="itemtext">
         <div class="itemtexttitle">{{ carditem.storyTitle }}</div>
         <div class="itemtextcategory">{{ carditem.categoryName }}</div>
