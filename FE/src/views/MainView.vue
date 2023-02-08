@@ -33,6 +33,8 @@ import StoryCard from "@/components/main/StoryCard.vue";
 import PieceCard from "@/components/main/PieceCard.vue";
 import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
 import SearchSession from "@/components/main/SearchSession.vue";
+import { getMyPage } from "@/api/users";
+// import { onMounted } from "vue";
 
 export default {
   name: "MainView",
@@ -44,6 +46,18 @@ export default {
     ShortcutFlim,
     SearchSession,
   },
+  setup() {
+    getMyPage(
+      {
+        "user_id": 1
+      }
+      , (data) => {
+        console.log(data);
+      }, (error) => {
+        console.log(error);
+      });
+
+  }
 };
 </script>
 <style lang="scss">
@@ -57,14 +71,17 @@ export default {
 .main__fullwidth {
   width: 100%;
 }
+
 .main__1136width {
   width: 1136px;
   margin-top: 30px;
 }
+
 .content__1136width {
   width: 1136px;
   margin: 30px 0px;
 }
+
 .line {
   width: 1636px;
   border: 1px solid rgb(211, 211, 211);
