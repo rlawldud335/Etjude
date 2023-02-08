@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import StoryScriptSceneLine from "@/components/studio/ScriptTabSceneLine.vue";
+import StoryScriptSceneLine from "@/components/story/StoryScriptSceneLine.vue";
 
 export default {
   name: "StoryScriptScene",
