@@ -19,13 +19,27 @@
     <div class="thumbnail_upload" @click="clickthumbnail"></div>
     <img ref="preview" :src="files" alt="test" />
   </div>
-  <div class="right_container">
-    <UploadCarousel></UploadCarousel>
+  <div class="right_container" @load="refreshcarousel">
+    필름 선택하기
+    <div ref="carouselref" class="carousel">
+      <UploadCarousel :dummydata="dummydata"></UploadCarousel>
+    </div>
+    <div class="filmcontent">
+      <img :src="require(`@/assets/images/헤어질결심.jpg`)" alt="dummy" class="selectimg" />
+      <div class="textcontent">
+        <div class="">필름정보</div>
+        <div class="">재벌집 막내아들</div>
+      </div>
+    </div>
+    <div class="uploadcontent">
+      <button class="uploadbutton">업로드</button>
+    </div>
   </div>
   <div class="main_container"></div>
 </template>
 <script>
 import { ref } from "vue";
+import dummydata from "@/dummy/filmdummydata/page1.json";
 import UploadCarousel from "./UploadCarousel.vue";
 
 export default {
@@ -34,6 +48,7 @@ export default {
     UploadCarousel,
   },
   setup() {
+    const carouselref = ref();
     const imgUpload = ref();
     const preview = ref();
     let files = ref();
@@ -46,13 +61,18 @@ export default {
     const clickthumbnail = () => {
       imgUpload.value.click();
     };
-
+    const refreshcarousel = () => {
+      carouselref.value.refresh();
+    };
     return {
+      carouselref,
+      dummydata,
       imgUpload,
       preview,
       files,
       clickthumbnail,
       getImageFiles,
+      refreshcarousel,
     };
   },
 };
@@ -70,8 +90,11 @@ export default {
   flex-grow: 1;
   width: 524px;
   height: 100%;
+  background-color: aliceblue;
   box-sizing: border-box;
   padding: 20px;
+  font-size: 18px;
+  font-weight: 400;
   // background-color: red;
 }
 .img_upload {
@@ -109,5 +132,36 @@ h2 {
 .input_content {
   height: 120px;
   align-items: flex-start;
+}
+.carousel {
+  margin: 20px 0px;
+  width: 100%;
+}
+.selectimg {
+  width: 308px;
+  height: 204px;
+}
+.filmcontent {
+  box-sizing: border-box;
+  display: flex;
+  margin: 40px 0px;
+}
+.textcontent {
+  box-sizing: border-box;
+  margin: 0px 20px;
+}
+.uploadcontent {
+  margin-top: 60px;
+  .uploadbutton {
+    width: 174px;
+    height: 38px;
+    background-color: $bana-pink;
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    border: none;
+    border-radius: 4px;
+    float: right;
+  }
 }
 </style>

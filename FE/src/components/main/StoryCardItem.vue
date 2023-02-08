@@ -1,7 +1,17 @@
 <template lang="">
   <div class="carousel__item">
-    <router-link to="/story">
-      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+    <router-link
+      :to="{
+        name: 'story',
+        params: {
+          category: carditem.category,
+          title: carditem.title,
+          main_text: carditem.main_text,
+          favor: carditem.favor,
+        },
+      }"
+    >
+      <img class="itemimg" :src="carditem.img" alt="" />
       <div class="itemtext">
         <div class="itemtexttitle">{{ carditem.storyTitle }}</div>
         <div class="itemtextcategory">{{ carditem.categoryName }}</div>
@@ -15,6 +25,11 @@ export default {
   name: "StoryCardItem",
   props: {
     carditem: {},
+  },
+  data() {
+    return {
+      dummyitem: this.carditem,
+    };
   },
 };
 </script>

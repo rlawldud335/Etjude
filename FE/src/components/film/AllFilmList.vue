@@ -1,6 +1,14 @@
 <template>
-  <div class="film-list">
-    <FilmListItem v-for="film in dummyfilms" :key="film.id" :film="film"> </FilmListItem>
+  <div class="all-film-list">
+    <div class="film-list">
+      <FilmListItem
+        v-for="film in allFilmList"
+        :key="film.id"
+        :film="film"
+        :createdDate="film.createdDate"
+      >
+      </FilmListItem>
+    </div>
     <v-pagination
       v-model="page"
       :pages="10"
@@ -11,15 +19,15 @@
       @click="changePage"
     />
   </div>
-  <span>테스트용 page 확인 : {{ page }}</span>
+  <span @click="getAllFilmList">테스트용 page 확인 : {{ page }}</span>
 </template>
 <script>
 import { ref } from "vue";
-// import axios from "axios";
 import FilmListItem from "@/components/film/FilmListItem.vue";
 import dummyfilms from "@/dummy/filmdummydata/page1.json";
 import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
+import { getAllFilm } from "@/api/films";
 
 /* pagination 연결
 기본 페이지는 1인 상태이고 pagination 클릭시 changePage 메쏘드가 작동
@@ -35,6 +43,16 @@ export default {
   },
   setup() {
     const page = ref(1);
+    const allFilmList = ref(null);
+    getAllFilm(
+      ({ data }) => {
+        console.log(data);
+        allFilmList.value = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     // const changeFilm = () => {
     //   axios({
     //     method: "get",
@@ -52,6 +70,7 @@ export default {
     // };
     return {
       page,
+      allFilmList,
       dummyfilms,
       // changeFilm,
     };
@@ -60,11 +79,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.all-film-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .film-list {
   display: flex;
   margin: 0px 60px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .film-list__pagination {

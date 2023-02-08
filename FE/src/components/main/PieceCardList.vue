@@ -3,9 +3,6 @@
     <Slide v-for="slide in recommendPieceList" :key="slide">
       <PieceCardItem :carditem="slide"></PieceCardItem>
     </Slide>
-    <template #addons>
-      <Navigation />
-    </template>
   </Carousel>
 </template>
 
@@ -24,7 +21,6 @@ export default defineComponent({
   components: {
     Carousel,
     Slide,
-    Navigation,
     PieceCardItem,
   },
   created() {
