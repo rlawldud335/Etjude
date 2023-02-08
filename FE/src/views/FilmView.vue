@@ -121,7 +121,7 @@ export default {
   border: none;
   color: white;
   font-size: 14px;
-  background-color: black;
+  background-color: $bana-pink;
   width: 85px;
   height: 32px;
   border-radius: 20px;

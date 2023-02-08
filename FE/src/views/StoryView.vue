@@ -43,7 +43,10 @@
           v-show="tab.tabvalue === 'storycharacter'"
           :roles="StoryDummyData.role"
         ></StoryCharacter>
-        <StoryScript v-show="tab.tabvalue === 'storyscript'"></StoryScript>
+        <StoryScript
+          v-show="tab.tabvalue === 'storyscript'"
+          :scenes="StoryDummyData.scene"
+        ></StoryScript>
       </div>
       <div class="right_content">
         <div class="createcard">

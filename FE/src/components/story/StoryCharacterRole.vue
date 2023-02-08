@@ -4,24 +4,24 @@
       <img class="story__role-image" :src="role.photo_url" alt="" />
     </div>
     <div class="story__role-desc-text">
-      <div class="story__role-desc-title">
+      <p class="story__role-desc-title">
         {{ role.name }}
-      </div>
-      <div class="story__role-desc-body">
+      </p>
+      <p class="story__role-desc-body">
         {{ role.desc }}
-      </div>
+      </p>
     </div>
   </div>
 </template>
 <script>
+import {} from "vue";
+
 export default {
   name: "StoryCharacterRole",
   props: {
     role: Object,
   },
-  setup() {
-    return {};
-  },
+  setup() {},
 };
 </script>
 <style lang="scss">
@@ -40,5 +40,35 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.story__role-desc-text {
+  margin: 30px 0px 30px 50px;
+  max-width: 26rem;
+}
+
+.story__role-desc-title {
+  width: 100%;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 200%;
+}
+
+.story__role-desc-body {
+  height: 140px;
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  overflow: auto;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 8;
+  // -webkit-box-orient: vertical;
+}
+
+.story__role-desc-body::-webkit-scrollbar {
+  display: none;
 }
 </style>
