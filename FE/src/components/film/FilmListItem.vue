@@ -1,18 +1,20 @@
 <template>
   <div class="film__card" @click="showDtailModal = true" @keydown="none">
     <div class="film__card-image">
-      <img :src="film.thumbnail_url" alt="thumbnail" />
+      <img :src="film.articleThumbnailUrl" alt="thumbnail" />
     </div>
     <div class="film__card-info">
       <div class="film__card-author-profile">
         <div class="film__profile-frame">
-          <img class="film__profile-image" :src="film.author.profile_url" alt="" />
+          <img class="film__profile-image" :src="film.writerPhotoUrl" alt="" />
         </div>
       </div>
       <div class="film__card-body">
-        <span class="film__card-title">{{ film.title }}</span>
-        <span class="film__card-author">{{ film.author.name }}</span>
-        <span class="film__card-history">조회수 {{ film.view }}회 ▪ {{ diffCreated }}</span>
+        <span class="film__card-title">{{ film.articleTitle }}</span>
+        <span class="film__card-author">{{ film.writerName }}</span>
+        <span class="film__card-history"
+          >좋아요 {{ film.articleLikeCount }}회 ▪ {{ diffCreated }}</span
+        >
       </div>
     </div>
   </div>
@@ -26,6 +28,7 @@ export default {
   name: "FilmListItem",
   props: {
     film: Object,
+    createdDate: Date,
   },
   components: {
     FilmSharingDtail,
@@ -34,7 +37,7 @@ export default {
     const showDtailModal = ref(false);
 
     const diffCreated = computed(() => {
-      const createdDate = new Date(props.film.created);
+      const createdDate = new Date(props.createdDate);
       const now = new Date();
       const timeDiff = now.getTime() - createdDate.getTime();
 
