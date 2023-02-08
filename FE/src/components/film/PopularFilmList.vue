@@ -5,6 +5,7 @@
       :key="film.id"
       :film="film"
       :createdDate="film.articleCreatedDate"
+      :likeCount="film.likeCount"
     >
     </FilmListItem>
   </div>

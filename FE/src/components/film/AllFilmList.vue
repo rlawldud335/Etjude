@@ -6,28 +6,28 @@
         :key="film.id"
         :film="film"
         :createdDate="film.createdDate"
+        :likeCount="film.articleLikeCount"
       >
       </FilmListItem>
     </div>
     <v-pagination
       v-model="page"
-      :pages="10"
+      :pages="pageCount"
       :range-size="1"
       active-color="#DCEDFF"
       @update:modelValue="updateHandler"
       class="film-list__pagination"
-      @click="changePage"
+      @click="updatePage"
     />
   </div>
-  <span @click="getAllFilmList">테스트용 page 확인 : {{ page }}</span>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import FilmListItem from "@/components/film/FilmListItem.vue";
 import dummyfilms from "@/dummy/filmdummydata/page1.json";
 import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
-import { getAllFilm } from "@/api/films";
+import { getFilmPage } from "@/api/films";
 
 /* pagination 연결
 기본 페이지는 1인 상태이고 pagination 클릭시 changePage 메쏘드가 작동
@@ -44,35 +44,35 @@ export default {
   setup() {
     const page = ref(1);
     const allFilmList = ref(null);
-    getAllFilm(
-      ({ data }) => {
-        console.log(data);
-        allFilmList.value = data;
-      },
-      (error) => {
-        console.log(error);
+    const getFilmPageList = () => {
+      getFilmPage(
+        page.value,
+        ({ data }) => {
+          console.log(data);
+          allFilmList.value = data;
+        },
+        (error) => {
+          console.log(error);
+          allFilmList.value = null;
+        }
+      );
+    };
+    getFilmPageList();
+    const updatePage = () => {
+      getFilmPageList();
+    };
+    const pageCount = computed(() => {
+      if (allFilmList.value) {
+        return Math.ceil(allFilmList.value[0].totalArticleNumber / 12);
       }
-    );
-    // const changeFilm = () => {
-    //   axios({
-    //     method: "get",
-    //     url: ``,
-    //     params: {
-    //         page
-    //       }
-    //   })
-    //     .then((res) => {
-    //       console.log(res);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
+      return pageCount.value;
+    });
     return {
       page,
       allFilmList,
       dummyfilms,
-      // changeFilm,
+      updatePage,
+      pageCount,
     };
   },
 };
