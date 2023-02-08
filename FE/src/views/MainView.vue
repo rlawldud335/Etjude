@@ -33,7 +33,6 @@ import StoryCard from "@/components/main/StoryCard.vue";
 import PieceCard from "@/components/main/PieceCard.vue";
 import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
 import SearchSession from "@/components/main/SearchSession.vue";
-import { getMyPage } from "@/api/users";
 // import { onMounted } from "vue";
 
 export default {
@@ -47,15 +46,6 @@ export default {
     SearchSession,
   },
   setup() {
-    getMyPage(
-      {
-        "user_id": 1
-      }
-      , (data) => {
-        console.log(data);
-      }, (error) => {
-        console.log(error);
-      });
 
   }
 };

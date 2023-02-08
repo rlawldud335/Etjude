@@ -11,11 +11,11 @@ function apiInstance() {
       "Content-Type": "application/json;charset=utf-8",
     },
   });
-  AxiosInst.interceptors.request.use((config) => {
-    // config.headers.authorization = "token";
-    config.headers["Access-Control-Allow-Origin"] = "*"; // CORS 설정(모든 리소스 허용)
-    return config;
-  });
+  // AxiosInst.interceptors.request.use((config) => {
+  //   // config.headers.authorization = "token";
+  //   config.headers["Access-Control-Allow-Origin"] = "*"; // CORS 설정(모든 리소스 허용)
+  //   return config;
+  // });
 
   return AxiosInst;
 }
