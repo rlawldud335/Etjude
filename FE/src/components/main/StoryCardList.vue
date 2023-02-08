@@ -1,6 +1,6 @@
 <template>
   <Carousel :settings="settings" :breakpoints="breakpoints">
-    <Slide v-for="slide in testdatas" :key="slide">
+    <Slide v-for="slide in recommendStoryList" :key="slide">
       <StoryCardItem :carditem="slide"></StoryCardItem>
     </Slide>
     <template #addons>
@@ -14,6 +14,7 @@ import { defineComponent } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
 import StoryCardItemData from "@/dummy/StoryCardItemData.json";
 import StoryCardItem from "@/components/main/StoryCardItem.vue";
+import { getRecommendStory } from "@/api/story";
 
 import "vue3-carousel/dist/carousel.css";
 
@@ -25,7 +26,17 @@ export default defineComponent({
     Navigation,
     StoryCardItem,
   },
+  async created() {
+    getRecommendStory(({ data }) => {
+      console.log("story-card-list : ", data);
+      this.recommendStoryList = data;
+    }, (error) => {
+      console.log(error);
+    });
+  },
   data: () => ({
+    // real data
+    recommendStoryList: [],
     // dummy data
     testdatas: StoryCardItemData,
     // carousel settings
@@ -46,4 +57,6 @@ export default defineComponent({
   }),
 });
 </script>
-<style scoped></style>
+<style scoped>
+
+</style>
