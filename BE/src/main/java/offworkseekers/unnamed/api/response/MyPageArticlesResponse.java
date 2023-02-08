@@ -9,15 +9,18 @@ public class MyPageArticlesResponse {
     String articleTitle;
     String userId;
     String userPhotoUrl;
-    int articleViewCount;
+    int articleLikeCount;
     LocalDate articleCreatedDate;
 
-    public MyPageArticlesResponse(Long articleId, String articleTitle, String userId, String userPhotoUrl, int articleViewCount, LocalDate articleCreatedDate) {
+    public MyPageArticlesResponse(Long articleId, String articleTitle, String userId, String userPhotoUrl, LocalDate articleCreatedDate) {
         this.articleId = articleId;
         this.articleTitle = articleTitle;
         this.userId = userId;
         this.userPhotoUrl = userPhotoUrl;
-        this.articleViewCount = articleViewCount;
         this.articleCreatedDate = articleCreatedDate;
+    }
+
+    public void addArticleLikeCount(int likes){
+        this.articleLikeCount = likes;
     }
 }

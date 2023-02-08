@@ -25,6 +25,7 @@ import static offworkseekers.unnamed.db.entity.QUser.user;
 public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     private final JPAQueryFactory queryFactory;
+    private final ArticleRepositoryImpl articleRepositoryImpl;
 
     @Override
     public List<MyPageStudiosResponse> getMyPageStudios(String userId) {
@@ -82,18 +83,28 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     @Override
     public List<MyPageArticlesResponse> getMyPageArticles(String userId) {
-
-        return queryFactory
+        List<MyPageArticlesResponse> myPageArticlesResponses = queryFactory
                 .select(Projections.constructor(MyPageArticlesResponse.class,
                         article.articleId,
                         article.articleTitle,
                         article.user.userId,
                         article.user.picture,
-                        article.articleViewCount,
                         article.articleCreatedDate))
                 .from(article)
                 .where(article.user.userId.eq(userId))
                 .fetch();
+        for(int i = 0; i < myPageArticlesResponses.size(); i++){
+            Long articleId = myPageArticlesResponses.get(i).getArticleId();
+            int like = articleRepositoryImpl.getArticleLikeCount(articleId);
+            System.out.println(like);
+            myPageArticlesResponses.get(i).addArticleLikeCount(like);
+        }
+//        for(MyPageArticlesResponse article : myPageArticlesResponses){
+//            Long articleId = article.getArticleId();
+//            int like = articleRepositoryImpl.getArticleLikeCount(articleId);
+//            article.addArticleLikeCount(like);
+//        }
+        return myPageArticlesResponses;
     }
 
     @Override
@@ -104,7 +115,6 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         article.articleTitle,
                         article.user.userId,
                         article.user.picture,
-                        article.articleViewCount,
                         article.articleCreatedDate))
                 .from(article, likes)
                 .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.articleStoryId.eq(article.articleId.castToNum(Integer.class)))

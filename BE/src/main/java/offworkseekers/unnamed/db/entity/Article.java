@@ -30,9 +30,6 @@ public class Article {
     @Column(name = "article_thumbnail_url")
     private String articleThumbnailUrl;
 
-    @Column(name = "article_view_count")
-    private int articleViewCount;
-
     @Column(name = "article_created_date")
     private LocalDate articleCreatedDate;
 
@@ -54,7 +51,6 @@ public class Article {
             String articleTitle,
             String articleThumbnailUrl,
             LocalDate articleCreatedDate,
-            int articleViewCount,
             Film film,
             User user
     ){
@@ -63,7 +59,6 @@ public class Article {
         this.articleTitle = articleTitle;
         this.articleThumbnailUrl = articleThumbnailUrl;
         this.articleCreatedDate = articleCreatedDate;
-        this.articleViewCount = articleViewCount;
         this.film = film;
         this.user = user;
     }

@@ -24,6 +24,7 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleRepositoryImpl articleRepositoryImpl;
     private final LikesRepository likesRepository;
     private final UserRepository userRepository;
     private final FilmRepository filmRepository;
@@ -47,8 +48,8 @@ public class ArticleService {
     }
 
 
-    public List<ArticleWithFilmUrlResponse> getArticleList() {
-        List<ArticleWithFilmUrlResponse> articles = articleRepository.getArticles();
+    public List<ArticleWithFilmUrlResponse> getArticleList(int pageNum) {
+        List<ArticleWithFilmUrlResponse> articles = articleRepository.getArticles(pageNum);
         return articles;
     }
 
