@@ -1,6 +1,30 @@
 <template lang="">
   <div class="story_container">
-    <div class="title_container"></div>
+    <div class="title_container">
+      <video
+        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+        class="video_content"
+        controls
+      >
+        <track kind="captions" />
+      </video>
+      <div class="text_content">
+        <div class="category">
+          <HOT_BUTTON class="content_icon"></HOT_BUTTON>
+          {{ $route.params.category }}
+        </div>
+        <div class="title">{{ $route.params.title }}</div>
+        <div class="main_text">
+          {{ $route.params.main_text }}
+        </div>
+        <div class="util">
+          <favor class="content_icon"></favor>
+          {{ $route.params.favor }}
+          <speachbubble class="content_icon comment"></speachbubble>
+          댓글
+        </div>
+      </div>
+    </div>
     <div class="main_container main__1136width">
       <div class="left_content">
         <div class="story__tab-list">
@@ -47,6 +71,27 @@
       </div>
       <div class="right_content">
         <div class="createcard">
+          <div class="card_title">스튜디오 생성하기</div>
+          <div class="card_setting">
+            <div class="setting_text">
+              스튜디오 대여기간
+              <div class="setting_count">D-7</div>
+            </div>
+            <div class="setting_text">
+              스튜디오 최대인원
+              <div class="setting_count">5명</div>
+            </div>
+          </div>
+          <div class="card_util">
+            <div class="util_favor">
+              <hearticon class="content_icon"></hearticon>
+              좋아요
+            </div>
+            <div class="util_share">
+              <shareicon class="content_icon"></shareicon>
+              공유
+            </div>
+          </div>
           <router-link to="/studio">
             <button class="modal-button">스튜디오 생성하기</button>
           </router-link>
@@ -61,6 +106,11 @@ import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
 import StoryCharacter from "@/components/story/StoryCharacter.vue";
 import StoryDummyData from "@/dummy/storyDummyData.json";
+import HOT_BUTTON from "@/assets/icons/HOT_BUTTON.svg";
+import favor from "@/assets/icons/favor.svg";
+import speachbubble from "@/assets/icons/speach_bubble.svg";
+import hearticon from "@/assets/icons/hearticon.svg";
+import shareicon from "@/assets/icons/shareicon.svg";
 
 export default {
   name: "StoryView",
@@ -68,6 +118,11 @@ export default {
     StoryAccount,
     StoryScript,
     StoryCharacter,
+    HOT_BUTTON,
+    favor,
+    speachbubble,
+    hearticon,
+    shareicon,
   },
   setup() {
     let tab = reactive({
@@ -104,7 +159,11 @@ export default {
 .title_container {
   width: 100%;
   height: 366px;
-  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: rgb(250, 250, 250);
+  padding: 0 10%;
 }
 .main_container {
   box-sizing: border-box;
@@ -115,9 +174,47 @@ export default {
   display: flex;
   flex-direction: column;
   width: 80rem;
-  //   background-color: aqua;
 }
-
+.video_content {
+  width: 538px;
+  height: 308px;
+}
+.text_content {
+  width: 594px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-left: 100px;
+  .category {
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .main_text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+    margin-bottom: 10px;
+  }
+  .util {
+    display: flex;
+    align-items: center;
+  }
+  .comment {
+    margin-left: 10px;
+  }
+}
+.content_icon {
+  margin-right: 10px;
+}
 .story__tab-list {
   border-bottom: 1px #757575 solid;
   display: flex;
@@ -163,9 +260,49 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
   width: 358px;
-  height: 350px;
-  background-color: aliceblue;
+  height: 250px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  .card_title {
+    font-size: 24px;
+    font-weight: bold;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  .card_setting {
+    display: flex;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgb(187, 187, 187);
+    .setting_text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px;
+    }
+    .setting_count {
+      box-sizing: border-box;
+      font-size: 22px;
+      font-weight: bold;
+      margin: 10px;
+    }
+  }
+  .card_util {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+    .util_favor,
+    .util_share {
+      display: flex;
+      align-items: center;
+      margin: 10px 20px;
+    }
+  }
 }
 .modal-button {
   width: 315px;

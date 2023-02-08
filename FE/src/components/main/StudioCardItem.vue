@@ -1,7 +1,7 @@
 <template lang="">
   <div class="carousel__item">
     <router-link to="/main">
-      <img class="itemimg" :src="require(`@/assets/images/profile.jpg`)" alt="" />
+      <img class="itemimg" :src="`https://i.ibb.co/PTDbTCk/profile.jpg`" alt="" />
       <div class="itemtext">
         <div class="rightitem">
           <div class="itemtextteamname">{{ carditem.team }}</div>

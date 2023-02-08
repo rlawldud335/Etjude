@@ -3,15 +3,12 @@
     <Slide v-for="slide in testdatas" :key="slide">
       <StoryCardItem :carditem="slide"></StoryCardItem>
     </Slide>
-    <template #addons>
-      <Navigation />
-    </template>
   </Carousel>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import { Carousel, Navigation, Slide } from "vue3-carousel";
+import { Carousel, Slide } from "vue3-carousel";
 import StoryCardItemData from "@/dummy/StoryCardItemData.json";
 import StoryCardItem from "@/components/main/StoryCardItem.vue";
 
@@ -22,7 +19,6 @@ export default defineComponent({
   components: {
     Carousel,
     Slide,
-    Navigation,
     StoryCardItem,
   },
   data: () => ({
