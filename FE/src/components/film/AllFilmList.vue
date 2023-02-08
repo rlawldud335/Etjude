@@ -29,12 +29,6 @@ import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 import { getFilmPage } from "@/api/films";
 
-/* pagination 연결
-기본 페이지는 1인 상태이고 pagination 클릭시 changePage 메쏘드가 작동
-그러면 페이지가 바뀌고 새롭게 axios 요청함 이때 페이지는 pagination와 v-model로 양방향 바인딩 되어있는 page 데이터 이용
-films 데이터가 바뀌고 바뀌면서 업데이트가 되게 함
-*/
-
 export default {
   name: "FilmList",
   components: {
