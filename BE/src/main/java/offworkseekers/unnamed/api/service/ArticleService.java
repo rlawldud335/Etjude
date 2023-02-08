@@ -24,6 +24,7 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleRepositoryImpl articleRepositoryImpl;
     private final LikesRepository likesRepository;
     private final UserRepository userRepository;
     private final FilmRepository filmRepository;

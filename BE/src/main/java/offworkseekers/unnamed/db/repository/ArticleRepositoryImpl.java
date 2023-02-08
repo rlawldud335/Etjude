@@ -18,6 +18,7 @@ import java.util.List;
 import static offworkseekers.unnamed.db.entity.QArticle.article;
 import static offworkseekers.unnamed.db.entity.QComment.comment;
 import static offworkseekers.unnamed.db.entity.QFilm.film;
+import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
 import static offworkseekers.unnamed.db.entity.QUser.user;
@@ -41,10 +42,14 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.articleTitle,
                         article.user.nickName,
                         article.user.picture,
-                        article.articleCreatedDate,
-                        article.articleViewCount))
+                        article.articleCreatedDate))
                 .from(article)
                 .fetch();
+
+        for (ArticleWithFilmUrlResponse articleWithFilmUrlResponse : result) {
+            Long articleId = articleWithFilmUrlResponse.getArticleId();
+            articleWithFilmUrlResponse.addArticleLikeCount(getArticleLikeCount(articleId));
+        }
 
         return result;
     }
@@ -56,7 +61,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.articleId,
                         article.articleTitle,
                         article.articleCreatedDate,
-                        article.articleViewCount,
                         article.articleThumbnailUrl,
                         article.user.email,
                         article.user.nickName,
@@ -131,7 +135,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                 .select(Projections.constructor(PopularFilmResponse.class,
                         article.articleId,
                         article.articleTitle,
-                        article.articleViewCount,
                         article.film.filmId,
                         article.articleThumbnailUrl,
                         article.articleCreatedDate,
@@ -214,5 +217,16 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         story.storyId.eq(storyId)
                 )
                 .fetchOne();
+    }
+
+    public int getArticleLikeCount(Long articleId) {
+
+        Long result = queryFactory.select(likes.count())
+                .from(likes)
+                .where(likes.division.eq(0),
+                        likes.articleStoryId.eq(Math.toIntExact(articleId)))
+                .fetchOne();
+
+        return Math.toIntExact(result);
     }
 }
