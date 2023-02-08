@@ -1,15 +1,15 @@
 <template lang="">
   <div class="carousel__item">
-    <router-link to="/main">
-      <img class="itemimg" :src="`https://i.ibb.co/PTDbTCk/profile.jpg`" alt="" />
+    <router-link to="/studio">
+      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
       <div class="itemtext">
         <div class="rightitem">
-          <div class="itemtextteamname">{{ carditem.team }}</div>
-          <div class="itemtexttitle">{{ carditem.title }}</div>
-          <div class="itemtextdate">{{ carditem.date }}</div>
+          <div class="itemtextteamname">{{ carditem.studioTitle }}</div>
+          <div class="itemtexttitle">{{ carditem.storyTitle }}</div>
+          <div class="itemtextdate">{{ carditem.studioCreatedDate }} ~ {{ carditem.studioEndDate}}</div>
         </div>
         <div class="leftitem">
-          <div class="itemtextdday">{{ carditem.dday }}</div>
+          <div class="itemtextdday">D - {{ diffDay }}</div>
         </div>
       </div>
     </router-link>
@@ -21,6 +21,18 @@ export default {
   props: {
     carditem: {},
   },
+  computed: {
+    diffDay() {
+      const masTime = new Date(this.carditem.studioEndDate);
+      const todayTime = new Date();
+
+      const diff = masTime - todayTime;
+
+      const diffDay = String(Math.floor(diff / (1000 * 60 * 60 * 24)));
+
+      return diffDay;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -28,16 +40,19 @@ a {
   text-decoration: none;
   color: black;
 }
+
 .carousel__item {
   background-color: #fff;
   //   border-radius: 0.5rem;
   margin: 10px;
   transition: all 0.3s ease-in-out;
+
   &:hover {
     transform: scale(1.05);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   }
 }
+
 .itemimg {
   border-radius: 0.5rem 0.5rem 0 0;
   height: 134px;
@@ -49,6 +64,7 @@ a {
   mix-blend-mode: var(--card-blend-mode);
   /* // filter: grayscale(100); */
 }
+
 .itemtext {
   display: flex;
   padding-top: 16px;
@@ -57,12 +73,14 @@ a {
   padding-right: 26px;
   justify-content: space-between;
 }
+
 .itemtextteamname {
   margin-bottom: 3px;
   text-align: left;
   font-size: 16px;
   font-weight: bold;
 }
+
 .itemtexttitle,
 .itemtextdate {
   margin: 2px;

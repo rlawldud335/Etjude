@@ -3,10 +3,11 @@
     <div class="shortcut-flim--blue">
       <div class="shortcut-flim--center">
         <div class="shortcut-flim__contents">
-          <span class="shortcur-flim__contents__text"
-            >자신의 필름을 공유하세요.<br />다른 사람의 연기를 볼 수 있습니다.</span
-          >
-          <div class="shortcut-btn">필름공유 바로가기</div>
+          <span class="shortcur-flim__contents__text">자신의 필름을 공유하세요.<br />다른 사람의 연기를 볼 수 있습니다.</span>
+          <router-link :to="{ name: 'film' }">
+            <div class="shortcut-btn">필름공유 바로가기</div>
+          </router-link>
+
         </div>
         <img class="popcorn-img" src="@/assets/images/popcorn.png" alt="" />
       </div>

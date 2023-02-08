@@ -5,7 +5,16 @@
         class="event-carousel">
         <Slide v-for="slide in eventList" :key="slide" class="event-carousel__slide">
             <div class="event-carousel__slide__card">
-                <img :src="require(`@/assets/images/${slide.image}`)" class="event-carousel__slide__card__img" />
+                <div class="slide-card" :style="{ backgroundColor: slide.backColor, color: slide.fontColor }">
+                    <div class="slide-card__text">
+                        <div class="slide-card__text__tag">고민은 이제 그만!</div>
+                        <span class="slide-card__text__title">인기 있는 작품, 스토리 특가</span>
+                        <span class="slide-card__text__sub-title">어디서부터 시작해야할지 모르는 당신을 위한 이벤트</span>
+                    </div>
+                    <div class="slide-card__img">
+                        <img :src="require(`@/assets/images/${slide.image}`)" />
+                    </div>
+                </div>
             </div>
         </Slide>
     </Carousel>
@@ -53,9 +62,9 @@ export default {
     data() {
         return {
             eventList: [
-                { url: '', image: "beforechicken.svg", eventName: "이벤트1" },
-                { url: '', image: "Main Banner02.png", eventName: "이벤트2" },
-                { url: '', image: "Main Banner03.png", eventName: "이벤트3" },
+                { url: '', image: "bobbob.gif", eventName: "이벤트1", backColor: "#FE907C", fontColor: 'white' },
+                { url: '', image: "moonwork.gif", eventName: "이벤트2", backColor: "#F8D24A", fontColor: 'white' },
+                { url: '', image: "face.gif", eventName: "이벤트3", backColor: "#F8EFE8", fontColor: 'black' },
             ],
             currentSlide: 0
         };
@@ -90,19 +99,72 @@ export default {
 }
 
 .event-carousel__slide {
-    width: 1000px;
     padding-left: 7px;
     padding-right: 7px;
 }
 
 .event-carousel__slide__card {
-    height: 400px;
-    width: 1240px;
+    width: 100%;
+    max-width: 1136px;
+    aspect-ratio: 2.6 / 1;
     border-radius: 10px;
 }
 
-.event-carousel__slide__card__img {
+.slide-card {
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}
+
+.slide-card__text {
+    width: 50%;
+    height: 100%;
+    border-radius: 10px 0px 0px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    padding: 0px 20px;
+}
+
+.slide-card__text__tag {
+    background-color: #00de84;
+    padding: 5px 10px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    // color: black;
+}
+
+.slide-card__text__title {
+    font-size: 1.5rem;
+    margin: 10px;
+    font-weight: 500;
+}
+
+.slide-card__text__sub-title {
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 10px;
+}
+
+.slide-card__img {
+    width: 50%;
+    height: 100%;
+    border-radius: 0px 10px 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-card__img img {
+    width: auto;
     height: 100%;
     border-radius: 10px;
 }
