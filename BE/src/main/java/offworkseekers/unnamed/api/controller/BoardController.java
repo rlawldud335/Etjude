@@ -25,8 +25,8 @@ public class BoardController {
     }
 
     @GetMapping(value = "/api/v1/board")
-    public List<ArticleWithFilmUrlResponse> getArticleList() {
-        List<ArticleWithFilmUrlResponse> articleList = articleService.getArticleList();
+    public List<ArticleWithFilmUrlResponse> getArticleList(@RequestParam(value = "pageNum") int pageNum) {
+        List<ArticleWithFilmUrlResponse> articleList = articleService.getArticleList(pageNum);
         return articleList;
     }
 

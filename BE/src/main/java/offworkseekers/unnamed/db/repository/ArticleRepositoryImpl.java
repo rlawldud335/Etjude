@@ -33,7 +33,8 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ArticleWithFilmUrlResponse> getArticles() {
+    public List<ArticleWithFilmUrlResponse> getArticles(int pageNum) {
+//        총 페이지 수랑, 각 페이지수
         List<ArticleWithFilmUrlResponse> result = queryFactory
                 .select(Projections.constructor(ArticleWithFilmUrlResponse.class,
                         article.articleId,
@@ -48,10 +49,14 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
 
         for (ArticleWithFilmUrlResponse articleWithFilmUrlResponse : result) {
             Long articleId = articleWithFilmUrlResponse.getArticleId();
+            int totalArticleNumbers = result.size();
             articleWithFilmUrlResponse.addArticleLikeCount(getArticleLikeCount(articleId));
+            articleWithFilmUrlResponse.addTotalArticleNumber(totalArticleNumbers);
         }
 
-        return result;
+        int startIdx = 12 * (pageNum - 1);
+        int endIdx = startIdx + 11;
+        return result.subList(startIdx, endIdx + 1);
     }
 
     @Override
@@ -148,7 +153,7 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
             System.out.println(likes);
         }
         Collections.sort(result, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
-        return result;
+        return result.subList(0, 4);
     }
 
     @Override

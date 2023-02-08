@@ -17,8 +17,9 @@ public class ArticleWithFilmUrlResponse {
     String writerPhotoUrl;
     LocalDate createdDate;
     int articleLikeCount;
+    int totalArticleNumber;
 
-    public ArticleWithFilmUrlResponse(Long articleId, Long filmId, String articleThumbnailUrl, String articleTitle, String writerName, String writerPhotoUrl, LocalDate createdDate, int articleLikeCount) {
+    public ArticleWithFilmUrlResponse(Long articleId, Long filmId, String articleThumbnailUrl, String articleTitle, String writerName, String writerPhotoUrl, LocalDate createdDate) {
         this.articleId = articleId;
         this.filmId = filmId;
         this.articleThumbnailUrl = articleThumbnailUrl;
@@ -26,10 +27,12 @@ public class ArticleWithFilmUrlResponse {
         this.writerName = writerName;
         this.writerPhotoUrl = writerPhotoUrl;
         this.createdDate = createdDate;
-        this.articleLikeCount = articleLikeCount;
     }
 
     public void addArticleLikeCount(int likeCount){
         this.articleLikeCount = likeCount;
+    }
+    public void addTotalArticleNumber(int articleNumbers){
+        this.totalArticleNumber = articleNumbers;
     }
 }

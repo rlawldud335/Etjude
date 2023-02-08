@@ -48,8 +48,8 @@ public class ArticleService {
     }
 
 
-    public List<ArticleWithFilmUrlResponse> getArticleList() {
-        List<ArticleWithFilmUrlResponse> articles = articleRepository.getArticles();
+    public List<ArticleWithFilmUrlResponse> getArticleList(int pageNum) {
+        List<ArticleWithFilmUrlResponse> articles = articleRepository.getArticles(pageNum);
         return articles;
     }
 

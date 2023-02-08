@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface ArticleRepositorySupport {
 
-    List<ArticleWithFilmUrlResponse> getArticles();
+    List<ArticleWithFilmUrlResponse> getArticles(int pageNum);
     List<SearchFilmResponse> getSearchArticles(String keyword);
     FilmDetailResponse getFilmDetail(Long articleId);
     List<PopularFilmResponse> getPopularArticles();
