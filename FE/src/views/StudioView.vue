@@ -6,7 +6,8 @@
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
         <div class="studio__video__video">
-          <VideoArea />
+          <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
+            :videoState="videoState" />
         </div>
         <div class="studio__video__script">
           <ScriptArea isOpenTab="state.isOpenTab" />
@@ -26,7 +27,8 @@
         </div>
         <div class="openTab__body">
           <ScriptTab :scenes="studioDummyData.scene" v-show="state.selectTab === 0" />
-          <SsinTab :scenes="studioDummyData.scene" v-show="state.selectTab === 1" />
+          <SsinTab :SceneRecordingData="SceneRecordingData" :videoState="videoState"
+            @change-video-state="changeVideoState" v-show="state.selectTab === 1" />
           <FilmTab :films="studioDummyData.film" v-show="state.selectTab === 2" />
         </div>
       </div>
@@ -53,6 +55,7 @@
         >
           <Film />
         </button>
+
       </div>
     </div>
   </div>
@@ -100,10 +103,57 @@ export default {
     const closeTab = () => {
       state.isOpenTab = false;
     };
+
+    const SceneRecordingData = reactive({
+      list:
+        [
+          {
+            "index": 1,
+            "role": "진양철",
+            "recordedMediaURL": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+            "recordedUser": {
+              "name": "user1",
+              "profile_url": "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg"
+            }
+          },
+          {
+            "index": 2,
+            "role": "송중기",
+            "recordedMediaURL": null,
+            "recordedUser": {
+              "name": "user1",
+              "profile_url": "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg"
+            }
+          }
+        ]
+    });
+
+    const videoState = reactive({
+      sceneIdx: 1,
+      isRecording: false,
+    });
+
+    const changeVideoState = (sceneIdx, isRecording) => {
+      videoState.sceneIdx = sceneIdx;
+      videoState.isRecording = isRecording;
+    };
+
+    const saveRecordingData = (sceneIdx, recordedMediaURL, recordedUser) => {
+      SceneRecordingData.list.forEach((data) => {
+        if (data.index === sceneIdx) {
+          Object.assign(data, { recordedMediaURL, recordedUser });
+        }
+      })
+    }
+
     return {
       studioDummyData,
       state,
       tabs,
+      videoState,
+      SceneRecordingData,
+      saveRecordingData,
+      changeVideoState,
       clickTab,
       closeTab,
     };

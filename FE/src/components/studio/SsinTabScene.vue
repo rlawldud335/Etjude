@@ -1,49 +1,66 @@
+<!-- eslint-disable vuejs-accessibility/media-has-caption -->
 <template>
   <div class="studio-ssin-tab">
     <div class="studio-tab__scene-head">
-      <div class="studio-tab__scene-id">#{{ scene.id }}.&nbsp;{{ scene.role.name }}</div>
+      <div class="studio-tab__scene-id">#{{ scene.index }}.&nbsp;{{ scene.role }}</div>
       <div class="studio-tab__scene-icon">
-        <div class="studio-tab__scene-profile-frame">
-          <img :src="scene.video.user.profile_url" alt="" />
+        <div class="studio-tab__scene-profile-frame" v-if="scene.recordedMediaURL">
+          <img :src="scene.recordedUser.profile_url" alt="" />
         </div>
-        <playIcon />
+        <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
+        <DisableRecordingIcon v-if="videoState.isRecording" />
+        <DownloadIcon v-if="scene.recordedMediaURL" @click="downloadRecording" />
         <button class="studio-tab__dropdown-button" @click="toggleOpen">
           <downIcon v-if="!lines.isOpened" />
           <upIcon v-else />
         </button>
       </div>
     </div>
-    <div class="studio-tab__scene--opened" v-for="line in scene.line" :key="line.id">
-      <div class="studio-tab-scene__line" v-if="lines.isOpened">
-        <div class="studio-tab-scene__line-timestamp">
-          {{ line.timestamp }}
-        </div>
-        <div class="studio-tab-scene__line-script">
-          {{ line.script }}
-        </div>
-      </div>
+    <div class="studio-tab__scene--opened" v-if="lines.isOpened">
+      <video :src="scene.recordedMediaURL" controls v-if="scene.recordedMediaURL"></video>
     </div>
   </div>
 </template>
 
 <script>
-import playIcon from "@/assets/icons/studioTabPlay.svg";
+import RecordingIcon from "@/assets/icons/recordingIcon.svg";
+import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
 import downIcon from "@/assets/icons/down.svg";
 import upIcon from "@/assets/icons/up.svg";
+import DownloadIcon from "@/assets/icons/DownloadIcon.svg";
 import { reactive } from "vue";
 
 export default {
   name: "SsinTabScene",
-  components: { playIcon, downIcon, upIcon },
-  props: { scene: Object },
-  setup() {
+  components: { RecordingIcon, downIcon, upIcon, DisableRecordingIcon, DownloadIcon },
+  props: { scene: Object, videoState: Object },
+  emits: ['start-recording'],
+  setup(props, { emit }) {
     const lines = reactive({ isOpened: false });
     const toggleOpen = () => {
       lines.isOpened = !lines.isOpened;
     };
+
+    const startRecording = () => {
+      emit('start-recording', props.scene.index);
+    }
+
+    const downloadRecording = () => {
+      if (props.scene.recordedMediaURL) {
+        const link = document.createElement("a");
+        document.body.appendChild(link);
+        link.href = props.scene.recordedMediaURL;
+        link.download = "video.webm";
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+
     return {
       lines,
       toggleOpen,
+      startRecording,
+      downloadRecording
     };
   },
 };
@@ -76,6 +93,7 @@ export default {
   border-radius: 70%;
   overflow: hidden;
   justify-content: center;
+
   img {
     max-width: 100%;
     height: auto;
@@ -96,9 +114,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .studio-tab__scene-icon {
   display: flex;
-  > * {
+
+  >* {
     margin: 0px 4px;
     cursor: pointer;
   }
@@ -121,5 +141,17 @@ export default {
   line-height: 120%;
   font-size: 14px;
   margin-left: 10px;
+}
+
+.studio-tab__scene--opened {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+}
+
+.studio-tab__scene--opened video {
+  width: 250px;
+  height: 150px;
 }
 </style>

@@ -17,5 +17,6 @@ module.exports = {
     ],
     "global-require": 0,
     "vuejs-accessibility/click-events-have-key-events": "off",
+    "no-param-reassign": 0,
   },
 };
