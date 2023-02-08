@@ -4,15 +4,18 @@
         <div class="video-player">
             <video
                 :class="[{ 'video-zero-size': state.videoMode == 0 }, { 'video-default-size': state.videoMode == 1 }, { 'video-full-size': state.videoMode == 2 },]"
-                id="video-output" :src="recordedMediaURL" controls></video>
+                id="video-output" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+                controls></video>
             <video
                 :class="[{ 'video-zero-size': state.videoMode == 2 }, { 'video-default-size': state.videoMode == 1 }, { 'video-full-size': state.videoMode == 0 },]"
                 :srcObject="mediaStream" autoplay></video>
+            <div class="on-air" v-if="videoState.isRecording">
+                <RecordCircle />
+                <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
+                <button class="bana-btn" @click="endRecording()">녹화 종료</button>
+            </div>
         </div>
         <div class="video-controller">
-            <button class="bana-btn" @click="startRecoding()">녹화 시작</button>
-            <button class="bana-btn" @click="endRecording()">녹화 종료</button>
-            <button class="bana-btn" @click="downloadRecording()">다운로드</button>
             <button class="bana-btn" @click="toggleVideo()">
                 <VideoOn v-show="constraints.video" />
                 <VideoOff v-show="!constraints.video" />
@@ -29,21 +32,29 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+import { reactive, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
 import MicOff from "@/assets/icons/MicOff.svg";
+import RecordCircle from "@/assets/icons/RecordCircle.svg";
 
 export default {
     components: {
-        VideoOn, VideoOff, MicOn, MicOff
+        VideoOn, VideoOff, MicOn, MicOff, RecordCircle
     },
-    setup() {
+    props: { videoState: Object },
+    emits: ['change-video-state', 'save-recording-data'],
+    setup(props, { emit }) {
+        const user = {
+            "name": "user1",
+            "profile_url": "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg"
+        };
+
         const state = reactive({
-            videoMode: 0
+            videoMode: 0,
         });
-        // const videoOutput = document.getElementById("video-output");
+
         const mediaStream = ref(null);
         const constraints = reactive({ video: true, audio: true });
         let mediaRecorder = null;
@@ -56,7 +67,7 @@ export default {
 
         const stopStream = () => {
             mediaStream.value.getTracks().forEach(track => {
-                console.log('stopping', track)
+                // console.log('stopping', track)
                 track.stop()
             })
             mediaStream.value = null
@@ -79,7 +90,7 @@ export default {
             });
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data && event.data.size > 0) {
-                    console.log("ondataavailable");
+                    // console.log("ondataavailable");
                     recordedChunks.push(event.data);
                 }
             };
@@ -90,33 +101,32 @@ export default {
                 if (recordedChunks && recordedChunks.length !== 0) {
                     const blob = new Blob(recordedChunks, { type: "video/webm;" });
                     recordedMediaURL.value = URL.createObjectURL(blob);
-                    console.log()
+                    emit('save-recording-data', props.videoState.sceneIdx,
+                        recordedMediaURL.value,
+                        user
+                    );
                 }
             };
-            console.log("start recording");
+            // console.log("start recording");
             mediaRecorder.start();
-        }
-
-        const downloadRecording = () => {
-            if (recordedMediaURL.value) {
-                const link = document.createElement("a");
-                document.body.appendChild(link);
-                link.href = recordedMediaURL.value;
-                link.download = "video.webm";
-                link.click();
-                document.body.removeChild(link);
-            }
         }
 
         const endRecording = () => {
             if (mediaRecorder) {
-                console.log("endRecording")
+                // console.log("endRecording")
                 mediaRecorder.stop();
             }
+            emit('change-video-state', props.videoState.sceneIdx, false);
+
         }
 
         onMounted(() => getStream())
         onBeforeUnmount(() => stopStream())
+
+
+        watch(() => props.videoState.isRecording, (cur) => {
+            if (cur) { startRecoding(); }
+        })
 
         return {
             state,
@@ -127,7 +137,6 @@ export default {
             toggleAudio,
             startRecoding,
             endRecording,
-            downloadRecording
         };
     }
 }
@@ -146,6 +155,7 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: black;
+    position: relative;
 }
 
 .video-player>video {
@@ -187,5 +197,21 @@ export default {
 
 .video-zero-size {
     width: 0%;
+}
+
+.on-air {
+    background-color: #FFF9FA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 7px;
+    position: absolute;
+    top: 10px;
+}
+
+.on-air span {
+    padding: 0px 10px;
+    font-size: 14px;
 }
 </style>

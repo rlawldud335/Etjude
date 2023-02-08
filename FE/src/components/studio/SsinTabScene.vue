@@ -7,8 +7,9 @@
         <div class="studio-tab__scene-profile-frame" v-if="scene.recordedMediaURL">
           <img :src="scene.recordedUser.profile_url" alt="" />
         </div>
-        <RecordingIcon v-if="!scene.isRecording" @click="changeHandler" />
-        <DisableRecordingIcon v-if="scene.isRecording" />
+        <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
+        <DisableRecordingIcon v-if="videoState.isRecording" />
+        <DownloadIcon v-if="scene.recordedMediaURL" @click="downloadRecording" />
         <button class="studio-tab__dropdown-button" @click="toggleOpen">
           <downIcon v-if="!lines.isOpened" />
           <upIcon v-else />
@@ -16,7 +17,7 @@
       </div>
     </div>
     <div class="studio-tab__scene--opened" v-if="lines.isOpened">
-      <video :src="scene.recordedMediaURL" controls></video>
+      <video :src="scene.recordedMediaURL" controls v-if="scene.recordedMediaURL"></video>
     </div>
   </div>
 </template>
@@ -26,26 +27,40 @@ import RecordingIcon from "@/assets/icons/recordingIcon.svg";
 import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
 import downIcon from "@/assets/icons/down.svg";
 import upIcon from "@/assets/icons/up.svg";
+import DownloadIcon from "@/assets/icons/DownloadIcon.svg";
 import { reactive } from "vue";
 
 export default {
   name: "SsinTabScene",
-  components: { RecordingIcon, downIcon, upIcon, DisableRecordingIcon },
-  props: { scene: Object },
+  components: { RecordingIcon, downIcon, upIcon, DisableRecordingIcon, DownloadIcon },
+  props: { scene: Object, videoState: Object },
+  emits: ['start-recording'],
   setup(props, { emit }) {
     const lines = reactive({ isOpened: false });
     const toggleOpen = () => {
       lines.isOpened = !lines.isOpened;
     };
 
-    const changeHandler = () => {
-      emit('aaaa', 3);
+    const startRecording = () => {
+      emit('start-recording', props.scene.index);
+    }
+
+    const downloadRecording = () => {
+      if (props.scene.recordedMediaURL) {
+        const link = document.createElement("a");
+        document.body.appendChild(link);
+        link.href = props.scene.recordedMediaURL;
+        link.download = "video.webm";
+        link.click();
+        document.body.removeChild(link);
+      }
     }
 
     return {
       lines,
       toggleOpen,
-      changeHandler
+      startRecording,
+      downloadRecording
     };
   },
 };
