@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class PopularFilmResponse {
     Long articleId;
     String articleTitle;
-    int articleViewCnt;
     Long filmId;
     String articleThumbnailUrl;
     LocalDate articleCreatedDate;
@@ -18,14 +17,17 @@ public class PopularFilmResponse {
     int likeCount;
 
     @Builder
-    public PopularFilmResponse(Long articleId, String articleTitle, int articleViewCnt, Long filmId, String articleThumbnailUrl, LocalDate articleCreatedDate, String writerName, String writerPhotoUrl) {
+    public PopularFilmResponse(Long articleId, String articleTitle, Long filmId, String articleThumbnailUrl, LocalDate articleCreatedDate, String writerName, String writerPhotoUrl) {
         this.articleId = articleId;
         this.articleTitle = articleTitle;
-        this.articleViewCnt = articleViewCnt;
         this.filmId = filmId;
         this.articleThumbnailUrl = articleThumbnailUrl;
         this.articleCreatedDate = articleCreatedDate;
         this.writerName = writerName;
         this.writerPhotoUrl = writerPhotoUrl;
+    }
+
+    public void addLikeCount(int likes){
+        this.likeCount = likes;
     }
 }

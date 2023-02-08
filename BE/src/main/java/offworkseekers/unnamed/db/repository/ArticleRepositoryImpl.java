@@ -142,6 +142,11 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.user.picture))
                 .from(article)
                 .fetch();
+        for(int i = 0; i < result.size(); i++){
+            int likes = getArticleLikeCount(result.get(i).getArticleId());
+            result.get(i).addLikeCount(likes);
+            System.out.println(likes);
+        }
         Collections.sort(result, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
         return result;
     }
