@@ -13,8 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Film {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "film_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "film_id", columnDefinition = "INT UNSIGNED")
     private Long filmId;
 
     @Column(name = "film_title")

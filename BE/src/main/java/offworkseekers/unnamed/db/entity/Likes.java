@@ -15,7 +15,7 @@ public class Likes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "likes_id")
+    @Column(name = "likes_id", columnDefinition = "INT UNSIGNED")
     private Long likesId;
 
     @Column(name = "division")

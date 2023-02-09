@@ -62,8 +62,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         film.filmVideoUrl,
                         film.filmCreatedDate,
                         film.studio.studioEndDate))
-                .from(film, story)
-                .where(film.user.userId.eq(userId), film.studio.story.eq(story))
+                .from(film, story, teamMember)
+                .where(teamMember.user.userId.eq(userId), film.studio.eq(teamMember.studio), film.studio.story.eq(story))
                 .fetch();
 
         List<MyPageFilmsWithMembersResponse> result = new ArrayList<>();
@@ -115,9 +115,13 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         article.articleTitle,
                         article.user.userId,
                         article.user.picture,
-                        article.articleCreatedDate))
+                        article.articleCreatedDate,
+                        JPAExpressions.select(likes.count())
+                                .from(likes)
+                                .where(likes.division.eq(0),
+                                        likes.articleStoryId.eq(article.articleId.castToNum(Integer.class)))))
                 .from(article, likes)
-                .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.articleStoryId.eq(article.articleId.castToNum(Integer.class)))
+                .where(likes.division.eq(0))
                 .fetch();
 
         List<MyPageLikesStoriesDto> stories = queryFactory
@@ -131,7 +135,7 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                                 .where(likes.division.eq(1),
                                         likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))))
                 .from(story, likes)
-                .where(likes.division.eq(1), likes.user.userId.eq(userId), likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))
+                .where(likes.division.eq(1))
                 .fetch();
 
         return new MyPageLikesResponse(articles, stories);

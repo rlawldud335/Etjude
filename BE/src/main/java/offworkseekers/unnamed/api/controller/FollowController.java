@@ -31,8 +31,15 @@ public class FollowController {
     }
 
     @DeleteMapping("/api/v1/follow")
-    public void deleteFollow(@RequestBody CreateFollowRequest request){
+    public ResponseEntity deleteFollow(@RequestBody CreateFollowRequest request){
+        String myUserId = request.getMyUserId();
+        String yourUserId = request.getYourUserId();
+
+        if(!followService.getFollowByFollowingFollower(myUserId, yourUserId))
+            return ResponseEntity.badRequest().build();
+
         followService.deleteFollow(request.getMyUserId(), request.getYourUserId());
+        return ResponseEntity.ok().build();
     }
 
 }

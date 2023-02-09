@@ -17,8 +17,8 @@ import java.util.List;
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "article_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "article_id", columnDefinition = "INT UNSIGNED")
     private Long articleId;
 
     @Column(name = "article_content")

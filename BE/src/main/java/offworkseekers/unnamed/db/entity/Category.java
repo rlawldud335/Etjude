@@ -15,8 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Category {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "category_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id", columnDefinition = "INT UNSIGNED")
     private Long categoryId;
 
     @NonNull

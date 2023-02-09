@@ -16,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Role {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id", columnDefinition = "INT UNSIGNED")
     private Long roleId;
 
     @NonNull

@@ -16,8 +16,8 @@ public class Recording {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "recording_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recording_id", columnDefinition = "INT UNSIGNED")
     private Long recordingId;
 
     @Column(name = "recording_video_url")

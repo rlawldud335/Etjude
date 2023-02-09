@@ -52,34 +52,33 @@ public class StoryController {
     }
 
     @GetMapping(value = "/api/v1/story/search")
-    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category") String categoryName) {
+    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category") String categoryName) {;
         return storyService.storySearchList(keyword, categoryName);
     }
 
-    @PutMapping(value = "/api/v1/story/like")
+    @PostMapping(value = "/api/v1/story/like")
     public ResponseEntity storyLike(@RequestBody @Valid Map<String, Object> param) {
 
-        if (param.get("story_id") == null || !(param.get("story_id") instanceof Integer)) {
+        Object storyId =  param.get("story_id");
+        if (storyId == null || !(storyId instanceof Integer)) {
             return ResponseEntity.badRequest().build();
         }
 
-        if (!(param.get("user_id") instanceof String)) {
+        Object userId =  param.get("user_id");
+        if (!(userId instanceof String)) {
             return ResponseEntity.badRequest().build();
-        } else if (param.get("user_id") instanceof String && ((String) param.get("user_id")).replaceAll(" ", "") == ""){
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (param.get("division") == null || !(param.get("division") instanceof Integer)) {
-            return ResponseEntity.badRequest().build();
-        } else if (param.get("division") instanceof String && ((Integer) param.get("division")) != 1){
+        } else if (userId instanceof String && ((String) userId).replaceAll(" ", "") == ""){
             return ResponseEntity.badRequest().build();
         }
 
-        int storyId = (int) param.get("story_id");
-        int division = (int) param.get("division");
-        String userId = (String) param.get("user_id");
+        Object division =  param.get("division");
+        if (division == null || !(division instanceof Integer)) {
+            return ResponseEntity.badRequest().build();
+        } else if (division instanceof String && ((Integer) division) != 1){
+            return ResponseEntity.badRequest().build();
+        }
 
-        storyService.editStoryLike(storyId, division, userId);
+        storyService.editStoryLike((int) storyId, (int) division, (String) userId);
         return ResponseEntity.ok().build();
     }
 
@@ -109,7 +108,7 @@ public class StoryController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/api/v1/story/like")
+    @GetMapping(value = "/api/v1/story/like")
     public boolean storyLikeStatus(@RequestBody @Valid Map<String, Object> param) {
         int storyId = (int) param.get("story_id");
         int division = (int) param.get("division");
