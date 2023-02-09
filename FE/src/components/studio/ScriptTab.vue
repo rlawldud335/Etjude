@@ -1,6 +1,7 @@
 <template>
   <div class="script-tab">
-    <ScriptTabScene v-for="scene in scenes" :key="scene.id" :scene="scene"></ScriptTabScene>
+    <ScriptTabScene v-for="scene in studioData.script" :key="scene.sceneNumber" :scene="scene"
+      @change-script-time="changeScriptTime"></ScriptTabScene>
   </div>
 </template>
 
@@ -13,8 +14,19 @@ export default {
     ScriptTabScene,
   },
   props: {
-    scenes: Array,
+    studioData: Array
   },
+  emits: ['change-script-time'],
+  setup(props, { emit }) {
+    const changeScriptTime = (time) => {
+      console.log(time);
+      emit('change-script-time', time);
+    }
+
+    return {
+      changeScriptTime
+    }
+  }
 };
 </script>
 
