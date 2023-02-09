@@ -31,7 +31,6 @@
                 <span>화면전환</span>
                 <ChangeVideo2 />
             </button>
-
         </div>
     </div>
 </template>
@@ -43,11 +42,10 @@ import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
 import MicOff from "@/assets/icons/MicOff.svg";
 import RecordCircle from "@/assets/icons/RecordCircle.svg";
-import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 
 export default {
     components: {
-        VideoOn, VideoOff, MicOn, MicOff, RecordCircle, ChangeVideo2
+        VideoOn, VideoOff, MicOn, MicOff, RecordCircle
     },
     props: { videoState: Object, scriptState: Object },
     emits: ['change-video-state', 'save-recording-data'],
