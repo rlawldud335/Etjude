@@ -14,54 +14,54 @@
         <div class="search__categoty-tab">
           <button
             :class="[
-              state.category.id === 0 ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === '0' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="updateCategory(0)"
+            @click="updateCategory('0')"
           >
             전체
           </button>
           <button
             :class="[
-              state.category.id === 1 ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === '1' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="updateCategory(1)"
+            @click="updateCategory('1')"
           >
             드라마
           </button>
           <button
             :class="[
-              state.category.id === 2 ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === '2' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="updateCategory(2)"
+            @click="updateCategory('2')"
           >
             뮤지컬
           </button>
           <button
             :class="[
-              state.category.id === 3 ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === '3' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="updateCategory(3)"
+            @click="updateCategory('3')"
           >
             연극
           </button>
           <button
             :class="[
-              state.category.id === 4 ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === '4' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="updateCategory(4)"
+            @click="updateCategory('4')"
           >
             영화
           </button>
         </div>
         <div class="search__result-section">
           <div class="search__toggle-tab">
-            <button @click="updateMenu(1)">작품</button>
-            <button @click="updateMenu(2)">스토리</button>
+            <button @click="updateMenu('1')">작품</button>
+            <button @click="updateMenu('2')">스토리</button>
             <div
               :class="[
                 {
-                  'search__bar--work': state.menu.id === 1,
-                  'search__bar--story': state.menu.id === 2,
+                  'search__bar--work': state.menu.id === '1',
+                  'search__bar--story': state.menu.id === '2',
                 },
                 'active-bar',
               ]"
@@ -71,10 +71,10 @@
             {{ searchResult }}
             <p>{{ inputText }}의 검색 결과</p>
             <div class="search__work-result" v-for="work in searchResult" :key="work.id">
-              <WorkSearchResult v-if="state.menu.id == 1" :work="work"></WorkSearchResult>
+              <WorkSearchResult v-if="state.menu.id == '1'" :work="work"></WorkSearchResult>
             </div>
             <div class="search__story-result" v-for="story in searchResult" :key="story.id">
-              <StorySearchResult v-if="state.menu.id == 2" :story="story"></StorySearchResult>
+              <StorySearchResult v-if="state.menu.id == '2'" :story="story"></StorySearchResult>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@
   <SearchResult v-if="inputText" :keyword="inputText"></SearchResult>
 </template>
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import WorkSearchResult from "@/components/search/WorkSearchResult.vue";
 import StorySearchResult from "@/components/search/StorySearchResult.vue";
@@ -106,26 +106,23 @@ export default {
     const searchResult = ref(null);
     const state = reactive({
       category: {
-        id: 0,
+        id: "0",
         name: "전체",
       },
       menu: {
-        id: 1,
+        id: "1",
         name: "work",
       },
     });
-    // watch(
-    //   () => state.category.id,
-    //   (newCategoryId) => {
-    //     state.category.name = categoryList[newCategoryId];
-    //   }
-    // );
-    // watch(
-    //   () => state.menu.id,
-    //   (newMenuId) => {
-    //     state.menu.name = menuList[newMenuId - 1];
-    //   }
-    // );
+    onBeforeMount(() => {
+      if (route.params?.categoryId) {
+        console.log(route.params);
+        state.category.id = route.params.categoryId;
+        state.category.name = categoryList[route.params.categoryId];
+        state.menu.id = route.params.menuId;
+        state.menu.name = menuList[route.params.menuId - 1];
+      }
+    });
     const updatePath = () => {
       if (inputText.value) {
         router.push({
@@ -141,7 +138,7 @@ export default {
       }
     };
     const search = () => {
-      if (state.menu.id === 1) {
+      if (state.menu.id === "1") {
         searchWork(
           inputText.value,
           state.category.id,
@@ -157,7 +154,6 @@ export default {
         searchStory(
           inputText.value,
           state.category.name,
-
           ({ data }) => {
             console.log(data);
             searchResult.value = data;
@@ -182,18 +178,12 @@ export default {
       updatePath();
       search();
     };
-    updateMenu(route.params.menuId);
     const updateCategory = (categoryId) => {
       state.category.id = categoryId;
       state.category.name = categoryList[state.category.id];
       updatePath();
       search();
     };
-    updateCategory(route.params.categoryId);
-    // const search = () => {
-
-    // };
-
     return {
       inputText,
       inputKeyword,
