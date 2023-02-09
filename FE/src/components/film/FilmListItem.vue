@@ -12,9 +12,7 @@
       <div class="film__card-body">
         <span class="film__card-title">{{ film.articleTitle }}</span>
         <span class="film__card-author">{{ film.writerName }}</span>
-        <span class="film__card-history"
-          >좋아요 {{ film.articleLikeCount }}회 ▪ {{ diffCreated }}</span
-        >
+        <span class="film__card-history">좋아요 {{ likeCount }}회 ▪ {{ diffCreated }}</span>
       </div>
     </div>
   </div>
@@ -28,7 +26,8 @@ export default {
   name: "FilmListItem",
   props: {
     film: Object,
-    createdDate: Date,
+    createdDate: String,
+    likeCount: Number,
   },
   components: {
     FilmSharingDtail,
@@ -70,6 +69,7 @@ export default {
   width: 240px;
   min-width: 240px;
   margin: 15px 7px;
+  cursor: pointer;
 }
 .film__card-image {
   width: 100%;
@@ -80,6 +80,10 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  img:hover {
+    transform: scale(1.1);
+    transition: 0.3s;
   }
 }
 .film__card-info {
@@ -97,11 +101,10 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
   img {
-    max-width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

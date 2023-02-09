@@ -17,9 +17,7 @@
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2"
-              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
-            >
+            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
           </div>
           <button class="close-btn" @click="closeTab()">
             <QuitButton />
@@ -33,26 +31,17 @@
         </div>
       </div>
       <div class="studio__tab">
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
           <Scripts />
         </button>
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
           <Ssin />
         </button>
 
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
           <Film />
         </button>
 
@@ -90,7 +79,7 @@ export default {
   },
   setup() {
     const state = reactive({
-      isOpenTab: false,
+      isOpenTab: true,
       selectTab: 0,
     });
     const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }]);

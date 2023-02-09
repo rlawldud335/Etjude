@@ -25,8 +25,9 @@
                 <MicOff v-show="!constraints.audio" />
             </button>
             <button class="bana-btn" @click="state.videoMode = (state.videoMode + 1) % 3">
-                화면전환
+                <ChangeVideo2 />
             </button>
+
         </div>
     </div>
 </template>
@@ -38,10 +39,11 @@ import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
 import MicOff from "@/assets/icons/MicOff.svg";
 import RecordCircle from "@/assets/icons/RecordCircle.svg";
+import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 
 export default {
     components: {
-        VideoOn, VideoOff, MicOn, MicOff, RecordCircle
+        VideoOn, VideoOff, MicOn, MicOff, RecordCircle, ChangeVideo2
     },
     props: { videoState: Object },
     emits: ['change-video-state', 'save-recording-data'],

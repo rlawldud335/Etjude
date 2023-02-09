@@ -11,7 +11,7 @@
         },
       }"
     >
-      <img class="itemimg" :src="carditem.img" alt="" />
+      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
       <div class="itemtext">
         <div class="itemtexttitle">{{ carditem.storyTitle }}</div>
         <div class="itemtextcategory">{{ carditem.categoryName }}</div>
