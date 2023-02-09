@@ -28,6 +28,7 @@
           <SsinTab :SceneRecordingData="SceneRecordingData" :videoState="videoState"
             @change-video-state="changeVideoState" v-show="state.selectTab === 1" />
           <FilmTab :films="studioDummyData.film" v-show="state.selectTab === 2" />
+          <ChattingTab v-show="state.selectTab === 3" />
         </div>
       </div>
       <div class="studio__tab">
@@ -45,6 +46,11 @@
           <Film />
         </button>
 
+        <button class="studio__tab__btn" @click="clickTab(3)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }">
+          <ChattingIcon />
+        </button>
+
       </div>
     </div>
   </div>
@@ -54,9 +60,11 @@
 import Scripts from "@/assets/icons/scripts.svg";
 import Ssin from "@/assets/icons/ssin.svg";
 import Film from "@/assets/icons/film.svg";
+import ChattingIcon from "@/assets/icons/ChattingIcon.svg";
 import ScriptTab from "@/components/studio/ScriptTab.vue";
 import SsinTab from "@/components/studio/SsinTab.vue";
 import FilmTab from "@/components/studio/FilmTab.vue";
+import ChattingTab from "@/components/studio/ChattingTab.vue";
 import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
@@ -69,6 +77,7 @@ export default {
     Scripts,
     Ssin,
     Film,
+    ChattingIcon,
     QuitButton,
     ScriptTab,
     SsinTab,
@@ -76,18 +85,23 @@ export default {
     StudioNav,
     ScriptArea,
     VideoArea,
+    ChattingTab,
   },
   setup() {
     const state = reactive({
       isOpenTab: true,
       selectTab: 0,
     });
-    const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }]);
+    const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }, { tabName: "채팅" }]);
     const clickTab = (idx) => {
-      console.log = idx;
-      if (state.selectTab === idx) state.isOpenTab = !state.isOpenTab;
-      else if (state.isOpenTab) state.isOpenTab = true;
-      state.selectTab = idx;
+      if (state.selectTab === idx) { state.isOpenTab = !state.isOpenTab; }
+      else if (state.isOpenTab && idx !== state.selectTab) {
+        state.selectTab = idx;
+      } else {
+        state.isOpenTab = !state.isOpenTab;
+        state.selectTab = idx;
+      }
+
     };
     const closeTab = () => {
       state.isOpenTab = false;
