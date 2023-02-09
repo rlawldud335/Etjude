@@ -6,6 +6,8 @@
       </video>
     </div>
     <div class="community_container">
+      <!-- {{ filmDetailData }} -->
+      {{ filmdata }}
       <UserProfile></UserProfile>
       <UserPost></UserPost>
       <UserPostInput></UserPostInput>
@@ -13,6 +15,8 @@
   </vue-final-modal>
 </template>
 <script>
+import { getRecommendFilmDetail } from "@/api/share";
+import { ref } from "vue";
 import UserProfile from "./UserProfile.vue";
 import UserPost from "./UserPost.vue";
 import UserPostInput from "./UserPostInput.vue";
@@ -24,9 +28,21 @@ export default {
     UserPost,
     UserPostInput,
   },
-  data: () => ({}),
   props: {
     showModal: Boolean,
+    filmDetailData: Number,
+  },
+  setup() {
+    const filmdata = ref(null);
+    getRecommendFilmDetail(
+      ({ data }) => {
+        console.log(data);
+        filmdata.value = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>

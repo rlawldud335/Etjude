@@ -8,7 +8,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { Carousel, Navigation, Slide } from "vue3-carousel";
+import { Carousel, Slide } from "vue3-carousel";
 import { getRecommendWork } from "@/api/work";
 import testdata from "@/dummy/PieceCardItemData.json";
 import PieceCardItem from "./PieceCardItem.vue";
