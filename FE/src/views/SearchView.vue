@@ -1,6 +1,7 @@
 <template>
   <div class="search">
     <div class="search__section">
+      {{ categoryId }}
       <div class="search__bar">
         <input
           class="search__input"
@@ -15,19 +16,9 @@
             :class="[
               state.category === 'all' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="state.category = 'all'"
+            @click="updateCategory(0)"
           >
             전체
-          </button>
-          <button
-            :class="[
-              state.category === 'movie'
-                ? 'search__category--active'
-                : 'search__category--unactive',
-            ]"
-            @click="state.category = 'movie'"
-          >
-            영화
           </button>
           <button
             :class="[
@@ -35,17 +26,37 @@
                 ? 'search__category--active'
                 : 'search__category--unactive',
             ]"
-            @click="state.category = 'drama'"
+            @click="updateCategory(1)"
           >
             드라마
           </button>
           <button
             :class="[
+              state.category === 'musical'
+                ? 'search__category--active'
+                : 'search__category--unactive',
+            ]"
+            @click="updateCategory(2)"
+          >
+            뮤지컬
+          </button>
+          <button
+            :class="[
               state.category === 'play' ? 'search__category--active' : 'search__category--unactive',
             ]"
-            @click="state.category = 'play'"
+            @click="updateCategory(3)"
           >
             연극
+          </button>
+          <button
+            :class="[
+              state.category === 'movie'
+                ? 'search__category--active'
+                : 'search__category--unactive',
+            ]"
+            @click="updateCategory(4)"
+          >
+            영화
           </button>
         </div>
         <div class="search__result-section">
@@ -62,7 +73,9 @@
               ]"
             ></div>
           </div>
-          <div class="search__result"></div>
+          <div class="search__result">
+            {{ searchResult }}
+          </div>
         </div>
       </div>
     </div>
@@ -70,9 +83,10 @@
   <SearchResult v-if="inputText" :keyword="inputText"></SearchResult>
 </template>
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import SearchResult from "@/components/search/SearchResult.vue";
+import { searchWork } from "@/api/search";
 
 export default {
   name: "SearchView",
@@ -83,30 +97,73 @@ export default {
     const router = useRouter();
     const route = useRoute();
 
-    const inputText = ref(route.params.keyword);
+    const inputText = ref(null);
+    const searchResult = ref(null);
+    const state = reactive({
+      category: {
+        id: route.params.categoryId,
+        name: ["all", "drama", "musical", "play", "movie"][route.params.categoryId],
+      },
+      menu: {
+        id: route.params.menuId,
+        name: ["work", "story"][route.params.menuId],
+      },
+    });
+    watch(
+      () => state.category.id,
+      (newCategoryId) => {
+        const categoryList = ["all", "drama", "musical", "play", "movie"];
+        state.category.name = categoryList[newCategoryId];
+      }
+    );
+    watch(
+      () => state.menu.id,
+      (newMenuId) => {
+        const menuList = ["work", "story"];
+        state.menu.name = menuList[newMenuId];
+      }
+    );
     const inputKeyword = (event) => {
       inputText.value = event.target.value;
+      searchWork(
+        event.target.value,
+        state.category.id,
+        ({ data }) => {
+          console.log(data);
+          searchResult.value = data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     };
-    const blurInput = () => {
-      if (inputText.value) {
-        router.push({ name: "search-result", params: { keyword: inputText.value } });
+    const blurInput = (event) => {
+      if (event.target.value) {
+        router.push({
+          name: "search-result",
+          params: { categoryId: 1, menuId: 1, keyword: event.target.value },
+        });
       } else {
         router.push({ name: "search" });
       }
     };
-    const state = reactive({
-      category: "all",
-      menu: "work",
-    });
+
+    // const search = () => {
+
+    // };
+
     return {
       inputText,
       inputKeyword,
       blurInput,
       state,
+      searchResult,
     };
   },
   beforeRouteUpdate(to, from, next) {
     this.inputText = to.params.keyword;
+    this.state.category.id = to.params.categoryId;
+    this.state.menu.id = to.params.menuId;
     next();
   },
 };

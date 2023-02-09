@@ -41,7 +41,7 @@ const routes = [
         component: SearchView,
         children: [
           {
-            path: "/search/:keyword",
+            path: "/search/category/:categoryId/menu/:menuId/keyword/:keyword",
             name: "search-result",
             component: SearchView,
           },
