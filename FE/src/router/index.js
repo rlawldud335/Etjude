@@ -7,6 +7,7 @@ import StudioView from "@/views/StudioView.vue";
 import SearchView from "@/views/SearchView.vue";
 import PieceDetailView from "@/views/PieceDetailView.vue";
 import StoryView from "@/views/StoryView.vue";
+import CategoryView from "@/views/CategoryView.vue";
 
 const routes = [
   {
@@ -51,6 +52,11 @@ const routes = [
         path: "/piece",
         name: "piece",
         component: PieceDetailView,
+      },
+      {
+        path: "/category",
+        name: "category",
+        component: CategoryView,
       },
     ],
   },

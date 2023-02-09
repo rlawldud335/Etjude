@@ -2,11 +2,14 @@ import { apiInstance } from "@/api/index";
 
 const api = apiInstance();
 
-async function getAllFilm(success, fail) {
+async function getFilmPage(pageNum, success, fail) {
   console.log("# GET : 전체 필름");
   await api({
     method: "get",
     url: "/board",
+    params: {
+      pageNum,
+    },
   })
     .then(success)
     .catch(fail);
@@ -22,4 +25,4 @@ async function getPopularFilm(success, fail) {
     .catch(fail);
 }
 
-export { getAllFilm, getPopularFilm };
+export { getFilmPage, getPopularFilm };
