@@ -46,18 +46,16 @@
           >
             <span>스크립트</span>
           </button>
-          <div class="story__active-bar-area">
-            <div
-              :class="[
-                {
-                  story__storyaccount: tab.tabvalue === 'storyaccount',
-                  story__storycharacter: tab.tabvalue === 'storycharacter',
-                  story__storyscript: tab.tabvalue === 'storyscript',
-                },
-                'active-bar',
-              ]"
-            ></div>
-          </div>
+          <div
+            :class="[
+              {
+                story__storyaccount: tab.tabvalue === 'storyaccount',
+                story__storycharacter: tab.tabvalue === 'storycharacter',
+                story__storyscript: tab.tabvalue === 'storyscript',
+              },
+              'active-bar',
+            ]"
+          ></div>
         </div>
         <StoryAccount
           v-show="tab.tabvalue === 'storyaccount'"
