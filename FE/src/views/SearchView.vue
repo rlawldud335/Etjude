@@ -7,14 +7,14 @@
           class="search__input"
           placeholder="검색어를 입력해주세요."
           @input="inputKeyword"
-          @blur="blurInput"
+          @blur="updatePath"
         />
       </div>
       <div class="search__body main__1136width">
         <div class="search__categoty-tab">
           <button
             :class="[
-              state.category === 'all' ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === 0 ? 'search__category--active' : 'search__category--unactive',
             ]"
             @click="updateCategory(0)"
           >
@@ -22,9 +22,7 @@
           </button>
           <button
             :class="[
-              state.category === 'drama'
-                ? 'search__category--active'
-                : 'search__category--unactive',
+              state.category.id === 1 ? 'search__category--active' : 'search__category--unactive',
             ]"
             @click="updateCategory(1)"
           >
@@ -32,9 +30,7 @@
           </button>
           <button
             :class="[
-              state.category === 'musical'
-                ? 'search__category--active'
-                : 'search__category--unactive',
+              state.category.id === 2 ? 'search__category--active' : 'search__category--unactive',
             ]"
             @click="updateCategory(2)"
           >
@@ -42,7 +38,7 @@
           </button>
           <button
             :class="[
-              state.category === 'play' ? 'search__category--active' : 'search__category--unactive',
+              state.category.id === 3 ? 'search__category--active' : 'search__category--unactive',
             ]"
             @click="updateCategory(3)"
           >
@@ -50,9 +46,7 @@
           </button>
           <button
             :class="[
-              state.category === 'movie'
-                ? 'search__category--active'
-                : 'search__category--unactive',
+              state.category.id === 4 ? 'search__category--active' : 'search__category--unactive',
             ]"
             @click="updateCategory(4)"
           >
@@ -61,20 +55,27 @@
         </div>
         <div class="search__result-section">
           <div class="search__toggle-tab">
-            <button @click="state.menu = 'work'">작품</button>
-            <button @click="state.menu = 'story'">스토리</button>
+            <button @click="updateMenu(1)">작품</button>
+            <button @click="updateMenu(2)">스토리</button>
             <div
               :class="[
                 {
-                  'search__bar--work': state.menu === 'work',
-                  'search__bar--story': state.menu === 'story',
+                  'search__bar--work': state.menu.id === 1,
+                  'search__bar--story': state.menu.id === 2,
                 },
                 'active-bar',
               ]"
             ></div>
           </div>
-          <div class="search__result">
+          <div class="search__result" v-if="inputText">
             {{ searchResult }}
+            <p>{{ inputText }}의 검색 결과</p>
+            <div class="search__work-result" v-for="work in searchResult" :key="work.id">
+              <WorkSearchResult v-if="state.menu.id == 1" :work="work"></WorkSearchResult>
+            </div>
+            <div class="search__story-result" v-for="story in searchResult" :key="story.id">
+              <StorySearchResult v-if="state.menu.id == 2" :story="story"></StorySearchResult>
+            </div>
           </div>
         </div>
       </div>
@@ -83,71 +84,112 @@
   <SearchResult v-if="inputText" :keyword="inputText"></SearchResult>
 </template>
 <script>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import SearchResult from "@/components/search/SearchResult.vue";
-import { searchWork } from "@/api/search";
+import WorkSearchResult from "@/components/search/WorkSearchResult.vue";
+import StorySearchResult from "@/components/search/StorySearchResult.vue";
+import { searchWork, searchStory } from "@/api/search";
 
 export default {
   name: "SearchView",
   components: {
-    SearchResult,
+    WorkSearchResult,
+    StorySearchResult,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const categoryList = ["전체", "드라마", "뮤지컬", "연극", "영화"];
+    const menuList = ["work", "story"];
 
     const inputText = ref(null);
     const searchResult = ref(null);
     const state = reactive({
       category: {
-        id: route.params.categoryId,
-        name: ["all", "drama", "musical", "play", "movie"][route.params.categoryId],
+        id: 0,
+        name: "전체",
       },
       menu: {
-        id: route.params.menuId,
-        name: ["work", "story"][route.params.menuId],
+        id: 1,
+        name: "work",
       },
     });
-    watch(
-      () => state.category.id,
-      (newCategoryId) => {
-        const categoryList = ["all", "drama", "musical", "play", "movie"];
-        state.category.name = categoryList[newCategoryId];
-      }
-    );
-    watch(
-      () => state.menu.id,
-      (newMenuId) => {
-        const menuList = ["work", "story"];
-        state.menu.name = menuList[newMenuId];
-      }
-    );
-    const inputKeyword = (event) => {
-      inputText.value = event.target.value;
-      searchWork(
-        event.target.value,
-        state.category.id,
-        ({ data }) => {
-          console.log(data);
-          searchResult.value = data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    };
-    const blurInput = (event) => {
-      if (event.target.value) {
+    // watch(
+    //   () => state.category.id,
+    //   (newCategoryId) => {
+    //     state.category.name = categoryList[newCategoryId];
+    //   }
+    // );
+    // watch(
+    //   () => state.menu.id,
+    //   (newMenuId) => {
+    //     state.menu.name = menuList[newMenuId - 1];
+    //   }
+    // );
+    const updatePath = () => {
+      if (inputText.value) {
         router.push({
           name: "search-result",
-          params: { categoryId: 1, menuId: 1, keyword: event.target.value },
+          params: {
+            categoryId: state.category.id,
+            menuId: state.menu.id,
+            keyword: inputText.value,
+          },
         });
       } else {
         router.push({ name: "search" });
       }
     };
+    const search = () => {
+      if (state.menu.id === 1) {
+        searchWork(
+          inputText.value,
+          state.category.id,
+          ({ data }) => {
+            console.log(data);
+            searchResult.value = data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        searchStory(
+          inputText.value,
+          state.category.name,
 
+          ({ data }) => {
+            console.log(data);
+            searchResult.value = data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    };
+    const inputKeyword = (event) => {
+      inputText.value = event.target.value;
+      search();
+    };
+    const blurInput = (event) => {
+      inputText.value = event.target.value;
+      updatePath();
+    };
+    const updateMenu = (menuId) => {
+      state.menu.id = menuId;
+      state.menu.name = menuList[state.menu.id - 1];
+      updatePath();
+      search();
+    };
+    updateMenu(route.params.menuId);
+    const updateCategory = (categoryId) => {
+      state.category.id = categoryId;
+      state.category.name = categoryList[state.category.id];
+      updatePath();
+      search();
+    };
+    updateCategory(route.params.categoryId);
     // const search = () => {
 
     // };
@@ -155,15 +197,16 @@ export default {
     return {
       inputText,
       inputKeyword,
-      blurInput,
+      updatePath,
       state,
       searchResult,
+      blurInput,
+      updateCategory,
+      updateMenu,
     };
   },
   beforeRouteUpdate(to, from, next) {
     this.inputText = to.params.keyword;
-    this.state.category.id = to.params.categoryId;
-    this.state.menu.id = to.params.menuId;
     next();
   },
 };
@@ -264,5 +307,9 @@ export default {
 }
 .search__bar--story {
   left: 130px;
+}
+
+.search__result {
+  margin: 30px;
 }
 </style>

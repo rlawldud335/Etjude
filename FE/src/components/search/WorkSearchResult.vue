@@ -1,14 +1,12 @@
 <template>
-  <div>{{ keyword }}에 대한 검색 결과</div>
+  <div>작품{{ work }}</div>
 </template>
 
 <script>
 export default {
-  name: "SearchResult",
+  name: "WorkSearchResult",
   components: {},
-  props: {
-    keyword: String,
-  },
+  props: { work: Object },
   setup() {
     return {};
   },
