@@ -1,0 +1,153 @@
+<template lang="">
+  <div>
+    <nav class="header">
+      <div class="header__logo-nav">
+        <router-link :to="{ name: 'main' }" class="header__logo">
+          <p>Logo</p>
+        </router-link>
+        <div class="header__nav">
+          <router-link :to="{ name: 'search' }" class="header__nav-item">검색</router-link>
+          <a
+            class="header__nav-item header__dropdown-button"
+            @mouseover="categoryHover"
+            @focus="categoryHover"
+            @mouseout="categoryUnhover"
+            @focusout="categoryUnhover"
+          >
+            카테고리
+            <ul v-show="category.isHovered" class="header__dropdown">
+              <li><span>영화</span></li>
+              <li><span>드라마</span></li>
+              <li><span>뮤지컬</span></li>
+              <li><span>연극</span></li>
+            </ul>
+          </a>
+          <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
+        </div>
+      </div>
+      <router-link to="/login">
+        <button class="header__login-button">Login</button>
+      </router-link>
+    </nav>
+  </div>
+</template>
+<script>
+import { reactive } from "vue";
+
+export default {
+  setup() {
+    const category = reactive({ isHovered: false });
+    const categoryHover = () => {
+      category.isHovered = true;
+    };
+    const categoryUnhover = () => {
+      category.isHovered = false;
+    };
+    return {
+      category,
+      categoryHover,
+      categoryUnhover,
+    };
+  },
+};
+</script>
+<style lang="scss">
+nav {
+  // padding: 16px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+
+    &.router-link-exact-active {
+      font-weight: 900;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 24px;
+  padding: 16px;
+  text-align: center;
+}
+
+.header__logo-nav {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+}
+
+.header__logo {
+  color: $bana-pink;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.header__nav {
+  display: flex;
+  margin-left: 5rem;
+  align-items: center;
+}
+
+.header__nav-item {
+  font-size: 18px;
+  margin-right: 3rem;
+  min-width: 80px;
+}
+
+.header__dropdown-button {
+  position: relative;
+  display: inline-block;
+}
+
+.header__dropdown {
+  text-align: left;
+  float: right;
+  position: absolute;
+  min-width: 140px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 1;
+  li {
+    background-color: $bana-pink;
+    padding: 11px 30px;
+    span {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      color: $aha-gray;
+    }
+    cursor: pointer;
+  }
+  li:nth-child(1) {
+    margin-top: 5px;
+    border-radius: 5px 5px 0px 0px;
+  }
+  li:nth-last-child(1) {
+    border-radius: 0px 0px 5px 5px;
+  }
+  li:hover {
+    background-color: #ff7b93;
+    span {
+      font-weight: 800;
+    }
+  }
+}
+
+.header__login-button {
+  border: none;
+  color: white;
+  background-color: $bana-pink;
+  width: 87px;
+  height: 32px;
+  border-radius: 4px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+</style>
