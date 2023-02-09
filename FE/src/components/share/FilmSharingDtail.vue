@@ -1,21 +1,19 @@
 <template lang="">
   <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
     <div class="video_container">
-      <video src="https://youtu.be/tp6NKAK9p7E" controls>
+      <video :src="filmdata.filmVideoUrl" controls>
         <track kind="captions" />
       </video>
     </div>
     <div class="community_container">
-      <!-- {{ filmDetailData }} -->
-      {{ filmdata }}
-      <UserProfile></UserProfile>
-      <UserPost></UserPost>
+      <UserProfile :filmdata="profiledata"></UserProfile>
+      <UserPost :filmdata="postdata"></UserPost>
       <UserPostInput></UserPostInput>
     </div>
   </vue-final-modal>
 </template>
 <script>
-import { getRecommendFilmDetail } from "@/api/share";
+import { getFilmDetail } from "@/api/share";
 import { ref } from "vue";
 import UserProfile from "./UserProfile.vue";
 import UserPost from "./UserPost.vue";
@@ -32,17 +30,44 @@ export default {
     showModal: Boolean,
     filmDetailData: Number,
   },
-  setup() {
-    const filmdata = ref(null);
-    getRecommendFilmDetail(
+  setup(props) {
+    const articleId = ref(props.filmDetailData);
+    const filmdata = ref({});
+    const profiledata = ref({
+      writerNickName: String,
+      writerPhotoUrl: String,
+    });
+    const postdata = ref({
+      articleTitle: String,
+      articleContent: String,
+      articleCreatedDate: Date,
+      comments: Object,
+    });
+    // const getFilmDetailmodal = () => {
+    getFilmDetail(
+      articleId.value,
       ({ data }) => {
         console.log(data);
         filmdata.value = data;
+        profiledata.value.writerNickName = data.writerNickName;
+        profiledata.value.writerPhotoUrl = data.writerPhotoUrl;
+        postdata.value.articleTitle = data.articleTitle;
+        postdata.value.articleContent = data.articleContent;
+        postdata.value.articleCreatedDate = data.articleCreatedDate;
+        postdata.value.comments = data.comments;
       },
       (error) => {
         console.log(error);
       }
     );
+    // };
+    // getFilmDetailmodal();
+    return {
+      articleId,
+      filmdata,
+      profiledata,
+      postdata,
+    };
   },
 };
 </script>

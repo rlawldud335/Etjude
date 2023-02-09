@@ -1,19 +1,27 @@
 <template lang="">
   <div class="profile_container">
     <div class="profile">
-      <img :src="require(`@/assets/images/체인소맨.jpg`)" alt="" />
-      <div class="nickname">KingGod_doo</div>
+      <img :src="profiledata.writerPhotoUrl" alt="" />
+      <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
     <QuitButton></QuitButton>
   </div>
 </template>
 <script>
 import QuitButton from "@/assets/icons/Quit Button.svg";
+import { ref } from "vue";
 
 export default {
   name: "UserProfile",
   components: {
     QuitButton,
+  },
+  props: {
+    filmdata: Object,
+  },
+  setup(props) {
+    const profiledata = ref(props.filmdata);
+    return { profiledata };
   },
 };
 </script>
