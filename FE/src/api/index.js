@@ -20,6 +20,13 @@ function apiInstance() {
   return AxiosInst;
 }
 
+async function testMakeFilm(success, fail) {
+  await axios
+    .get("http://i8a605.p.ssafy.io:5000/api/v1/concateVideo", { studioId: "studio1" })
+    .then(success)
+    .catch(fail);
+}
+
 // multipart/form-data 형식
 function apiFormInstance() {
   return axios.create({
@@ -30,4 +37,4 @@ function apiFormInstance() {
   });
 }
 
-export { apiInstance, apiFormInstance };
+export { apiInstance, apiFormInstance, testMakeFilm };

@@ -2,14 +2,14 @@
 <template>
   <div class="studio-ssin-tab">
     <div class="studio-tab__scene-head">
-      <div class="studio-tab__scene-id">#{{ scene.index }}.&nbsp;{{ scene.role }}</div>
+      <div class="studio-tab__scene-id">#{{ scene.sceneNumber }}.&nbsp;{{ scene.roleName }}</div>
       <div class="studio-tab__scene-icon">
-        <div class="studio-tab__scene-profile-frame" v-if="scene.recordedMediaURL">
+        <div class="studio-tab__scene-profile-frame" v-if="scene.sceneFileName">
           <img :src="scene.recordedUser.profile_url" alt="" />
         </div>
         <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
         <DisableRecordingIcon v-if="videoState.isRecording" />
-        <DownloadIcon v-if="scene.recordedMediaURL" @click="downloadRecording" />
+        <DownloadIcon v-if="scene.sceneFileName" @click="downloadRecording" />
         <button class="studio-tab__dropdown-button" @click="toggleOpen">
           <downIcon v-if="!lines.isOpened" />
           <upIcon v-else />
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="studio-tab__scene--opened" v-if="lines.isOpened">
-      <video :src="scene.recordedMediaURL" controls v-if="scene.recordedMediaURL"></video>
+      <video :src="scene.sceneFileName" controls v-if="scene.sceneFileName"></video>
     </div>
   </div>
 </template>
@@ -42,14 +42,14 @@ export default {
     };
 
     const startRecording = () => {
-      emit('start-recording', props.scene.index);
+      emit('start-recording', props.scene.sceneNumber);
     }
 
     const downloadRecording = () => {
-      if (props.scene.recordedMediaURL) {
+      if (props.scene.sceneFileName) {
         const link = document.createElement("a");
         document.body.appendChild(link);
-        link.href = props.scene.recordedMediaURL;
+        link.href = props.scene.sceneFileName;
         link.download = "video.webm";
         link.click();
         document.body.removeChild(link);

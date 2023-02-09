@@ -1,33 +1,38 @@
 <template>
   <div class="studio-line">
-    <div v-if="isFirstLine" class="studio-line__actor-name">{{ role.name }}</div>
+    <div v-if="isFirstLine" class="studio-line__actor-name">{{ roleName }}</div>
     <div class="studio-line__line">
-      <a class="studio-line__time-stamp">{{ line.timestamp }}</a>
-      <span class="studio-line__text">{{ line.script }}</span>
+      <a class="studio-line__time-stamp">{{ TimeFilter }}</a>
+      <span class="studio-line__text">{{ line.line }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 export default {
   name: "ScriptTabSceneLine",
   components: {},
   props: {
     line: Object,
-    role: Object,
+    roleName: String,
+    lineIdx: Number
   },
   setup(props) {
     const isFirstLine = ref(false);
     const lineFirst = onMounted(() => {
-      if (props.line.id === 1) {
+      if (props.lineIdx === 0) {
         isFirstLine.value = true;
       }
     });
+
+    const TimeFilter = computed(() => props.line.lineTimeStamp.substr(0, 5))
+
     return {
       lineFirst,
       isFirstLine,
+      TimeFilter
     };
   },
 };
@@ -46,9 +51,11 @@ export default {
   font-weight: 500;
   margin-bottom: 10px;
 }
+
 .studio-line__line {
   display: flex;
 }
+
 .studio-line__time-stamp {
   color: $newjeans-blue;
   cursor: pointer;

@@ -1,13 +1,15 @@
 <template lang="">
     <div class="script-area">
-       <Carousel ref="script-carousel" v-model="currentSlide" :wrap-around="true"  :items-to-show="1.3" class="script-carousel">
-            <Slide v-for="(script,idx) in scripts" :key="idx" class="script-carousel__slide">
+       <Carousel ref="scriptCarousel" v-model="currentSlide" :wrap-around="true"  :items-to-show="1.3" class="script-carousel">
+            <Slide v-for="script in allScripts" :key="script" class="script-carousel__slide">
                 <div class="script-carousel__slide__card">
                     <div class="script-icons">
                         <div class="script-icon">1x</div>
                         <div class="script-icon"><Repeat/></div>
-                    </div>                
-                    <div class="script-script">{{script.script+idx}}</div>
+                    </div>
+                    <div class="script-script">
+                        {{script.roleName}}  :  
+                        {{script.line}}</div>
                 </div>
             </Slide>
        </Carousel>
@@ -20,47 +22,58 @@ import { Carousel, Slide } from 'vue3-carousel';
 import Repeat from "@/assets/icons/repeat.svg";
 import PrevDirec from "@/assets/icons/prevDirec.svg";
 import NextDirec from "@/assets/icons/nextDirec.svg";
-
+import { ref, watch } from "vue";
 
 export default {
     components: {
         Carousel, Slide, Repeat, PrevDirec, NextDirec
     },
-    data() {
+    props: {
+        'studioData': Object
+    },
+    emits: ['change-script-time'],
+    setup(props, { emit }) {
+        const currentSlide = ref(0);
+        const allScripts = [];
+        let index = 0;
+        props.studioData.script.forEach((scene) => {
+            scene.lines.forEach((line) => {
+                index += 1;
+                allScripts.push({
+                    roleName: scene.roleName,
+                    scriptNumber: index,
+                    lineTimeStamp: line.lineTimeStamp,
+                    line: line.line
+                });
+            });
+        });
+        console.log(allScripts);
+
+        const slideTo = (val) => {
+            if (val < 0) currentSlide.value = 0;
+            else if (val >= allScripts.length) currentSlide.value = allScripts.length - 1;
+            else currentSlide.value = val;
+        }
+
+        const filterTime = (time) => {
+            const sptTime = time.split(':');
+            const result = parseInt(sptTime[0], 10) * 60 + parseInt(sptTime[1], 10) + (parseInt(sptTime[2], 10) / 10);
+            console.log(result);
+            return result;
+        }
+
+        watch(currentSlide, (cur) => {
+            console.log(cur);
+            emit('change-script-time', filterTime(allScripts[cur].lineTimeStamp));
+        })
+
+
         return {
-            scripts: [
-                {
-                    time: "00:12",
-                    script: "안녕1",
-                    role: "김지영"
-                },
-                {
-                    time: "00:12",
-                    script: "안녕1",
-                    role: "김지영"
-                },
-                {
-                    time: "00:12",
-                    script: "안녕1",
-                    role: "김지영"
-                },
-                {
-                    time: "00:12",
-                    script: "안녕1",
-                    role: "김지영"
-                }
-            ],
-            currentSlide: 0
+            currentSlide,
+            slideTo,
+            allScripts,
         }
-    },
-    methods: {
-        slideTo(val) {
-            if (val < 0) this.currentSlide = 0;
-            else if (val >= this.scripts.length) this.currentSlide = this.scripts.length - 1;
-            else this.currentSlide = val;
-        }
-    },
-    props: ['isOpenTab']
+    }
 }
 </script>
 <style lang="scss">
