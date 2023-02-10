@@ -13,10 +13,15 @@ import offworkseekers.unnamed.db.entity.Studio;
 import offworkseekers.unnamed.db.entity.User;
 import offworkseekers.unnamed.db.repository.StudioRepository;
 import offworkseekers.unnamed.db.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -121,5 +126,17 @@ public class StudioController {
                 .sceneNumber(Integer.parseInt(sceneNumber))
                 .status(status)
                 .build());
+    }
+
+    @PutMapping(value = "/api/v1/studio/recording")
+    public ResponseEntity saveRecording (@RequestBody @Valid Map<String, Object> param){
+        Long studioId = (Long) param.get("studio_id");
+        Long sceneId = (Long) param.get("scene_id");
+        String userId = (String) param.get("user_id");
+        String recordingVideoUrl = (String) param.get("recording_video_url");
+
+        studioService.saveRecording(studioId, sceneId, recordingVideoUrl, userId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

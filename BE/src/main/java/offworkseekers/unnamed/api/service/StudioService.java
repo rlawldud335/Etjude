@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.*;
-import offworkseekers.unnamed.db.repository.StoryRepository;
-import offworkseekers.unnamed.db.repository.StudioRepository;
-import offworkseekers.unnamed.db.repository.UserRepository;
+import offworkseekers.unnamed.db.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +19,10 @@ import java.util.List;
 public class StudioService {
 
     private final StudioRepository studioRepository;
+    private final RecordingRepository recordingRepository;
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
+    private final SceneRepository sceneRepository;
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
         return studioRepository.findStudioNavbar(studioId, userId);
@@ -79,6 +79,25 @@ public class StudioService {
 
     public List<StudioRecordListResponse> getStoryRecordingList(Long studioId) {
         return studioRepository.findRecordingByStudioId(studioId);
+    }
+
+    public void saveRecording(Long studioId, Long sceneId, String recordingVideoUrl, String userId) {
+        Recording recording = recordingRepository.findRecordingByStudioIdAndSceneId(studioId, sceneId);
+        if (recording != null) {
+            recording.changeUrl(recordingVideoUrl);
+            recording.changeUserId(userId);
+            recordingRepository.save(recording);
+        }
+
+        Studio studio = studioRepository.findById(studioId).orElse(null);
+        Scene scene = sceneRepository.findById(sceneId).orElse(null);
+
+        recordingRepository.save(Recording.builder()
+                        .recordingVideoUrl(recordingVideoUrl)
+                        .userId(userId)
+                        .studio(studio)
+                        .scene(scene)
+                .build());
     }
 
 }

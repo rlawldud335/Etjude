@@ -42,4 +42,12 @@ public class Recording {
         this.scene = scene;
         this.studio = studio;
     }
+
+    public void changeUrl(String recordingVideoUrl) {
+        this.recordingVideoUrl = recordingVideoUrl;
+    }
+
+    public void changeUserId(String userId) {
+        this.userId = userId;
+    }
 }
