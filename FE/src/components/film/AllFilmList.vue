@@ -10,15 +10,17 @@
       >
       </FilmListItem>
     </div>
-    <v-pagination
-      v-model="page"
-      :pages="pageCount"
-      :range-size="1"
-      active-color="#DCEDFF"
-      @update:modelValue="updateHandler"
-      class="film-list__pagination"
-      @click="updatePage"
-    />
+    <div class="film-list__pagination-section">
+      <v-pagination
+        v-model="page"
+        :pages="pageCount"
+        :range-size="1"
+        active-color="#DCEDFF"
+        @update:modelValue="updateHandler"
+        class="film-list__pagination"
+        @click="updatePage"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -76,14 +78,17 @@ export default {
 .all-film-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .film-list {
   display: flex;
   margin: 0px 60px;
   flex-wrap: wrap;
 }
-
+.film-list__pagination-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .film-list__pagination {
   margin: 20px 0px;
 }
