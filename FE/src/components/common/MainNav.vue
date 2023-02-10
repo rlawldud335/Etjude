@@ -16,10 +16,19 @@
           >
             카테고리
             <ul v-show="category.isHovered" class="header__dropdown">
-              <li><span>영화</span></li>
-              <li><span>드라마</span></li>
-              <li><span>뮤지컬</span></li>
-              <li><span>연극</span></li>
+              <!-- <ul class="header__dropdown"> -->
+              <li @click="goCategory('1')">
+                <span>드라마</span>
+              </li>
+              <li @click="goCategory('2')">
+                <span>뮤지컬</span>
+              </li>
+              <li @click="goCategory('3')">
+                <span>연극</span>
+              </li>
+              <li @click="goCategory('4')">
+                <span>영화</span>
+              </li>
             </ul>
           </a>
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
@@ -33,9 +42,11 @@
 </template>
 <script>
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    const router = useRouter();
     const category = reactive({ isHovered: false });
     const categoryHover = () => {
       category.isHovered = true;
@@ -43,10 +54,14 @@ export default {
     const categoryUnhover = () => {
       category.isHovered = false;
     };
+    const goCategory = (categoryId) => {
+      router.push({ name: "search-group", params: { categoryId, menuId: "1" } });
+    };
     return {
       category,
       categoryHover,
       categoryUnhover,
+      goCategory,
     };
   },
 };
