@@ -134,7 +134,10 @@ export default {
           },
         });
       } else {
-        router.push({ name: "search" });
+        router.push({
+          name: "search-group",
+          params: { categoryId: state.category.id, menuId: state.menu.id },
+        });
       }
     };
     const search = () => {
