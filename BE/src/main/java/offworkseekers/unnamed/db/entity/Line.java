@@ -14,8 +14,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class Line {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "line_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "line_id", columnDefinition = "INT UNSIGNED")
     private Long lineId;
 
     @NonNull

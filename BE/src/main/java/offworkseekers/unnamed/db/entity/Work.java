@@ -15,8 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Work {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "work_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "work_id", columnDefinition = "INT UNSIGNED")
     private Long workId;
 
     @NonNull

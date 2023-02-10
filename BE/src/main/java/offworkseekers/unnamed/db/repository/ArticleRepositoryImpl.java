@@ -90,6 +90,7 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
         Studio studio = queryFactory
                 .select(article.film.studio)
                 .from(article)
+                .where(article.articleId.eq(articleId))
                 .fetchOne();
         Long storyId = studio.getStory().getStoryId();
 
@@ -157,7 +158,11 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
             System.out.println(likes);
         }
         Collections.sort(result, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
-        return result.subList(0, 4);
+        if(result.size() < 4){
+            return result;
+        } else{
+            return result.subList(0, 4);
+        }
     }
 
     @Override
@@ -173,8 +178,8 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         film.studio.story.storyId,
                         film.studio.story.storyTitle
                 )
-                .from(film)
-                .where(film.user.userId.eq(userId))
+                .from(film, teamMember)
+                .where(teamMember.user.userId.eq(userId), teamMember.studio.studioId.eq(film.studio.studioId))
                 .fetch();
 
         List<MyFilmListResponse> myFilmListResponses = new ArrayList<>();

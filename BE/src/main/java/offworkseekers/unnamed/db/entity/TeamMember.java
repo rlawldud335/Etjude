@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamMember {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "team_member_id")
+    @Column(name = "team_member_id", columnDefinition = "INT UNSIGNED")
     private Long teamMemberId;
 
     @ManyToOne(fetch = FetchType.LAZY)

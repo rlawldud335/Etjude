@@ -30,11 +30,10 @@ public class BoardController {
         return articleList;
     }
 
-    @GetMapping(path = "/api/v1/board/search/{keyword}")
-    public List<SearchFilmResponse> getSearchArticleList(@PathVariable String keyword){
+    @GetMapping(path = "/api/v1/board/search")
+    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword){
         List<SearchFilmResponse> articleList = articleService.getSearchArticleList(keyword);
         return articleList;
-
     }
 
     @GetMapping(path = "/api/v1/board/detail/{articleId}")
@@ -92,15 +91,20 @@ public class BoardController {
     }
 
     @DeleteMapping(value = "/api/v1/board/delete")
-    public void articleDelete(@RequestBody @Valid Map<String, Object> request) {
+    public ResponseEntity articleDelete(@RequestBody @Valid Map<String, Object> request) {
         Long articleId = Long.parseLong(String.valueOf(request.get("article_id")));
         String userId = (String) request.get("user_id");
-        articleService.deleteArticle(articleId, userId);
+
+        if(articleService.deleteArticle(articleId, userId)){
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
     }
 
     @PatchMapping(value = "/api/v1/board/edit")
-    public void articleEdit(@RequestBody @Valid ArticleEditRequest request){
-        articleService.editArticle(request);
+    public ResponseEntity articleEdit(@RequestBody @Valid ArticleEditRequest request){
+        if(articleService.editArticle(request)){
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
     }
 
 }

@@ -113,19 +113,34 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
 
     @Override
     public List<StoryListResponse> getStorySearchList(String keyword, String categoryName) {
-        List<Tuple> fetch = queryFactory
-                .select(
-                        story.storyId,
-                        story.storyThumbnailUrl,
-                        story.category.categoryName,
-                        story.storyTitle,
-                        story.work.workTitle)
-                .from(story)
-                .where(
-                        story.category.categoryName.eq(categoryName),
-                        story.storyTitle.contains(keyword)
-                )
-                .fetch();
+
+        List<Tuple> fetch = new ArrayList<>();
+        if (categoryName.equals("") || categoryName == null){
+            fetch = queryFactory
+                    .select(
+                            story.storyId,
+                            story.storyThumbnailUrl,
+                            story.category.categoryName,
+                            story.storyTitle,
+                            story.work.workTitle)
+                    .from(story)
+                    .where(story.storyTitle.contains(keyword))
+                    .fetch();
+        } else{
+            fetch = queryFactory
+                    .select(
+                            story.storyId,
+                            story.storyThumbnailUrl,
+                            story.category.categoryName,
+                            story.storyTitle,
+                            story.work.workTitle)
+                    .from(story)
+                    .where(
+                            story.category.categoryName.eq(categoryName),
+                            story.storyTitle.contains(keyword)
+                    )
+                    .fetch();
+        }
 
         List<StoryListResponse> storySearchResult = new ArrayList<>();
 

@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Story {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "story_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "story_id", columnDefinition = "INT UNSIGNED")
     private Long storyId;
 
     @Column(name = "story_title")

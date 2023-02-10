@@ -16,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Scene {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "scene_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "scene_id", columnDefinition = "INT UNSIGNED")
     private Long sceneId;
 
     @Column(name = "scene_number")
