@@ -1,13 +1,13 @@
 <template>
   <div class="search">
     <div class="search__section">
-      {{ categoryId }}
       <div class="search__bar">
         <input
           class="search__input"
           placeholder="검색어를 입력해주세요."
+          :value="inputText"
           @input="inputKeyword"
-          @blur="updatePath"
+          @blur="blurInput"
         />
       </div>
       <div class="search__body main__1136width">
@@ -101,7 +101,6 @@ export default {
     const route = useRoute();
     const categoryList = ["전체", "드라마", "뮤지컬", "연극", "영화"];
     const menuList = ["work", "story"];
-
     const inputText = ref(null);
     const searchResult = ref(null);
     const state = reactive({
@@ -116,14 +115,13 @@ export default {
     });
     onBeforeMount(() => {
       if (route.params?.categoryId) {
-        console.log(route.params);
         state.category.id = route.params.categoryId;
         state.category.name = categoryList[route.params.categoryId];
         state.menu.id = route.params.menuId;
         state.menu.name = menuList[route.params.menuId - 1];
       }
     });
-    const updatePath = () => {
+    const pushPath = () => {
       if (inputText.value) {
         router.push({
           name: "search-result",
@@ -140,6 +138,23 @@ export default {
         });
       }
     };
+    // const replacePath = () => {
+    //   if (inputText.value) {
+    //     router.replace({
+    //       name: "search-result",
+    //       params: {
+    //         categoryId: state.category.id,
+    //         menuId: state.menu.id,
+    //         keyword: inputText.value,
+    //       },
+    //     });
+    //   } else {
+    //     router.replace({
+    //       name: "search-group",
+    //       params: { categoryId: state.category.id, menuId: state.menu.id },
+    //     });
+    //   }
+    // };
     const search = () => {
       if (state.menu.id === "1") {
         searchWork(
@@ -169,28 +184,28 @@ export default {
     };
     const inputKeyword = (event) => {
       inputText.value = event.target.value;
+      // replacePath();
       search();
     };
     const blurInput = (event) => {
       inputText.value = event.target.value;
-      updatePath();
+      pushPath();
     };
     const updateMenu = (menuId) => {
       state.menu.id = menuId;
       state.menu.name = menuList[state.menu.id - 1];
-      updatePath();
+      pushPath();
       search();
     };
     const updateCategory = (categoryId) => {
       state.category.id = categoryId;
       state.category.name = categoryList[state.category.id];
-      updatePath();
+      pushPath();
       search();
     };
     return {
       inputText,
       inputKeyword,
-      updatePath,
       state,
       searchResult,
       blurInput,
@@ -199,7 +214,17 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    this.inputText = to.params.keyword;
+    console.log(to.name);
+    if (to.name === "search") {
+      console.log("1");
+      this.inputText = null;
+      this.state.category.id = "0";
+      this.state.menu.id = "1";
+    } else {
+      this.inputText = to.params.keyword;
+      this.state.category.id = to.params.categoryId;
+      this.state.menu.id = to.params.menuId;
+    }
     next();
   },
 };
