@@ -1,7 +1,9 @@
 <template>
   <div class="studio-nav">
     <div class="studio-info">
-      <div class="studio-info__logo">Logo</div>
+      <div class="studio-info__logo">
+        <router-link :to="{ name: 'main' }"> Logo </router-link>
+      </div>
       <div class="studio-info__title">
         <span>진양철의 초밥이 몇개고?</span>
         <span> > </span>
@@ -96,6 +98,9 @@ export default {
   margin: 10px 30px;
   font-weight: bold;
   color: white;
+  a {
+    color: white;
+  }
 }
 
 .studio-info__title {
