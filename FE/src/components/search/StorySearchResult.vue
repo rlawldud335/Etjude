@@ -1,12 +1,12 @@
 <template>
-  <div>스토리{{ story }}</div>
+  <div>스토리{{ stories }}</div>
 </template>
 
 <script>
 export default {
   name: "StorySearchResult",
   components: {},
-  props: { story: Object },
+  props: { stories: Array },
   setup() {
     return {};
   },
