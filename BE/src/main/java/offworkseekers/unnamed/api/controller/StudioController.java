@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -93,18 +92,16 @@ public class StudioController {
         return studioService.getStoryRecordingList(studioId);
     }
 
-    @MessageMapping("/api/v1/studio/chat/{studioId}/{nickname}")
+    @MessageMapping("/api/v1/studio/chat/{studioId}/{userId}/{nickname}")
     public void chat(@DestinationVariable("studioId") String studioId,
+                     @DestinationVariable("userId") String userId,
                      @DestinationVariable("nickname") String nickname, String content) throws Exception{
-//        System.out.println("studioId = " + studioId);
-//        System.out.println("nickname = " + nickname);
-//        System.out.println("content = " + content);
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY년 MM월 DD일 HH시 mm분 ss초");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
         String formattedNow = now.format(formatter);
 
-        simpMessagingTemplate.convertAndSend("/sub/api/v1/studio/chat/" + studioId , new SocketDTO(studioId, nickname, content, formattedNow));
+        simpMessagingTemplate.convertAndSend("/sub/api/v1/studio/chat/" + studioId , new SocketDTO(studioId, userId, nickname, content, formattedNow));
     }
 
     /**
@@ -116,10 +113,6 @@ public class StudioController {
                                @DestinationVariable("sceneNumber") String sceneNumber,
                                @DestinationVariable("userId") String userId,
                                @DestinationVariable("status") String status) throws Exception {
-//        System.out.println("studioId = " + studioId);
-//        System.out.println("sceneNumber = " + sceneNumber);
-//        System.out.println("userId = " + userId);
-
 
         User user = userRepository.findById(userId).orElse(null);
 
