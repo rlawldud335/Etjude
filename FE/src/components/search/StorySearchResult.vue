@@ -1,14 +1,12 @@
 <template>
-  <div>{{ keyword }}에 대한 검색 결과</div>
+  <div>스토리{{ stories }}</div>
 </template>
 
 <script>
 export default {
-  name: "SearchResult",
+  name: "StorySearchResult",
   components: {},
-  props: {
-    keyword: String,
-  },
+  props: { stories: Array },
   setup() {
     return {};
   },
