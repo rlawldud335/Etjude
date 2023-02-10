@@ -11,7 +11,7 @@ import { defineComponent } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import { getMyStudio } from "@/api/users";
 import testdata from "@/dummy/testdata.json";
-import StudioCardItem from "./StudioCardItem.vue";
+import StudioCardItem from "../common/StudioCardItem.vue";
 
 import "vue3-carousel/dist/carousel.css";
 
