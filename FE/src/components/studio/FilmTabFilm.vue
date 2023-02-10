@@ -1,7 +1,10 @@
 <template>
   <div class="studio-film-tab__film">
     <div class="studio__film-thumbnail">
-      <video src="" controls class="studio__film-player"><track kind="captions" /></video>
+      <video src="https://s3ffmpegtest.s3.ap-northeast-2.amazonaws.com/studio_name.webm" controls
+        class="studio__film-player">
+        <track kind="captions" />
+      </video>
     </div>
     <div class="studio__film-section">
       <div class="studio__film-info">
@@ -43,6 +46,7 @@ export default {
 .studio__film-thumbnail {
   cursor: pointer;
 }
+
 .studio__film-player {
   width: 150px;
   height: 100px;
@@ -55,14 +59,17 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
+
 .studio__film-info {
   display: flex;
   flex-direction: column;
+
   .studio__film-id {
     font-size: 16px;
     font-weight: 500;
   }
-  > span {
+
+  >span {
     font-size: 14px;
     line-height: 150%;
   }
@@ -71,6 +78,7 @@ export default {
 .studio__film-button {
   display: flex;
   justify-content: flex-end;
+
   button {
     font-size: 10px;
     border: none;
