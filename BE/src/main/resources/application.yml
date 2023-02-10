@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/unnamed?useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://i8a605.p.ssafy.io:3306/unnamed?useUnicode=true&serverTimezone=Asia/Seoul
     username: testuser
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
