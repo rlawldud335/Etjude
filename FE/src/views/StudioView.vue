@@ -30,6 +30,7 @@
           <SsinTab :studioData="studioData" :videoState="videoState" @change-video-state="changeVideoState"
             v-show="state.selectTab === 1" />
           <FilmTab :films="studioDummyData.film" v-show="state.selectTab === 2" />
+          <ChatTab v-show="state.selectTab === 3" />
         </div>
       </div>
       <div class="studio__tab">
@@ -56,6 +57,13 @@
           <Film />
         </button>
 
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(3)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }"
+        >
+        </button>
+
       </div>
     </div>
   </div>
@@ -75,6 +83,8 @@ import VideoArea from "@/components/studio/VideoArea.vue";
 import studioDummyData from "@/dummy/studioDummyData.json";
 import { reactive, ref } from "vue";
 
+import ChatTab from "@/components/studio/ChattingTab.vue";
+
 export default {
   components: {
     Scripts,
@@ -87,13 +97,14 @@ export default {
     StudioNav,
     ScriptArea,
     VideoArea,
+    ChatTab,
   },
   setup() {
     const state = reactive({
       isOpenTab: false,
       selectTab: 0,
     });
-    const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }]);
+    const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }, {tabName: "채팅"}]);
     const clickTab = (idx) => {
       if (state.selectTab === idx) { state.isOpenTab = !state.isOpenTab; }
       else if (state.isOpenTab && idx !== state.selectTab) {
