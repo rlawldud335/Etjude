@@ -53,11 +53,14 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
             articleWithFilmUrlResponse.addArticleLikeCount(getArticleLikeCount(articleId));
             articleWithFilmUrlResponse.addTotalArticleNumber(totalArticleNumbers);
         }
-
+        int totalNum = result.size();
         int startIdx = 12 * (pageNum - 1);
-        int endIdx = startIdx + 11;
-//        return result.subList(startIdx, endIdx + 1);
-        return result.subList(0, 2);
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return result.subList(startIdx, startIdx + totalNum - startIdx);
+        }
+
+        return result.subList(startIdx, endIdx);
     }
 
     @Override
