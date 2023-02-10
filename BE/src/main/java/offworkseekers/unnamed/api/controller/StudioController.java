@@ -130,8 +130,8 @@ public class StudioController {
 
     @PutMapping(value = "/api/v1/studio/recording")
     public ResponseEntity saveRecording (@RequestBody @Valid Map<String, Object> param){
-        Long studioId = (Long) param.get("studio_id");
-        Long sceneId = (Long) param.get("scene_id");
+        int studioId = (int) param.get("studio_id");
+        int sceneId = (int) param.get("scene_id");
         String userId = (String) param.get("user_id");
         String recordingVideoUrl = (String) param.get("recording_video_url");
 

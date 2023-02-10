@@ -81,7 +81,8 @@ public class StudioService {
         return studioRepository.findRecordingByStudioId(studioId);
     }
 
-    public void saveRecording(Long studioId, Long sceneId, String recordingVideoUrl, String userId) {
+    @Transactional
+    public void saveRecording(int studioId, int sceneId, String recordingVideoUrl, String userId) {
         Recording recording = recordingRepository.findRecordingByStudioIdAndSceneId(studioId, sceneId);
         if (recording != null) {
             recording.changeUrl(recordingVideoUrl);
@@ -89,15 +90,17 @@ public class StudioService {
             recordingRepository.save(recording);
         }
 
-        Studio studio = studioRepository.findById(studioId).orElse(null);
-        Scene scene = sceneRepository.findById(sceneId).orElse(null);
+        if (recording == null) {
+            Studio studio = studioRepository.findById(Long.valueOf(studioId)).orElse(null);
+            Scene scene = sceneRepository.findById(Long.valueOf(sceneId)).orElse(null);
 
-        recordingRepository.save(Recording.builder()
-                        .recordingVideoUrl(recordingVideoUrl)
-                        .userId(userId)
-                        .studio(studio)
-                        .scene(scene)
-                .build());
+            recordingRepository.save(Recording.builder()
+                            .recordingVideoUrl(recordingVideoUrl)
+                            .userId(userId)
+                            .studio(studio)
+                            .scene(scene)
+                    .build());
+        }
     }
 
 }

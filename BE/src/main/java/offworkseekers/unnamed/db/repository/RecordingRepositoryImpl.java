@@ -2,8 +2,9 @@ package offworkseekers.unnamed.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.db.entity.QRecording;
 import offworkseekers.unnamed.db.entity.Recording;
+
+import static offworkseekers.unnamed.db.entity.QRecording.recording;
 
 @RequiredArgsConstructor
 public class RecordingRepositoryImpl implements RecordingRepositorySupport {
@@ -12,12 +13,12 @@ public class RecordingRepositoryImpl implements RecordingRepositorySupport {
 
 
     @Override
-    public Recording findRecordingByStudioIdAndSceneId(Long studioId, Long sceneId) {
+    public Recording findRecordingByStudioIdAndSceneId(int studioId, int sceneId) {
         return queryFactory
-                .selectFrom(QRecording.recording)
+                .selectFrom(recording)
                 .where(
-                        QRecording.recording.studio.studioId.eq(studioId),
-                        QRecording.recording.scene.sceneId.eq(sceneId)
+                        recording.studio.studioId.eq(Long.valueOf(studioId)),
+                        recording.scene.sceneId.eq(Long.valueOf(sceneId))
                 )
                 .fetchOne();
     }

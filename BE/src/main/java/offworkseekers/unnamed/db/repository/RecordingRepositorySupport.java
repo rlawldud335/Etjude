@@ -4,6 +4,6 @@ import offworkseekers.unnamed.db.entity.Recording;
 
 public interface RecordingRepositorySupport {
 
-    Recording findRecordingByStudioIdAndSceneId(Long studioId, Long sceneId);
+    Recording findRecordingByStudioIdAndSceneId(int studioId, int sceneId);
 
 }
