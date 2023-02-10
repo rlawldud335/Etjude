@@ -4,7 +4,8 @@
         <div class="video-player">
             <video
                 :class="[{ 'video-zero-size': state.videoMode == 0 }, { 'video-default-size': state.videoMode == 1 }, { 'video-full-size': state.videoMode == 2 },]"
-                id="video-output" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+                ref="videoOutput"
+                src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
                 controls></video>
             <video
                 :class="[{ 'video-zero-size': state.videoMode == 2 }, { 'video-default-size': state.videoMode == 1 }, { 'video-full-size': state.videoMode == 0 },]"
@@ -17,15 +18,18 @@
         </div>
         <div class="video-controller">
             <button class="bana-btn" @click="toggleVideo()">
+                <span>카메라</span>
                 <VideoOn v-show="constraints.video" />
                 <VideoOff v-show="!constraints.video" />
             </button>
             <button class="bana-btn" @click="toggleAudio()">
+                <span>마이크</span>
                 <MicOn v-show="constraints.audio" />
                 <MicOff v-show="!constraints.audio" />
             </button>
             <button class="bana-btn" @click="state.videoMode = (state.videoMode + 1) % 3">
-                화면전환
+                <span>화면전환</span>
+                <ChangeVideo2 />
             </button>
         </div>
     </div>
@@ -43,7 +47,7 @@ export default {
     components: {
         VideoOn, VideoOff, MicOn, MicOff, RecordCircle
     },
-    props: { videoState: Object },
+    props: { videoState: Object, scriptState: Object },
     emits: ['change-video-state', 'save-recording-data'],
     setup(props, { emit }) {
         const user = {
@@ -54,6 +58,13 @@ export default {
         const state = reactive({
             videoMode: 0,
         });
+
+        const videoOutput = ref(null);
+
+        watch(() => props.scriptState.currentTime, (cur) => {
+            videoOutput.value.currentTime = cur;
+        })
+
 
         const mediaStream = ref(null);
         const constraints = reactive({ video: true, audio: true });
@@ -137,6 +148,7 @@ export default {
             toggleAudio,
             startRecoding,
             endRecording,
+            videoOutput
         };
     }
 }
@@ -181,6 +193,12 @@ export default {
     margin: 3px;
     font-size: 12px;
     font-weight: 300;
+    display: flex;
+    align-items: center;
+}
+
+.bana-btn span {
+    margin-right: 6px;
 }
 
 .bana-btn:hover {
@@ -191,8 +209,8 @@ export default {
     width: 50%;
 }
 
-.video-pull-size {
-    width: 70%;
+.video-full-size {
+    width: 100%;
 }
 
 .video-zero-size {

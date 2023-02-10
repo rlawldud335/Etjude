@@ -2,16 +2,14 @@
   <div class="post_container">
     <div class="post_header">
       <div class="post_title">
-        게시글의 제목이 들어가는 공간
-        <div class="post_date">2023-01-31 17:59</div>
+        {{ postdata.articleTitle }}
+        <div class="post_date">{{ postdata.articleCreatedDate }}</div>
       </div>
       <div class="post_menu"><hamburger></hamburger></div>
     </div>
     <div class="post_main">
       <div class="post_text">
-        설명입니다. 로렘 입숨(lorem ipsum; 줄여서 립숨, lipsum)은 출판이나 그래픽 디자인 분야에서
-        폰트, 타이포그래피, 레이아웃 같은 그래픽 요소나 시각적 연출을 보여줄 때 사용하는 표준 채우기
-        텍스트
+        {{ postdata.articleContent }}
       </div>
       <div class="post_icon">
         <heart class="heart"></heart><talk class="talk"></talk><share class="share"></share>
@@ -29,6 +27,7 @@
 </template>
 oo
 <script>
+import { ref } from "vue";
 import hamburger from "@/assets/icons/hamburger.svg";
 import heart from "@/assets/icons/heart.svg";
 import talk from "@/assets/icons/talk.svg";
@@ -41,6 +40,13 @@ export default {
     heart,
     talk,
     share,
+  },
+  props: {
+    filmdata: Object,
+  },
+  setup(props) {
+    const postdata = ref(props.filmdata);
+    return { postdata };
   },
   data() {
     return {
