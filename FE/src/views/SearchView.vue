@@ -70,11 +70,17 @@
           <div class="search__result" v-if="inputText">
             {{ searchResult }}
             <p>{{ inputText }}의 검색 결과</p>
-            <div class="search__work-result" v-for="work in searchResult" :key="work.id">
-              <WorkSearchResult v-if="state.menu.id == '1'" :work="work"></WorkSearchResult>
+            <div class="search__work-result">
+              <WorkSearchResult
+                v-if="state.menu.id == '1'"
+                :works="searchResult"
+              ></WorkSearchResult>
             </div>
-            <div class="search__story-result" v-for="story in searchResult" :key="story.id">
-              <StorySearchResult v-if="state.menu.id == '2'" :story="story"></StorySearchResult>
+            <div class="search__story-result">
+              <StorySearchResult
+                v-if="state.menu.id == '2'"
+                :stories="searchResult"
+              ></StorySearchResult>
             </div>
           </div>
         </div>
