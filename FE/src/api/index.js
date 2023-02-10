@@ -22,7 +22,7 @@ function apiInstance() {
 
 async function testMakeFilm(success, fail) {
   await axios
-    .get("http://i8a605.p.ssafy.io:5000/api/v1/concateVideo", { studioId: "studio1" })
+    .get("http://i8a605.p.ssafy.io:5000/api/v2/concateVideo", { studioId: "studio1" })
     .then(success)
     .catch(fail);
 }
