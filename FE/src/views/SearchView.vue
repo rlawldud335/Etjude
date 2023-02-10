@@ -68,8 +68,7 @@
             ></div>
           </div>
           <div class="search__result" v-if="inputText">
-            {{ searchResult }}
-            <p>{{ inputText }}의 검색 결과</p>
+            <p>"{{ inputText }}"의 검색 결과</p>
             <div class="search__work-result">
               <WorkSearchResult
                 v-if="state.menu.id == '1'"
@@ -298,12 +297,16 @@ export default {
 }
 
 .search__result-section {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-left: 50px;
 }
-
+.search__result {
+  div {
+    margin-top: 10px;
+  }
+}
 .search__toggle-tab {
   display: flex;
   flex-direction: row;

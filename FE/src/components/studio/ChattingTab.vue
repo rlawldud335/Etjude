@@ -1,7 +1,7 @@
 <template>
   <div>
     유저 아이디:
-    <label for="유저아이디"><input v-model="userId" type="text" @keyup.enter="connect"/></label>
+    <label for="유저아이디"><input v-model="userId" type="text" @keyup.enter="connect" /></label>
     <br />
     유저 닉네임:
     <label for="유저닉네임"><input v-model="nickname" type="text" /></label>
@@ -9,12 +9,12 @@
     내용:
     <label for="내용"><input v-model="message" type="text" @keyup.enter="sendMessage" /></label>
     <hr />
-    <div class="container">
+    <div class="container" ref="messages">
       <div>
         채팅 내역
-        <div v-for="(item, idx) in recvList" :key="idx">
+        <div v-for="(item, idx) in recvList" :key="idx" class="messages">
           <div v-if="item.studioId === studioId">
-            <div v-if="item.userId === this.userId" style="color: blue;"> 
+            <div v-if="item.userId === this.userId" style="color: blue">
               <div>({{ item.chatTime }}) {{ item.nickname }}: {{ item.content }}</div>
             </div>
             <div v-else>
@@ -45,6 +45,27 @@ export default {
   created() {
     this.connect();
   },
+  // computed: {
+  //   releng() {
+  //     return this.recvList.length;
+  //   },
+  // },
+  // updated() {
+  //   const { messages } = this.$refs;
+  //   messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+  // },
+  watch: {
+    recvList: {
+      handler() {
+        console.log(1);
+        this.$nextTick(() => {
+          const { messages } = this.$refs;
+          messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+        });
+      },
+      deep: true,
+    },
+  },
   methods: {
     sendMessage,
     send,
@@ -52,4 +73,9 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style lang="scss">
+.container {
+  height: 44rem;
+  overflow: auto;
+}
+</style>
