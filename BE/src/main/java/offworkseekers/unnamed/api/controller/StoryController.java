@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,12 @@ public class StoryController {
     private final StoryService storyService;
 
     @GetMapping(value = "/api/v1/story/recommended/popular")
-    public List<StoryListResponse> storyListByLike(@RequestParam(value = "pageNum") int pageNum) {
-        List<StoryListResponse> response = storyService.storyListRecommendedByLike(pageNum);
+    public List<StoryListResponse> storyListByLike(@Param(value = "pageNum") String pageNum) {
+        List<StoryListResponse> response = new ArrayList<>();
+        if(pageNum == null || pageNum.equals("")){
+            response = storyService.storyListRecommendedByLike(1);
+        }
+        else response = storyService.storyListRecommendedByLike(Integer.parseInt(pageNum));
         return response;
     }
 
@@ -53,12 +58,14 @@ public class StoryController {
     }
 
     @GetMapping(value = "/api/v1/story/search")
-    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @RequestParam(value = "pageNum") int pageNum) {;
-        System.out.println(categoryId);
+    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @Param(value = "pageNum") String pageNum) {;
+
+        int pageNumToInt = 1;
+        if(pageNum != null && !pageNum.equals("")) pageNumToInt = Integer.parseInt(pageNum);
         if (categoryId == null || categoryId.equals("")) {
-            return storyService.storySearchList(keyword, 0L, pageNum);
+            return storyService.storySearchList(keyword, 0L, pageNumToInt);
         }
-        return storyService.storySearchList(keyword, Long.valueOf(categoryId), pageNum);
+        return storyService.storySearchList(keyword, Long.valueOf(categoryId), pageNumToInt);
     }
 
     @PostMapping(value = "/api/v1/story/like")

@@ -5,10 +5,12 @@ import offworkseekers.unnamed.api.request.ArticleCreateRequest;
 import offworkseekers.unnamed.api.request.ArticleEditRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.ArticleService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,14 +26,22 @@ public class BoardController {
     }
 
     @GetMapping(value = "/api/v1/board")
-    public List<ArticleWithFilmUrlResponse> getArticleList(@RequestParam(value = "pageNum") int pageNum) {
-        List<ArticleWithFilmUrlResponse> articleList = articleService.getArticleList(pageNum);
+    public List<ArticleWithFilmUrlResponse> getArticleList(@Param(value = "pageNum") String pageNum) {
+        List<ArticleWithFilmUrlResponse> articleList = new ArrayList<>();
+        if(pageNum==null || pageNum.equals("")){
+            articleList = articleService.getArticleList(1);
+        }
+        else articleList = articleService.getArticleList(Integer.parseInt(pageNum));
         return articleList;
     }
 
     @GetMapping(path = "/api/v1/board/search")
-    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "pageNum") int pageNum){
-        List<SearchFilmResponse> articleList = articleService.getSearchArticleList(keyword, pageNum);
+    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword, @Param(value = "pageNum") String pageNum){
+        List<SearchFilmResponse> articleList = new ArrayList<>();
+        if(pageNum==null || pageNum.equals("")){
+            articleList = articleService.getSearchArticleList(keyword, 1);
+        }
+        else articleList = articleService.getSearchArticleList(keyword, Integer.parseInt(pageNum));
         return articleList;
     }
 

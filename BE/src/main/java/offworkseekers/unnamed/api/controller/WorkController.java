@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,18 +21,27 @@ public class WorkController {
     private final WorkService workService;
 
     @GetMapping("/api/v1/work/recommended-random")
-    public List<WorkOrderByRandomResponse> getWorkListRandom(@RequestParam(value = "pageNum") int pageNum){
-        List<WorkOrderByRandomResponse> workList = workService.getWorkListRandom(pageNum);
+    public List<WorkOrderByRandomResponse> getWorkListRandom(@Param(value = "pageNum") String pageNum){
+        List<WorkOrderByRandomResponse> workList = new ArrayList<>();
+
+        if(pageNum==null || pageNum.equals("")){
+            workList = workService.getWorkListRandom(1);
+        }
+        else workList = workService.getWorkListRandom(Integer.parseInt(pageNum));
+
         return workList;
     }
 
     @GetMapping("/api/v1/work/search")
-    public List<WorkSearchResponse> getWorkSearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @RequestParam(value = "pageNum") int pageNum){
+    public List<WorkSearchResponse> getWorkSearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @Param(value = "pageNum") String pageNum){
+
+        int pageNumToInt = 1;
+        if(pageNum != null && !pageNum.equals("")) pageNumToInt = Integer.parseInt(pageNum);
 
         if(categoryId == null || categoryId.equals("")){
-            return workService.getWorkSearchList(keyword, 0L, pageNum);
+            return workService.getWorkSearchList(keyword, 0L, pageNumToInt);
         } else {
-            return workService.getWorkSearchList(keyword, Long.parseLong(categoryId), pageNum);
+            return workService.getWorkSearchList(keyword, Long.parseLong(categoryId), pageNumToInt);
         }
 
     }
