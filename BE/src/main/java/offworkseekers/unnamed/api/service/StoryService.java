@@ -60,8 +60,8 @@ public class StoryService {
         return roleWithLines;
     }
 
-    public List<StoryListResponse> storySearchList(String keyword, String categoryName) {
-        List<StoryListResponse> storySearchList = storyRepository.getStorySearchList(keyword, categoryName);
+    public List<StoryListResponse> storySearchList(String keyword, Long categoryId) {
+        List<StoryListResponse> storySearchList = storyRepository.getStorySearchList(keyword, categoryId);
         return storySearchList;
     }
 

@@ -27,9 +27,16 @@ public class WorkController {
     }
 
     @GetMapping("/api/v1/work/search")
-    public List<WorkSearchResponse> getWorkSearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") Long categoryId){
-        return workService.getWorkSearchList(keyword, categoryId);
+    public List<WorkSearchResponse> getWorkSearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") String categoryId){
+
+        if(categoryId == null || categoryId.equals("")){
+            return workService.getWorkSearchList(keyword, 0L);
+        } else {
+            return workService.getWorkSearchList(keyword, Long.parseLong(categoryId));
+        }
+
     }
+
 
     @GetMapping("/api/v1/work/detail")
     public GetWorkResponse getWork(@RequestParam(value = "work_id") Long workId){

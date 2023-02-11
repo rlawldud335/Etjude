@@ -9,6 +9,7 @@ import offworkseekers.unnamed.api.response.StoriesOfWork;
 import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
 import offworkseekers.unnamed.api.response.WorkSearchResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static offworkseekers.unnamed.db.entity.QLikes.likes;
@@ -37,7 +38,18 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
     @Override
     public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId) {
 
-        List<WorkSearchResponse> result = queryFactory
+        List<WorkSearchResponse> result = new ArrayList<>();
+        if(categoryId == 0L){
+            result = queryFactory
+                    .select(Projections.constructor(WorkSearchResponse.class,
+                            work.workId,
+                            work.workTitle,
+                            work.category.categoryName))
+                    .from(work)
+                    .where(work.workTitle.contains(keyword))
+                    .fetch();
+        } else {
+            result = queryFactory
                     .select(Projections.constructor(WorkSearchResponse.class,
                             work.workId,
                             work.workTitle,
@@ -45,6 +57,8 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                     .from(work)
                     .where(work.workTitle.contains(keyword),work.category.categoryId.eq(categoryId))
                     .fetch();
+        }
+
         return result;
     }
 

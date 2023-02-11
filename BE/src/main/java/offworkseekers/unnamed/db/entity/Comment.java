@@ -14,7 +14,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "comment_id", columnDefinition = "INT UNSIGNED")
     private Long commentId;
 
     @Column(name = "comment_contents")

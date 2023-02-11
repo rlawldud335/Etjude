@@ -17,7 +17,7 @@ public class Recording {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "recording_id")
+    @Column(name = "recording_id", columnDefinition = "INT UNSIGNED")
     private Long recordingId;
 
     @Column(name = "recording_video_url")
@@ -41,5 +41,13 @@ public class Recording {
         this.userId = userId;
         this.scene = scene;
         this.studio = studio;
+    }
+
+    public void changeUrl(String recordingVideoUrl) {
+        this.recordingVideoUrl = recordingVideoUrl;
+    }
+
+    public void changeUserId(String userId) {
+        this.userId = userId;
     }
 }

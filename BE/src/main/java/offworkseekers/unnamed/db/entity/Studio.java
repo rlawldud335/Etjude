@@ -16,7 +16,7 @@ import java.util.List;
 public class Studio {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "studio_id")
+    @Column(name = "studio_id", columnDefinition = "INT UNSIGNED")
     private Long studioId;
 
     @Column(name = "studio_end_date")

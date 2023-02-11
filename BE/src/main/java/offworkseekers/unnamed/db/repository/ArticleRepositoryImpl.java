@@ -18,6 +18,7 @@ import java.util.List;
 import static offworkseekers.unnamed.db.entity.QArticle.article;
 import static offworkseekers.unnamed.db.entity.QComment.comment;
 import static offworkseekers.unnamed.db.entity.QFilm.film;
+import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
 import static offworkseekers.unnamed.db.entity.QUser.user;
@@ -32,7 +33,8 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ArticleWithFilmUrlResponse> getArticles() {
+    public List<ArticleWithFilmUrlResponse> getArticles(int pageNum) {
+//        총 페이지 수랑, 각 페이지수
         List<ArticleWithFilmUrlResponse> result = queryFactory
                 .select(Projections.constructor(ArticleWithFilmUrlResponse.class,
                         article.articleId,
@@ -41,12 +43,24 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.articleTitle,
                         article.user.nickName,
                         article.user.picture,
-                        article.articleCreatedDate,
-                        article.articleViewCount))
+                        article.articleCreatedDate))
                 .from(article)
                 .fetch();
 
-        return result;
+        for (ArticleWithFilmUrlResponse articleWithFilmUrlResponse : result) {
+            Long articleId = articleWithFilmUrlResponse.getArticleId();
+            int totalArticleNumbers = result.size();
+            articleWithFilmUrlResponse.addArticleLikeCount(getArticleLikeCount(articleId));
+            articleWithFilmUrlResponse.addTotalArticleNumber(totalArticleNumbers);
+        }
+        int totalNum = result.size();
+        int startIdx = 12 * (pageNum - 1);
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return result.subList(startIdx, startIdx + totalNum - startIdx);
+        }
+
+        return result.subList(startIdx, endIdx);
     }
 
     @Override
@@ -56,7 +70,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.articleId,
                         article.articleTitle,
                         article.articleCreatedDate,
-                        article.articleViewCount,
                         article.articleThumbnailUrl,
                         article.user.email,
                         article.user.nickName,
@@ -77,6 +90,7 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
         Studio studio = queryFactory
                 .select(article.film.studio)
                 .from(article)
+                .where(article.articleId.eq(articleId))
                 .fetchOne();
         Long storyId = studio.getStory().getStoryId();
 
@@ -131,7 +145,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                 .select(Projections.constructor(PopularFilmResponse.class,
                         article.articleId,
                         article.articleTitle,
-                        article.articleViewCount,
                         article.film.filmId,
                         article.articleThumbnailUrl,
                         article.articleCreatedDate,
@@ -139,8 +152,17 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.user.picture))
                 .from(article)
                 .fetch();
+        for(int i = 0; i < result.size(); i++){
+            int likes = getArticleLikeCount(result.get(i).getArticleId());
+            result.get(i).addLikeCount(likes);
+            System.out.println(likes);
+        }
         Collections.sort(result, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
-        return result;
+        if(result.size() < 4){
+            return result;
+        } else{
+            return result.subList(0, 4);
+        }
     }
 
     @Override
@@ -156,8 +178,8 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         film.studio.story.storyId,
                         film.studio.story.storyTitle
                 )
-                .from(film)
-                .where(film.user.userId.eq(userId))
+                .from(film, teamMember)
+                .where(teamMember.user.userId.eq(userId), teamMember.studio.studioId.eq(film.studio.studioId))
                 .fetch();
 
         List<MyFilmListResponse> myFilmListResponses = new ArrayList<>();
@@ -214,5 +236,16 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         story.storyId.eq(storyId)
                 )
                 .fetchOne();
+    }
+
+    public int getArticleLikeCount(Long articleId) {
+
+        Long result = queryFactory.select(likes.count())
+                .from(likes)
+                .where(likes.division.eq(0),
+                        likes.articleStoryId.eq(Math.toIntExact(articleId)))
+                .fetchOne();
+
+        return Math.toIntExact(result);
     }
 }

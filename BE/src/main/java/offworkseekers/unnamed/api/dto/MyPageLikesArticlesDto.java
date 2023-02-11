@@ -11,15 +11,15 @@ public class MyPageLikesArticlesDto {
     String articleTitle;
     String userId;
     String userPhotoUrl;
-    int articleViewCount;
     LocalDate articleCreatedDate;
+    Long articleLikeCount;
 
-    public MyPageLikesArticlesDto(Long articeId, String articleTitle, String userId, String userPhotoUrl, int articleViewCount, LocalDate articleCreatedDate) {
+    public MyPageLikesArticlesDto(Long articeId, String articleTitle, String userId, String userPhotoUrl, LocalDate articleCreatedDate, Long articleLikeCount) {
         this.articeId = articeId;
         this.articleTitle = articleTitle;
         this.userId = userId;
         this.userPhotoUrl = userPhotoUrl;
-        this.articleViewCount = articleViewCount;
         this.articleCreatedDate = articleCreatedDate;
+        this.articleLikeCount = articleLikeCount;
     }
 }

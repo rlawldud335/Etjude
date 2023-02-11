@@ -25,6 +25,7 @@ import static offworkseekers.unnamed.db.entity.QUser.user;
 public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     private final JPAQueryFactory queryFactory;
+    private final ArticleRepositoryImpl articleRepositoryImpl;
 
     @Override
     public List<MyPageStudiosResponse> getMyPageStudios(String userId) {
@@ -61,8 +62,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         film.filmVideoUrl,
                         film.filmCreatedDate,
                         film.studio.studioEndDate))
-                .from(film, story)
-                .where(film.user.userId.eq(userId), film.studio.story.eq(story))
+                .from(film, story, teamMember)
+                .where(teamMember.user.userId.eq(userId), film.studio.eq(teamMember.studio), film.studio.story.eq(story))
                 .fetch();
 
         List<MyPageFilmsWithMembersResponse> result = new ArrayList<>();
@@ -82,18 +83,28 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     @Override
     public List<MyPageArticlesResponse> getMyPageArticles(String userId) {
-
-        return queryFactory
+        List<MyPageArticlesResponse> myPageArticlesResponses = queryFactory
                 .select(Projections.constructor(MyPageArticlesResponse.class,
                         article.articleId,
                         article.articleTitle,
                         article.user.userId,
                         article.user.picture,
-                        article.articleViewCount,
                         article.articleCreatedDate))
                 .from(article)
                 .where(article.user.userId.eq(userId))
                 .fetch();
+        for(int i = 0; i < myPageArticlesResponses.size(); i++){
+            Long articleId = myPageArticlesResponses.get(i).getArticleId();
+            int like = articleRepositoryImpl.getArticleLikeCount(articleId);
+            System.out.println(like);
+            myPageArticlesResponses.get(i).addArticleLikeCount(like);
+        }
+//        for(MyPageArticlesResponse article : myPageArticlesResponses){
+//            Long articleId = article.getArticleId();
+//            int like = articleRepositoryImpl.getArticleLikeCount(articleId);
+//            article.addArticleLikeCount(like);
+//        }
+        return myPageArticlesResponses;
     }
 
     @Override
@@ -104,10 +115,13 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         article.articleTitle,
                         article.user.userId,
                         article.user.picture,
-                        article.articleViewCount,
-                        article.articleCreatedDate))
+                        article.articleCreatedDate,
+                        JPAExpressions.select(likes.count())
+                                .from(likes)
+                                .where(likes.division.eq(0),
+                                        likes.articleStoryId.eq(article.articleId.castToNum(Integer.class)))))
                 .from(article, likes)
-                .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.articleStoryId.eq(article.articleId.castToNum(Integer.class)))
+                .where(likes.division.eq(0))
                 .fetch();
 
         List<MyPageLikesStoriesDto> stories = queryFactory
@@ -121,7 +135,7 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                                 .where(likes.division.eq(1),
                                         likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))))
                 .from(story, likes)
-                .where(likes.division.eq(1), likes.user.userId.eq(userId), likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))
+                .where(likes.division.eq(1))
                 .fetch();
 
         return new MyPageLikesResponse(articles, stories);
