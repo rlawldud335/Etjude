@@ -1,21 +1,30 @@
 <template lang="">
-  <div class="carousel__item">
-    <router-link to="/piece">
-      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
-      <div class="itemtext">
-        <div class="rightitem">
-          <div class="itemtextteamname">{{ carditem.workTitle }}</div>
-          <div class="itemtexttitle">{{ carditem.categoryName }}</div>
-        </div>
+  <div class="carousel__item" @click="goPieceDetail">
+    <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+    <div class="itemtext">
+      <div class="rightitem">
+        <div class="itemtextteamname">{{ carditem.workTitle }}</div>
+        <div class="itemtexttitle">{{ carditem.categoryName }}</div>
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
 <script>
+import { useRouter } from "vue-router";
+
 export default {
   name: "PieceCardItem",
   props: {
     carditem: {},
+  },
+  setup(props) {
+    const router = useRouter();
+    const goPieceDetail = () => {
+      router.push({ name: "piece", params: { pieceId: props.carditem.workId } });
+    };
+    return {
+      goPieceDetail,
+    };
   },
 };
 </script>
