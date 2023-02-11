@@ -6,7 +6,10 @@ import offworkseekers.unnamed.db.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,14 +17,14 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @PostMapping("/api/v1/user/signup")
-    public ResponseEntity UserSignUp(User user) {
+    @PostMapping("/api/v1/user/login")
+    public ResponseEntity UserSignUp(@RequestBody @Valid User user) {
         String userId = user.getUserId();
         User signedUser = userRepository.findById(userId).orElse(null);
 
         if (signedUser == null) {
-            userRepository.save(signedUser);
-            return new ResponseEntity(HttpStatus.CREATED);
+            userRepository.save(user);
+            return new ResponseEntity(HttpStatus.OK);
         }
         
         return new ResponseEntity(HttpStatus.OK);
