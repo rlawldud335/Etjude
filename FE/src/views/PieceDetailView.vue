@@ -23,7 +23,7 @@
 import { reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import pieceDetail from "@/dummy/pieceDetailData.json";
-import { getWorkInfo, getStoriesOnWork } from "@/api/filmDetail";
+import { getWorkInfo, getStoriesOnWork } from "@/api/pieceDetail";
 // import StoryCardItem from "@/components/common/StoryCardItem.vue";
 
 export default {
