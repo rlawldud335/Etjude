@@ -11,5 +11,5 @@ public interface StoryRepositorySupport {
 
     StoryDetailResponse getStoryDetail(Long storyId, String userId);
 
-    List<StoryListResponse> getStorySearchList(String keyword, String category);
+    List<StoryListResponse> getStorySearchList(String keyword, Long categoryId);
 }

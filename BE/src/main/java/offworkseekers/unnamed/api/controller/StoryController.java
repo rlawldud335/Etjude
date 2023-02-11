@@ -52,8 +52,11 @@ public class StoryController {
     }
 
     @GetMapping(value = "/api/v1/story/search")
-    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category") String categoryName) {;
-        return storyService.storySearchList(keyword, categoryName);
+    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") String categoryId) {;
+        if (categoryId == null || categoryId.equals("")) {
+            return storyService.storySearchList(keyword, 0L);
+        }
+        return storyService.storySearchList(keyword, Long.valueOf(categoryId));
     }
 
     @PostMapping(value = "/api/v1/story/like")
