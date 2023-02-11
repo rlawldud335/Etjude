@@ -5,7 +5,6 @@ import offworkseekers.unnamed.api.request.ArticleCreateRequest;
 import offworkseekers.unnamed.api.request.ArticleEditRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.ArticleService;
-import offworkseekers.unnamed.db.entity.Article;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +30,8 @@ public class BoardController {
     }
 
     @GetMapping(path = "/api/v1/board/search")
-    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword){
-        List<SearchFilmResponse> articleList = articleService.getSearchArticleList(keyword);
+    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "pageNum") int pageNum){
+        List<SearchFilmResponse> articleList = articleService.getSearchArticleList(keyword, pageNum);
         return articleList;
     }
 

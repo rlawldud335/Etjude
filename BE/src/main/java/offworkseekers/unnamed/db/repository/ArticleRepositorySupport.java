@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ArticleRepositorySupport {
 
     List<ArticleWithFilmUrlResponse> getArticles(int pageNum);
-    List<SearchFilmResponse> getSearchArticles(String keyword);
+    List<SearchFilmResponse> getSearchArticles(String keyword, int pageNum);
     FilmDetailResponse getFilmDetail(Long articleId);
     List<PopularFilmResponse> getPopularArticles();
     List<MyFilmListResponse> getMyFilms(String userId);

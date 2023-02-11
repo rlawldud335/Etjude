@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface StoryRepositorySupport {
 
-    List<StoryListResponse> getStoryListRecommendedByLike();
+    List<StoryListResponse> getStoryListRecommendedByLike(int pageNum);
 
     StoryDetailResponse getStoryDetail(Long storyId, String userId);
 
-    List<StoryListResponse> getStorySearchList(String keyword, Long categoryId);
+    List<StoryListResponse> getStorySearchList(String keyword, Long categoryId, int pageNum);
 }

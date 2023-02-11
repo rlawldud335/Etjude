@@ -53,8 +53,8 @@ public class ArticleService {
         return articles;
     }
 
-    public List<SearchFilmResponse> getSearchArticleList(String keyword){
-        List<SearchFilmResponse> articles = articleRepository.getSearchArticles(keyword);
+    public List<SearchFilmResponse> getSearchArticleList(String keyword, int pageNum){
+        List<SearchFilmResponse> articles = articleRepository.getSearchArticles(keyword, pageNum);
         return articles;
     }
 

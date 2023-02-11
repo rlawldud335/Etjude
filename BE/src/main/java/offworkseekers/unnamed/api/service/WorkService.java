@@ -20,15 +20,15 @@ public class WorkService {
     private final WorkRepository workRepository;
 
 
-    public List<WorkOrderByRandomResponse> getWorkListRandom() {
+    public List<WorkOrderByRandomResponse> getWorkListRandom(int pageNum) {
 
-        List<WorkOrderByRandomResponse> works = workRepository.getWorkListRandom();
+        List<WorkOrderByRandomResponse> works = workRepository.getWorkListRandom(pageNum);
         Collections.shuffle(works);
         return works;
     }
 
-    public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId){
-        return workRepository.getWorkSearchList(keyword, categoryId);
+    public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId, int pageNum){
+        return workRepository.getWorkSearchList(keyword, categoryId, pageNum);
     }
 
     public GetWorkResponse getWork(Long workId){
