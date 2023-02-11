@@ -112,10 +112,10 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     }
 
     @Override
-    public List<StoryListResponse> getStorySearchList(String keyword, String categoryName) {
+    public List<StoryListResponse> getStorySearchList(String keyword, Long categoryId) {
 
         List<Tuple> fetch = new ArrayList<>();
-        if (categoryName.equals("") || categoryName == null){
+        if (categoryId == 0L){
             fetch = queryFactory
                     .select(
                             story.storyId,
@@ -136,7 +136,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                             story.work.workTitle)
                     .from(story)
                     .where(
-                            story.category.categoryName.eq(categoryName),
+                            story.category.categoryId.eq(categoryId),
                             story.storyTitle.contains(keyword)
                     )
                     .fetch();
