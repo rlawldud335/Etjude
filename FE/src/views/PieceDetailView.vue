@@ -1,34 +1,77 @@
 <template>
   <div class="piece">
-    <div class="piece-banner">
+    <div class="piece-banner" :style="backgroundStyle">
       <div class="blur-filter"></div>
       <div class="piece-banner__center">
-        <img src="@/assets/images/작품썸네일.jpg" alt="" class="piece-banner__pieceImg" />
+        <div class="piece-banner__image-frame">
+          <img :src="work.thumbnailUrl" alt="thumbnail-img" class="piece-banner__pieceImg" />
+        </div>
         <div class="piece-banner__text">
-          <span class="piece-banner__pieceTitle">{{ pieceDetail.pieceName }}</span>
-          <span class="piece-banner__pieceInfo">{{ pieceDetail.pieceInfo }}</span>
+          <span class="piece-banner__pieceTitle">{{ work.title }}</span>
+          <span class="piece-banner__pieceInfo">{{ work.description }}</span>
         </div>
       </div>
     </div>
     <div class="piece__story-list">
-      <span class="story-list__title"> {{ pieceDetail.pieceName }} 의 전체 스토리</span>
-      <div class=""></div>
+      <span class="story-list__title"> {{ work.title }} 의 전체 스토리</span>
+      {{ work.storyList }}
+      <!-- <StoryCardItem></StoryCardItem> -->
     </div>
   </div>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
+import { useRoute } from "vue-router";
 import pieceDetail from "@/dummy/pieceDetailData.json";
-import StoryCardItemData from "@/dummy/StoryCardItemData.json";
+import { getWorkInfo, getStoriesOnWork } from "@/api/filmDetail";
+// import StoryCardItem from "@/components/common/StoryCardItem.vue";
 
 export default {
+  name: "PieceCardItem",
+  components: {
+    // StoryCardItem,
+  },
   setup() {
-    const state = reactive({});
-
+    const route = useRoute();
+    const work = reactive({
+      id: route.params.pieceId,
+      title: null,
+      description: null,
+      thumbnailUrl: null,
+      storyList: [],
+    });
+    getWorkInfo(
+      route.params.pieceId,
+      ({ data }) => {
+        console.log(data);
+        work.title = data.workTitle;
+        work.description = data.workDesc;
+        work.thumbnailUrl = data.workThumbnailUrl;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    const backgroundStyle = computed(() => ({
+      background: `url(${work.thumbnailUrl})`,
+      "background-size": "cover",
+      "background-repeat": "no-repeat",
+      "background-position": "center center",
+    }));
+    getStoriesOnWork(
+      route.params.pieceId,
+      ({ data }) => {
+        console.log(data);
+        work.storyList = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     return {
-      state,
+      work,
       pieceDetail,
-      StoryCardItemData,
+      backgroundStyle,
     };
   },
 };
@@ -44,10 +87,6 @@ export default {
 .piece-banner {
   width: 100%;
   height: 350px;
-  background: url("@/assets/images/작품썸네일.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   position: relative;
   display: flex;
   justify-content: center;
@@ -74,14 +113,20 @@ export default {
   justify-content: flex-end;
 }
 
-.piece-banner__pieceImg {
+.piece-banner__image-frame {
   width: 22%;
-  height: auto;
+  aspect-ratio: 3/4;
   border: 3px solid #ffffff;
   position: absolute;
-  top: 80px;
   left: 0;
   margin-left: 30px;
+  top: 80px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.piece-banner__pieceImg {
+  object-fit: cover;
 }
 
 .piece-banner__text {
