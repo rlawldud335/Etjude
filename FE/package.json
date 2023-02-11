@@ -13,6 +13,7 @@
     "bootstrap-vue-3": "^0.5.1",
     "core-js": "^3.8.3",
     "css-loader": "^6.7.3",
+    "firebase": "^9.17.1",
     "install": "^0.13.0",
     "net": "^1.0.2",
     "npm": "^9.4.0",
