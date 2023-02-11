@@ -23,7 +23,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<StoryListResponse> getStoryListRecommendedByLike() {
+    public List<StoryListResponse> getStoryListRecommendedByLike(int pageNum) {
         List<Tuple> fetch = queryFactory
                 .select(story.storyId, story.storyThumbnailUrl, story.storyTitle, category.categoryName, work.workTitle)
                 .from(story, category, work)
@@ -48,7 +48,13 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
         }
         Collections.sort(storyListRecommendedByLikeResponse, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
 
-        return storyListRecommendedByLikeResponse;
+        int totalNum = storyListRecommendedByLikeResponse.size();
+        int startIdx = 12 * (pageNum - 1);
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return storyListRecommendedByLikeResponse.subList(startIdx, totalNum);
+        }
+        return storyListRecommendedByLikeResponse.subList(startIdx, endIdx);
     }
 
     private int getStoryLikeCount(Long storyId) {
@@ -112,7 +118,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     }
 
     @Override
-    public List<StoryListResponse> getStorySearchList(String keyword, Long categoryId) {
+    public List<StoryListResponse> getStorySearchList(String keyword, Long categoryId, int pageNum) {
 
         List<Tuple> fetch = new ArrayList<>();
         if (categoryId == 0L){
@@ -158,7 +164,14 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .build()
             );
         }
-        return storySearchResult;
+        int totalNum = storySearchResult.size();
+        int startIdx = 12 * (pageNum - 1);
 
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return storySearchResult.subList(startIdx, totalNum);
+        }
+
+        return storySearchResult.subList(startIdx, endIdx);
     }
 }

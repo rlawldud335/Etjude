@@ -23,7 +23,7 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<WorkOrderByRandomResponse> getWorkListRandom() {
+    public List<WorkOrderByRandomResponse> getWorkListRandom(int pageNum) {
         List<WorkOrderByRandomResponse> result = queryFactory
                 .select(Projections.constructor(WorkOrderByRandomResponse.class,
                         work.workId,
@@ -32,11 +32,20 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                         work.workTitle))
                 .from(work)
                 .fetch();
-        return result;
+
+        int totalNum = result.size();
+        int startIdx = 12 * (pageNum - 1);
+
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return result.subList(startIdx, totalNum);
+        }
+
+        return result.subList(startIdx, endIdx);
     }
 
     @Override
-    public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId) {
+    public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId, int pageNum) {
 
         List<WorkSearchResponse> result = new ArrayList<>();
         if(categoryId == 0L){
@@ -59,7 +68,15 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                     .fetch();
         }
 
-        return result;
+        int totalNum = result.size();
+        int startIdx = 12 * (pageNum - 1);
+
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return result.subList(startIdx, totalNum);
+        }
+
+        return result.subList(startIdx, endIdx);
     }
 
 

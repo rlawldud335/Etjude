@@ -6,6 +6,7 @@ import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
 import offworkseekers.unnamed.api.service.StoryService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ public class StoryController {
     private final StoryService storyService;
 
     @GetMapping(value = "/api/v1/story/recommended/popular")
-    public List<StoryListResponse> storyListByLike() {
-        List<StoryListResponse> response = storyService.storyListRecommendedByLike();
+    public List<StoryListResponse> storyListByLike(@RequestParam(value = "pageNum") int pageNum) {
+        List<StoryListResponse> response = storyService.storyListRecommendedByLike(pageNum);
         return response;
     }
 
@@ -52,11 +53,12 @@ public class StoryController {
     }
 
     @GetMapping(value = "/api/v1/story/search")
-    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") String categoryId) {;
+    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @RequestParam(value = "pageNum") int pageNum) {;
+        System.out.println(categoryId);
         if (categoryId == null || categoryId.equals("")) {
-            return storyService.storySearchList(keyword, 0L);
+            return storyService.storySearchList(keyword, 0L, pageNum);
         }
-        return storyService.storySearchList(keyword, Long.valueOf(categoryId));
+        return storyService.storySearchList(keyword, Long.valueOf(categoryId), pageNum);
     }
 
     @PostMapping(value = "/api/v1/story/like")
