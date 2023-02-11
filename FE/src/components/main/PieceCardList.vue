@@ -11,8 +11,7 @@ import { defineComponent } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import { getRecommendWork } from "@/api/work";
 import testdata from "@/dummy/PieceCardItemData.json";
-import PieceCardItem from "./PieceCardItem.vue";
-
+import PieceCardItem from "@/components/common/PieceCardItem.vue";
 
 import "vue3-carousel/dist/carousel.css";
 
@@ -24,12 +23,15 @@ export default defineComponent({
     PieceCardItem,
   },
   created() {
-    getRecommendWork(({ data }) => {
-      console.log("recommend work:", data);
-      this.recommendPieceList = data;
-    }, (error) => {
-      console.log(error);
-    })
+    getRecommendWork(
+      ({ data }) => {
+        console.log("recommend work:", data);
+        this.recommendPieceList = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
   data: () => ({
     // real data
@@ -54,6 +56,4 @@ export default defineComponent({
   }),
 });
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

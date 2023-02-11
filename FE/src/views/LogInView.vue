@@ -2,7 +2,7 @@
   <div class="login">
     <span class="login__notice">소셜로그인으로 시작하기</span>
     <div class="login__button-list">
-      <button class="login__button google" @click="login">
+      <button class="login__button google" @click="handleSignInGoogle">
         <div class="login__logo-frame">
           <googleLogo />
         </div>
@@ -34,41 +34,33 @@
 
 <script>
 // import axios from "axios";
+
 import googleLogo from "@/assets/icons/google-logo.svg";
 import facebookLogo from "@/assets/icons/facebook-logo.svg";
 import githubLogo from "@/assets/icons/github-logo.svg";
 import twitterLogo from "@/assets/icons/twitter-logo.svg";
 
+import { handleSignInGoogle } from "@/api/login";
+
 // const ARI_URL = "";
 
 export default {
   name: "LoginView",
+  data() {
+    return {
+      user: {},
+      auth: ""
+    }
+  },
   components: {
     googleLogo,
     facebookLogo,
     githubLogo,
     twitterLogo,
   },
-  setup() {
-    const login = () => {
-      // axios({
-      //   method: 'get',
-      //   url: '{API_URL}',
-      // 	params: {},
-      // 	data: {},
-      // });
-      // 	.then((response) => {
-      //     console.log(response)
-      //   })
-      // 	.catch((error) => {
-      // 		console.log(error)
-      // 	})
-    };
-
-    return {
-      login,
-    };
-  },
+  methods: {
+    handleSignInGoogle,
+  }
 };
 </script>
 <style lang="scss" scoped>

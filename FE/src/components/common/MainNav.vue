@@ -16,26 +16,49 @@
           >
             카테고리
             <ul v-show="category.isHovered" class="header__dropdown">
-              <li><span>영화</span></li>
-              <li><span>드라마</span></li>
-              <li><span>뮤지컬</span></li>
-              <li><span>연극</span></li>
+              <!-- <ul class="header__dropdown"> -->
+              <li @click="goCategory('1')">
+                <span>드라마</span>
+              </li>
+              <li @click="goCategory('2')">
+                <span>뮤지컬</span>
+              </li>
+              <li @click="goCategory('3')">
+                <span>연극</span>
+              </li>
+              <li @click="goCategory('4')">
+                <span>영화</span>
+              </li>
             </ul>
           </a>
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
         </div>
       </div>
-      <router-link to="/login">
-        <button class="header__login-button">Login</button>
-      </router-link>
+      <div v-if="!token">
+        <router-link to="/login">
+          <button class="header__login-button">Login</button>
+        </router-link>
+      </div>
+      <div v-else-if="token"> 
+          <button class="header__login-button" @click="handleSignOut">Logout</button>
+      </div>
     </nav>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
+import { handleSignOut } from "@/api/login";
 
 export default {
+  data() {
+    return {
+      auth: "",
+    }
+  },
   setup() {
+    const router = useRouter();
     const category = reactive({ isHovered: false });
     const categoryHover = () => {
       category.isHovered = true;
@@ -43,12 +66,22 @@ export default {
     const categoryUnhover = () => {
       category.isHovered = false;
     };
+    const goCategory = (categoryId) => {
+      router.push({ name: "search-group", params: { categoryId, menuId: "1" } });
+    };
     return {
       category,
       categoryHover,
       categoryUnhover,
+      goCategory,
     };
   },
+  computed: {
+    ...mapState(["token"]),
+  },
+  methods: {
+    handleSignOut,
+  }
 };
 </script>
 <style lang="scss">

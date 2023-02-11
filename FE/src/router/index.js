@@ -41,14 +41,21 @@ const routes = [
         component: SearchView,
         children: [
           {
-            path: "/search/:keyword",
-            name: "search-result",
+            path: "/search/category/:categoryId/menu/:menuId",
+            name: "search-group",
             component: SearchView,
+            children: [
+              {
+                path: "/search/category/:categoryId/menu/:menuId/keyword/:keyword",
+                name: "search-result",
+                component: SearchView,
+              },
+            ],
           },
         ],
       },
       {
-        path: "/piece",
+        path: "/piece/:pieceId",
         name: "piece",
         component: PieceDetailView,
       },

@@ -1,8 +1,7 @@
 <template>
   <div class="studio-film-tab__film">
     <div class="studio__film-thumbnail">
-      <video src="https://s3ffmpegtest.s3.ap-northeast-2.amazonaws.com/studio_name.webm" controls
-        class="studio__film-player">
+      <video src="" controls class="studio__film-player">
         <track kind="captions" />
       </video>
     </div>
@@ -69,7 +68,7 @@ export default {
     font-weight: 500;
   }
 
-  >span {
+  > span {
     font-size: 14px;
     line-height: 150%;
   }
