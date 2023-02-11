@@ -9,7 +9,7 @@ async function getRecommendStory(success, fail) {
 
 async function getStoryDetail(story, success, fail) {
   console.log("# POST : 스토리 상세 정보");
-  await api.get(`/story/detail`, story).then(success).catch(fail);
+  await api.post(`/story/detail`, story).then(success).catch(fail);
 }
 
 export { getRecommendStory, getStoryDetail };

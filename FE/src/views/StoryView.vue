@@ -11,7 +11,12 @@
       <div class="text_content">
         <div class="category">
           <HOT_BUTTON class="content_icon"></HOT_BUTTON>
-          {{ $route.params.category }}
+          {{ storydata }}
+          {{ userId }}
+          {{ $route.query.story_id }}
+          {{ storyId }}
+          {{ storyinfo }}
+          {{ storydetaildata }}
         </div>
         <div class="title">{{ $route.params.title }}</div>
         <div class="main_text">
@@ -93,16 +98,17 @@
               공유
             </div>
           </div>
-          <router-link to="/studio">
-            <button class="modal-button">스튜디오 생성하기</button>
-          </router-link>
+          <button class="modal-button" @click="showModal = true">스튜디오 생성하기</button>
         </div>
       </div>
     </div>
   </div>
+  <studioCreate v-model="showModal"></studioCreate>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { useRoute } from "vue-router";
+import { getStoryDetail } from "@/api/story";
 import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
 import StoryCharacter from "@/components/story/StoryCharacter.vue";
@@ -112,6 +118,7 @@ import favor from "@/assets/icons/favor.svg";
 import speachbubble from "@/assets/icons/speach_bubble.svg";
 import hearticon from "@/assets/icons/hearticon.svg";
 import shareicon from "@/assets/icons/shareicon.svg";
+import studioCreate from "@/components/story/studioCreate.vue";
 
 export default {
   name: "StoryView",
@@ -124,8 +131,30 @@ export default {
     speachbubble,
     hearticon,
     shareicon,
+    studioCreate,
   },
   setup() {
+    const route = useRoute();
+    const storyId = route.query.story_id;
+    console.log("데이터를 받아 오는가?");
+    console.log(route.query.story_id);
+    const userId = "ID";
+    const storyinfo = reactive({
+      user_id: userId,
+      story_id: route.params.story_id,
+    });
+    const storydetaildata = ref({});
+    getStoryDetail(
+      storyinfo,
+      ({ data }) => {
+        console.log("story-card-list : ", data);
+        storydetaildata.value = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    const showModal = ref(false);
     let tab = reactive({
       tabvalue: "storyaccount",
     });
@@ -142,6 +171,11 @@ export default {
       console.log(tab, "스크립트");
     };
     return {
+      showModal,
+      storyId,
+      userId,
+      storyinfo,
+      storydetaildata,
       tab,
       StoryDummyData,
       storyaccount,
