@@ -16,7 +16,7 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private String userId;
 
     @Column(name = "email", length = 50)
@@ -32,7 +32,7 @@ public class User {
 
     @Column(name = "role_type")
     @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+        private RoleType roleType;
 
 //    @OneToMany(mappedBy = "user")
 //    private List<TeamMember> teamMemberIds = new ArrayList<>();
