@@ -1,16 +1,19 @@
 package offworkseekers.unnamed.api.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.*;
+import offworkseekers.unnamed.db.repository.RecordingRepository;
 import offworkseekers.unnamed.db.repository.StoryRepository;
 import offworkseekers.unnamed.db.repository.StudioRepository;
 import offworkseekers.unnamed.db.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class StudioService {
     private final StudioRepository studioRepository;
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
+    private final RecordingRepository recordingRepository;
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
         return studioRepository.findStudioNavbar(studioId, userId);
@@ -81,4 +85,16 @@ public class StudioService {
         return studioRepository.findRecordingByStudioId(studioId);
     }
 
+    @Transactional
+    public List<Long> getExpiredStudioIds(){
+        List<Studio> studioList = studioRepository.findAll();
+        List<Long> expiredStudioIds = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        for (Studio studio : studioList) {
+            if(studio.getStudioEndDate().isBefore(now)){
+                expiredStudioIds.add(studio.getStudioId());
+            }
+        }
+        return expiredStudioIds;
+    }
 }

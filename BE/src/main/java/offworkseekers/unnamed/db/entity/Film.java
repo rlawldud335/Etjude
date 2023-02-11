@@ -51,5 +51,6 @@ public class Film {
         articles.add(article);
     }
 
+    public void setFilmCreatedDate(LocalDate filmCreatedDate){ this.filmCreatedDate = filmCreatedDate; }
 
 }
