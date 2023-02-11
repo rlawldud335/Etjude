@@ -18,7 +18,6 @@ async function login(user, success, fail) {
 export function handleSignInGoogle() {
     signInWithPopup(auth, provider)
         .then((result) => {
-            localStorage.setItem("access-token", JSON.stringify(result.user.accessToken));
             this.user = {
                 "userId" : result.user.uid,
                 "email" : result.user.email,
@@ -27,8 +26,8 @@ export function handleSignInGoogle() {
                 "roleType" : "USER",
             }
             login(this.user);
-            this.accessToken = result.user.accessToken;
-            this.$router.go();
+            this.$store.dispatch("login", result.user.accessToken);
+            this.$router.push({ name: 'main' });
         })
     .catch((error) => {
         console.log(error);
@@ -38,9 +37,8 @@ export function handleSignInGoogle() {
 export function handleSignOut() {
     signOut(auth)
         .then(() => {
-            localStorage.setItem("access-token", "");
             this.user = "";
-            this.accessToken = "";
+            this.$store.dispatch("logout");
             this.$router.push({ name: 'main' })
         })
     .catch((error) => {
