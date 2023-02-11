@@ -19,7 +19,7 @@ async function getPopularFilm(success, fail) {
   console.log("# GET : 추천 필름");
   await api({
     method: "get",
-    url: "board/popular",
+    url: "/board/popular",
   })
     .then(success)
     .catch(fail);

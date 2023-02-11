@@ -15,13 +15,13 @@ async function searchWork(keyword, categoryId, success, fail) {
     .catch(fail);
 }
 
-async function searchStory(keyword, category, success, fail) {
+async function searchStory(keyword, categoryId, success, fail) {
   await api({
     method: "get",
     url: "/story/search",
     params: {
       keyword,
-      category,
+      category_id: categoryId,
     },
   })
     .then(success)

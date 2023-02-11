@@ -54,7 +54,7 @@ const routes = [
         ],
       },
       {
-        path: "/piece",
+        path: "/piece/:pieceId",
         name: "piece",
         component: PieceDetailView,
       },

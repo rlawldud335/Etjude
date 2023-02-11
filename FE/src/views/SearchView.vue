@@ -68,8 +68,7 @@
             ></div>
           </div>
           <div class="search__result" v-if="inputText">
-            {{ searchResult }}
-            <p>{{ inputText }}의 검색 결과</p>
+            <p>"{{ inputText }}"의 검색 결과</p>
             <div class="search__work-result">
               <WorkSearchResult
                 v-if="state.menu.id == '1'"
@@ -119,8 +118,37 @@ export default {
         name: "work",
       },
     });
+    const search = (keyword, categoryId, menuId) => {
+      if (menuId === "1") {
+        searchWork(
+          keyword,
+          categoryId,
+          ({ data }) => {
+            console.log(data);
+            searchResult.value = data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        searchStory(
+          keyword,
+          categoryId,
+          ({ data }) => {
+            console.log(data);
+            searchResult.value = data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    };
     onBeforeMount(() => {
       if (route.params?.categoryId) {
+        inputText.value = route.params.keyword;
+        search(inputText.value, state.category.id, state.menu.id);
         state.category.id = route.params.categoryId;
         state.category.name = categoryList[route.params.categoryId];
         state.menu.id = route.params.menuId;
@@ -161,37 +189,14 @@ export default {
     //     });
     //   }
     // };
-    const search = () => {
-      if (state.menu.id === "1") {
-        searchWork(
-          inputText.value,
-          state.category.id,
-          ({ data }) => {
-            console.log(data);
-            searchResult.value = data;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      } else {
-        searchStory(
-          inputText.value,
-          state.category.name,
-          ({ data }) => {
-            console.log(data);
-            searchResult.value = data;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
-    };
+
+    if (inputText.value) {
+      search(inputText.value, state.category.id, state.menu.id);
+    }
     const inputKeyword = (event) => {
       inputText.value = event.target.value;
       // replacePath();
-      search();
+      search(inputText.value, state.category.id, state.menu.id);
     };
     const blurInput = (event) => {
       inputText.value = event.target.value;
@@ -201,13 +206,13 @@ export default {
       state.menu.id = menuId;
       state.menu.name = menuList[state.menu.id - 1];
       pushPath();
-      search();
+      search(inputText.value, state.category.id, state.menu.id);
     };
     const updateCategory = (categoryId) => {
       state.category.id = categoryId;
       state.category.name = categoryList[state.category.id];
       pushPath();
-      search();
+      search(inputText.value, state.category.id, state.menu.id);
     };
     return {
       inputText,
@@ -220,9 +225,7 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    console.log(to.name);
     if (to.name === "search") {
-      console.log("1");
       this.inputText = null;
       this.state.category.id = "0";
       this.state.menu.id = "1";
@@ -298,12 +301,17 @@ export default {
 }
 
 .search__result-section {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-left: 50px;
+  min-height: 500px;
 }
-
+.search__result {
+  div {
+    margin-top: 10px;
+  }
+}
 .search__toggle-tab {
   display: flex;
   flex-direction: row;
