@@ -27,6 +27,7 @@
     "vue3-carousel": "^0.2.9",
     "vue3-icon": "^2.1.0",
     "vuex": "^4.0.0",
+    "vuex-persistedstate": "^4.1.0",
     "webfonts-generator": "^0.4.0"
   },
   "devDependencies": {

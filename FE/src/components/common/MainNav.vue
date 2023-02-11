@@ -34,18 +34,19 @@
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
         </div>
       </div>
-      <div v-if="!accessToken  || accessToken === ''">
+      <div v-if="!token">
         <router-link to="/login">
           <button class="header__login-button">Login</button>
         </router-link>
       </div>
-      <div v-else-if="accessToken"> 
+      <div v-else-if="token"> 
           <button class="header__login-button" @click="handleSignOut">Logout</button>
       </div>
     </nav>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { handleSignOut } from "@/api/login";
@@ -54,7 +55,6 @@ export default {
   data() {
     return {
       auth: "",
-      accessToken: localStorage.getItem("access-token") || "",
     }
   },
   setup() {
@@ -75,6 +75,9 @@ export default {
       categoryUnhover,
       goCategory,
     };
+  },
+  computed: {
+    ...mapState(["token"]),
   },
   methods: {
     handleSignOut,
