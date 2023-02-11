@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.db.entity;
 
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -77,5 +78,25 @@ public class User {
 
     public String getRoleKey(){
         return this.roleType.getKey();
+    }
+
+    /**
+     * UID를 암호화
+     * @param passwordEncoder 암호화 할 인코더 클래스
+     * @return 변경된 유저 Entity
+     */
+    public User hashUID(PasswordEncoder passwordEncoder) {
+        this.userId = passwordEncoder.encode(this.userId);
+        return this;
+    }
+
+    /**
+     * 비밀번호 확인
+     * @param plainUID 암호화 이전의 userID
+     * @param passwordEncoder 암호화에 사용된 클래스
+     * @return true | false
+     */
+    public boolean checkPassword(String plainUID, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(plainUID, this.userId);
     }
 }
