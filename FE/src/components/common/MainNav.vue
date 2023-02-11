@@ -34,17 +34,29 @@
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
         </div>
       </div>
-      <router-link to="/login">
-        <button class="header__login-button">Login</button>
-      </router-link>
+      <div v-if="!accessToken  || accessToken === ''">
+        <router-link to="/login">
+          <button class="header__login-button">Login</button>
+        </router-link>
+      </div>
+      <div v-else-if="accessToken"> 
+          <button class="header__login-button" @click="handleSignOut">Logout</button>
+      </div>
     </nav>
   </div>
 </template>
 <script>
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import { handleSignOut } from "@/api/login";
 
 export default {
+  data() {
+    return {
+      auth: "",
+      accessToken: localStorage.getItem("access-token") || "",
+    }
+  },
   setup() {
     const router = useRouter();
     const category = reactive({ isHovered: false });
@@ -64,6 +76,9 @@ export default {
       goCategory,
     };
   },
+  methods: {
+    handleSignOut,
+  }
 };
 </script>
 <style lang="scss">
