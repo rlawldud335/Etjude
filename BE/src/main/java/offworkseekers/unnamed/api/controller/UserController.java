@@ -21,12 +21,14 @@ public class UserController {
 
     @PostMapping("/api/v1/user/login")
     public ResponseEntity UserSignUp(@RequestBody @Valid User user) {
-        String userId = passwordEncoder.encode(user.getUserId());
+//        String userId = passwordEncoder.encode(user.getUserId());
+        String userId = user.getUserId();
         User signedUser = userRepository.findById(userId).orElse(null);
 
         if (signedUser == null) {
-            User hashUser = user.hashUID(passwordEncoder);
-            userRepository.save(hashUser);
+//            User hashUser = user.hashUID(passwordEncoder);
+//            userRepository.save(hashUser);
+            userRepository.save(user);
             return new ResponseEntity(HttpStatus.OK);
         }
 
