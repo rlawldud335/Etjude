@@ -11,39 +11,63 @@ const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
 async function login(user, success, fail) {
-    console.log("# POST : 회원가입 및 로그인");
-    await api.post(`/user/login`, user).then(success).catch(fail);
+  console.log("# POST : 회원가입 및 로그인");
+  await api.post(`/user/login`, user).then(success).catch(fail);
+}
+
+async function getUserInfo(userId, success, fail) {
+  console.log("# POST : 유저 정보 가져오기");
+  await api({
+    method: "post",
+    url: "/mypage",
+    data: {
+      user_id: userId,
+    },
+  })
+    .then(success)
+    .catch(fail);
 }
 
 export function handleSignInGoogle() {
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            this.user = {
-                "userId" : result.user.uid,
-                "email" : result.user.email,
-                "nickName" : result.user.displayName,
-                "picture" : result.user.photoURL,
-                "roleType" : "USER",
-            }
-            login(this.user);
-            this.$store.dispatch("login", result.user.accessToken);
-            this.$router.push({ name: 'main' });
-        })
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      this.user = {
+        userId: result.user.uid,
+        email: result.user.email,
+        nickName: result.user.displayName,
+        picture: result.user.photoURL,
+        roleType: "USER",
+      };
+      login(this.user);
+      let userInfo = {};
+      getUserInfo(
+        this.user.userId,
+        ({ data }) => {
+          userInfo = data;
+          userInfo.accessToken = result.user.accessToken;
+          this.$store.dispatch("login", userInfo);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      this.$router.push({ name: "main" });
+    })
     .catch((error) => {
-        console.log(error);
+      console.log(error);
     });
 }
 
 export function handleSignOut() {
-    signOut(auth)
-        .then(() => {
-            this.user = "";
-            this.$store.dispatch("logout");
-            this.$router.push({ name: 'main' })
-        })
+  signOut(auth)
+    .then(() => {
+      this.user = "";
+      this.$store.dispatch("logout");
+      this.$router.push({ name: "main" });
+    })
     .catch((error) => {
-        console.log(error);
+      console.log(error);
     });
 }
 
-export { login };
+export { login, getUserInfo };

@@ -1,34 +1,28 @@
-import { createStore } from 'vuex';
+import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
-  plugins: [
-    createPersistedState()
-  ],
+  plugins: [createPersistedState()],
 
   state: {
-    token: "",
+    user: null,
   },
-  getters: {
-  },
+  getters: {},
   mutations: {
-    LOGIN(state, token) {
-      state.token = token;
+    LOGIN(state, userInfo) {
+      state.user = userInfo;
     },
     LOGOUT(state) {
-      state.token = "";
-    }
+      state.user = "";
+    },
   },
   actions: {
-    login({ commit }, token) {
-      commit("LOGIN", { token })
+    login({ commit }, userInfo) {
+      commit("LOGIN", userInfo);
     },
-    logout({commit}) {
-      commit("LOGOUT")
-    }
+    logout({ commit }) {
+      commit("LOGOUT");
+    },
   },
-  modules: {
-  },
-
-  
+  modules: {},
 });
