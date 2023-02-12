@@ -43,6 +43,13 @@ public class StudioController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+
+    @PostMapping(value = "/api/v1/studio/info")
+    public StudioInfoResponse getStudioInfo(@RequestBody @Valid Map<String, Long>param) {
+        Long studioId = param.get("studio_id");
+        return studioService.getStudioInfo(studioId);
+    }
+
     @PostMapping(value = "/api/v1/studio/navbar")
     public StudioNavBarResponse getStudioNavbar(@RequestBody @Valid StudioIdWithUserIdRequest request) {
         log.debug("request = {}", request);
