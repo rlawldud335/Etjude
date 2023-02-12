@@ -16,7 +16,6 @@
           >
             카테고리
             <ul v-show="category.isHovered" class="header__dropdown">
-              <!-- <ul class="header__dropdown"> -->
               <li @click="goCategory('1')">
                 <span>드라마</span>
               </li>
@@ -34,29 +33,42 @@
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
         </div>
       </div>
-      <div v-if="!token">
+      <div v-if="!user">
         <router-link to="/login">
           <button class="header__login-button">Login</button>
         </router-link>
       </div>
-      <div v-else-if="token"> 
-          <button class="header__login-button" @click="handleSignOut">Logout</button>
+      <div class="header__profile--login" v-else-if="user">
+        <div class="header__profile-frame">
+          <img
+            class="header__profile_image"
+            @click="handleSignOut"
+            :src="user.myPageSimpleResponse.userPhotoUrl"
+            alt=""
+          />
+        </div>
+        <ul class="header__profile-dropdown">
+          <div class="header__profile-dropdown-title">
+            <div class="header__profile-dropdown-profile-frame">
+              <img :src="user.myPageSimpleResponse.userPhotoUrl" alt="" />
+            </div>
+            <span>{{ user.myPageSimpleResponse.userNickName }}</span>
+          </div>
+          <li>프로필</li>
+          <li>로그아웃</li>
+        </ul>
+        <!-- <button class="header__login-button" >Logout</button> -->
       </div>
     </nav>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 import { reactive } from "vue";
+import { mapState } from "vuex";
 import { useRouter } from "vue-router";
 import { handleSignOut } from "@/api/login";
 
 export default {
-  data() {
-    return {
-      auth: "",
-    }
-  },
   setup() {
     const router = useRouter();
     const category = reactive({ isHovered: false });
@@ -77,11 +89,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(["token"]),
+    ...mapState(["user"]),
   },
   methods: {
     handleSignOut,
-  }
+  },
 };
 </script>
 <style lang="scss">
@@ -182,5 +194,62 @@ nav {
   border-radius: 4px;
   margin-right: 20px;
   cursor: pointer;
+}
+
+.header__profile-frame {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  position: relative;
+}
+.header__profile-dropdown-title {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  span {
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+.header__profile-dropdown-profile-frame {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  position: relative;
+  li {
+  }
+}
+.header__profile-dropdown {
+  width: 200px;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  right: 10px;
+  position: absolute;
+  z-index: 1;
+  // display: none;
+}
+
+.header__profile--login:hover .header__profile-dropdown {
+  display: block;
 }
 </style>

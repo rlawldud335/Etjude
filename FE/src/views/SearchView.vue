@@ -155,20 +155,20 @@ export default {
         state.menu.name = menuList[route.params.menuId - 1];
       }
     });
-    const pushPath = () => {
-      if (inputText.value) {
+    const pushPath = (keyword, categoryId, menuId) => {
+      if (keyword) {
         router.push({
           name: "search-result",
           params: {
-            categoryId: state.category.id,
-            menuId: state.menu.id,
-            keyword: inputText.value,
+            categoryId,
+            menuId,
+            keyword,
           },
         });
       } else {
         router.push({
           name: "search-group",
-          params: { categoryId: state.category.id, menuId: state.menu.id },
+          params: { categoryId, menuId },
         });
       }
     };
@@ -189,10 +189,6 @@ export default {
     //     });
     //   }
     // };
-
-    if (inputText.value) {
-      search(inputText.value, state.category.id, state.menu.id);
-    }
     const inputKeyword = (event) => {
       inputText.value = event.target.value;
       // replacePath();
@@ -200,18 +196,18 @@ export default {
     };
     const blurInput = (event) => {
       inputText.value = event.target.value;
-      pushPath();
+      pushPath(inputText.value, state.category.id, state.menu.id);
     };
     const updateMenu = (menuId) => {
       state.menu.id = menuId;
       state.menu.name = menuList[state.menu.id - 1];
-      pushPath();
+      pushPath(inputText.value, state.category.id, state.menu.id);
       search(inputText.value, state.category.id, state.menu.id);
     };
     const updateCategory = (categoryId) => {
       state.category.id = categoryId;
       state.category.name = categoryList[state.category.id];
-      pushPath();
+      pushPath(inputText.value, state.category.id, state.menu.id);
       search(inputText.value, state.category.id, state.menu.id);
     };
     return {
