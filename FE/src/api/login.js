@@ -1,5 +1,11 @@
 import firebaseConfig from "@/firebaseConfig";
-import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  signOut,
+  GoogleAuthProvider,
+  // onAuthStateChanged,
+} from "firebase/auth";
 import { apiInstance } from "@/api/index";
 
 const api = apiInstance();
@@ -29,6 +35,27 @@ async function getUserInfo(userId, success, fail) {
 }
 
 export function handleSignInGoogle() {
+  // onAuthStateChanged((user) => {
+  //   if (user) {
+  //     if (this.$route.query.next) {
+  //       const { next } = this.$route.query;
+  //       console.log(1);
+  //       this.$router.push({ path: next });
+  //     } else {
+  //       console.log(2);
+  //       this.$router.push({ name: "main" });
+  //     }
+  //   }
+  //   if (this.$route.query.next) {
+  //     const { next } = this.$route.query;
+  //     console.log(1);
+  //     this.$router.push({ path: next });
+  //   } else {
+  //     console.log(2);
+  //     // this.$router.push({ name: "main" });
+  //     window.location.href = "www.naver.com";
+  //   }
+  // });
   signInWithPopup(auth, provider)
     .then((result) => {
       this.user = {
@@ -46,12 +73,18 @@ export function handleSignInGoogle() {
           userInfo = data;
           userInfo.accessToken = result.user.accessToken;
           this.$store.dispatch("login", userInfo);
+          console.log(this.$route);
+          const path = this.$route.query?.next;
+          if (path) {
+            this.$router.push({ path });
+          } else {
+            this.$router.push({ name: "main" });
+          }
         },
         (error) => {
           console.log(error);
         }
       );
-      this.$router.push({ name: "main" });
     })
     .catch((error) => {
       console.log(error);
@@ -63,7 +96,6 @@ export function handleSignOut() {
     .then(() => {
       this.user = "";
       this.$store.dispatch("logout");
-      this.$router.push({ name: "main" });
     })
     .catch((error) => {
       console.log(error);
