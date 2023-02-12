@@ -34,7 +34,7 @@
         </div>
       </div>
       <div v-if="!user">
-        <router-link to="/login">
+        <router-link :to="{ name: 'login', query: { next: lastPath } }">
           <button class="header__login-button">Login</button>
         </router-link>
       </div>
@@ -67,9 +67,9 @@
   </div>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import { mapState } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { handleSignOut } from "@/api/login";
 import logoutIcon from "@/assets/icons/logout.svg";
 import profileIcon from "@/assets/icons/profile.svg";
@@ -81,6 +81,7 @@ export default {
   },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const category = reactive({ isHovered: false });
     const categoryHover = () => {
       category.isHovered = true;
@@ -91,11 +92,21 @@ export default {
     const goCategory = (categoryId) => {
       router.push({ name: "search-group", params: { categoryId, menuId: "1" } });
     };
+    const lastPath = computed(() => {
+      let path;
+      if (route.query.next) {
+        path = route.query.next;
+      } else {
+        path = route.path;
+      }
+      return path;
+    });
     return {
       category,
       categoryHover,
       categoryUnhover,
       goCategory,
+      lastPath,
     };
   },
   computed: {
