@@ -1,6 +1,11 @@
 import firebaseConfig from "@/firebaseConfig";
-// eslint-disable-next-line import/extensions
-import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  signOut,
+  GoogleAuthProvider,
+  // onAuthStateChanged,
+} from "firebase/auth";
 import { apiInstance } from "@/api/index";
 
 const api = apiInstance();
@@ -16,7 +21,41 @@ async function login(user, success, fail) {
   await api.post(`/user/login`, user).then(success).catch(fail);
 }
 
+async function getUserInfo(userId, success, fail) {
+  console.log("# POST : 유저 정보 가져오기");
+  await api({
+    method: "post",
+    url: "/mypage",
+    data: {
+      user_id: userId,
+    },
+  })
+    .then(success)
+    .catch(fail);
+}
+
 export function handleSignInGoogle() {
+  // onAuthStateChanged((user) => {
+  //   if (user) {
+  //     if (this.$route.query.next) {
+  //       const { next } = this.$route.query;
+  //       console.log(1);
+  //       this.$router.push({ path: next });
+  //     } else {
+  //       console.log(2);
+  //       this.$router.push({ name: "main" });
+  //     }
+  //   }
+  //   if (this.$route.query.next) {
+  //     const { next } = this.$route.query;
+  //     console.log(1);
+  //     this.$router.push({ path: next });
+  //   } else {
+  //     console.log(2);
+  //     // this.$router.push({ name: "main" });
+  //     window.location.href = "www.naver.com";
+  //   }
+  // });
   signInWithPopup(auth, provider)
     .then((result) => {
       this.user = {
@@ -27,8 +66,25 @@ export function handleSignInGoogle() {
         roleType: "USER",
       };
       login(this.user);
-      this.$store.dispatch("login", result.user.accessToken);
-      this.$router.push({ name: "main" });
+      let userInfo = {};
+      getUserInfo(
+        this.user.userId,
+        ({ data }) => {
+          userInfo = data;
+          userInfo.accessToken = result.user.accessToken;
+          this.$store.dispatch("login", userInfo);
+          console.log(this.$route);
+          const path = this.$route.query?.next;
+          if (path) {
+            this.$router.push({ path });
+          } else {
+            this.$router.push({ name: "main" });
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -40,11 +96,10 @@ export function handleSignOut() {
     .then(() => {
       this.user = "";
       this.$store.dispatch("logout");
-      this.$router.push({ name: "main" });
     })
     .catch((error) => {
       console.log(error);
     });
 }
 
-export { login };
+export { login, getUserInfo };
