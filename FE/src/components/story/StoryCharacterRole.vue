@@ -1,14 +1,14 @@
 <template>
   <div class="story-character-role">
     <div class="story__role-image-frame">
-      <img class="story__role-image" :src="role.photo_url" alt="" />
+      <img class="story__role-image" :src="role.rolePhotoUrl" alt="" />
     </div>
     <div class="story__role-desc-text">
       <p class="story__role-desc-title">
-        {{ role.name }}
+        {{ role.roleName }}
       </p>
       <p class="story__role-desc-body">
-        {{ role.desc }}
+        {{ role.roleDesc }}
       </p>
     </div>
   </div>
