@@ -74,6 +74,7 @@ public class StudioService {
         for (Film film : studioFilmList) {
             responses.add(
                     StudioFilmListResponse.builder()
+                            .filmId(film.getFilmId())
                             .filmVideoUrl(film.getFilmVideoUrl())
                             .filmCreatedDate(film.getFilmCreatedDate())
                             .filmEndDate(film.getFilmCreatedDate().plusDays(7))
