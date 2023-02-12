@@ -2,6 +2,7 @@ package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import offworkseekers.unnamed.api.dto.SimpleUserDTO;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.*;
@@ -23,6 +24,11 @@ public class StudioService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final SceneRepository sceneRepository;
+
+    public StudioInfoResponse getStudioInfo(Long studioId) {
+        return studioRepository.findStudioInfo(studioId);
+    }
+
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
         return studioRepository.findStudioNavbar(studioId, userId);
