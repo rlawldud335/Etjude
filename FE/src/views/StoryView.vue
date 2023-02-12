@@ -1,30 +1,21 @@
 <template lang="">
   <div class="story_container">
     <div class="title_container">
-      <video
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
-        class="video_content"
-        controls
-      >
+      <video :src="storydetaildata.storyVideoUrl" class="video_content" controls>
         <track kind="captions" />
       </video>
       <div class="text_content">
         <div class="category">
           <HOT_BUTTON class="content_icon"></HOT_BUTTON>
-          {{ storydata }}
-          {{ userId }}
-          {{ $route.query.story_id }}
-          {{ storyId }}
-          {{ storyinfo }}
-          {{ storydetaildata }}
+          {{ storydetaildata.categoryName }}
         </div>
-        <div class="title">{{ $route.params.title }}</div>
+        <div class="title">{{ storydetaildata.storyTitle }}</div>
         <div class="main_text">
-          {{ $route.params.main_text }}
+          {{ storydetaildata.storySummary }}
         </div>
         <div class="util">
           <favor class="content_icon"></favor>
-          {{ $route.params.favor }}
+          {{ storydetaildata.storyLikeCount }}
           <speachbubble class="content_icon comment"></speachbubble>
           댓글
         </div>
@@ -64,15 +55,15 @@
         </div>
         <StoryAccount
           v-show="tab.tabvalue === 'storyaccount'"
-          :describtion="StoryDummyData.describtion"
+          :describtion="storyinfo.story_id"
         ></StoryAccount>
         <StoryCharacter
           v-show="tab.tabvalue === 'storycharacter'"
-          :roles="StoryDummyData.role"
+          :roles="storyinfo.story_id"
         ></StoryCharacter>
         <StoryScript
           v-show="tab.tabvalue === 'storyscript'"
-          :scenes="StoryDummyData.scene"
+          :scenes="storyinfo.story_id"
         ></StoryScript>
       </div>
       <div class="right_content">
@@ -135,13 +126,12 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const storyId = route.query.story_id;
     console.log("데이터를 받아 오는가?");
-    console.log(route.query.story_id);
-    const userId = "ID";
+    console.log(route.params.story_id);
+    console.log(typeof route.params.story_id);
     const storyinfo = reactive({
-      user_id: userId,
-      story_id: route.params.story_id,
+      user_id: "1",
+      story_id: Number.parseInt(route.params.story_id, 10),
     });
     const storydetaildata = ref({});
     getStoryDetail(
@@ -172,8 +162,6 @@ export default {
     };
     return {
       showModal,
-      storyId,
-      userId,
       storyinfo,
       storydetaildata,
       tab,
@@ -195,6 +183,7 @@ export default {
   width: 100%;
   height: 366px;
   display: flex;
+  justify-content: center;
   align-items: center;
   box-sizing: border-box;
   background-color: rgb(250, 250, 250);

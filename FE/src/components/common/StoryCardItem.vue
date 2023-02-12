@@ -3,7 +3,7 @@
     <router-link
       :to="{
         name: 'story',
-        query: {
+        params: {
           story_id: storyId,
         },
       }"
@@ -30,6 +30,7 @@ export default {
     console.log("스토리아이템 확인");
     console.log(storyitem.value.storyId);
     const storyId = ref(storyitem.value.storyId);
+    console.log(typeof storyitem.value.storyId);
     return {
       storyitem,
       storyId,
