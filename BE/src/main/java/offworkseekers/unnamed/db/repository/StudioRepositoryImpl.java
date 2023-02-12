@@ -109,12 +109,19 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
                 .fetch();
         List<StudioRecordListResponse> studioRecordListResponseList = new ArrayList<>();
         for (Tuple tuple : fetch) {
+            String profileURL = queryFactory
+                    .select(user.picture)
+                    .from(user)
+                    .where(user.userId.eq(tuple.get(recording.userId)))
+                    .fetchOne();
+
             studioRecordListResponseList.add(
                     StudioRecordListResponse.builder()
                             .recordVideoUrl(tuple.get(recording.recordingVideoUrl))
                             .sceneId(tuple.get(recording.scene.sceneId))
                             .sceneNumber(tuple.get(recording.scene.sceneNumber))
                             .userId(tuple.get(recording.userId))
+                            .profileURL(profileURL)
                             .build()
             );
         }
