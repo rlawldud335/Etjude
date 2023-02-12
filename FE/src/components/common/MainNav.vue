@@ -40,12 +40,7 @@
       </div>
       <div class="header__profile--login" v-else-if="user">
         <div class="header__profile-frame">
-          <img
-            class="header__profile_image"
-            @click="handleSignOut"
-            :src="user.myPageSimpleResponse.userPhotoUrl"
-            alt=""
-          />
+          <img class="header__profile_image" :src="user.myPageSimpleResponse.userPhotoUrl" alt="" />
         </div>
         <ul class="header__profile-dropdown">
           <div class="header__profile-dropdown-title">
@@ -54,10 +49,19 @@
             </div>
             <span>{{ user.myPageSimpleResponse.userNickName }}</span>
           </div>
-          <li>프로필</li>
-          <li>로그아웃</li>
+          <li>
+            <div class="header__dropdown-icon-section">
+              <profileIcon />
+            </div>
+            <span>내 프로필</span>
+          </li>
+          <li @click="handleSignOut">
+            <div class="header__dropdown-icon-section">
+              <logoutIcon />
+            </div>
+            <span>로그아웃</span>
+          </li>
         </ul>
-        <!-- <button class="header__login-button" >Logout</button> -->
       </div>
     </nav>
   </div>
@@ -67,8 +71,14 @@ import { reactive } from "vue";
 import { mapState } from "vuex";
 import { useRouter } from "vue-router";
 import { handleSignOut } from "@/api/login";
+import logoutIcon from "@/assets/icons/logout.svg";
+import profileIcon from "@/assets/icons/profile.svg";
 
 export default {
+  components: {
+    logoutIcon,
+    profileIcon,
+  },
   setup() {
     const router = useRouter();
     const category = reactive({ isHovered: false });
@@ -159,16 +169,17 @@ nav {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   z-index: 1;
+
   li {
     background-color: $bana-pink;
     padding: 11px 30px;
+    cursor: pointer;
     span {
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
       color: $aha-gray;
     }
-    cursor: pointer;
   }
   li:nth-child(1) {
     margin-top: 5px;
@@ -195,7 +206,9 @@ nav {
   margin-right: 20px;
   cursor: pointer;
 }
-
+.header__profile--login {
+  margin-right: 2%;
+}
 .header__profile-frame {
   height: 35px;
   width: 35px;
@@ -211,10 +224,38 @@ nav {
   }
   position: relative;
 }
+.header__profile-dropdown {
+  width: 190px;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  right: calc(2% + 10px);
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  padding-bottom: 15px;
+  flex-direction: column;
+  display: none;
+  li {
+    display: flex;
+    cursor: pointer;
+
+    align-items: center;
+    float: left;
+    padding: 10px 20px;
+    span {
+      margin-left: 10px;
+    }
+  }
+  li:hover {
+    background: $efefe-gray;
+    font-weight: 500;
+  }
+}
 .header__profile-dropdown-title {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 15px 20px 10px 20px;
   span {
     margin-left: 20px;
     font-size: 18px;
@@ -235,21 +276,14 @@ nav {
     object-fit: cover;
   }
   position: relative;
-  li {
-  }
-}
-.header__profile-dropdown {
-  width: 200px;
-  background: #ffffff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  right: 10px;
-  position: absolute;
-  z-index: 1;
-  // display: none;
 }
 
+.header__dropdown-icon-section {
+  width: 35px;
+  display: flex;
+  justify-content: center;
+}
 .header__profile--login:hover .header__profile-dropdown {
-  display: block;
+  display: flex;
 }
 </style>
