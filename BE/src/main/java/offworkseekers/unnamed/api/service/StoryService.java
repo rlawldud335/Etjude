@@ -61,8 +61,8 @@ public class StoryService {
         return roleWithLines;
     }
 
-    public List<StoryListResponse> storySearchList(String keyword, Long categoryId, int pageNum) {
-        List<StoryListResponse> storySearchList = storyRepository.getStorySearchList(keyword, categoryId, pageNum);
+    public StoryListWithTotalCountResponse storySearchList(String keyword, Long categoryId, int pageNum) {
+        StoryListWithTotalCountResponse storySearchList = storyRepository.getStorySearchList(keyword, categoryId, pageNum);
         return storySearchList;
     }
 

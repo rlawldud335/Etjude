@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
+import offworkseekers.unnamed.api.response.StoryListWithTotalCountResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,8 +119,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     }
 
     @Override
-    public List<StoryListResponse> getStorySearchList(String keyword, Long categoryId, int pageNum) {
-
+    public StoryListWithTotalCountResponse getStorySearchList(String keyword, Long categoryId, int pageNum) {
         List<Tuple> fetch = new ArrayList<>();
         if (categoryId == 0L){
             fetch = queryFactory
@@ -132,7 +132,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .from(story)
                     .where(story.storyTitle.contains(keyword))
                     .fetch();
-        } else{
+        } else {
             fetch = queryFactory
                     .select(
                             story.storyId,
@@ -166,12 +166,24 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
         }
         int totalNum = storySearchResult.size();
         int startIdx = 12 * (pageNum - 1);
-
         int endIdx = startIdx + 12;
+
+        StoryListWithTotalCountResponse.builder()
+                .totalCount(totalNum)
+                .storyListResponses(storySearchResult.subList(startIdx, totalNum))
+                .build();
+
+
         if(totalNum - startIdx < 12){
-            return storySearchResult.subList(startIdx, totalNum);
+            return StoryListWithTotalCountResponse.builder()
+                    .totalCount(totalNum)
+                    .storyListResponses(storySearchResult.subList(startIdx, totalNum))
+                    .build();
         }
 
-        return storySearchResult.subList(startIdx, endIdx);
+        return StoryListWithTotalCountResponse.builder()
+                .totalCount(totalNum)
+                .storyListResponses(storySearchResult.subList(startIdx, endIdx))
+                .build();
     }
 }
