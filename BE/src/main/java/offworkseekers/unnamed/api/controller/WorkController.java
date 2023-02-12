@@ -1,13 +1,11 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.GetWorkResponse;
-import offworkseekers.unnamed.api.response.StoriesOfWork;
-import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
-import offworkseekers.unnamed.api.response.WorkSearchResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.WorkService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +19,7 @@ public class WorkController {
     private final WorkService workService;
 
     @GetMapping("/api/v1/work/recommended-random")
-    public List<WorkOrderByRandomResponse> getWorkListRandom(@Param(value = "pageNum") String pageNum){
+    public List<WorkOrderByRandomResponse> getWorkListRandom(@RequestParam(value = "pageNum") String pageNum){
         List<WorkOrderByRandomResponse> workList = new ArrayList<>();
 
         if(pageNum==null || pageNum.equals("")){
@@ -33,7 +31,7 @@ public class WorkController {
     }
 
     @GetMapping("/api/v1/work/search")
-    public List<WorkSearchResponse> getWorkSearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @Param(value = "pageNum") String pageNum){
+    public WorkListWithTotalCountResponse getWorkSearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") String categoryId, @RequestParam(value = "pageNum") String pageNum){
 
         int pageNumToInt = 1;
         if(pageNum != null && !pageNum.equals("")) pageNumToInt = Integer.parseInt(pageNum);

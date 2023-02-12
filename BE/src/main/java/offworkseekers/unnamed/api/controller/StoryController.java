@@ -1,10 +1,7 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
-import offworkseekers.unnamed.api.response.StoryDetailResponse;
-import offworkseekers.unnamed.api.response.StoryListResponse;
-import offworkseekers.unnamed.api.response.StoryRoleResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.StoryService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -58,7 +55,7 @@ public class StoryController {
     }
 
     @GetMapping(value = "/api/v1/story/search")
-    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @Param(value = "category_id") String categoryId, @Param(value = "pageNum") String pageNum) {;
+    public StoryListWithTotalCountResponse storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") String categoryId, @RequestParam(value = "pageNum") String pageNum) {;
 
         int pageNumToInt = 1;
         if(pageNum != null && !pageNum.equals("")) pageNumToInt = Integer.parseInt(pageNum);
