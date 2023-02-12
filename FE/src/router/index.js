@@ -28,7 +28,7 @@ const routes = [
         path: "/story",
         name: "story",
         component: StoryView,
-        props: { type: Number },
+        props: true,
       },
       {
         path: "/login",

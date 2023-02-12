@@ -3,36 +3,19 @@
     <div class="story__describtion">
       <p class="story_decribtion-title">스토리 설명</p>
       <p class="story_decribtion-text">
-        {{ storyDetailAccount }}
+        {{ describtion }}
       </p>
     </div>
   </div>
 </template>
 <script>
-import { ref } from "vue";
-import { getDetailAccount } from "@/api/story";
-
 export default {
   name: "StoryAccount",
   props: {
-    describtion: Number,
+    describtion: String,
   },
-  setup(props) {
-    console.log("스토리 설명");
-    const storyDetailAccount = ref();
-    getDetailAccount(
-      props.describtion,
-      ({ data }) => {
-        console.log(data);
-        storyDetailAccount.value = data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    return {
-      storyDetailAccount,
-    };
+  setup() {
+    return {};
   },
 };
 </script>

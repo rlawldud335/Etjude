@@ -1,21 +1,25 @@
 <template lang="">
   <div class="story_container">
     <div class="title_container">
-      <video :src="storydetaildata.storyVideoUrl" class="video_content" controls>
+      <video
+        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+        class="video_content"
+        controls
+      >
         <track kind="captions" />
       </video>
       <div class="text_content">
         <div class="category">
           <HOT_BUTTON class="content_icon"></HOT_BUTTON>
-          {{ storydetaildata.categoryName }}
+          {{ $route.params.category }}
         </div>
-        <div class="title">{{ storydetaildata.storyTitle }}</div>
+        <div class="title">{{ $route.params.title }}</div>
         <div class="main_text">
-          {{ storydetaildata.storySummary }}
+          {{ $route.params.main_text }}
         </div>
         <div class="util">
           <favor class="content_icon"></favor>
-          {{ storydetaildata.storyLikeCount }}
+          {{ $route.params.favor }}
           <speachbubble class="content_icon comment"></speachbubble>
           댓글
         </div>
@@ -55,15 +59,15 @@
         </div>
         <StoryAccount
           v-show="tab.tabvalue === 'storyaccount'"
-          :describtion="storyinfo.story_id"
+          :describtion="StoryDummyData.describtion"
         ></StoryAccount>
         <StoryCharacter
           v-show="tab.tabvalue === 'storycharacter'"
-          :roles="storyinfo.story_id"
+          :roles="StoryDummyData.role"
         ></StoryCharacter>
         <StoryScript
           v-show="tab.tabvalue === 'storyscript'"
-          :scenes="storyinfo.story_id"
+          :scenes="StoryDummyData.scene"
         ></StoryScript>
       </div>
       <div class="right_content">
@@ -89,17 +93,16 @@
               공유
             </div>
           </div>
-          <button class="modal-button" @click="showModal = true">스튜디오 생성하기</button>
+          <router-link to="/studio">
+            <button class="modal-button">스튜디오 생성하기</button>
+          </router-link>
         </div>
       </div>
     </div>
   </div>
-  <studioCreate v-model="showModal"></studioCreate>
 </template>
 <script>
-import { reactive, ref } from "vue";
-import { useRoute } from "vue-router";
-import { getStoryDetail } from "@/api/story";
+import { reactive } from "vue";
 import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
 import StoryCharacter from "@/components/story/StoryCharacter.vue";
@@ -109,7 +112,6 @@ import favor from "@/assets/icons/favor.svg";
 import speachbubble from "@/assets/icons/speach_bubble.svg";
 import hearticon from "@/assets/icons/hearticon.svg";
 import shareicon from "@/assets/icons/shareicon.svg";
-import studioCreate from "@/components/story/studioCreate.vue";
 
 export default {
   name: "StoryView",
@@ -122,29 +124,8 @@ export default {
     speachbubble,
     hearticon,
     shareicon,
-    studioCreate,
   },
   setup() {
-    const route = useRoute();
-    console.log("데이터를 받아 오는가?");
-    console.log(route.params.story_id);
-    console.log(typeof route.params.story_id);
-    const storyinfo = reactive({
-      user_id: "1",
-      story_id: Number.parseInt(route.params.story_id, 10),
-    });
-    const storydetaildata = ref({});
-    getStoryDetail(
-      storyinfo,
-      ({ data }) => {
-        console.log("story-card-list : ", data);
-        storydetaildata.value = data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    const showModal = ref(false);
     let tab = reactive({
       tabvalue: "storyaccount",
     });
@@ -161,9 +142,6 @@ export default {
       console.log(tab, "스크립트");
     };
     return {
-      showModal,
-      storyinfo,
-      storydetaildata,
       tab,
       StoryDummyData,
       storyaccount,
@@ -183,7 +161,6 @@ export default {
   width: 100%;
   height: 366px;
   display: flex;
-  justify-content: center;
   align-items: center;
   box-sizing: border-box;
   background-color: rgb(250, 250, 250);

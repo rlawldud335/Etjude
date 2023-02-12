@@ -4,36 +4,31 @@
       :to="{
         name: 'story',
         params: {
-          story_id: storyId,
+          category: carditem.category,
+          title: carditem.title,
+          main_text: carditem.main_text,
+          favor: carditem.favor,
         },
       }"
     >
       <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
       <div class="itemtext">
-        <div class="itemtexttitle">{{ storyitem.storyTitle }}</div>
-        <div class="itemtextcategory">{{ storyitem.categoryName }}</div>
-        <div class="itemtextfavor">좋아요 {{ storyitem.likeCount }}</div>
+        <div class="itemtexttitle">{{ carditem.storyTitle }}</div>
+        <div class="itemtextcategory">{{ carditem.categoryName }}</div>
+        <div class="itemtextfavor">좋아요 {{ carditem.likeCount }}</div>
       </div>
     </router-link>
   </div>
 </template>
 <script>
-import { ref } from "vue";
-
 export default {
   name: "StoryCardItem",
   props: {
     carditem: {},
   },
-  setup(props) {
-    const storyitem = ref(props.carditem);
-    console.log("스토리아이템 확인");
-    console.log(storyitem.value.storyId);
-    const storyId = ref(storyitem.value.storyId);
-    console.log(typeof storyitem.value.storyId);
+  data() {
     return {
-      storyitem,
-      storyId,
+      dummyitem: this.carditem,
     };
   },
 };

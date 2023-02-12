@@ -1,8 +1,8 @@
 <template>
   <div class="story-script__line">
-    <div v-if="isFirstLine" class="story-script__actor-name">{{ role }}</div>
+    <div v-if="isFirstLine" class="story-script__actor-name">{{ role.name }}</div>
     <div class="story-script__text-section">
-      <span class="story-script__text">{{ line.line }}</span>
+      <span class="story-script__text">{{ line.script }}</span>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   components: {},
   props: {
     line: Object,
-    role: String,
+    role: Object,
   },
   setup(props) {
     const isFirstLine = ref(false);
