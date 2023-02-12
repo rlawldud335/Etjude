@@ -119,30 +119,32 @@ export default {
       },
     });
     const search = (keyword, categoryId, menuId) => {
-      if (menuId === "1") {
-        searchWork(
-          keyword,
-          categoryId,
-          ({ data }) => {
-            console.log(data);
-            searchResult.value = data;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      } else {
-        searchStory(
-          keyword,
-          categoryId,
-          ({ data }) => {
-            console.log(data);
-            searchResult.value = data;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+      if (keyword) {
+        if (menuId === "1") {
+          searchWork(
+            keyword,
+            categoryId,
+            ({ data }) => {
+              console.log(data);
+              searchResult.value = data;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        } else {
+          searchStory(
+            keyword,
+            categoryId,
+            ({ data }) => {
+              console.log(data);
+              searchResult.value = data;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
       }
     };
     onBeforeMount(() => {
