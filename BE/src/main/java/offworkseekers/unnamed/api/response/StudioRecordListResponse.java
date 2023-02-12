@@ -12,17 +12,17 @@ public class StudioRecordListResponse {
     private Long sceneId;
     private int sceneNumber;
     private String recordVideoUrl;
-    private String userId;
+    private String nickname;
 
     @JsonProperty(value = "profile_url")
     private String profileURL;
 
     @Builder
-    public StudioRecordListResponse(Long sceneId, int sceneNumber, String recordVideoUrl, String userId, String profileURL) {
+    public StudioRecordListResponse(Long sceneId, int sceneNumber, String recordVideoUrl, String nickname, String profileURL) {
         this.sceneId = sceneId;
         this.sceneNumber = sceneNumber;
         this.recordVideoUrl = recordVideoUrl;
-        this.userId = userId;
+        this.nickname = nickname;
         this.profileURL = profileURL;
     }
 }
