@@ -34,7 +34,6 @@ import java.util.Map;
 @Slf4j
 public class StudioController {
 
-
     private final StudioService studioService;
     private final StoryService storyService;
 

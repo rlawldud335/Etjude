@@ -1,5 +1,6 @@
 package offworkseekers.unnamed.api.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.dto.SimpleUserDTO;
@@ -10,6 +11,7 @@ import offworkseekers.unnamed.db.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +25,12 @@ public class StudioService {
     private final RecordingRepository recordingRepository;
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
+    private final RecordingRepository recordingRepository;
     private final SceneRepository sceneRepository;
 
     public StudioInfoResponse getStudioInfo(Long studioId) {
         return studioRepository.findStudioInfo(studioId);
     }
-
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
         return studioRepository.findStudioNavbar(studioId, userId);
@@ -89,6 +91,18 @@ public class StudioService {
     }
 
     @Transactional
+    public List<Long> getExpiredStudioIds(){
+        List<Studio> studioList = studioRepository.findAll();
+        List<Long> expiredStudioIds = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        for (Studio studio : studioList) {
+            if(studio.getStudioEndDate().isBefore(now)){
+                expiredStudioIds.add(studio.getStudioId());
+            }
+        }
+        return expiredStudioIds;
+    }
+    
     public void saveRecording(int studioId, int sceneId, String recordingVideoUrl, String userId) {
         Recording recording = recordingRepository.findRecordingByStudioIdAndSceneId(studioId, sceneId);
         if (recording != null) {

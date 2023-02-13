@@ -12,6 +12,7 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: update
+#      use-new-id-generator-mappings: false
     properties:
       hibernate:
         format_sql: true

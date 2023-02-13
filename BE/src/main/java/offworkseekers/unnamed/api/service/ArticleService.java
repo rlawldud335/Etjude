@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.ArticleCreateRequest;
 import offworkseekers.unnamed.api.request.ArticleEditRequest;
 import offworkseekers.unnamed.api.response.*;
-import offworkseekers.unnamed.db.entity.Article;
-import offworkseekers.unnamed.db.entity.Film;
-import offworkseekers.unnamed.db.entity.Likes;
-import offworkseekers.unnamed.db.entity.User;
+import offworkseekers.unnamed.db.entity.*;
 import offworkseekers.unnamed.db.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +33,8 @@ public class ArticleService {
         Long filmId = request.getFilmId();
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Film film = filmRepository.findById(filmId).orElse(null);
+        film.setFilmCreatedDate(null);
+        filmRepository.save(film);
         Article article = Article.builder()
                         .articleContent(request.getArticleContent())
                         .articleCreatedDate(LocalDate.now())
@@ -122,5 +121,6 @@ public class ArticleService {
         }
         return false;
     }
+
 
 }
