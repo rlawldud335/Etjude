@@ -222,17 +222,17 @@ export default {
     },
 
     async createToken(sessionId) {
-      // eslint-disable-next-line no-unused-expressions
-      sessionId;
+      const data = JSON.stringify({ customSessionId: sessionId });
       const response = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions/SessionD/connections`,
-        {},
+        `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
-        }
+        },
+        console.log("data :", data),
+        data.token
       );
       return response.data; // The token
     },
