@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from "axios";
 
-const URL = "https://etjude.r-e.k/api/v1";
+const URL = "https://etjude.r-e.kr/api/v1";
 
 // application/json 타입
 function apiInstance() {
