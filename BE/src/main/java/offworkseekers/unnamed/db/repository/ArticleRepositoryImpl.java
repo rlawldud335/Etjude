@@ -23,6 +23,7 @@ import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
 import static offworkseekers.unnamed.db.entity.QUser.user;
 
+
 /**
  * 조회용 쿼리 구현부
  */
@@ -102,7 +103,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                 .where(article.articleId.eq(articleId))
                 .fetchOne();
         Long storyId = studio.getStory().getStoryId();
-
         List<Comment> comments = queryFactory
                 .select(comment)
                 .from(comment)

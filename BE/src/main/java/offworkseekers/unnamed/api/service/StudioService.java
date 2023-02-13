@@ -23,9 +23,10 @@ public class StudioService {
 
     private final StudioRepository studioRepository;
     private final RecordingRepository recordingRepository;
+    private final RecordingRepositoryImpl recordingRepositoryImpl;
     private final StoryRepository storyRepository;
+
     private final UserRepository userRepository;
-    private final RecordingRepository recordingRepository;
     private final SceneRepository sceneRepository;
 
     public StudioInfoResponse getStudioInfo(Long studioId) {
@@ -104,7 +105,7 @@ public class StudioService {
     }
     
     public void saveRecording(int studioId, int sceneId, String recordingVideoUrl, String userId) {
-        Recording recording = recordingRepository.findRecordingByStudioIdAndSceneId(studioId, sceneId);
+        Recording recording = recordingRepositoryImpl.findRecordingByStudioIdAndSceneId(studioId, sceneId);
         if (recording != null) {
             recording.changeUrl(recordingVideoUrl);
             recording.changeUserId(userId);

@@ -8,6 +8,7 @@ import offworkseekers.unnamed.db.entity.Article;
 import offworkseekers.unnamed.db.entity.Film;
 import offworkseekers.unnamed.db.entity.User;
 
+
 @Getter
 @RequiredArgsConstructor
 public class ArticleCreateRequest {
