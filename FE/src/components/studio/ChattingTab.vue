@@ -42,6 +42,7 @@ export default {
       recvList: [],
     };
   },
+  props: { studioInfo: Object },
   created() {
     this.connect();
   },
