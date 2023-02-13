@@ -1,7 +1,7 @@
 <template lang="">
     <div class="script-area">
        <Carousel ref="scriptCarousel" v-model="currentSlide" :wrap-around="true"  :items-to-show="1.3" class="script-carousel">
-            <Slide v-for="script in allScripts" :key="script" class="script-carousel__slide">
+            <Slide v-for="script in allLines" :key="script" class="script-carousel__slide">
                 <div class="script-carousel__slide__card">
                     <div class="script-icons">
                         <div class="script-icon">1x</div>
@@ -33,22 +33,22 @@ export default {
     NextDirec,
   },
   props: {
-    allScripts: Object,
+    allLines: Object,
     scriptState: Object,
   },
-  emits: ["change-script-time", "change-current-slide"],
+  emits: ["change-current-time", "change-current-slide"],
   setup(props, { emit }) {
     const currentSlide = ref(0);
 
     const slideTo = (val) => {
       if (val < 0) val = 0;
-      else if (val >= props.allScripts.length) val = props.allScripts.length - 1;
+      else if (val >= props.allLines.length) val = props.allLines.length - 1;
       currentSlide.value = val;
       emit("change-current-slide", val);
     };
 
     watch(currentSlide, (cur) => {
-      emit("change-script-time", props.allScripts[cur].lineTimeStamp);
+      emit("change-current-time", props.allLines[cur].lineTimeStamp);
       emit("change-current-slide", cur);
     });
 

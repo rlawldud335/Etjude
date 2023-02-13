@@ -4,12 +4,12 @@
     <div class="studio-tab__scene-head">
       <div class="studio-tab__scene-id">#{{ scene.sceneNumber }}.&nbsp;{{ scene.roleName }}</div>
       <div class="studio-tab__scene-icon">
-        <div class="studio-tab__scene-profile-frame" v-if="scene.sceneFileName">
-          <img :src="scene.recordedUser.profile_url" alt="" />
+        <div class="studio-tab__scene-profile-frame" v-if="scene.recordVideoUrl">
+          <img :src="scene.user.profile_url" alt="" />
         </div>
         <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
         <DisableRecordingIcon v-if="videoState.isRecording" />
-        <DownloadIcon v-if="scene.sceneFileName" @click="downloadRecording" />
+        <DownloadIcon v-if="scene.recordVideoUrl" @click="downloadRecording" />
         <button class="studio-tab__dropdown-button" @click="toggleOpen">
           <downIcon v-if="!lines.isOpened" />
           <upIcon v-else />
@@ -17,7 +17,14 @@
       </div>
     </div>
     <div class="studio-tab__scene--opened" v-if="lines.isOpened">
-      <video :src="scene.sceneFileName" controls v-if="scene.sceneFileName"></video>
+      <video
+        :src="
+          scene.recordVideoUrl && scene.recordVideoUrl !== ''
+            ? scene.recordVideoUrl
+            : scene.sceneFileName
+        "
+        controls
+      ></video>
     </div>
   </div>
 </template>
@@ -34,33 +41,34 @@ export default {
   name: "SsinTabScene",
   components: { RecordingIcon, downIcon, upIcon, DisableRecordingIcon, DownloadIcon },
   props: { scene: Object, videoState: Object },
-  emits: ['start-recording'],
+  emits: ["start-recording"],
   setup(props, { emit }) {
     const lines = reactive({ isOpened: false });
+
     const toggleOpen = () => {
       lines.isOpened = !lines.isOpened;
     };
 
     const startRecording = () => {
-      emit('start-recording', props.scene.sceneNumber);
-    }
+      emit("start-recording", props.scene.sceneNumber);
+    };
 
     const downloadRecording = () => {
-      if (props.scene.sceneFileName) {
+      if (props.scene.recordVideoUrl) {
         const link = document.createElement("a");
         document.body.appendChild(link);
-        link.href = props.scene.sceneFileName;
+        link.href = props.scene.recordVideoUrl;
         link.download = "video.webm";
         link.click();
         document.body.removeChild(link);
       }
-    }
+    };
 
     return {
       lines,
       toggleOpen,
       startRecording,
-      downloadRecording
+      downloadRecording,
     };
   },
 };
@@ -118,7 +126,7 @@ export default {
 .studio-tab__scene-icon {
   display: flex;
 
-  >* {
+  > * {
     margin: 0px 4px;
     cursor: pointer;
   }

@@ -9,7 +9,7 @@
           { 'video-full-size': state.videoMode == 2 },
         ]"
         ref="videoOutput"
-        src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+        :src="studioInfo.storyVideoUrl"
         @timeupdate="changeTimeHandler"
         controls
       ></video>
@@ -65,11 +65,12 @@ export default {
     RecordCircle,
     ChangeVideo2,
   },
-  props: { videoState: Object, scriptState: Object, allScripts: Array },
+  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object },
   emits: ["change-video-state", "save-recording-data", "change-current-slide"],
   setup(props, { emit }) {
     const user = {
-      name: "user1",
+      user_id: "1",
+      nickname: "user1",
       profile_url:
         "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
     };
@@ -90,16 +91,16 @@ export default {
     const changeTimeHandler = () => {
       // eslint-disable-next-line prefer-const
       let curTime = videoOutput.value.currentTime;
-      if (curTime < props.allScripts[0].lineTimeStamp) {
+      if (curTime < props.allLines[0].lineTimeStamp) {
         if (props.scriptState.currentSlide !== 0) {
           emit("change-current-slide", 0);
         }
         return;
       }
-      for (let i = 1; i < props.allScripts.length; i += 1) {
+      for (let i = 1; i < props.allLines.length; i += 1) {
         if (
-          props.allScripts[i - 1].lineTimeStamp <= curTime &&
-          curTime < props.allScripts[i].lineTimeStamp
+          props.allLines[i - 1].lineTimeStamp <= curTime &&
+          curTime < props.allLines[i].lineTimeStamp
         ) {
           if (props.scriptState.currentSlide !== i - 1) {
             emit("change-current-slide", i - 1);
@@ -107,8 +108,8 @@ export default {
           return;
         }
       }
-      if (props.scriptState.currentSlide !== props.allScripts.length - 1) {
-        emit("change-current-slide", props.allScripts.length - 1);
+      if (props.scriptState.currentSlide !== props.allLines.length - 1) {
+        emit("change-current-slide", props.allLines.length - 1);
       }
     };
 
@@ -124,7 +125,6 @@ export default {
 
     const stopStream = () => {
       mediaStream.value.getTracks().forEach((track) => {
-        // console.log('stopping', track)
         track.stop();
       });
       mediaStream.value = null;
@@ -147,7 +147,6 @@ export default {
       });
       mediaRecorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) {
-          // console.log("ondataavailable");
           recordedChunks.push(event.data);
         }
       };
@@ -158,16 +157,15 @@ export default {
         if (recordedChunks && recordedChunks.length !== 0) {
           const blob = new Blob(recordedChunks, { type: "video/webm;" });
           recordedMediaURL.value = URL.createObjectURL(blob);
+          // 여기서 s3에 업로드하고 db에 저장하면 되겠다
           emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, user);
         }
       };
-      // console.log("start recording");
       mediaRecorder.start();
     };
 
     const endRecording = () => {
       if (mediaRecorder) {
-        // console.log("endRecording")
         mediaRecorder.stop();
       }
       emit("change-video-state", props.videoState.sceneIdx, false);
