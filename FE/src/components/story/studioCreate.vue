@@ -26,7 +26,7 @@
 </template>
 <script>
 // import QuitButton from "@/assets/icons/Quit Button.svg";
-import { createStudio } from "@/api/createStudio";
+import { createStudio } from "@/api/story";
 import { reactive } from "vue";
 
 export default {
@@ -52,6 +52,7 @@ export default {
         },
         (error) => {
           console.log(error);
+          console.log(studiodata);
         }
       );
     };

@@ -34,7 +34,7 @@ export default {
   padding: 8px;
   padding-left: 16px;
   padding-right: 16px;
-  border-bottom: 1px solid gray;
+  border: none;
   background-color: rgb(219, 218, 218);
 }
 .profile {
