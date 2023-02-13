@@ -100,7 +100,8 @@ public class StudioController {
     @PostMapping(value = "/api/v1/studio/recording")
     public List<StudioRecordListResponse> getStudioRecordList(@RequestBody @Valid Map<String, Long> param){
         Long studioId = param.get("studio_id");
-        return studioService.getStoryRecordingList(studioId);
+        Long storyId = param.get("story_id");
+        return studioService.getStoryRecordingList(studioId, storyId);
     }
 
     @MessageMapping("/api/v1/studio/chat/{studioId}/{userId}/{nickname}")
