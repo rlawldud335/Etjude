@@ -9,7 +9,46 @@ async function getRecommendStory(success, fail) {
 
 async function getStoryDetail(story, success, fail) {
   console.log("# POST : 스토리 상세 정보");
-  await api.get(`/story/detail`, story).then(success).catch(fail);
+  await api.post(`/story/detail`, story).then(success).catch(fail);
 }
 
-export { getRecommendStory, getStoryDetail };
+async function getDetailAccount(storyId, success, fail) {
+  console.log("# GET : 스토리 설명");
+  await api({
+    method: "get",
+    url: `/story/detail/desc`,
+    params: {
+      story_id: storyId,
+    },
+  })
+    .then(success)
+    .catch(fail);
+}
+
+async function getDetailRules(storyId, success, fail) {
+  console.log("# GET : 배역 설명");
+  await api({
+    method: "get",
+    url: `/story/detail/roles`,
+    params: {
+      story_id: storyId,
+    },
+  })
+    .then(success)
+    .catch(fail);
+}
+
+async function getDetaileScript(storyId, success, fail) {
+  console.log("# GET : 스크립트");
+  await api({
+    method: "get",
+    url: `/story/detail/scripts`,
+    params: {
+      story_id: storyId,
+    },
+  })
+    .then(success)
+    .catch(fail);
+}
+
+export { getRecommendStory, getStoryDetail, getDetailAccount, getDetailRules, getDetaileScript };

@@ -1,4 +1,5 @@
-import { initializeApp } from 'firebase/app';
+// eslint-disable-next-line import/extensions
+import { initializeApp } from "firebase/app";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -8,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "etjude-auth.appspot.com",
   messagingSenderId: "130717970783",
   appId: "1:130717970783:web:4d33cde12a6e24e4fcc6ea",
-  measurementId: "G-L0MZK8MJXC"
+  measurementId: "G-L0MZK8MJXC",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
