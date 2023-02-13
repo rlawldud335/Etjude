@@ -11,7 +11,6 @@ public class RecordingRepositoryImpl implements RecordingRepositorySupport {
 
     private final JPAQueryFactory queryFactory;
 
-
     @Override
     public Recording findRecordingByStudioIdAndSceneId(int studioId, int sceneId) {
         return queryFactory

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RecordingRepository extends JpaRepository<Recording, Long>, RecordingSupport {
+public interface RecordingRepository extends JpaRepository<Recording, Long>, RecordingRepositorySupport {
 
     @Modifying
     @Query(value = "delete from recording where studio_id in (:studio)", nativeQuery = true)
