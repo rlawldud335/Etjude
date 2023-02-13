@@ -5,42 +5,46 @@
         <router-link :to="{ name: 'main' }"> Logo </router-link>
       </div>
       <div class="studio-info__title">
-        <span>진양철의 초밥이 몇개고?</span>
+        <span>{{ studioInfo.storyTitle }}</span>
         <span> > </span>
-        <span>밥알패밀리 스튜디오</span>
+        <span>{{ studioInfo.studioTitle }}</span>
       </div>
       <div
         class="studio__setting"
-        @mouseover="studioInfo.isHovered = true"
-        @focus="studioInfo.isHovered = true"
-        @mouseout="studioInfo.isHovered = false"
-        @focusout="studioInfo.isHovered = false"
+        @mouseover="state.isHovered = true"
+        @focus="state.isHovered = true"
+        @mouseout="state.isHovered = false"
+        @focusout="state.isHovered = false"
       >
         <CircleSetting />
 
-        <div class="studio__setting-section" v-show="studioInfo.isHovered">
+        <div class="studio__setting-section" v-show="state.isHovered">
           <div class="studio__setting-dropdown">
             <p>스튜디오 정보</p>
-            <p>스튜디오 이름 : {{ studio.name }}</p>
+            <p>스튜디오 이름 : {{ studioInfo.studioTitle }}</p>
             <p>
               스튜디오 멤버 :
-              <span v-for="member in studio.members" :key="member.id">
-                {{ member.name }}&nbsp;
+              <span v-for="member in studioInfo.member_list" :key="member.user_id">
+                {{ member.nickname }}&nbsp;
               </span>
             </p>
-            <p>생성일 : {{ studio.created }}</p>
-            <p>만료일 : {{ studio.expired }}</p>
+            <p>생성일 : {{ studioInfo.studio_created_date }}</p>
+            <p>만료일 : {{ studioInfo.studio_end_date }}</p>
           </div>
         </div>
       </div>
     </div>
     <div class="studio-users">
-      <div v-for="member in studio.members" :key="member.id" @click="user.detailUser = member.name">
-        <div :class="{ 'studio-users__detail': user.detailUser == member.name }">
+      <div
+        v-for="member in studioInfo.member_list"
+        :key="member.user_id"
+        @click="state.detailUser = member.user_id"
+      >
+        <div :class="{ 'studio-users__detail': state.detailUser == member.user_id }">
           <div class="profile-img-frame">
             <img class="profile-img" :src="member.profile_url" alt="" />
           </div>
-          <span v-if="user.detailUser == member.name">{{ member.name }}</span>
+          <span v-if="state.detailUser == member.user_id">{{ member.nickname }}</span>
         </div>
       </div>
     </div>
@@ -55,18 +59,15 @@ export default {
     CircleSetting,
   },
   props: {
-    studio: Object,
+    studioInfo: Object,
   },
-  setup() {
-    const user = reactive({
-      detailUser: "박박박",
-    });
-    const studioInfo = reactive({
+  setup(props) {
+    const state = reactive({
       isHovered: false,
+      detailUser: props.studioInfo.member_list[0].user_id,
     });
     return {
-      user,
-      studioInfo,
+      state,
     };
   },
   methods: {},

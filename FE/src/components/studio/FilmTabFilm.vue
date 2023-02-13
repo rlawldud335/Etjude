@@ -1,15 +1,15 @@
 <template>
   <div class="studio-film-tab__film">
     <div class="studio__film-thumbnail">
-      <video src="" controls class="studio__film-player">
+      <video :src="film.film_video_url" controls class="studio__film-player">
         <track kind="captions" />
       </video>
     </div>
     <div class="studio__film-section">
       <div class="studio__film-info">
-        <span class="studio__film-id">필름{{ film.id }}.</span>
-        <span class="studio__film-created">{{ film.created }} 생성</span>
-        <span class="studio__film-deleted">{{ film.deleted }} 삭제</span>
+        <span class="studio__film-id">필름{{ film.film_id }}.</span>
+        <span class="studio__film-created">{{ film.film_created_date }} 생성</span>
+        <span class="studio__film-deleted">{{ film.film_end_date }} 삭제</span>
       </div>
       <div class="studio__film-button">
         <button>다운로드</button>
