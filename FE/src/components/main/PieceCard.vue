@@ -27,8 +27,8 @@ a {
 }
 .studiotitle {
   display: flex;
-  padding: 5px;
-  padding-left: 4%;
+  // padding: 5px;
+  // padding-left: 4%;
   text-align: left;
   align-items: center;
   font-size: 20px;
@@ -37,5 +37,8 @@ a {
 .icon {
   margin-left: 5px;
   margin-right: 5px;
+}
+.studiogate {
+  position: relative;
 }
 </style>

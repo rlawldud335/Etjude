@@ -86,7 +86,7 @@ a {
 
 .itemtextcategory,
 .itemtextfavor {
-  margin: 3.5px;
+  margin: 3.5px 0px;
   text-align: left;
   font-size: 12px;
 }

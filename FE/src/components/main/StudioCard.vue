@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="studiogate2">
+  <div class="studiogate">
     <div class="studiotitle">
       <router-link to="/main"> 내 스튜디오 </router-link>
       <HeheheIcon />
@@ -27,8 +27,8 @@ a {
 }
 .studiotitle {
   display: flex;
-  padding: 5px;
-  padding-left: 4%;
+  // padding: 5px;
+  // padding-left: 4%;
   text-align: left;
   align-items: center;
   font-size: 20px;
@@ -37,5 +37,8 @@ a {
 .icon {
   margin-left: 5px;
   margin-right: 5px;
+}
+.studiogate {
+  position: relative;
 }
 </style>

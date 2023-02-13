@@ -71,6 +71,7 @@ export default {
 <style lang="scss" scoped>
 .post_container {
   display: flex;
+  max-height: 100%;
   flex-direction: column;
   box-sizing: border-box;
   padding: 24px;
@@ -104,7 +105,9 @@ export default {
   margin-bottom: 24px;
 }
 .post_text {
-  height: 184px;
+  height: 200px;
+  min-height: 100%;
+  max-height: 200px;
   //   box-shadow: 0 0 0 1px #000 inset;
 }
 .post_icon {
@@ -122,7 +125,10 @@ export default {
 .post_comment {
   display: flex;
   flex-direction: column;
-  min-height: 272px;
+  height: 250px;
+  min-height: 100%;
+  max-height: 250px;
+  // height: 40%;
   margin-top: 16px;
   padding: 16px 3px 0 7px;
   border-top: 1px solid gray;

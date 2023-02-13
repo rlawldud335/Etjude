@@ -51,4 +51,16 @@ async function getDetaileScript(storyId, success, fail) {
     .catch(fail);
 }
 
-export { getRecommendStory, getStoryDetail, getDetailAccount, getDetailRules, getDetaileScript };
+async function createStudio(info, success, fail) {
+  console.log("# POST : 스튜디오 생성");
+  await api.post(`/studio/create`, info).then(success).catch(fail);
+}
+
+export {
+  getRecommendStory,
+  getStoryDetail,
+  getDetailAccount,
+  getDetailRules,
+  getDetaileScript,
+  createStudio,
+};

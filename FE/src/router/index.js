@@ -25,10 +25,9 @@ const routes = [
         component: FilmView,
       },
       {
-        path: "/story",
+        path: "/story/:story_id",
         name: "story",
         component: StoryView,
-        props: { type: Number },
       },
       {
         path: "/login",

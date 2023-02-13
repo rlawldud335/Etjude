@@ -20,7 +20,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .borderline {
-  border-top: 1px solid gray;
+  border: none;
 }
 .input_container {
   display: flex;
