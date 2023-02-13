@@ -20,8 +20,8 @@ async function testMakeFilm(success, fail) {
     method: "GET",
     url: "https://etjude.r-e.kr/api/v2/concateVideo",
     params: {
-      studio_id: "studio2",
-      film_id: `film_444`,
+      studio_id: "studio1",
+      film_id: `film_555`,
     },
   })
     .then(success)
