@@ -25,4 +25,18 @@ module.exports = defineConfig({
       .use("svg-vue3-loader")
       .loader("svg-vue3-loader");
   },
+  devServer: {
+    port: 3000,
+    liveReload: true,
+    // host 지정
+    host: "43.201.55.159",
+    allowedHosts: "all",
+    open: true,
+    client: {
+      overlay: true,
+      // 웹소켓용 url 지정
+      webSocketURL: "ws://0.0.0.0:80/ws",
+    },
+    compress: true,
+  },
 });
