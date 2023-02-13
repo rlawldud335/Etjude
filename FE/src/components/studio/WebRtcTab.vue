@@ -227,7 +227,7 @@ export default {
       // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
       const openviduInstance = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
+        `${APPLICATION_SERVER_URL}api/sessions/${sessionId.id}/connection`,
         {
           headers: {
             "Content-Type": "application/json",
