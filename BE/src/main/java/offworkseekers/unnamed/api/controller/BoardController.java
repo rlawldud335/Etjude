@@ -26,7 +26,7 @@ public class BoardController {
     }
 
     @GetMapping(value = "/api/v1/board")
-    public List<ArticleWithFilmUrlResponse> getArticleList(@RequestParam(value = "pageNum") String pageNum) {
+    public List<ArticleWithFilmUrlResponse> getArticleList(@Param(value = "pageNum") String pageNum) {
         List<ArticleWithFilmUrlResponse> articleList = new ArrayList<>();
         if(pageNum==null || pageNum.equals("")){
             articleList = articleService.getArticleList(1);
@@ -36,7 +36,7 @@ public class BoardController {
     }
 
     @GetMapping(path = "/api/v1/board/search")
-    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "pageNum") String pageNum){
+    public List<SearchFilmResponse> getSearchArticleList(@RequestParam(value = "keyword") String keyword, @Param(value = "pageNum") String pageNum){
         List<SearchFilmResponse> articleList = new ArrayList<>();
         if(pageNum==null || pageNum.equals("")){
             articleList = articleService.getSearchArticleList(keyword, 1);
