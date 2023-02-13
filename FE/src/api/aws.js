@@ -8,7 +8,7 @@ const api = apiInstance();
 const VUE_APP_ACCESS_KEY = "AKIAQUIHCELPJ3PJXH55";
 const VUE_APP_SECRET_ACCESS_KEY = "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";
 const VUE_APP_AWS_REGION = "ap-northeast-2";
-const VUE_APP_BUCKET_NAME = "s3ffmpeg";
+const VUE_APP_BUCKET_NAME = "s3ffmpegtest";
 
 aws.config.update({
   region: VUE_APP_AWS_REGION,
