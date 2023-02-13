@@ -220,7 +220,7 @@ export default {
         data
       );
       console.log(response);
-      return response; // The sessionId
+      return response.data.id; // The sessionId
     },
 
     async createToken(sessionId) {
