@@ -222,13 +222,15 @@ export default {
     },
 
     async createToken(sessionId) {
+      // eslint-disable-next-line no-unused-expressions
+      sessionId;
       const response = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connections`,
+        `${APPLICATION_SERVER_URL}api/sessions/SessionD/connections`,
         {},
         {
           headers: {
             "Content-Type": "application/json",
-            // Authorization: Basic EncodeBase64(OPENVIDUAPP:"MY_SECRET"),
+            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
         }
       );
