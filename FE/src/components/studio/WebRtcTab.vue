@@ -59,7 +59,7 @@ import UserVideo from "@/components/studio/UserVideo";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const APPLICATION_SERVER_URL = "https://withs.r-e.kr/openvidu/";
+const APPLICATION_SERVER_URL = "https://etjude.r-e.kr/openvidu/";
 
 export default {
   name: "WebRtcTab",
@@ -85,24 +85,16 @@ export default {
 
   methods: {
     joinSession() {
-      console.log("11111111111111111111111111111111");
       // --- 1) Get an OpenVidu object ---
       this.OV = new OpenVidu();
-
-      console.log("22222222222222222222222222222222");
       // --- 2) Init a session ---
       this.session = this.OV.initSession();
-      console.log("3333333333333333333333333333333333");
-
       // --- 3) Specify the actions when events take place in the session ---
-
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
         this.subscribers.push(subscriber);
       });
-
-      console.log("444444444444444444444444");
 
       // On every Stream destroyed...
       this.session.on("streamDestroyed", ({ stream }) => {
@@ -111,15 +103,10 @@ export default {
           this.subscribers.splice(index, 1);
         }
       });
-
-      console.log("5555555555555555555555555");
-
       // On every asynchronous exception...
       this.session.on("exception", ({ exception }) => {
         console.warn(exception);
       });
-
-      console.log("666666666666666666666666666666");
 
       // --- 4) Connect to the session with a valid user token ---
 
@@ -158,8 +145,6 @@ export default {
             console.log("There was an error connecting to the session:", error.code, error.message);
           });
       });
-
-      console.log("77777777777777777777777777777777");
 
       window.addEventListener("beforeunload", this.leaveSession);
     },
@@ -207,6 +192,7 @@ export default {
 
     async createSession(sessionId) {
       console.log(sessionId);
+      const data = JSON.stringify({ customSessionId: sessionId });
       const response = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions`,
         { customSessionId: sessionId },
@@ -215,15 +201,17 @@ export default {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
-        }
+        },
+        data
       );
       console.log(response);
-      return response.data; // The sessionId
+      return response.data.id; // The sessionId
     },
 
     async createToken(sessionId) {
       // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
+      console.log("제발요 ", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
@@ -232,10 +220,10 @@ export default {
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
         },
-        console.log("data :", data),
         data
       );
-      return openviduInstance.data; // The token
+      // console.log(openviduInstance);
+      return openviduInstance.data.token; // The token
     },
   },
 };

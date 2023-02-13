@@ -2,16 +2,26 @@
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video :class="[
-        { 'video-zero-size': state.videoMode == 0 },
-        { 'video-default-size': state.videoMode == 1 },
-        { 'video-full-size': state.videoMode == 2 },
-      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls></video>
-      <video :class="[
-        { 'video-zero-size': state.videoMode == 2 },
-        { 'video-default-size': state.videoMode == 1 },
-        { 'video-full-size': state.videoMode == 0 },
-      ]" :srcObject="mediaStream" autoplay></video>
+      <video
+        :class="[
+          { 'video-zero-size': state.videoMode == 0 },
+          { 'video-default-size': state.videoMode == 1 },
+          { 'video-full-size': state.videoMode == 2 },
+        ]"
+        ref="videoOutput"
+        :src="studioInfo.storyVideoUrl"
+        @timeupdate="changeTimeHandler"
+        controls
+      ></video>
+      <video
+        :class="[
+          { 'video-zero-size': state.videoMode == 2 },
+          { 'video-default-size': state.videoMode == 1 },
+          { 'video-full-size': state.videoMode == 0 },
+        ]"
+        :srcObject="mediaStream"
+        autoplay
+      ></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
@@ -46,6 +56,7 @@ import MicOff from "@/assets/icons/MicOff.svg";
 import RecordCircle from "@/assets/icons/RecordCircle.svg";
 import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
+import { saveSceneRecord } from "@/api/studio";
 
 export default {
   components: {
@@ -66,10 +77,8 @@ export default {
         "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
     };
 
-
-
     const state = reactive({
-      videoMode: 0,
+      videoMode: 1,
     });
 
     const videoOutput = ref(null);
@@ -133,7 +142,7 @@ export default {
       mediaStream.value.getAudioTracks()[0].enabled = constraints.audio;
     };
 
-    const startRecoding = () => {
+    const startRecoding = async () => {
       const recordedChunks = [];
       mediaRecorder = new MediaRecorder(mediaStream.value, {
         mimeType: "video/webm;",
@@ -143,18 +152,42 @@ export default {
           recordedChunks.push(event.data);
         }
       };
-      mediaRecorder.onstop = () => {
+      mediaRecorder.onstop = async () => {
         if (recordedMediaURL.value) {
           URL.revokeObjectURL(recordedMediaURL.value);
         }
         if (recordedChunks && recordedChunks.length !== 0) {
-          const blob = new Blob(recordedChunks, { type: "video/webm;" });
-          recordedMediaURL.value = URL.createObjectURL(blob);
+          const blob = await new Blob(recordedChunks, { type: "video/webm;" });
+          recordedMediaURL.value = await URL.createObjectURL(blob);
           console.log("녹화종료", recordedMediaURL.value);
-          const awsUrl = fileUpload(blob, props.studioInfo, props.videoState.sceneIdx, user);
-          console.log(awsUrl);
-          recordedMediaURL.value = awsUrl;
-          emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, user);
+          const awsUrl = fileUpload(
+            blob,
+            props.studioInfo,
+            props.videoState.sceneIdx,
+            (data) => {
+              console.log("aws 업로드 확인 ", awsUrl);
+              const params = {
+                recording_video_url: data.Location,
+                scene_id: props.videoState.sceneIdx,
+                studio_id: props.studioInfo.studio_id,
+                user_id: user.user_id,
+              };
+              saveSceneRecord(
+                params,
+                (dt) => {
+                  console.log("녹화영상업로드성공", dt);
+                },
+                (er) => {
+                  console.log("녹화영상업로드실패", er);
+                }
+              );
+              recordedMediaURL.value = data.Location;
+              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, user);
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       };
       mediaRecorder.start();
@@ -211,7 +244,7 @@ export default {
   position: relative;
 }
 
-.video-player>video {
+.video-player > video {
   height: 100%;
 }
 

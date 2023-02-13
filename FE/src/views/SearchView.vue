@@ -67,47 +67,68 @@
               ]"
             ></div>
           </div>
-          <div class="search__result" v-if="inputText">
-            <p>"{{ inputText }}"의 검색 결과</p>
-            <div class="search__work-result">
-              <WorkSearchResult
-                v-if="state.menu.id == '1'"
-                :works="searchResult"
-              ></WorkSearchResult>
+          <div class="search__result">
+            <p v-if="inputText">"{{ inputText }}"의 검색 결과</p>
+            <div class="search__work-result" v-if="state.menu.id == '1'">
+              <WorkSearchResult :works="searchResult?.workSearchResponses"></WorkSearchResult>
+              <div class="search__pagination-section" v-if="totalPage > 1">
+                <v-pagination
+                  v-model="pageWork"
+                  :pages="totalPage"
+                  :range-size="1"
+                  active-color="#DCEDFF"
+                  @update:modelValue="updateHandler"
+                  class="search__work-pagination"
+                  @click="updatePage"
+                />
+              </div>
             </div>
-            <div class="search__story-result">
-              <StorySearchResult
-                v-if="state.menu.id == '2'"
-                :stories="searchResult"
-              ></StorySearchResult>
+            <div class="search__story-result" v-if="state.menu.id == '2'">
+              <StorySearchResult :stories="searchResult?.storyListResponses"></StorySearchResult>
+              <div class="search__pagination-section" v-if="totalPage > 1">
+                <v-pagination
+                  v-model="pageStory"
+                  :pages="totalPage"
+                  :range-size="1"
+                  active-color="#DCEDFF"
+                  @update:modelValue="updateHandler"
+                  class="search__story-pagination"
+                  @click="updatePage"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <SearchResult v-if="inputText" :keyword="inputText"></SearchResult>
+  <SearchResult :keyword="inputText"></SearchResult>
 </template>
 <script>
-import { ref, reactive, onBeforeMount } from "vue";
+import { ref, reactive, computed, onBeforeMount, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import WorkSearchResult from "@/components/search/WorkSearchResult.vue";
 import StorySearchResult from "@/components/search/StorySearchResult.vue";
 import { searchWork, searchStory } from "@/api/search";
+import VPagination from "@hennge/vue3-pagination";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 export default {
   name: "SearchView",
   components: {
     WorkSearchResult,
     StorySearchResult,
+    VPagination,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const categoryList = ["전체", "드라마", "뮤지컬", "연극", "영화"];
     const menuList = ["work", "story"];
-    const inputText = ref(null);
+    const inputText = ref("");
     const searchResult = ref(null);
+    const pageWork = ref(1);
+    const pageStory = ref(1);
     const state = reactive({
       category: {
         id: "0",
@@ -117,56 +138,143 @@ export default {
         id: "1",
         name: "work",
       },
+      page: {
+        work: "1",
+        story: "1",
+      },
     });
-    const search = (keyword, categoryId, menuId) => {
-      if (keyword) {
-        if (menuId === "1") {
-          searchWork(
-            keyword,
-            categoryId,
-            ({ data }) => {
-              console.log(data);
-              searchResult.value = data;
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        } else {
-          searchStory(
-            keyword,
-            categoryId,
-            ({ data }) => {
-              console.log(data);
-              searchResult.value = data;
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        }
+    const totalPage = computed(() => {
+      if (searchResult.value) {
+        return Math.ceil(searchResult.value.totalCount / 12);
+      }
+      return totalPage.value;
+    });
+
+    const search = (keyword, category, menu, page) => {
+      console.log("검색");
+      if (menu.id === "1") {
+        searchWork(
+          keyword,
+          category.id,
+          page.work,
+          ({ data }) => {
+            console.log(data);
+            searchResult.value = data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        searchStory(
+          keyword,
+          category.id,
+          page.story,
+          ({ data }) => {
+            console.log(data);
+            searchResult.value = data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       }
     };
     onBeforeMount(() => {
-      if (route.params?.categoryId) {
-        inputText.value = route.params.keyword;
-        search(inputText.value, state.category.id, state.menu.id);
+      if (route.params.categoryId) {
         state.category.id = route.params.categoryId;
         state.category.name = categoryList[route.params.categoryId];
         state.menu.id = route.params.menuId;
         state.menu.name = menuList[route.params.menuId - 1];
+        if (route.params.page) {
+          if (route.params.menuId === "1") {
+            state.page.work = route.params.page;
+          } else {
+            state.page.story = route.params.page;
+          }
+        }
       }
+      if (route.params.keyword) {
+        inputText.value = route.params.keyword;
+      }
+      search(inputText.value, state.category, state.menu, state.page);
     });
-    const pushPath = (keyword, categoryId, menuId) => {
+    watch(
+      () => route.path,
+      async () => {
+        search(inputText.value, state.category, state.menu, state.page);
+      }
+    );
+    watch(
+      () => state.page.work,
+      () => {
+        pageWork.value = Number(state.page.work);
+      }
+    );
+    watch(
+      () => state.page.story,
+      () => {
+        pageStory.value = Number(state.page.story);
+      }
+    );
+    watch(
+      () => pageWork.value,
+      () => {
+        state.page.work = String(pageWork.value);
+      }
+    );
+    watch(
+      () => pageStory.value,
+      () => {
+        state.page.story = String(pageStory.value);
+      }
+    );
+    const pushPath = (keyword, categoryId, menuId, page) => {
       if (keyword) {
-        router.push({
-          name: "search-result",
-          params: {
-            categoryId,
-            menuId,
-            keyword,
-          },
-        });
+        if (page !== { work: "1", story: "1" }) {
+          if (menuId === "1") {
+            router.push({
+              name: "search-result-page",
+              params: {
+                categoryId,
+                menuId,
+                keyword,
+                page: page.work,
+              },
+            });
+          } else {
+            router.push({
+              name: "search-result-page",
+              params: {
+                categoryId,
+                menuId,
+                keyword,
+                page: page.story,
+              },
+            });
+          }
+        } else {
+          router.push({
+            name: "search-result",
+            params: {
+              categoryId,
+              menuId,
+              keyword,
+            },
+          });
+        }
+      } else if (page !== { work: "1", story: "1" }) {
+        if (menuId === "1") {
+          router.push({
+            name: "search-group-page",
+            params: { categoryId, menuId, page: page.work },
+          });
+        } else {
+          router.push({
+            name: "search-group-page",
+            params: { categoryId, menuId, page: page.story },
+          });
+        }
       } else {
         router.push({
           name: "search-group",
@@ -193,24 +301,29 @@ export default {
     // };
     const inputKeyword = (event) => {
       inputText.value = event.target.value;
+      state.page.work = "1";
+      state.page.story = "1";
       // replacePath();
-      search(inputText.value, state.category.id, state.menu.id);
+      search(inputText.value, state.category, state.menu, state.page, state.page);
     };
     const blurInput = (event) => {
       inputText.value = event.target.value;
-      pushPath(inputText.value, state.category.id, state.menu.id);
+      pushPath(inputText.value, state.category.id, state.menu.id, state.page);
     };
     const updateMenu = (menuId) => {
       state.menu.id = menuId;
       state.menu.name = menuList[state.menu.id - 1];
-      pushPath(inputText.value, state.category.id, state.menu.id);
-      search(inputText.value, state.category.id, state.menu.id);
+      pushPath(inputText.value, state.category.id, state.menu.id, state.page);
     };
     const updateCategory = (categoryId) => {
       state.category.id = categoryId;
       state.category.name = categoryList[state.category.id];
-      pushPath(inputText.value, state.category.id, state.menu.id);
-      search(inputText.value, state.category.id, state.menu.id);
+      state.page.work = "1";
+      state.page.story = "1";
+      pushPath(inputText.value, state.category.id, state.menu.id, state.page);
+    };
+    const updatePage = () => {
+      pushPath(inputText.value, state.category.id, state.menu.id, state.page);
     };
     return {
       inputText,
@@ -220,15 +333,27 @@ export default {
       blurInput,
       updateCategory,
       updateMenu,
+      totalPage,
+      updatePage,
+      pageStory,
+      pageWork,
     };
   },
   beforeRouteUpdate(to, from, next) {
     if (to.name === "search") {
-      this.inputText = null;
+      this.inputText = "";
       this.state.category.id = "0";
       this.state.menu.id = "1";
     } else {
-      this.inputText = to.params.keyword;
+      if (to.params.keyword) {
+        this.inputText = to.params.keyword;
+      }
+      if (to.params.page)
+        if (to.params.menuId === "1") {
+          this.state.page.work = to.params.page;
+        } else {
+          this.state.page.story = to.params.page;
+        }
       this.state.category.id = to.params.categoryId;
       this.state.menu.id = to.params.menuId;
     }
@@ -341,5 +466,14 @@ export default {
 
 .search__result {
   margin: 30px;
+}
+
+.search__story-result-card {
+  margin: 10px;
+}
+.search__pagination-section {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
 }
 </style>
