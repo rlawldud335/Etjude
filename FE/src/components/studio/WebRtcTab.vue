@@ -207,6 +207,7 @@ export default {
 
     async createSession(sessionId) {
       console.log(sessionId);
+      const data = JSON.stringify({ customSessionId: sessionId });
       const response = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions`,
         { customSessionId: sessionId },
@@ -215,10 +216,11 @@ export default {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
-        }
+        },
+        data
       );
       console.log(response);
-      return response.data; // The sessionId
+      return response.id; // The sessionId
     },
 
     async createToken(sessionId) {
