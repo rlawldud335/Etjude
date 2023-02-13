@@ -226,8 +226,9 @@ export default {
     async createToken(sessionId) {
       // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
+      console.log("제발요 ", sessionId);
       const openviduInstance = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions/${sessionId.id}/connection`,
+        `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
           headers: {
             "Content-Type": "application/json",
