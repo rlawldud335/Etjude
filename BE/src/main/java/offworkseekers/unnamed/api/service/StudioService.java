@@ -103,7 +103,8 @@ public class StudioService {
         }
         return expiredStudioIds;
     }
-    
+
+    @Transactional
     public void saveRecording(int studioId, int sceneId, String recordingVideoUrl, String userId) {
         Recording recording = recordingRepositoryImpl.findRecordingByStudioIdAndSceneId(studioId, sceneId);
         if (recording != null) {
