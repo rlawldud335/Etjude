@@ -20,6 +20,8 @@ export default {
 .search-result__work {
   display: flex;
   flex-wrap: wrap;
+  gap: 10px 0px;
+
   > * {
     margin: 5px 23px;
   }
