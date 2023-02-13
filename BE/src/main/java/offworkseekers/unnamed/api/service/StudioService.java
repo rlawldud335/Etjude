@@ -3,13 +3,11 @@ package offworkseekers.unnamed.api.service;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import offworkseekers.unnamed.api.dto.SimpleUserDTO;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.*;
-import offworkseekers.unnamed.db.repository.RecordingRepository;
-import offworkseekers.unnamed.db.repository.StoryRepository;
-import offworkseekers.unnamed.db.repository.StudioRepository;
-import offworkseekers.unnamed.db.repository.UserRepository;
+import offworkseekers.unnamed.db.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +22,15 @@ import java.util.List;
 public class StudioService {
 
     private final StudioRepository studioRepository;
+    private final RecordingRepository recordingRepository;
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final RecordingRepository recordingRepository;
+    private final SceneRepository sceneRepository;
+
+    public StudioInfoResponse getStudioInfo(Long studioId) {
+        return studioRepository.findStudioInfo(studioId);
+    }
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
         return studioRepository.findStudioNavbar(studioId, userId);
@@ -72,6 +76,7 @@ public class StudioService {
         for (Film film : studioFilmList) {
             responses.add(
                     StudioFilmListResponse.builder()
+                            .filmId(film.getFilmId())
                             .filmVideoUrl(film.getFilmVideoUrl())
                             .filmCreatedDate(film.getFilmCreatedDate())
                             .filmEndDate(film.getFilmCreatedDate().plusDays(7))
@@ -97,4 +102,26 @@ public class StudioService {
         }
         return expiredStudioIds;
     }
+    
+    public void saveRecording(int studioId, int sceneId, String recordingVideoUrl, String userId) {
+        Recording recording = recordingRepository.findRecordingByStudioIdAndSceneId(studioId, sceneId);
+        if (recording != null) {
+            recording.changeUrl(recordingVideoUrl);
+            recording.changeUserId(userId);
+            recordingRepository.save(recording);
+        }
+
+        if (recording == null) {
+            Studio studio = studioRepository.findById(Long.valueOf(studioId)).orElse(null);
+            Scene scene = sceneRepository.findById(Long.valueOf(sceneId)).orElse(null);
+
+            recordingRepository.save(Recording.builder()
+                            .recordingVideoUrl(recordingVideoUrl)
+                            .userId(userId)
+                            .studio(studio)
+                            .scene(scene)
+                    .build());
+        }
+    }
+
 }

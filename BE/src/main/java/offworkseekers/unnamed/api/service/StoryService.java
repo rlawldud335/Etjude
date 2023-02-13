@@ -7,6 +7,7 @@ import offworkseekers.unnamed.db.entity.*;
 import offworkseekers.unnamed.db.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class StoryService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
-    public List<StoryListResponse> storyListRecommendedByLike() {
-        List<StoryListResponse> storyListRecommendedByLike = storyRepository.getStoryListRecommendedByLike();
+    public List<StoryListResponse> storyListRecommendedByLike(int pageNum) {
+        List<StoryListResponse> storyListRecommendedByLike = storyRepository.getStoryListRecommendedByLike(pageNum);
         
         return storyListRecommendedByLike;
     }
@@ -60,8 +61,8 @@ public class StoryService {
         return roleWithLines;
     }
 
-    public List<StoryListResponse> storySearchList(String keyword, String categoryName) {
-        List<StoryListResponse> storySearchList = storyRepository.getStorySearchList(keyword, categoryName);
+    public StoryListWithTotalCountResponse storySearchList(String keyword, Long categoryId, int pageNum) {
+        StoryListWithTotalCountResponse storySearchList = storyRepository.getStorySearchList(keyword, categoryId, pageNum);
         return storySearchList;
     }
 

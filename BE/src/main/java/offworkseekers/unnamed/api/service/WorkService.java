@@ -1,10 +1,7 @@
 package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.GetWorkResponse;
-import offworkseekers.unnamed.api.response.StoriesOfWork;
-import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
-import offworkseekers.unnamed.api.response.WorkSearchResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.repository.WorkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +17,15 @@ public class WorkService {
     private final WorkRepository workRepository;
 
 
-    public List<WorkOrderByRandomResponse> getWorkListRandom() {
+    public List<WorkOrderByRandomResponse> getWorkListRandom(int pageNum) {
 
-        List<WorkOrderByRandomResponse> works = workRepository.getWorkListRandom();
+        List<WorkOrderByRandomResponse> works = workRepository.getWorkListRandom(pageNum);
         Collections.shuffle(works);
         return works;
     }
 
-    public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId){
-        return workRepository.getWorkSearchList(keyword, categoryId);
+    public WorkListWithTotalCountResponse getWorkSearchList(String keyword, Long categoryId, int pageNum){
+        return workRepository.getWorkSearchList(keyword, categoryId, pageNum);
     }
 
     public GetWorkResponse getWork(Long workId){

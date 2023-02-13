@@ -57,14 +57,14 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
         int startIdx = 12 * (pageNum - 1);
         int endIdx = startIdx + 12;
         if(totalNum - startIdx < 12){
-            return result.subList(startIdx, startIdx + totalNum - startIdx);
+            return result.subList(startIdx, totalNum);
         }
 
         return result.subList(startIdx, endIdx);
     }
 
     @Override
-    public List<SearchFilmResponse> getSearchArticles(String keyword){
+    public List<SearchFilmResponse> getSearchArticles(String keyword, int pageNum){
         List<SearchFilmResponse> result = queryFactory
                 .select(Projections.constructor(SearchFilmResponse.class,
                         article.articleId,
@@ -77,7 +77,16 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                 .from(article)
                 .where(article.articleTitle.contains(keyword))
                 .fetch();
-        return result;
+
+        int totalNum = result.size();
+        int startIdx = 12 * (pageNum - 1);
+
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return result.subList(startIdx, totalNum);
+        }
+
+        return result.subList(startIdx, endIdx);
     }
 
     @Override

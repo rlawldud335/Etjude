@@ -3,12 +3,13 @@ package offworkseekers.unnamed.api.request;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.db.entity.Article;
 import offworkseekers.unnamed.db.entity.Film;
 import offworkseekers.unnamed.db.entity.User;
 
-@Data
 @Getter
+@RequiredArgsConstructor
 public class ArticleCreateRequest {
 
     String userId;

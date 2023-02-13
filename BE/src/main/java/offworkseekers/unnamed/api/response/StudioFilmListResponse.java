@@ -11,6 +11,9 @@ import java.time.LocalDate;
 @ToString
 public class StudioFilmListResponse {
 
+    @JsonProperty(value = "film_id")
+    private Long filmId;
+
     @JsonProperty(value = "film_created_date")
     private LocalDate filmCreatedDate;
 
@@ -21,7 +24,8 @@ public class StudioFilmListResponse {
     private String filmVideoUrl;
 
     @Builder
-    public StudioFilmListResponse(LocalDate filmCreatedDate, LocalDate filmEndDate, String filmVideoUrl) {
+    public StudioFilmListResponse(Long filmId, LocalDate filmCreatedDate, LocalDate filmEndDate, String filmVideoUrl) {
+        this.filmId = filmId;
         this.filmCreatedDate = filmCreatedDate;
         this.filmEndDate = filmEndDate;
         this.filmVideoUrl = filmVideoUrl;

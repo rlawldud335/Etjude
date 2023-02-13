@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
+import offworkseekers.unnamed.api.response.StoryListWithTotalCountResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<StoryListResponse> getStoryListRecommendedByLike() {
+    public List<StoryListResponse> getStoryListRecommendedByLike(int pageNum) {
         List<Tuple> fetch = queryFactory
                 .select(story.storyId, story.storyThumbnailUrl, story.storyTitle, category.categoryName, work.workTitle)
                 .from(story, category, work)
@@ -48,7 +49,13 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
         }
         Collections.sort(storyListRecommendedByLikeResponse, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
 
-        return storyListRecommendedByLikeResponse;
+        int totalNum = storyListRecommendedByLikeResponse.size();
+        int startIdx = 12 * (pageNum - 1);
+        int endIdx = startIdx + 12;
+        if(totalNum - startIdx < 12){
+            return storyListRecommendedByLikeResponse.subList(startIdx, totalNum);
+        }
+        return storyListRecommendedByLikeResponse.subList(startIdx, endIdx);
     }
 
     private int getStoryLikeCount(Long storyId) {
@@ -112,10 +119,9 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     }
 
     @Override
-    public List<StoryListResponse> getStorySearchList(String keyword, String categoryName) {
-
+    public StoryListWithTotalCountResponse getStorySearchList(String keyword, Long categoryId, int pageNum) {
         List<Tuple> fetch = new ArrayList<>();
-        if (categoryName.equals("") || categoryName == null){
+        if (categoryId == 0L){
             fetch = queryFactory
                     .select(
                             story.storyId,
@@ -126,7 +132,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .from(story)
                     .where(story.storyTitle.contains(keyword))
                     .fetch();
-        } else{
+        } else {
             fetch = queryFactory
                     .select(
                             story.storyId,
@@ -136,7 +142,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                             story.work.workTitle)
                     .from(story)
                     .where(
-                            story.category.categoryName.eq(categoryName),
+                            story.category.categoryId.eq(categoryId),
                             story.storyTitle.contains(keyword)
                     )
                     .fetch();
@@ -158,7 +164,26 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .build()
             );
         }
-        return storySearchResult;
+        int totalNum = storySearchResult.size();
+        int startIdx = 12 * (pageNum - 1);
+        int endIdx = startIdx + 12;
 
+        StoryListWithTotalCountResponse.builder()
+                .totalCount(totalNum)
+                .storyListResponses(storySearchResult.subList(startIdx, totalNum))
+                .build();
+
+
+        if(totalNum - startIdx < 12){
+            return StoryListWithTotalCountResponse.builder()
+                    .totalCount(totalNum)
+                    .storyListResponses(storySearchResult.subList(startIdx, totalNum))
+                    .build();
+        }
+
+        return StoryListWithTotalCountResponse.builder()
+                .totalCount(totalNum)
+                .storyListResponses(storySearchResult.subList(startIdx, endIdx))
+                .build();
     }
 }

@@ -1,17 +1,16 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
-import offworkseekers.unnamed.api.response.StoryDetailResponse;
-import offworkseekers.unnamed.api.response.StoryListResponse;
-import offworkseekers.unnamed.api.response.StoryRoleResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.StoryService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +21,12 @@ public class StoryController {
     private final StoryService storyService;
 
     @GetMapping(value = "/api/v1/story/recommended/popular")
-    public List<StoryListResponse> storyListByLike() {
-        List<StoryListResponse> response = storyService.storyListRecommendedByLike();
+    public List<StoryListResponse> storyListByLike(@Param(value = "pageNum") String pageNum) {
+        List<StoryListResponse> response = new ArrayList<>();
+        if(pageNum == null || pageNum.equals("")){
+            response = storyService.storyListRecommendedByLike(1);
+        }
+        else response = storyService.storyListRecommendedByLike(Integer.parseInt(pageNum));
         return response;
     }
 
@@ -52,8 +55,14 @@ public class StoryController {
     }
 
     @GetMapping(value = "/api/v1/story/search")
-    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category") String categoryName) {;
-        return storyService.storySearchList(keyword, categoryName);
+    public StoryListWithTotalCountResponse storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category_id") String categoryId, @RequestParam(value = "pageNum") String pageNum) {;
+
+        int pageNumToInt = 1;
+        if(pageNum != null && !pageNum.equals("")) pageNumToInt = Integer.parseInt(pageNum);
+        if (categoryId == null || categoryId.equals("")) {
+            return storyService.storySearchList(keyword, 0L, pageNumToInt);
+        }
+        return storyService.storySearchList(keyword, Long.valueOf(categoryId), pageNumToInt);
     }
 
     @PostMapping(value = "/api/v1/story/like")
