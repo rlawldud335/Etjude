@@ -9,13 +9,8 @@
         <span> > </span>
         <span>{{ studioInfo.studioTitle }}</span>
       </div>
-      <div
-        class="studio__setting"
-        @mouseover="state.isHovered = true"
-        @focus="state.isHovered = true"
-        @mouseout="state.isHovered = false"
-        @focusout="state.isHovered = false"
-      >
+      <div class="studio__setting" @mouseover="state.isHovered = true" @focus="state.isHovered = true"
+        @mouseout="state.isHovered = false" @focusout="state.isHovered = false">
         <CircleSetting />
 
         <div class="studio__setting-section" v-show="state.isHovered">
@@ -35,11 +30,7 @@
       </div>
     </div>
     <div class="studio-users">
-      <div
-        v-for="member in studioInfo.member_list"
-        :key="member.user_id"
-        @click="state.detailUser = member.user_id"
-      >
+      <div v-for="member in studioInfo.member_list" :key="member.user_id" @click="state.detailUser = member.user_id">
         <div :class="{ 'studio-users__detail': state.detailUser == member.user_id }">
           <div class="profile-img-frame">
             <img class="profile-img" :src="member.profile_url" alt="" />
@@ -61,11 +52,12 @@ export default {
   props: {
     studioInfo: Object,
   },
-  setup(props) {
+  setup() {
     const state = reactive({
       isHovered: false,
-      detailUser: props.studioInfo.member_list[0].user_id,
+      detailUser: null,
     });
+
     return {
       state,
     };
@@ -83,11 +75,13 @@ export default {
   background-color: $bana-pink;
   justify-content: space-between;
 }
+
 .studio__setting {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .studio-info {
   display: flex;
   flex-direction: row;
@@ -99,6 +93,7 @@ export default {
   margin: 10px 30px;
   font-weight: bold;
   color: white;
+
   a {
     color: white;
   }
@@ -108,13 +103,15 @@ export default {
   color: white;
 }
 
-.studio-info__title > span {
+.studio-info__title>span {
   margin: 0px 5px;
 }
+
 .studio__setting {
   position: relative;
   display: inline-block;
 }
+
 .studio__setting-section {
   position: absolute;
   z-index: 1;
@@ -126,17 +123,20 @@ export default {
   border-radius: 10px;
   padding: 20px 30px;
   white-space: nowrap;
+
   p {
     line-height: 140%;
     margin: 3px;
     font-size: 14px;
   }
+
   p:nth-child(1) {
     font-weight: 500;
     margin-bottom: 10px;
     font-size: 16px;
   }
 }
+
 .studio-users {
   display: flex;
   flex-direction: row;
@@ -156,7 +156,7 @@ export default {
   transition: all 0.5s;
 }
 
-.studio-users__detail > span {
+.studio-users__detail>span {
   margin: 0px 10px;
   cursor: pointer;
 }
@@ -191,7 +191,7 @@ export default {
   margin-right: 20px;
 }
 
-.profile-detail > span {
+.profile-detail>span {
   margin: 0px 10px;
 }
 

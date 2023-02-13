@@ -4,7 +4,7 @@
     <div class="studio-tab__scene-head">
       <div class="studio-tab__scene-id">#{{ scene.sceneNumber }}.&nbsp;{{ scene.roleName }}</div>
       <div class="studio-tab__scene-icon">
-        <div class="studio-tab__scene-profile-frame" v-if="scene.recordVideoUrl">
+        <div class="studio-tab__scene-profile-frame" v-if="scene.user">
           <img :src="scene.user.profile_url" alt="" />
         </div>
         <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />

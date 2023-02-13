@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from "axios";
 
-const URL = "https://withs.r-e.kr/api/v1";
+const URL = "https://etjude.r-e.k/api/v1";
 
 // application/json 타입
 function apiInstance() {
@@ -21,7 +21,7 @@ async function testMakeFilm(success, fail) {
     url: "https://withs.r-e.kr/api/v2/concateVideo",
     params: {
       studio_id: "studio1",
-      film_id: "studio2",
+      film_id: `film_${Date.now()}`,
     },
   })
     .then(success)
