@@ -222,8 +222,9 @@ export default {
     },
 
     async createToken(sessionId) {
-      const data = JSON.stringify({ customSessionId: sessionId });
-      const response = await axios.post(
+      // const data = JSON.stringify({ customSessionId: sessionId });
+      const data = {};
+      const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
           headers: {
@@ -234,7 +235,7 @@ export default {
         console.log("data :", data),
         data
       );
-      return response.data; // The token
+      return openviduInstance.data; // The token
     },
   },
 };
