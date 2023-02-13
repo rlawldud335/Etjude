@@ -12,9 +12,10 @@ async function getStudioStoryScript(studioId, success, fail) {
   await api.post(`/studio/story/scripts`, { studio_id: studioId }).then(success).catch(fail);
 }
 
-async function getSceneRecordList(studioId, success, fail) {
+async function getSceneRecordList(studioId, storyId, success, fail) {
+  console.log(studioId, storyId);
   console.log("# POST : 스튜디오의 씬 녹화 정보 가져오기");
-  await api.post(`/studio/recording`, { studio_id: studioId }).then(success).catch(fail);
+  await api.post(`/studio/recording`, { studio_id: studioId, story_id: storyId }).then(success).catch(fail);
 }
 
 async function getFlimList(studioId, success, fail) {

@@ -10,7 +10,7 @@
         ]"
         @click="plusMakingCount"
       >
-        필름 생성하기 ( {{ makingButton.count }} / {{ makingButton.possibleCount }} )
+        필름 생성하기 ( {{ films.length }} / {{ makingButton.possibleCount }} )
       </button>
     </div>
   </div>
@@ -28,15 +28,13 @@ export default {
   props: {
     films: Array,
   },
-  setup() {
+  setup(props) {
     const makingButton = reactive({
-      count: 0,
       possibleCount: 3,
       active: true,
     });
     const plusMakingCount = () => {
-      if (makingButton.count < makingButton.possibleCount) {
-        makingButton.count += 1;
+      if (props.films.length < makingButton.possibleCount) {
         testMakeFilm(
           ({ data }) => {
             console.log(data);
@@ -49,7 +47,7 @@ export default {
         // eslint-disable-next-line no-alert
         alert("더이상 생성 불가");
       }
-      if (makingButton.count === makingButton.possibleCount) {
+      if (props.films.length === makingButton.possibleCount) {
         makingButton.active = false;
       }
     };
