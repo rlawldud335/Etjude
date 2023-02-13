@@ -90,7 +90,7 @@ export default {
       category.isHovered = false;
     };
     const goCategory = (categoryId) => {
-      router.push({ name: "search-group", params: { categoryId, menuId: "1" } });
+      router.push({ name: "search-group-page", params: { categoryId, menuId: "1", page: "1" } });
     };
     const lastPath = computed(() => {
       let path;
