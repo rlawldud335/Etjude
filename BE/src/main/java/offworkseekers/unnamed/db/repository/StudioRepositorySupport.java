@@ -18,6 +18,6 @@ public interface StudioRepositorySupport {
 
     List<Film> getStudioFilmList(Long studioId);
 
-    List<StudioRecordListResponse> findRecordingByStudioId(Long studioId);
+    List<StudioRecordListResponse> findRecordingByStudioId(Long studioId, Long storyId);
 
 }

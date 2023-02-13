@@ -9,12 +9,14 @@ import offworkseekers.unnamed.api.response.StudioNavBarResponse;
 import offworkseekers.unnamed.api.response.StudioRecordListResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.db.entity.Film;
+import offworkseekers.unnamed.db.entity.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static offworkseekers.unnamed.db.entity.QFilm.film;
 import static offworkseekers.unnamed.db.entity.QRecording.recording;
+import static offworkseekers.unnamed.db.entity.QScene.scene;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
 import static offworkseekers.unnamed.db.entity.QUser.user;
@@ -101,27 +103,53 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
     }
 
     @Override
-    public List<StudioRecordListResponse> findRecordingByStudioId(Long studioId) {
-        List<Tuple> fetch = queryFactory
-                .select(recording.recordingVideoUrl, recording.scene.sceneId, recording.scene.sceneNumber, recording.userId)
-                .from(recording)
-                .where(recording.studio.studioId.eq(studioId))
+    public List<StudioRecordListResponse> findRecordingByStudioId(Long studioId, Long storyId) {
+        List<Scene> storySceneList = queryFactory
+                .selectFrom(scene)
+                .where(
+                        scene.story.storyId.eq(storyId)
+                )
                 .fetch();
+
         List<StudioRecordListResponse> studioRecordListResponseList = new ArrayList<>();
-        for (Tuple tuple : fetch) {
-            Tuple userInfoTuple = queryFactory
-                    .select(user.picture, user.nickName)
-                    .from(user)
-                    .where(user.userId.eq(tuple.get(recording.userId)))
+        for (Scene nowScene : storySceneList) {
+            Long nowSceneId = nowScene.getSceneId();
+            int nowSceneNumber = nowScene.getSceneNumber();
+
+            Tuple tuple = queryFactory
+                    .select(recording.recordingVideoUrl, recording.scene.sceneId, recording.scene.sceneNumber, recording.userId)
+                    .from(recording)
+                    .where(
+                            recording.scene.sceneId.eq(nowSceneId),
+                            recording.studio.studioId.eq(studioId)
+                    )
                     .fetchOne();
+
+            String recordingNickname = null;
+            String recordingUserProfileUrl = null;
+            String recordingVideoUrl = null;
+
+            if (tuple != null) {
+                Tuple userInfo = queryFactory
+                        .select(user.nickName, user.picture)
+                        .from(user)
+                        .where(
+                                user.userId.eq(tuple.get(recording.userId))
+                        )
+                        .fetchOne();
+                recordingNickname = userInfo.get(user.nickName);
+                recordingUserProfileUrl = userInfo.get(user.picture);
+                recordingVideoUrl = tuple.get(recording.recordingVideoUrl);
+            }
+
 
             studioRecordListResponseList.add(
                     StudioRecordListResponse.builder()
-                            .recordVideoUrl(tuple.get(recording.recordingVideoUrl))
-                            .sceneId(tuple.get(recording.scene.sceneId))
-                            .sceneNumber(tuple.get(recording.scene.sceneNumber))
-                            .nickname(userInfoTuple.get(user.nickName))
-                            .profileURL(userInfoTuple.get(user.picture))
+                            .recordVideoUrl(recordingVideoUrl)
+                            .sceneId(nowSceneId)
+                            .sceneNumber(nowSceneNumber)
+                            .nickname(recordingNickname)
+                            .profileURL(recordingUserProfileUrl)
                             .build()
             );
         }
