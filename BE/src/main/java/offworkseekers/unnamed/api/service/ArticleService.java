@@ -33,7 +33,7 @@ public class ArticleService {
         Long filmId = request.getFilmId();
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Film film = filmRepository.findById(filmId).orElse(null);
-        film.setFilmCreatedDate(null);
+        film.setFilmCreatedDate(film.getFilmCreatedDate().plusYears(10));
         filmRepository.save(film);
         Article article = Article.builder()
                         .articleContent(request.getArticleContent())
