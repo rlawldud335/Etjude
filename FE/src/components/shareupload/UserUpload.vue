@@ -39,6 +39,7 @@
 </template>
 <script>
 import { ref } from "vue";
+import { getFilmUpload } from "@/api/share";
 import dummydata from "@/dummy/filmdummydata/page1.json";
 import UploadCarousel from "./UploadCarousel.vue";
 
@@ -52,6 +53,15 @@ export default {
     const imgUpload = ref();
     const preview = ref();
     let files = ref();
+    getFilmUpload(
+      "2",
+      ({ data }) => {
+        console.log("film data:", data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     const getImageFiles = (e) => {
       files = `require(${e.currentTarget.value})`;
       console.log(files);
