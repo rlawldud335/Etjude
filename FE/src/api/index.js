@@ -21,7 +21,7 @@ async function testMakeFilm(success, fail) {
     url: "https://etjude.r-e.kr/api/v2/concateVideo",
     params: {
       studio_id: "studio2",
-      film_id: `film_333`,
+      film_id: `film_444`,
     },
   })
     .then(success)
