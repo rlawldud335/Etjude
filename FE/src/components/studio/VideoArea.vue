@@ -2,26 +2,16 @@
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 0 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 2 },
-        ]"
-        ref="videoOutput"
-        :src="studioInfo.storyVideoUrl"
-        @timeupdate="changeTimeHandler"
-        controls
-      ></video>
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 2 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 0 },
-        ]"
-        :srcObject="mediaStream"
-        autoplay
-      ></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 0 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 2 },
+      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 2 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 0 },
+      ]" :srcObject="mediaStream" autoplay></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
@@ -55,6 +45,7 @@ import MicOn from "@/assets/icons/MicOn.svg";
 import MicOff from "@/assets/icons/MicOff.svg";
 import RecordCircle from "@/assets/icons/RecordCircle.svg";
 import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
+import { fileUpload } from "@/api/aws";
 
 export default {
   components: {
@@ -74,6 +65,8 @@ export default {
       profile_url:
         "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
     };
+
+
 
     const state = reactive({
       videoMode: 0,
@@ -157,7 +150,10 @@ export default {
         if (recordedChunks && recordedChunks.length !== 0) {
           const blob = new Blob(recordedChunks, { type: "video/webm;" });
           recordedMediaURL.value = URL.createObjectURL(blob);
-          // 여기서 s3에 업로드하고 db에 저장하면 되겠다
+          console.log("녹화종료", recordedMediaURL.value);
+          const awsUrl = fileUpload(blob, props.studioInfo, props.videoState.sceneIdx, user);
+          console.log(awsUrl);
+          recordedMediaURL.value = awsUrl;
           emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, user);
         }
       };
@@ -215,7 +211,7 @@ export default {
   position: relative;
 }
 
-.video-player > video {
+.video-player>video {
   height: 100%;
 }
 

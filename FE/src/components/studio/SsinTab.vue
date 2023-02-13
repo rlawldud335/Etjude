@@ -2,20 +2,15 @@
 <!-- eslint-disable no-restricted-syntax -->
 <template>
   <div class="studio__ssin-tab-list">
-    <SsinTabScene
-      v-for="scene in ssinData"
-      :key="scene.index"
-      :scene="scene"
-      :videoState="videoState"
-      @start-recording="startRecording"
-    >
+    <SsinTabScene v-for="scene in ssinData.ssin" :key="scene.index" :scene="scene" :videoState="videoState"
+      @start-recording="startRecording">
     </SsinTabScene>
   </div>
 </template>
 
 <script>
 import SsinTabScene from "@/components/studio/SsinTabScene.vue";
-// import { reactive } from "vue";
+import { watch, reactive, onBeforeMount } from "vue";
 
 export default {
   name: "SsinTab",
@@ -26,12 +21,20 @@ export default {
     const startRecording = (sceneIdx) => {
       emit("change-video-state", sceneIdx, true);
     };
+    const ssinData = reactive({ ssin: [] });
 
-    const ssinData = [];
-    for (let i = 0; i < props.storyScript.length; i += 1) {
-      ssinData.push({ ...props.records[i], ...props.storyScript[i] });
-    }
-    console.log(ssinData);
+    onBeforeMount(() => {
+      for (let i = 0; i < props.storyScript.length; i += 1) {
+        ssinData.ssin.push({ ...props.records[i], ...props.storyScript[i] });
+      }
+    })
+
+    watch(props.records, (cur) => {
+      ssinData.ssin = [];
+      for (let i = 0; i < props.storyScript.length; i += 1) {
+        ssinData.ssin.push({ ...cur[i], ...props.storyScript[i] });
+      }
+    })
 
     return {
       startRecording,
