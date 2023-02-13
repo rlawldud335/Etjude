@@ -14,9 +14,11 @@
     "bootstrap-vue-3": "^0.5.1",
     "core-js": "^3.8.3",
     "css-loader": "^6.7.3",
+    "firebase": "^9.17.1",
     "install": "^0.13.0",
     "net": "^1.0.2",
     "npm": "^9.4.0",
+    "openvidu-browser": "^2.25.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "style-loader": "^3.3.1",
@@ -27,6 +29,7 @@
     "vue3-carousel": "^0.2.9",
     "vue3-icon": "^2.1.0",
     "vuex": "^4.0.0",
+    "vuex-persistedstate": "^4.1.0",
     "webfonts-generator": "^0.4.0"
   },
   "devDependencies": {

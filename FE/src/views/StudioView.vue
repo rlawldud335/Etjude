@@ -32,6 +32,7 @@
             :records="studioData.records" :storyScript="studioData.storyScript" />
           <FilmTab v-show="state.selectTab === 2" :films="studioData.films" />
           <ChatTab v-show="state.selectTab === 3" />
+          <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
       <div class="studio__tab">
@@ -48,9 +49,13 @@
           :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
           <Film />
         </button>
-
         <button class="studio__tab__btn" @click="clickTab(3)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }"></button>
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }">
+        </button>
+
+        <button class="studio__tab__btn" @click="clickTab(4)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }">
+        </button>
       </div>
     </div>
   </div>
@@ -75,6 +80,7 @@ import { reactive, ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 
 import ChatTab from "@/components/studio/ChattingTab.vue";
+import WebRtcTab from "@/components/studio/WebRtcTab.vue";
 
 export default {
   components: {
@@ -89,6 +95,7 @@ export default {
     ScriptArea,
     VideoArea,
     ChatTab,
+    WebRtcTab,
   },
   setup() {
     const route = useRoute();
@@ -104,12 +111,7 @@ export default {
       selectTab: 0,
     });
 
-    const tabs = ref([
-      { tabName: "전체 스크립트" },
-      { tabName: "씬 녹화" },
-      { tabName: "필름" },
-      { tabName: "채팅" },
-    ]);
+    const tabs = ref([{ tabName: "전체 스크립트" }, { tabName: "씬 녹화" }, { tabName: "필름" }, { tabName: "채팅" }, { tabName: "화상" }]);
 
     const clickTab = (idx) => {
       if (state.selectTab === idx) {

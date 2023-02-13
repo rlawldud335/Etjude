@@ -2,15 +2,15 @@
   <div class="story__script-scene">
     <div class="story__script-scene-actor-image">
       <div class="actor__profile-frame">
-        <img class="actor__profile-image" :src="scene.role.photo_url" alt="" />
+        <img class="actor__profile-image" :src="scene.rolePhotoUrl" alt="" />
       </div>
     </div>
     <div class="script__line-section">
       <StoryScriptSceneLine
-        v-for="line in scene.line"
+        v-for="line in scene.lines"
         :key="line.id"
         :line="line"
-        :role="scene.role"
+        :role="scene.roleName"
       ></StoryScriptSceneLine>
     </div>
   </div>

@@ -16,7 +16,6 @@
           >
             카테고리
             <ul v-show="category.isHovered" class="header__dropdown">
-              <!-- <ul class="header__dropdown"> -->
               <li @click="goCategory('1')">
                 <span>드라마</span>
               </li>
@@ -34,19 +33,55 @@
           <router-link :to="{ name: 'film' }" class="header__nav-item">필름 공유</router-link>
         </div>
       </div>
-      <router-link to="/login">
-        <button class="header__login-button">Login</button>
-      </router-link>
+      <div v-if="!user">
+        <router-link :to="{ name: 'login', query: { next: lastPath } }">
+          <button class="header__login-button">Login</button>
+        </router-link>
+      </div>
+      <div class="header__profile--login" v-else-if="user">
+        <div class="header__profile-frame">
+          <img class="header__profile_image" :src="user.myPageSimpleResponse.userPhotoUrl" alt="" />
+        </div>
+        <ul class="header__profile-dropdown">
+          <div class="header__profile-dropdown-title">
+            <div class="header__profile-dropdown-profile-frame">
+              <img :src="user.myPageSimpleResponse.userPhotoUrl" alt="" />
+            </div>
+            <span>{{ user.myPageSimpleResponse.userNickName }}</span>
+          </div>
+          <li>
+            <div class="header__dropdown-icon-section">
+              <profileIcon />
+            </div>
+            <span>내 프로필</span>
+          </li>
+          <li @click="handleSignOut">
+            <div class="header__dropdown-icon-section">
+              <logoutIcon />
+            </div>
+            <span>로그아웃</span>
+          </li>
+        </ul>
+      </div>
     </nav>
   </div>
 </template>
 <script>
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import { reactive, computed } from "vue";
+import { mapState } from "vuex";
+import { useRouter, useRoute } from "vue-router";
+import { handleSignOut } from "@/api/login";
+import logoutIcon from "@/assets/icons/logout.svg";
+import profileIcon from "@/assets/icons/profile.svg";
 
 export default {
+  components: {
+    logoutIcon,
+    profileIcon,
+  },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const category = reactive({ isHovered: false });
     const categoryHover = () => {
       category.isHovered = true;
@@ -57,12 +92,28 @@ export default {
     const goCategory = (categoryId) => {
       router.push({ name: "search-group", params: { categoryId, menuId: "1" } });
     };
+    const lastPath = computed(() => {
+      let path;
+      if (route.query.next) {
+        path = route.query.next;
+      } else {
+        path = route.path;
+      }
+      return path;
+    });
     return {
       category,
       categoryHover,
       categoryUnhover,
       goCategory,
+      lastPath,
     };
+  },
+  computed: {
+    ...mapState(["user"]),
+  },
+  methods: {
+    handleSignOut,
   },
 };
 </script>
@@ -129,16 +180,17 @@ nav {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   z-index: 1;
+
   li {
     background-color: $bana-pink;
     padding: 11px 30px;
+    cursor: pointer;
     span {
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
       color: $aha-gray;
     }
-    cursor: pointer;
   }
   li:nth-child(1) {
     margin-top: 5px;
@@ -164,5 +216,85 @@ nav {
   border-radius: 4px;
   margin-right: 20px;
   cursor: pointer;
+}
+.header__profile--login {
+  margin-right: 2%;
+}
+.header__profile-frame {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  position: relative;
+}
+.header__profile-dropdown {
+  width: 190px;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  right: calc(2% + 10px);
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  padding-bottom: 15px;
+  flex-direction: column;
+  display: none;
+  li {
+    display: flex;
+    cursor: pointer;
+
+    align-items: center;
+    float: left;
+    padding: 10px 20px;
+    span {
+      margin-left: 10px;
+    }
+  }
+  li:hover {
+    background: $efefe-gray;
+    font-weight: 500;
+  }
+}
+.header__profile-dropdown-title {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px 10px 20px;
+  span {
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+.header__profile-dropdown-profile-frame {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  position: relative;
+}
+
+.header__dropdown-icon-section {
+  width: 35px;
+  display: flex;
+  justify-content: center;
+}
+.header__profile--login:hover .header__profile-dropdown {
+  display: flex;
 }
 </style>
