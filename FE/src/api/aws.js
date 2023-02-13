@@ -5,18 +5,22 @@ import { apiInstance } from "@/api/index";
 
 const api = apiInstance();
 
+const VUE_APP_ACCESS_KEY = "AKIAQUIHCELPJ3PJXH55";
+const VUE_APP_SECRET_ACCESS_KEY = "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";
+const VUE_APP_AWS_REGION = "ap-northeast-2";
+const VUE_APP_BUCKET_NAME = "s3ffmpeg";
+
 aws.config.update({
-  region: process.env.VUE_APP_AWS_REGION,
-  secretAccessKey: process.env.VUE_APP_SECRET_ACCESS_KEY,
-  accessKeyId: process.env.VUE_APP_ACCESS_KEY,
+  region: VUE_APP_AWS_REGION,
+  secretAccessKey: VUE_APP_SECRET_ACCESS_KEY,
+  accessKeyId: VUE_APP_ACCESS_KEY,
 });
 
 const s3 = new aws.S3({
-  params: { Bucket: process.env.VUE_APP_BUCKET_NAME },
+  params: { Bucket: VUE_APP_BUCKET_NAME },
 });
 
 const fileUpload = (file, studioInfo, sceneId, user) => {
-  console.log("env 출력하자 ", process.env);
   s3.upload(
     {
       Key: `studio${studioInfo.studio_id}/${studioInfo.story_id}_${sceneId}.webm`,
@@ -49,7 +53,7 @@ const fileUpload = (file, studioInfo, sceneId, user) => {
 
 const deleteObjectByKey = (key) => {
   const params = {
-    Bucket: process.env.VUE_APP_BUCKET_NAME,
+    Bucket: VUE_APP_BUCKET_NAME,
     Key: key,
   };
   const data = s3.deleteObject(params).promise();

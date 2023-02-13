@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import firebaseConfig from "@/firebaseConfig";
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 import { apiInstance } from "@/api/index";
