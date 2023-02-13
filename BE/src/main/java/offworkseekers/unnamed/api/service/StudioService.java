@@ -87,8 +87,8 @@ public class StudioService {
         return responses;
     }
 
-    public List<StudioRecordListResponse> getStoryRecordingList(Long studioId) {
-        return studioRepository.findRecordingByStudioId(studioId);
+    public List<StudioRecordListResponse> getStoryRecordingList(Long studioId, Long storyId) {
+        return studioRepository.findRecordingByStudioId(studioId, storyId);
     }
 
     @Transactional
