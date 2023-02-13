@@ -232,7 +232,7 @@ export default {
           },
         },
         console.log("data :", data),
-        data.token
+        data
       );
       return response.data; // The token
     },
