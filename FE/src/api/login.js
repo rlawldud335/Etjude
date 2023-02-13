@@ -1,11 +1,5 @@
 import firebaseConfig from "@/firebaseConfig";
-import {
-  getAuth,
-  signInWithPopup,
-  signOut,
-  GoogleAuthProvider,
-  // onAuthStateChanged,
-} from "firebase/auth";
+import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 import { apiInstance } from "@/api/index";
 
 const api = apiInstance();
@@ -35,27 +29,6 @@ async function getUserInfo(userId, success, fail) {
 }
 
 export function handleSignInGoogle() {
-  // onAuthStateChanged((user) => {
-  //   if (user) {
-  //     if (this.$route.query.next) {
-  //       const { next } = this.$route.query;
-  //       console.log(1);
-  //       this.$router.push({ path: next });
-  //     } else {
-  //       console.log(2);
-  //       this.$router.push({ name: "main" });
-  //     }
-  //   }
-  //   if (this.$route.query.next) {
-  //     const { next } = this.$route.query;
-  //     console.log(1);
-  //     this.$router.push({ path: next });
-  //   } else {
-  //     console.log(2);
-  //     // this.$router.push({ name: "main" });
-  //     window.location.href = "www.naver.com";
-  //   }
-  // });
   signInWithPopup(auth, provider)
     .then((result) => {
       this.user = {
