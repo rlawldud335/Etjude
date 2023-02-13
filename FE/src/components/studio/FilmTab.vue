@@ -1,12 +1,15 @@
 <template>
   <div class="studio__film-tab">
-    <FilmTabFilm v-for="film in films" :key="film.id" :film="film"></FilmTabFilm>
+    <FilmTabFilm v-for="film in films" :key="film.film_id" :film="film"></FilmTabFilm>
     <div class="studio-tab__button-section">
-      <button :class="[
-        makingButton.active
-          ? 'studio-tab__making-button--active'
-          : 'studio-tab__making-button--disable',
-      ]" @click="plusMakingCount">
+      <button
+        :class="[
+          makingButton.active
+            ? 'studio-tab__making-button--active'
+            : 'studio-tab__making-button--disable',
+        ]"
+        @click="plusMakingCount"
+      >
         필름 생성하기 ( {{ makingButton.count }} / {{ makingButton.possibleCount }} )
       </button>
     </div>
@@ -34,11 +37,14 @@ export default {
     const plusMakingCount = () => {
       if (makingButton.count < makingButton.possibleCount) {
         makingButton.count += 1;
-        testMakeFilm(({ data }) => {
-          console.log(data);
-        }, (err) => {
-          console.log(err);
-        })
+        testMakeFilm(
+          ({ data }) => {
+            console.log(data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       } else {
         // eslint-disable-next-line no-alert
         alert("더이상 생성 불가");

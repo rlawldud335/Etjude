@@ -62,7 +62,7 @@ const routes = [
     ],
   },
   {
-    path: "/studio",
+    path: "/studio/:studioId",
     name: "studio",
     component: StudioView,
   },

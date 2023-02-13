@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { createApp } from "vue";
 import { vfmPlugin } from "vue-final-modal";
 import App from "./App.vue";
