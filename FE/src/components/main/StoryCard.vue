@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="studiogate1">
+  <div class="studiogate">
     <div class="studiotitle">
       <div class="">추천 스토리</div>
       <YumIcon />
@@ -23,8 +23,8 @@ export default {
 <style lang="scss" scoped>
 .studiotitle {
   display: inline-flex;
-  padding: 5px;
-  padding-left: 4%;
+  // padding: 5px;
+  // padding-left: 4%;
   text-align: left;
   align-items: center;
   font-size: 20px;
@@ -33,5 +33,8 @@ export default {
 .icon {
   margin-left: 5px;
   margin-right: 5px;
+}
+.studiogate {
+  position: relative;
 }
 </style>

@@ -79,7 +79,7 @@ export default {
 }
 ::v-deep .modal-cont {
   display: flex;
-  height: 786px;
+  height: 82%;
   // flex-direction: column;
   // margin: 0 1rem;
   // padding: 1rem;
@@ -96,6 +96,7 @@ video {
 }
 .community_container {
   width: 582px;
+  height: 100%;
   background-color: white;
 }
 .video_container img {

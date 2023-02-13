@@ -75,7 +75,7 @@
               <div class="setting_count">D-7</div>
             </div>
             <div class="setting_text">
-              스튜디오 최대인원
+              스튜디오 배역인원
               <div class="setting_count">5명</div>
             </div>
           </div>
@@ -94,7 +94,7 @@
       </div>
     </div>
   </div>
-  <studioCreate v-model="showModal"></studioCreate>
+  <studioCreate v-model="showModal" :story_id="storyinfo.story_id"></studioCreate>
 </template>
 <script>
 import { reactive, ref } from "vue";
@@ -219,7 +219,7 @@ export default {
   }
   .title {
     font-size: 30px;
-    font-weight: bold;
+    font-weight: 500;
     margin-bottom: 10px;
   }
   .main_text {
@@ -227,6 +227,7 @@ export default {
     font-weight: 400;
     line-height: 150%;
     margin-bottom: 10px;
+    min-height: 130px;
   }
   .util {
     display: flex;
@@ -286,13 +287,13 @@ export default {
   align-items: center;
   box-sizing: border-box;
   width: 358px;
-  height: 250px;
-  padding: 20px;
+  height: 300px;
+  padding: 40px 20px;
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   .card_title {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 500;
     box-sizing: border-box;
     margin-bottom: 10px;
   }
@@ -324,7 +325,7 @@ export default {
     .util_share {
       display: flex;
       align-items: center;
-      margin: 10px 20px;
+      margin: 15px 20px;
     }
   }
 }

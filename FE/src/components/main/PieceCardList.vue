@@ -1,16 +1,17 @@
 <template>
-  <Carousel :settings="settings" :breakpoints="breakpoints">
-    <Slide v-for="slide in recommendPieceList" :key="slide">
-      <PieceCardItem :carditem="slide"></PieceCardItem>
+  <Carousel ref="myCarousel" :settings="settings" :breakpoints="breakpoints" class="Carousel">
+    <Slide v-for="slide in recommendPieceList" :key="slide" class="Slide">
+      <PieceCardItem :carditem="slide" class="item"></PieceCardItem>
     </Slide>
   </Carousel>
+  <button class="prev" @click="prevSlide">&lt;</button>
+  <button class="next" @click="nextSlide">></button>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import { getRecommendWork } from "@/api/work";
-import testdata from "@/dummy/PieceCardItemData.json";
 import PieceCardItem from "@/components/common/PieceCardItem.vue";
 
 import "vue3-carousel/dist/carousel.css";
@@ -22,38 +23,54 @@ export default defineComponent({
     Slide,
     PieceCardItem,
   },
-  created() {
+  setup() {
+    // real data
+    const recommendPieceList = ref([]);
+    const myCarousel = ref(null);
+    const settings = {
+      itemsToShow: 5,
+      snapAlign: "start",
+      wrapAround: true,
+    };
+    const nextSlide = () => myCarousel.value.next();
+    const prevSlide = () => myCarousel.value.prev();
     getRecommendWork(
       ({ data }) => {
         console.log("recommend work:", data);
-        this.recommendPieceList = data;
+        recommendPieceList.value = data;
       },
       (error) => {
         console.log(error);
       }
     );
+    return {
+      recommendPieceList,
+      settings,
+      myCarousel,
+      nextSlide,
+      prevSlide,
+    };
   },
-  data: () => ({
-    // real data
-    recommendPieceList: [],
-    // dummy data
-    testdatas: testdata,
-    // carousel settings
-    settings: {
-      itemsToShow: 5,
-      snapAlign: "start",
-      wrapAround: true,
-    },
-    // breakpoints: {
-    //   480: {
-    //     itemsToShow: 1,
-    //   },
-    //   960: {
-    //     itemsToShow: 3,
-    //   },
-    //   1440: {},
-    // },
-  }),
 });
 </script>
-<style scoped></style>
+<style scoped>
+button {
+  background-color: white;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+}
+.next {
+  position: absolute;
+  top: 46%;
+  right: -5%;
+}
+.prev {
+  position: absolute;
+  top: 46%;
+  left: -4.5%;
+}
+.Carousel {
+  margin: 0 -22px;
+}
+</style>
