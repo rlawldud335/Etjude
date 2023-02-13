@@ -238,7 +238,7 @@ export default {
         console.log("data :", data),
         data
       );
-      return openviduInstance.data; // The token
+      return openviduInstance.data.token; // The token
     },
   },
 };
