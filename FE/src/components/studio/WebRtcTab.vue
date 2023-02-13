@@ -225,35 +225,6 @@ export default {
       // console.log(openviduInstance);
       return openviduInstance.data.token; // The token
     },
-
-    async connection() {
-      // 1. connection 메소드 내부에 이벤트 수신 처리
-      // 1-1 session에 참여한 사용자 추가
-      newSession.on("streamCreated", (event) => {
-        const newSubscriber = newSession.subscribe(
-          event.stream,
-          JSON.parse(event.stream.connection.data).clientData
-        );
-
-        const newSubscribers = subscribers;
-        newSubscribers.push(newSubscriber);
-
-        setSubscribers([...newSubscribers]);
-      });
-      // 1-2 session에서 disconnect한 사용자 삭제
-      newSession.on("streamDestroyed", (event) => {
-        if (event.stream.typeOfVideo === "CUSTOM") {
-          deleteSubscriber(event.stream.streamManager);
-        } else {
-          setDestroyedStream(event.stream.streamManager);
-          setCheckMyScreen(true);
-        }
-      });
-      // 1-3 예외처리
-      newSession.on("exception", (exception) => {
-        console.warn(exception);
-      });
-    },
   },
 };
 </script>
