@@ -84,8 +84,8 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from) {
     if (
-      to.matched[to.matched.length - 1].components.default ===
-      from.matched[from.matched.length - 1].components.default
+      to.matched[to.matched.length - 1]?.components.default ===
+      from.matched[from.matched.length - 1]?.components.default
     ) {
       return null;
     }
