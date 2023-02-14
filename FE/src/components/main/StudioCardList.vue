@@ -1,6 +1,4 @@
 <template>
-  {{ userId }}
-  {{ myStudioList[0] }}
   <Carousel ref="myCarousel" :settings="settings" :breakpoints="breakpoints">
     <Slide v-for="slide in myStudioList" :key="slide" class="Slide">
       <StudioCardItem :carditem="slide"></StudioCardItem>
@@ -27,14 +25,19 @@ export default defineComponent({
     StudioCardItem,
   },
   setup() {
+    const store = useStore();
     // real data
     const myStudioList = ref([]);
+    const studioCount = computed(() => myStudioList.value.length);
+    const updateStudioCount = () => {
+      store.dispatch("getStudioCount", studioCount.value);
+    };
     const myCarousel = ref(null);
     // carousel settings
     const settings = {
       itemsToShow: 4,
       snapAlign: "start",
-      wrapAround: true,
+      wrapAround: false,
     };
     const breakpoints = {
       480: {
@@ -44,23 +47,25 @@ export default defineComponent({
     };
     const nextSlide = () => myCarousel.value.next();
     const prevSlide = () => myCarousel.value.prev();
-    const store = useStore();
     const userId = computed(() => store.state.user.userId);
-    getMyStudio(
-      {
-        user_id: 2,
-      },
-      ({ data }) => {
-        // const allStudioData = data
-        // const myStudioData = allStudioData.filter((studio)=> {
-        //   return (studio.)
-        // })
-        myStudioList.value = data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (userId.value) {
+      getMyStudio(
+        {
+          user_id: userId.value,
+        },
+        ({ data }) => {
+          // const allStudioData = data
+          // const myStudioData = allStudioData.filter((studio)=> {
+          //   return (studio.)
+          // })
+          myStudioList.value = data;
+          updateStudioCount();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
     return {
       myStudioList,
       settings,
