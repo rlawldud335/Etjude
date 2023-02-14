@@ -33,11 +33,14 @@ public class StudioInfoResponse {
 
     private String storyVideoUrl;
 
+    @JsonProperty(value = "captain_id")
+    private String captainId;
+
     @JsonProperty(value = "member_list")
     List<SimpleUserDTO> memberList;
 
     @Builder
-    public StudioInfoResponse(Long studioId, String studioTitle, LocalDate studioCreateDate, LocalDate studioEndDate, Long storyId, String storyTitle, String storyVideoUrl, List<SimpleUserDTO> memberList) {
+    public StudioInfoResponse(Long studioId, String studioTitle, LocalDate studioCreateDate, LocalDate studioEndDate, Long storyId, String storyTitle, String storyVideoUrl, List<SimpleUserDTO> memberList, String captainId) {
         this.studioId = studioId;
         this.studioTitle = studioTitle;
         this.studioCreateDate = studioCreateDate;
@@ -45,6 +48,7 @@ public class StudioInfoResponse {
         this.storyId = storyId;
         this.storyTitle = storyTitle;
         this.storyVideoUrl = storyVideoUrl;
+        this.captainId = captainId;
         this.memberList = memberList;
     }
 }

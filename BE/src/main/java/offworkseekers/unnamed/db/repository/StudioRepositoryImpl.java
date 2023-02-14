@@ -34,13 +34,15 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
                         studio.studioEndDate,
                         studio.story.storyId,
                         studio.story.storyTitle,
-                        studio.story.storyVideoUrl
+                        studio.story.storyVideoUrl,
+                        studio.captainId
                 )
                 .from(studio)
                 .where(
                         studio.studioId.eq(studioId)
                 )
                 .fetchOne();
+
 
         List<Tuple> members = queryFactory
                 .select(teamMember.user.userId,
@@ -72,6 +74,7 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
                 .storyId(studioInfo.get(studio.story.storyId))
                 .storyTitle(studioInfo.get(studio.story.storyTitle))
                 .storyVideoUrl(studioInfo.get(studio.story.storyVideoUrl))
+                .captainId(studioInfo.get(studio.captainId))
                 .memberList(memberList)
                 .build();
     }
