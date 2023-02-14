@@ -1,9 +1,9 @@
 <template>
   <div class="chatting">
     <div class="chatting-container">
-      <div v-for="item in test" :key="item">
-        <ChattingTabLine v-if="item.studioId === state.studioId && item.userId !== state.userId" :line="item" />
-        <ChattingTabMyLine v-if="item.studioId === state.studioId && item.userId === state.userId" :line="item" />
+      <div v-for="item in state.recvList" :key="item">
+        <ChattingTabLine v-if="item.nickname !== state.nickname" :line="item" />
+        <ChattingTabMyLine v-if="item.nickname === state.nickname" :line="item" />
       </div>
     </div>
     <div class="chatting-input">
@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import { reactive, toRaw } from "vue";
+import { reactive, watch } from "vue";
 import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
 import ChattingTabLine from "@/components/studio/ChattingTabLine.vue";
@@ -38,31 +38,26 @@ export default {
       userId: props.user.user_id,
       userPhotoUrl: props.user.profile_url,
       nickname: props.user.nickname,
-      message: '',
+      message: "",
+      recvList: [],
     });
-    const test = [
-      { studioId: "1", userId: "1", nickname: "user1", content: "hjhk", chatTime: "08시 42분" },
-      { studioId: "1", userId: "1", nickname: "user1", content: "hjhk", chatTime: "08시 42분" },
-      { studioId: "1", userId: "1", nickname: "user1", content: "hjhk", chatTime: "08시 42분" }
-    ];
 
-    // console.log("댓글리스트 왜안뜨지?", state.recvList);
-
-    stompClient.connect({}, () => {
-      // 소켓 연결 성공
-      stompClient.connected = true;
-      stompClient.attender = {
-        userId: state.userId,
-        userPhotoUrl: state.userPhotoUrl,
-      };
-
-      // 서버의 메시지 전송 endpoint를 구독합니다.
-      stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, (res) => {
-        // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-        state.recvList.push(JSON.parse(res.body));
-
+    const connect = () => {
+      stompClient.connect({}, () => {
+        // 소켓 연결 성공
+        stompClient.connected = true;
+        stompClient.attender = {
+          userId: state.userId,
+          userPhotoUrl: state.userPhotoUrl,
+        };
+        // 서버의 메시지 전송 endpoint를 구독합니다.
+        stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, (res) => {
+          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+          const temp = JSON.parse(res.body);
+          state.recvList.push(temp);
+        });
       });
-    });
+    };
 
     function send() {
       return new Promise((resolve) => {
@@ -70,13 +65,12 @@ export default {
           stompClient.send(
             `/pub/api/v1/studio/chat/${state.studioId}/${state.userId}/${state.nickname}`,
             {},
-            JSON.stringify(state.message)
+            state.message
           );
         }
         resolve();
       });
     }
-
 
     function sendMessage() {
       if (state.nickname !== "" && state.message !== "") {
@@ -87,13 +81,30 @@ export default {
       }
     }
 
+    watch(
+      () => props.studioInfo,
+      () => {
+        state.studioId = props.studioInfo.studio_id;
+        console.log(props.studioInfo);
+        connect();
+      }
+    );
+
+    watch(
+      () => props.user,
+      () => {
+        state.userId = props.user.user_id;
+        state.userPhotoUrl = props.user.profile_url;
+        state.nickname = props.user.nickname;
+        connect();
+      }
+    );
+
     return {
       sendMessage,
       state,
-      toRaw,
-      test
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -107,7 +118,7 @@ export default {
 }
 
 .chatting-input {
-  background-color: #E9E9E9;
+  background-color: #e9e9e9;
   height: 8%;
   display: flex;
   flex-direction: row;
