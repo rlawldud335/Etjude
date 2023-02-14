@@ -174,7 +174,7 @@ export default {
     // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
       const data = JSON.stringify({ customSessionId: sessionId });
-      const response = await axios
+      await axios
         .post(
           `${APPLICATION_SERVER_URL}api/sessions`,
           { customSessionId: sessionId },
@@ -186,14 +186,18 @@ export default {
           },
           data
         )
+        // eslint-disable-next-line no-shadow
+        .then(
+          (response) => response.data.id // The sessionId
+        )
         // eslint-disable-next-line no-shadow, consistent-return
         .catch((response) => {
+          console.log("409면 여기가 되야지!!");
           const err = { ...response };
           if (err?.response?.status === 409) {
             return sessionId;
           }
         });
-      return response.data.id; // The sessionId
     },
 
     async createToken(sessionId) {
