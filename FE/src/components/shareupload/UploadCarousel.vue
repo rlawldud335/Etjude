@@ -12,9 +12,8 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
-
 import "vue3-carousel/dist/carousel.css";
 
 export default defineComponent({
@@ -27,14 +26,19 @@ export default defineComponent({
   props: {
     dummydata: {},
   },
-  data: () => ({
-    // carousel settings
-    settings: {
+  setup(props) {
+    const dumdum = ref(props.dummydata);
+    const settings = {
       itemsToShow: 3,
       snapAlign: "start",
       wrapAround: true,
-    },
-  }),
+    };
+    return {
+      settings,
+      dumdum,
+    };
+  },
+  // carousel settings
 });
 </script>
 <style lang="scss" scoped>

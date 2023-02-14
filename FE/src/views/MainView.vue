@@ -9,6 +9,7 @@
     </div>
 
     <div class="content__1136width">
+      <!-- <inputDropdown></inputDropdown> -->
       <StudioCard></StudioCard>
     </div>
     <div class="line"></div>
@@ -33,6 +34,8 @@ import StoryCard from "@/components/main/StoryCard.vue";
 import PieceCard from "@/components/main/PieceCard.vue";
 import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
 import SearchSession from "@/components/main/SearchSession.vue";
+// import inputDropdown from "@/components/story/inputDropdown.vue";
+
 // import { onMounted } from "vue";
 
 export default {
@@ -44,10 +47,9 @@ export default {
     PieceCard,
     ShortcutFlim,
     SearchSession,
+    // inputDropdown,
   },
-  setup() {
-
-  }
+  setup() {},
 };
 </script>
 <style lang="scss">

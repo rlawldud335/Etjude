@@ -1,3 +1,4 @@
+<!-- eslint-disable import/no-extraneous-dependencies -->
 <template lang="">
   <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
     <!-- <div> -->
@@ -12,10 +13,8 @@
     </div>
     <div class="member_container">
       <div class="title_Name">팀원추가하기</div>
-      <label for="input_title">
-        ID
-        <input class="input_text" placeholder="ID를 입력해주세요." />
-      </label>
+      <input class="input_text" placeholder="ID를 입력해주세요." />
+      <!-- <inputDropdown></inputDropdown> -->
       <div class="member_list"></div>
     </div>
     <div class="button_container">
@@ -32,6 +31,7 @@ import { reactive } from "vue";
 export default {
   name: "studioCreate",
   components: {
+    // inputDropdown,
     // QuitButton,
   },
   props: {
@@ -92,15 +92,15 @@ export default {
   margin-bottom: 20px;
 }
 .title_Name {
-  font-weight: 900;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 16px;
   line-height: 27px;
   margin-bottom: 10px;
 }
 .input_text {
   background-color: white;
-  padding: 3px 8px;
-  border-radius: 5px;
+  padding: 6px 8px;
+  border-radius: 10px;
   align-items: center;
   border: $bana-pink solid 2px;
   justify-content: space-between;
@@ -112,7 +112,7 @@ export default {
   text-align: center;
   position: absolute;
   left: 50%;
-  bottom: 6%;
+  bottom: 8%;
   transform: translate(-50%);
   align-content: center;
   button {
