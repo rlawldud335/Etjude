@@ -1,3 +1,4 @@
+<!-- eslint-disable import/no-extraneous-dependencies -->
 <!-- eslint-disable vuejs-accessibility/media-has-caption -->
 <template>
   <div class="video-area">
@@ -48,6 +49,8 @@ import RecordCircle from "@/assets/icons/RecordCircle.svg";
 import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
+import { webmFixDuration } from "webm-fix-duration";
+
 
 export default {
   components: {
@@ -105,10 +108,7 @@ export default {
         emit("change-current-slide", props.allLines.length - 1);
       }
     };
-    const videoResolution = {
-      width: { min: 1280, ideal: 1280, max: 1280 },
-      height: { min: 720, ideal: 720, max: 720 }
-    };
+    const videoResolution = { width: { min: 1280, ideal: 1280, max: 1280 }, height: { min: 720, ideal: 720, max: 720 } };
 
     const mediaStream = ref(null);
     const constraints = reactive({
@@ -118,6 +118,15 @@ export default {
       video: true, audio: true
     })
 
+    // const filterTime = (sec) => {
+    //   let h = (sec / (1000 * 60 * 60)) % 24;
+    //   let m = (sec / (1000 * 60)) % 60;
+    //   let s = (sec / 1000) % 60;
+    //   h = (`0${Math.floor(h)}`).slice(-2);
+    //   m = (`0${Math.floor(m)}`).slice(-2);
+    //   s = (`0${Math.floor(s)}`).slice(-2);
+    //   return `${h}:${m}:${s}`;
+    // }
 
     let mediaRecorder = null;
     const recordedMediaURL = ref(null);
@@ -145,6 +154,7 @@ export default {
     };
 
     const startRecoding = async () => {
+      const dateStarted = new Date().getTime();
       const recordedChunks = [];
       mediaRecorder = new MediaRecorder(mediaStream.value, {
         mimeType: "video/webm;",
@@ -159,11 +169,13 @@ export default {
           URL.revokeObjectURL(recordedMediaURL.value);
         }
         if (recordedChunks && recordedChunks.length !== 0) {
+          const dateEnd = new Date().getTime();
           const blob = await new Blob(recordedChunks, { type: "video/webm;" });
-          recordedMediaURL.value = await URL.createObjectURL(blob);
-          console.log("녹화종료", recordedMediaURL.value);
+          const fixedBlob = await webmFixDuration(blob, dateEnd - dateStarted);
+          console.log(fixedBlob);
+          recordedMediaURL.value = URL.createObjectURL(fixedBlob);
           const awsUrl = fileUpload(
-            blob,
+            fixedBlob,
             props.studioInfo,
             props.videoState.sceneIdx,
             (data) => {
