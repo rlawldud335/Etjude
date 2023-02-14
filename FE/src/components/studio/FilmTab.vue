@@ -2,14 +2,11 @@
   <div class="studio__film-tab">
     <FilmTabFilm v-for="film in films" :key="film.film_id" :film="film"></FilmTabFilm>
     <div class="studio-tab__button-section">
-      <button
-        :class="[
-          makingButton.active
-            ? 'studio-tab__making-button--active'
-            : 'studio-tab__making-button--disable',
-        ]"
-        @click="plusMakingCount"
-      >
+      <button :class="[
+        makingButton.active
+          ? 'studio-tab__making-button--active'
+          : 'studio-tab__making-button--disable',
+      ]" @click="plusMakingCount">
         필름 생성하기 ( {{ films.length }} / {{ makingButton.possibleCount }} )
       </button>
     </div>
@@ -19,6 +16,7 @@
 import { reactive } from "vue";
 import FilmTabFilm from "@/components/studio/FilmTabFilm.vue";
 import { testMakeFilm } from "@/api/index";
+import { saveMakedFilm } from "@/api/films";
 
 export default {
   name: "FilmTab",
@@ -27,6 +25,7 @@ export default {
   },
   props: {
     films: Array,
+    studioInfo: Object,
   },
   setup(props) {
     const makingButton = reactive({
@@ -36,7 +35,9 @@ export default {
     const plusMakingCount = () => {
       if (props.films.length < makingButton.possibleCount) {
         testMakeFilm(
+          props.studioInfo.studio_id,
           ({ data }) => {
+            saveMakedFilm(props.studioInfo.studio_id, data, (rst) => { console.log(rst); }, (er) => { console.log(er) })
             console.log(data);
           },
           (err) => {

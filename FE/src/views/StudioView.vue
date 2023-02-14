@@ -30,7 +30,7 @@
             @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
           <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
             :records="studioData.records" :storyScript="studioData.storyScript" />
-          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" />
+          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo" />
           <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" :user="user" />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>

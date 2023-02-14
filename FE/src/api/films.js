@@ -25,4 +25,15 @@ async function getPopularFilm(success, fail) {
     .catch(fail);
 }
 
-export { getFilmPage, getPopularFilm };
+async function saveMakedFilm(studioId, filmUrl, success, fail) {
+  console.log("# POST : 생성한 필름 저장");
+  await api
+    .post("/studio/film/create", {
+      studio_id: studioId,
+      film_video_url: filmUrl,
+    })
+    .then(success)
+    .catch(fail);
+}
+
+export { getFilmPage, getPopularFilm, saveMakedFilm };

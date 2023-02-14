@@ -15,13 +15,13 @@ function apiInstance() {
   return AxiosInst;
 }
 
-async function testMakeFilm(success, fail) {
+async function testMakeFilm(studioId, success, fail) {
   await axios({
     method: "GET",
     url: "https://etjude.r-e.kr/api/v2/concateVideo",
     params: {
-      studio_id: "studio1",
-      film_id: `film_555`,
+      studio_id: `studio${studioId}`,
+      film_id: `film_${Date.now()}`,
     },
   })
     .then(success)
