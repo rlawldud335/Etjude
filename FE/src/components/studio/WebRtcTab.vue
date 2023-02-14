@@ -240,10 +240,24 @@ export default {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
+          body: {
+            type: "WEBRTC",
+            data: "My Server Data",
+            record: true,
+            role: "PUBLISHER",
+            kurentoOptions: {
+              videoMaxRecvBandwidth: 1000,
+              videoMinRecvBandwidth: 300,
+              videoMaxSendBandwidth: 1000,
+              videoMinSendBandwidth: 300,
+              allowedFilters: ["GStreamerFilter", "ZBarFilter"],
+            },
+          },
         },
         data
       );
       // console.log(openviduInstance);
+      console.log(data);
       return openviduInstance.data.token; // The token
     },
   },
