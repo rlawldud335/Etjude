@@ -105,14 +105,16 @@ export default {
         emit("change-current-slide", props.allLines.length - 1);
       }
     };
+    const videoResolution = {
+      width: { min: 1280, ideal: 1280, max: 1280 },
+      height: { min: 720, ideal: 720, max: 720 }
+    };
 
     const mediaStream = ref(null);
     const constraints = reactive({
-      video: {
-        width: { min: 1280, ideal: 1280, max: 1280 },
-        height: { min: 720, ideal: 720, max: 720 }
-      }, audio: true
+      video: videoResolution, audio: true
     });
+
 
     let mediaRecorder = null;
     const recordedMediaURL = ref(null);
@@ -130,7 +132,7 @@ export default {
     };
 
     const toggleVideo = () => {
-      constraints.video = !constraints.video;
+      constraints.video = constraints.video === false ? videoResolution : false;
       mediaStream.value.getVideoTracks()[0].enabled = constraints.video;
     };
 
