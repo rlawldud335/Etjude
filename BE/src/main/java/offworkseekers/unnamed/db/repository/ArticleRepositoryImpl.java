@@ -157,7 +157,7 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.film.filmId,
                         article.articleThumbnailUrl,
                         article.articleCreatedDate,
-                        article.user.email,
+                        article.user.nickName,
                         article.user.picture))
                 .from(article)
                 .fetch();
