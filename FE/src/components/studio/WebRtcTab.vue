@@ -34,7 +34,7 @@
           value="Leave session"
         />
       </div>
-      <div v-show="JSON.parse(mainStreamManager.stream.data).clientData !== myUserName">
+      <div v-show="JSON.parse(mainStreamManager.data).clientData !== myUserName">
         <div id="main-video" class="col-md-6">
           <UserVideo :stream-manager="mainStreamManager" />
         </div>
