@@ -2,7 +2,7 @@
   <div v-if="streamManager">
     <ov-video :stream-manager="streamManager" />
     <div>
-      <p>{{ clientData }}</p>
+      <p>client Data : {{ clientData }}</p>
     </div>
   </div>
 </template>

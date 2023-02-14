@@ -35,13 +35,13 @@
         />
       </div>
       <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
+        <UserVideo :stream-manager="mainStreamManager" />
       </div>
       <div id="video-container" class="col-md-6">
-        <user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+        <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
         <div v-for="(sub, idx) in subscribers" :key="idx">
           <div v-if="sub.stream.streamId !== streamId">
-            <user-video
+            <UserVideo
               :key="sub.stream.connection.connectionId"
               :stream-manager="sub"
               @click="updateMainVideoStreamManager(sub)"
@@ -56,8 +56,7 @@
 <script>
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
-// eslint-disable-next-line import/extensions
-import UserVideo from "@/components/studio/UserVideo";
+import UserVideo from "@/components/studio/UserVideo.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
