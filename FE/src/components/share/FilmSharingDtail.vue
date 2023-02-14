@@ -79,7 +79,7 @@ export default {
 }
 ::v-deep .modal-cont {
   display: flex;
-  height: 82%;
+  height: 70%;
   // flex-direction: column;
   // margin: 0 1rem;
   // padding: 1rem;
@@ -88,7 +88,7 @@ export default {
   // background: rgb(66, 44, 44);
 }
 .video_container {
-  width: 738px;
+  width: 680;
 }
 video {
   width: 100%;
