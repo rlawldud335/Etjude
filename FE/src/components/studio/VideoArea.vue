@@ -2,26 +2,17 @@
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 0 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 2 },
-        ]"
-        ref="videoOutput"
-        :src="studioInfo.storyVideoUrl"
-        @timeupdate="changeTimeHandler"
-        controls
-      ></video>
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 2 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 0 },
-        ]"
-        :srcObject="mediaStream"
-        autoplay
-      ></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 0 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 2 },
+      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls
+        loop="loop"></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 2 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 0 },
+      ]" :srcObject="mediaStream" autoplay muted></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
@@ -116,7 +107,13 @@ export default {
     };
 
     const mediaStream = ref(null);
-    const constraints = reactive({ video: true, audio: true });
+    const constraints = reactive({
+      video: {
+        width: { min: 1280, ideal: 1280, max: 1280 },
+        height: { min: 720, ideal: 720, max: 720 }
+      }, audio: true
+    });
+
     let mediaRecorder = null;
     const recordedMediaURL = ref(null);
 
@@ -244,7 +241,7 @@ export default {
   position: relative;
 }
 
-.video-player > video {
+.video-player>video {
   height: 100%;
 }
 

@@ -1,4 +1,9 @@
 <template>
+  <div class="studio__scene__header">
+    <span>#{{ scene.sceneNumber }}. {{ scene.roleName }}</span>
+    <div class="recording-btn" :class="{ 'recording-disable-btn': videoState.isRecording }" @click="startRecording">녹화히기
+    </div>
+  </div>
   <div class="studio__scene">
     <div class="studio__scene-actor-image">
       <div class="actor__profile-frame--script">
@@ -20,10 +25,10 @@ export default {
   name: "ScriptTabScene",
   components: { ScriptTabSceneLine },
   props: {
-    scene: Object,
+    scene: Object, videoState: Object
   },
   emits: [
-    'change-script-time'
+    'change-script-time', 'start-recording'
   ],
   setup(props, { emit }) {
 
@@ -37,7 +42,12 @@ export default {
       console.log(result);
       return result;
     }
-    return { changeScriptTime, filterTime };
+
+    const startRecording = () => {
+      emit("start-recording", props.scene.sceneNumber);
+    }
+
+    return { changeScriptTime, filterTime, startRecording };
   },
 };
 </script>
@@ -72,5 +82,27 @@ export default {
     max-width: 40px;
     height: auto;
   }
+}
+
+.studio__scene__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+.recording-btn {
+  background-color: $bana-pink;
+  padding: 7px 12px;
+  font-size: 5px;
+  border-radius: 5px;
+  font-weight: 300;
+  color: white;
+}
+
+.recording-disable-btn {
+  background-color: gray;
 }
 </style>
