@@ -2,8 +2,8 @@
   <div class="chatting">
     <div class="chatting-container">
       <div v-for="(item, idx) in recvList" :key="idx">
-        <ChattingTabLine v-if="item.studioId === studioId && item.userId !== this.userId" :line="item" />
-        <ChattingTabMyLine v-if="item.studioId === studioId && item.userId === this.userId" :line="item" />
+        <ChattingTabLine v-if="item.studioId === studioId && item.userId !== userId" :line="item" />
+        <ChattingTabMyLine v-if="item.studioId === studioId && item.userId === userId" :line="item" />
       </div>
     </div>
     <div class="chatting-input">
@@ -16,39 +16,67 @@
   </div>
 </template>
 <script>
-import { sendMessage, connect } from "@/api/chat";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
 import ChattingTabLine from "@/components/studio/ChattingTabLine.vue";
 import ChattingTabMyLine from "@/components/studio/ChattingTabMyLine.vue";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
   props: { studioInfo: Object, user: Object },
   setup(props) {
+    const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
     const studioId = ref(props.studioInfo.studio_id);
     const userId = ref(props.user.user_id);
+    const userPhotoUrl = ref(props.user.profile_url);
     const nickname = ref(props.user.nickname);
     const message = ref('');
     const recvList = ref([]);
 
-    const handleNewMessage = () => {
-      const { messages } = this.$refs;
-      messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-    };
+    const socket = new SockJS(serverURL);
+    const stompClient = Stomp.over(socket);
 
-    watchEffect(() => {
-      handleNewMessage();
+    stompClient.connect({}, () => {
+      // 소켓 연결 성공
+      stompClient.connected = true;
+      stompClient.attender = {
+        userId: userId.value,
+        userPhotoUrl: userPhotoUrl.value,
+      };
+
+      // 서버의 메시지 전송 endpoint를 구독합니다.
+      stompClient.subscribe(`/sub/api/v1/studio/chat/${studioId.value}`, (res) => {
+        // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+        recvList.value.push(JSON.parse(res.body));
+      });
     });
+
+    function send() {
+      if (stompClient && stompClient.connected) {
+        stompClient.send(
+          `/pub/api/v1/studio/chat/${studioId.value}/${userId.value}/${nickname.value}`,
+          {},
+          JSON.stringify(message.value)
+        );
+      }
+    }
+
+
+    function sendMessage() {
+      if (nickname.value !== "" && message.value !== "") {
+        send();
+        message.value = "";
+      }
+    }
 
     return {
       message,
       recvList,
       sendMessage,
-      connect,
-      handleNewMessage,
       studioId,
       userId,
       nickname
