@@ -58,7 +58,6 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 // eslint-disable-next-line import/extensions
 import UserVideo from "@/components/studio/UserVideo";
-// import { base64Encode } from "@firebase/util";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -172,33 +171,44 @@ export default {
       return await this.createToken(sessionId);
     },
 
-    async createSession(sessionId) {
-      const response = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions`,
-        { customSessionId: sessionId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-          },
-        }
-      );
-      return response.data.id; // The sessionId
-    },
-
-    async createToken(sessionId) {
-      const data = {};
-      const openviduInstance = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-          },
-        }
-      );
-      return openviduInstance.data.token; // The token
+    createSession(sessionId) {
+      // eslint-disable-next-line no-unused-vars, no-async-promise-executor
+      return new Promise(async (resolve, reject) => {
+        await axios
+          .post(
+            `${APPLICATION_SERVER_URL}api/sessions`,
+            { customSessionId: sessionId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+              },
+            }
+          )
+          .then((response) => {
+            resolve(response.data.id);
+          })
+          .catch((response) => {
+            const err = { ...response };
+            if (err?.response?.status === 409) {
+              resolve(sessionId);
+            } else {
+              console.warn(
+                `No connection to OpenVidu Server. This may be a certificate error at ${process.env.VUE_APP_OPENVIDU_SERVER_URL}`
+              );
+              if (
+                window.confirm(
+                  `No connection to OpenVidu Server. This may be a certificate error at "${process.env.VUE_APP_OPENVIDU_SERVER_URL}"\\n\\nClick OK to navigate and accept it. ` +
+                    `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${process.env.VUE_APP_OPENVIDU_SERVER_URL}"`
+                )
+              ) {
+                window.location.assign(
+                  `${process.env.VUE_APP_OPENVIDU_SERVER_URL}/accept-certificate`
+                );
+              }
+            }
+          });
+      });
     },
   },
 };
