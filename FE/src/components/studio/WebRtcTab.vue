@@ -34,14 +34,14 @@
           value="Leave session"
         />
       </div>
-      <div v-show="JSON.parse(mainStreamManager.data).clientData !== myUserName">
-        <div id="main-video" class="col-md-6">
-          <UserVideo :stream-manager="mainStreamManager" />
-        </div>
-        <div id="video-container" class="col-md-6">
-          <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
-        </div>
+      <!-- <div v-show="JSON.parse(mainStreamManager.data).clientData !== myUserName"> -->
+      <div id="main-video" class="col-md-6">
+        <UserVideo :stream-manager="mainStreamManager" />
       </div>
+      <div id="video-container" class="col-md-6">
+        <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+      </div>
+      <!-- </div> -->
       <div id="video-contaniner2" class="col-md-6">
         <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
@@ -170,6 +170,7 @@ export default {
     },
 
     updateMainVideoStreamManager(stream) {
+      console.log(this.mainStreamManager);
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
