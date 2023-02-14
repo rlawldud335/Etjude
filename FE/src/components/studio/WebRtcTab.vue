@@ -89,10 +89,11 @@ export default {
   methods: {
     connectSession() {
       const token = this.getToken(this.mySessionId);
+      console.log("token", token);
       this.OV = new OpenVidu();
-      this.session = this.OV.initSession(this.mySessionId, token);
+      this.session = this.OV.initSession();
       this.session
-        .connect()
+        .connect(token)
         .then(() => {
           console.log("Client connected to the session");
         })
@@ -210,23 +211,20 @@ export default {
     async createSession(sessionId) {
       console.log(sessionId);
       const data = JSON.stringify({ customSessionId: sessionId });
-      try {
-        const response = await axios.post(
-          `${APPLICATION_SERVER_URL}api/sessions`,
-          { customSessionId: sessionId },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-            },
+
+      const response = await axios.post(
+        `${APPLICATION_SERVER_URL}api/sessions`,
+        { customSessionId: sessionId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
-          data
-        );
-        console.log(response);
-        return response.data.id; // The sessionId
-      } catch {
-        this.createToken(sessionId);
-      }
+        },
+        data
+      );
+      console.log(response);
+      return response.data.id; // The sessionId
     },
 
     async createToken(sessionId) {
