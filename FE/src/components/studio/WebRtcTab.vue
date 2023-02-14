@@ -173,28 +173,30 @@ export default {
 
     // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
-      console.log(sessionId);
       const data = JSON.stringify({ customSessionId: sessionId });
-
-      const response = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions`,
-        { customSessionId: sessionId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+      const response = await axios
+        .post(
+          `${APPLICATION_SERVER_URL}api/sessions`,
+          { customSessionId: sessionId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+            },
           },
-        },
-        data
-      );
-      console.log(response);
+          data
+        )
+        .catch((error) => {
+          if (error.response.status === 409) {
+            return sessionId;
+          }
+          return error.response.data;
+        });
       return response.data.id; // The sessionId
     },
 
     async createToken(sessionId) {
-      // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
-      console.log("제발요 ", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
