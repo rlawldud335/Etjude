@@ -29,7 +29,7 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     @Override
     public List<MyPageStudiosResponse> getMyPageStudios(String userId) {
-        List<MyPageStudiosResponse> result = queryFactory
+        List<MyPageStudiosResponse> member = queryFactory
                 .select(Projections.constructor(MyPageStudiosResponse.class,
                         studio.studioId,
                         studio.story.storyThumbnailUrl,
@@ -42,9 +42,29 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .where(teamMember.studio.studioId.eq(studio.studioId), teamMember.user.userId.eq(userId))
                 .fetch();
 
-        for (MyPageStudiosResponse temp : result) {
+        List<MyPageStudiosResponse> captain = queryFactory
+                .select(Projections.constructor(MyPageStudiosResponse.class,
+                        studio.studioId,
+                        studio.story.storyThumbnailUrl,
+                        studio.studioTitle,
+                        studio.story.storyTitle,
+                        studio.studioEndDate,
+                        studio.studioEndDate
+                ))
+                .from(studio)
+                .where(studio.captainId.eq(userId))
+                .fetch();
+
+        for (MyPageStudiosResponse temp : member) {
             temp.setStudioCreatedDate(temp.getStudioCreatedDate().minusDays(7));
         }
+        for (MyPageStudiosResponse temp : captain) {
+            temp.setStudioCreatedDate(temp.getStudioCreatedDate().minusDays(7));
+        }
+
+        List<MyPageStudiosResponse> result = new ArrayList<>();
+        result.addAll(member);
+        result.addAll(captain);
 
         return result;
     }
