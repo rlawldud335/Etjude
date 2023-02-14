@@ -186,11 +186,11 @@ export default {
           },
           data
         )
-        // eslint-disable-next-line no-shadow
-        .then(
-          (response) => response.data.id // The sessionId
-        )
-        // eslint-disable-next-line no-shadow, consistent-return
+        .then((response) => {
+          console.log("이게 되나용?");
+          return response.data.id; // The sessionId
+        })
+        // eslint-disable-next-line consistent-return
         .catch((response) => {
           console.log("409면 여기가 되야지!!");
           const err = { ...response };
