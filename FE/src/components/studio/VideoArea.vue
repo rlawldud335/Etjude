@@ -108,7 +108,7 @@ export default {
         emit("change-current-slide", props.allLines.length - 1);
       }
     };
-    const videoResolution = { width: { min: 1280, ideal: 1280, max: 1280 }, height: { min: 720, ideal: 720, max: 720 } };
+    const videoResolution = { width: { min: 640, ideal: 640, max: 640 }, height: { min: 480, ideal: 480, max: 480 } };
 
     const mediaStream = ref(null);
     const constraints = reactive({
