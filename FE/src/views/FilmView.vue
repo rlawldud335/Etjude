@@ -26,7 +26,7 @@
       <AllFilmList> </AllFilmList>
     </div>
   </div>
-  <FilmSharingUpload v-model="showModal"></FilmSharingUpload>
+  <FilmSharingUpload v-model="showModal" @close="showModal = false"></FilmSharingUpload>
 </template>
 
 <script>

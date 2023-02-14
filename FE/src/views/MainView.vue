@@ -7,7 +7,8 @@
     <div class="main__1136width">
       <SearchSession />
     </div>
-    <div class="main__studio-list content__1136width" v-show="showStudio">
+
+    <div class="content__1136width">
       <StudioCard></StudioCard>
     </div>
 
@@ -32,8 +33,7 @@ import StoryCard from "@/components/main/StoryCard.vue";
 import PieceCard from "@/components/main/PieceCard.vue";
 import ShortcutFlim from "@/components/main/ShortcutFlim.vue";
 import SearchSession from "@/components/main/SearchSession.vue";
-import { computed, ref, watch } from "vue";
-import { useStore } from "vuex";
+// import { onMounted } from "vue";
 
 export default {
   name: "MainView",
@@ -44,22 +44,9 @@ export default {
     PieceCard,
     ShortcutFlim,
     SearchSession,
+    // inputDropdown,
   },
-  setup() {
-    const store = useStore();
-    const user = computed(() => store.state.user);
-    const myStudioCount = computed(() => store.state.user.myStudioCount);
-    const showStudio = ref(myStudioCount.value > 0);
-    watch(myStudioCount, (newCount) => {
-      console.log("new", newCount);
-      showStudio.value = newCount > 0;
-    });
-    return {
-      user,
-      showStudio,
-      myStudioCount,
-    };
-  },
+  setup() {},
 };
 </script>
 <style lang="scss">

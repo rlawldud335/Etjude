@@ -5,19 +5,19 @@
         <h1>Join a video session</h1>
         <div class="form-group">
           <div>
-            <div>Participant</div>
+            <div>NICKNAME</div>
             <label for="participants"
               ><input v-model="myUserName" class="form-control" type="text" required
             /></label>
           </div>
           <div>
-            <div>Session</div>
-            <label for="sessiong"
+            <div>STUDIO_ID</div>
+            <label for="session"
               ><input v-model="mySessionId" class="form-control" type="text" required
             /></label>
           </div>
           <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
+            <button class="btn btn-lg btn-success" @click="joinSession()">참여하기</button>
           </p>
         </div>
       </div>
@@ -34,19 +34,22 @@
           value="Leave session"
         />
       </div>
-      <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
+      <div v-show="false">
+        <div id="main-video" class="col-md-6">
+          <UserVideo :stream-manager="mainStreamManager" />
+        </div>
+        <div id="video-container" class="col-md-6">
+          <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+        </div>
       </div>
-      <div id="video-container" class="col-md-6">
-        <user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+      <div id="video-contaniner2" class="col-md-6">
+        <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
-          <div v-if="sub.stream.connection.connectionId !== connectionId">
-            <user-video
-              :key="sub.stream.connection.connectionId"
-              :stream-manager="sub"
-              @click="updateMainVideoStreamManager(sub)"
-            />
-          </div>
+          <UserVideo
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click="updateMainVideoStreamManager(sub)"
+          />
         </div>
       </div>
     </div>
@@ -56,8 +59,7 @@
 <script>
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
-// eslint-disable-next-line import/extensions
-import UserVideo from "@/components/studio/UserVideo";
+import UserVideo from "@/components/studio/UserVideo.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -76,7 +78,7 @@ export default {
       OV: undefined,
       session: undefined,
       sessionId: null,
-      connectionId: null,
+      streamId: null,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
@@ -91,8 +93,7 @@ export default {
     connection() {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
-        console.log(subscriber);
-        this.connectionId = subscriber.stream.connection.connectionId;
+        this.streamId = subscriber.stream.streamId;
         this.subscribers.push(subscriber);
       });
 
@@ -115,7 +116,7 @@ export default {
             this.OV.getUserMedia({
               audioSource: false,
               videoSource: undefined,
-              resolution: "640x480",
+              resolution: "320x240",
               frameRate: 30,
             }).then((mediaStream) => {
               const videoTrack = mediaStream.getVideoTracks()[0];
@@ -125,7 +126,7 @@ export default {
                 videoSource: videoTrack,
                 publishAudio: true,
                 publishVideo: true,
-                resolution: "640x480",
+                resolution: "320x240",
                 frameRate: 30,
                 insertMode: "APPEND",
                 mirror: false,
@@ -171,7 +172,6 @@ export default {
 
     async getToken(mySessionId) {
       await this.createSession(mySessionId);
-      console.log("1", mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(mySessionId);
     },
@@ -190,18 +190,12 @@ export default {
           }
         )
         .then((response) => {
-          console.log("이게 되나용?");
-          console.log(response);
-          console.log(response.data);
-          console.log(response.data.id);
           this.sessionId = response.data.id;
-          // return response.data.id; // The sessionId
         })
         // eslint-disable-next-line consistent-return
         .catch((response) => {
           const err = { ...response };
           if (err?.response?.status === 409) {
-            console.log("409면 여기가 되야지!!");
             this.sessionId = sessionId;
           }
         });
@@ -233,7 +227,6 @@ export default {
         },
         data
       );
-      console.log(openviduInstance);
       return openviduInstance.data.token; // The token
     },
   },
