@@ -61,15 +61,9 @@ export default {
     RecordCircle,
     ChangeVideo2,
   },
-  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object },
+  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object, user: Object },
   emits: ["change-video-state", "save-recording-data", "change-current-slide"],
   setup(props, { emit }) {
-    const user = {
-      user_id: "1",
-      nickname: "user1",
-      profile_url:
-        "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
-    };
 
     const state = reactive({
       videoMode: 1,
@@ -184,7 +178,7 @@ export default {
                 recording_video_url: data.Location,
                 scene_id: props.videoState.sceneIdx,
                 studio_id: props.studioInfo.studio_id,
-                user_id: user.user_id,
+                user_id: props.user.user_id,
               };
               saveSceneRecord(
                 params,
@@ -196,7 +190,7 @@ export default {
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, user);
+              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, props.user);
             },
             (err) => {
               console.log(err);

@@ -8,7 +8,7 @@
         <div class="studio__video__video">
           <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
             @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" />
+            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" :user="user" />
         </div>
         <div class="studio__video__script">
           <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
@@ -31,7 +31,7 @@
           <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
             :records="studioData.records" :storyScript="studioData.storyScript" />
           <FilmTab v-show="state.selectTab === 2" :films="studioData.films" />
-          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" />
+          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" :user="user" />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
@@ -102,6 +102,13 @@ export default {
   },
   setup() {
     const route = useRoute();
+
+    const user = {
+      user_id: "1",
+      nickname: "user1",
+      profile_url:
+        "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
+    };
 
     const state = reactive({
       isOpenTab: true,
@@ -259,6 +266,7 @@ export default {
       scriptState,
       changeCurrentTime,
       changeCurrentSlide,
+      user
     };
   },
 };

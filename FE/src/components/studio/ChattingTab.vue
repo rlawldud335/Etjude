@@ -1,82 +1,87 @@
 <template>
-  <div>
-    유저 아이디:
-    <label for="유저아이디"><input v-model="userId" type="text" @keyup.enter="connect" /></label>
-    <br />
-    유저 닉네임:
-    <label for="유저닉네임"><input v-model="nickname" type="text" /></label>
-    <br />
-    내용:
-    <label for="내용"><input v-model="message" type="text" @keyup.enter="sendMessage" /></label>
-    <hr />
-    <div class="container" ref="messages">
-      <div>
-        채팅 내역
-        <div v-for="(item, idx) in recvList" :key="idx" class="messages">
-          <div v-if="item.studioId === studioId">
-            <div v-if="item.userId === this.userId" style="color: blue">
-              <div>({{ item.chatTime }}) {{ item.nickname }}: {{ item.content }}</div>
-            </div>
-            <div v-else>
-              <div>({{ item.chatTime }}) {{ item.nickname }}: {{ item.content }}</div>
-            </div>
-          </div>
-        </div>
+  <div class="chatting">
+    <div class="chatting-container">
+      <div v-for="(item, idx) in recvList" :key="idx">
+        <ChattingTabLine v-if="item.studioId === studioId && item.userId !== this.userId" :line="item" />
+        <ChattingTabMyLine v-if="item.studioId === studioId && item.userId === this.userId" :line="item" />
       </div>
+    </div>
+    <div class="chatting-input">
+      <ChattingAdd />
+      <label for="chattingInput" class="chatting-input__input">
+        <input id="chattingInput" v-model="message" type="text" @keyup.enter="sendMessage" />
+      </label>
+      <ChattingSend />
     </div>
   </div>
 </template>
 <script>
-import { sendMessage, send, connect } from "@/api/chat";
+import { sendMessage, connect } from "@/api/chat";
+import { ref, watchEffect } from "vue";
+import ChattingSend from "@/assets/icons/ChattingSend.svg";
+import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
+import ChattingTabLine from "@/components/studio/ChattingTabLine.vue";
+import ChattingTabMyLine from "@/components/studio/ChattingTabMyLine.vue";
 
 export default {
   name: "ChattingTab",
-  data() {
-    return {
-      studioId: "1",
-      sceneNumber: "",
-      userId: "1",
-      nickname: "1",
-      message: "",
-      attender: {},
-      recvList: [],
+  components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
+  props: { studioInfo: Object, user: Object },
+  setup() {
+    const message = ref('');
+    const recvList = ref([]);
+
+    const handleNewMessage = () => {
+      const { messages } = this.$refs;
+      messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
     };
-  },
-  props: { studioInfo: Object },
-  created() {
-    this.connect();
-  },
-  // computed: {
-  //   releng() {
-  //     return this.recvList.length;
-  //   },
-  // },
-  // updated() {
-  //   const { messages } = this.$refs;
-  //   messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-  // },
-  watch: {
-    recvList: {
-      handler() {
-        console.log(1);
-        this.$nextTick(() => {
-          const { messages } = this.$refs;
-          messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-        });
-      },
-      deep: true,
-    },
-  },
-  methods: {
-    sendMessage,
-    send,
-    connect,
-  },
+
+    watchEffect(() => {
+      handleNewMessage();
+    });
+
+    return {
+      message,
+      recvList,
+      sendMessage,
+      connect,
+      handleNewMessage
+    };
+  }
 };
 </script>
-<style lang="scss">
-.container {
-  height: 44rem;
-  overflow: auto;
+<style lang="scss" scoped>
+.chatting {
+  height: 100%;
+}
+
+.chatting-container {
+  background-color: white;
+  height: 92%;
+}
+
+.chatting-input {
+  background-color: #E9E9E9;
+  height: 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 12px;
+}
+
+.chatting-input input {
+  background-color: white;
+  width: 100%;
+  height: 90%;
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.chatting-input__input {
+  width: 80%;
+  height: 60%;
 }
 </style>
