@@ -2,7 +2,9 @@
   <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
     <div class="title_container">
       <h1>필름 공유 글 업로드</h1>
-      <QuitButton></QuitButton>
+      <div @click="$emit('close')">
+        <QuitButton></QuitButton>
+      </div>
     </div>
     <div class="content_container">
       <UserUpload></UserUpload>
