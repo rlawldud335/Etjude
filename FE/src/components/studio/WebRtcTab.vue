@@ -88,7 +88,17 @@ export default {
 
   methods: {
     connectSession() {
-      this.createToken(this.mySessionId);
+      const token = this.getToken(this.mySessionId);
+      this.OV = new OpenVidu();
+      this.session = this.OV.initSession(this.mySessionId, token);
+      this.session
+        .connect()
+        .then(() => {
+          console.log("Client connected to the session");
+        })
+        .catch((error) => {
+          console.error("Error connecting to the session", error);
+        });
     },
     joinSession() {
       // --- 1) Get an OpenVidu object ---
