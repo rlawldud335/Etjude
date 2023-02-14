@@ -19,9 +19,6 @@
           <p class="text-center">
             <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
           </p>
-          <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="connectSession()">Connect!</button>
-          </p>
         </div>
       </div>
     </div>
@@ -90,6 +87,7 @@ export default {
     connection() {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
+        console.log(subscriber);
         this.subscribers.push(subscriber);
       });
 
