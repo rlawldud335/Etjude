@@ -36,6 +36,7 @@ export default {
   padding-right: 16px;
   border: none;
   background-color: rgb(219, 218, 218);
+  height: 10%;
 }
 .profile {
   display: flex;
