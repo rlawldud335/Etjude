@@ -87,27 +87,7 @@ export default {
   },
 
   methods: {
-    connectSession() {
-      const token = this.getToken(this.mySessionId);
-      console.log("token", token);
-      this.OV = new OpenVidu();
-      this.session = this.OV.initSession();
-      this.session
-        .connect(token)
-        .then(() => {
-          console.log("Client connected to the session");
-        })
-        .catch((error) => {
-          console.error("Error connecting to the session", error);
-        });
-    },
-    joinSession() {
-      // --- 1) Get an OpenVidu object ---
-      this.OV = new OpenVidu();
-      // --- 2) Init a session ---
-      this.session = this.OV.initSession();
-      // --- 3) Specify the actions when events take place in the session ---
-      // On every new Stream received...
+    connection() {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
         this.subscribers.push(subscriber);
@@ -125,7 +105,45 @@ export default {
         console.warn(exception);
       });
 
-      // --- 4) Connect to the session with a valid user token ---
+      this.getToken(this.mySessionId).then((token) => {
+        this.session
+          .connect(token, { clientData: this.myUserName })
+          .then(() => {
+            this.OV.getUserMedia({
+              audioSource: false,
+              videoSource: undefined,
+              resolution: "640x480",
+              frameRate: 30,
+            }).then((mediaStream) => {
+              const videoTrack = mediaStream.getVideoTracks()[0];
+
+              const newPublisher = this.OV.initPublisher(this.myUserName, {
+                audioSource: undefined,
+                videoSource: videoTrack,
+                publishAudio: true,
+                publishVideo: true,
+                resolution: "640x480",
+                frameRate: 30,
+                insertMode: "APPEND",
+                mirror: false,
+              });
+              newPublisher.once("accessAllowed", () => {
+                this.session.publish(newPublisher);
+                this.publisher = newPublisher;
+              });
+            });
+          })
+          .catch((error) => {
+            console.log("There was an error connecting to the session:", error.code, error.message);
+          });
+      });
+    },
+    joinSession() {
+      // --- 1) Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+      // --- 2) Init a session ---
+      this.session = this.OV.initSession();
+      this.connection();
 
       // Get a token from the OpenVidu deployment
       this.getToken(this.mySessionId).then((token) => {
@@ -209,9 +227,6 @@ export default {
 
     // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
-      console.log(sessionId);
-      const data = JSON.stringify({ customSessionId: sessionId });
-
       const response = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions`,
         { customSessionId: sessionId },
@@ -220,41 +235,38 @@ export default {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
-        },
-        data
+        }
       );
-      console.log(response);
       return response.data.id; // The sessionId
     },
 
     async createToken(sessionId) {
       // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
-      console.log("제발요 ", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-          },
-          body: {
-            type: "WEBRTC",
-            data: "My Server Data",
-            record: true,
-            role: "PUBLISHER",
-            kurentoOptions: {
-              videoMaxRecvBandwidth: 1000,
-              videoMinRecvBandwidth: 300,
-              videoMaxSendBandwidth: 1000,
-              videoMinSendBandwidth: 300,
-              allowedFilters: ["GStreamerFilter", "ZBarFilter"],
-            },
-          },
-        },
         data
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+        //   },
+        //   body: {
+        //     type: "WEBRTC",
+        //     data: "My Server Data",
+        //     record: true,
+        //     role: "PUBLISHER",
+        //     kurentoOptions: {
+        //       videoMaxRecvBandwidth: 1000,
+        //       videoMinRecvBandwidth: 300,
+        //       videoMaxSendBandwidth: 1000,
+        //       videoMinSendBandwidth: 300,
+        //       allowedFilters: ["GStreamerFilter", "ZBarFilter"],
+        //     },
+        //   },
+        // },
+        // data
       );
-      console.log(openviduInstance);
       return openviduInstance.data.token; // The token
     },
   },
