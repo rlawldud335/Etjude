@@ -190,6 +190,37 @@ export default {
       console.log(response);
       return response.data.id; // The sessionId
     },
+
+    async createToken(sessionId) {
+      // const data = JSON.stringify({ customSessionId: sessionId });
+      const data = {};
+      console.log("제발요 ", sessionId);
+      const openviduInstance = await axios.post(
+        `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+          },
+          body: {
+            type: "WEBRTC",
+            data: "My Server Data",
+            record: true,
+            role: "PUBLISHER",
+            kurentoOptions: {
+              videoMaxRecvBandwidth: 1000,
+              videoMinRecvBandwidth: 300,
+              videoMaxSendBandwidth: 1000,
+              videoMinSendBandwidth: 300,
+              allowedFilters: ["GStreamerFilter", "ZBarFilter"],
+            },
+          },
+        },
+        data
+      );
+      console.log(openviduInstance);
+      return openviduInstance.data.token; // The token
+    },
   },
 };
 </script>
