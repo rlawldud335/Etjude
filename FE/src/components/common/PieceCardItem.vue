@@ -1,6 +1,6 @@
 <template lang="">
   <div class="carousel__item" @click="goPieceDetail">
-    <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+    <img class="itemimg" :src=carditem.workThumbnailUrl alt="" />
     <div class="itemtext">
       <div class="rightitem">
         <div class="itemtextteamname">{{ carditem.workTitle }}</div>
