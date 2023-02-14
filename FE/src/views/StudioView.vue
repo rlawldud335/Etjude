@@ -6,91 +6,56 @@
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
         <div class="studio__video__video">
-          <VideoArea
-            @save-recording-data="saveRecordingData"
-            @change-video-state="changeVideoState"
-            @change-current-slide="changeCurrentSlide"
-            :videoState="videoState"
-            :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo"
-            :allLines="studioData.allLines"
-          />
+          <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
+            @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
+            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" />
         </div>
         <div class="studio__video__script">
-          <ScriptArea
-            @change-current-time="changeCurrentTime"
-            @change-current-slide="changeCurrentSlide"
-            :scriptState="scriptState"
-            :allLines="studioData.allLines"
-          />
+          <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
+            :scriptState="scriptState" :allLines="studioData.allLines" />
         </div>
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2"
-              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
-            >
+            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
           </div>
           <button class="close-btn" @click="closeTab()">
             <QuitButton />
           </button>
         </div>
         <div class="openTab__body">
-          <ScriptTab
-            v-show="state.selectTab === 0"
-            @change-current-time="changeCurrentTime"
-            :storyScript="studioData.storyScript"
-          />
-          <SsinTab
-            v-show="state.selectTab === 1"
-            @change-video-state="changeVideoState"
-            :videoState="videoState"
-            :records="studioData.records"
-            :storyScript="studioData.storyScript"
-          />
+          <ScriptTab v-show="state.selectTab === 0" @change-current-time="changeCurrentTime"
+            @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
+          <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
+            :records="studioData.records" :storyScript="studioData.storyScript" />
           <FilmTab v-show="state.selectTab === 2" :films="studioData.films" />
           <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
       <div class="studio__tab">
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
           <Scripts />
         </button>
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
           <Ssin />
         </button>
 
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
           <Film />
         </button>
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(3)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(3)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }">
           <Chatting />
         </button>
 
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(4)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(4)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }">
           <RTCIcon />
         </button>
       </div>
@@ -397,6 +362,15 @@ export default {
 .openTab__body {
   height: 93%;
   width: 100%;
+  overflow-y: scroll;
+}
+
+.openTab__body {
+  -ms-overflow-style: none;
+}
+
+.openTab__body::-webkit-scrollbar {
+  display: none;
 }
 
 .close-btn {
