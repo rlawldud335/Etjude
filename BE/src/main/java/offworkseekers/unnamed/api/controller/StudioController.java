@@ -7,6 +7,7 @@ import offworkseekers.unnamed.api.dto.StatusDTO;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.request.StudioIdWithUserIdRequest;
 import offworkseekers.unnamed.api.response.*;
+import offworkseekers.unnamed.api.service.FilmService;
 import offworkseekers.unnamed.api.service.StoryService;
 import offworkseekers.unnamed.api.service.StudioService;
 import offworkseekers.unnamed.db.entity.Studio;
@@ -36,6 +37,7 @@ public class StudioController {
 
     private final StudioService studioService;
     private final StoryService storyService;
+    private final FilmService filmService;
 
     private final StudioRepository studioRepository;
     private final UserRepository userRepository;
@@ -144,6 +146,15 @@ public class StudioController {
 
         studioService.saveRecording(studioId, sceneId, recordingVideoUrl, userId);
 
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/api/v1/studio/film/create")
+    public ResponseEntity saveFilm(@RequestBody @Valid Map<String, Object> param) {
+        int studioId = (int) param.get("studio_id");
+        String film_video_url = (String) param.get("film_video_url");
+
+        filmService.createFilm(studioId, film_video_url);
         return new ResponseEntity(HttpStatus.OK);
     }
 }
