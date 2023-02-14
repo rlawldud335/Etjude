@@ -1,9 +1,14 @@
 <template>
   <div class="search-session">
     <span class="search-session__title-writing">니가 연기 하던가</span>
-    <div class="search-session__search-bar">
-      <span>작품 이름, 스토리 이름을 검색하세요.</span>
-      <Search />
+    <div class="search-session__search">
+      <input
+        class="search-session__search-bar"
+        placeholder="검색어를 입력해주세요."
+        v-model="inputText"
+        @keyup.enter="goSearchPage"
+      />
+      <Search class="search-session__search-icon" @click="goSearchPage" />
     </div>
     <div class="search-session__categorys">
       <div class="search-session__categorys__category">
@@ -26,6 +31,8 @@
   </div>
 </template>
 <script>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Search from "../../assets/icons/search.svg";
 
 export default {
@@ -33,9 +40,23 @@ export default {
   components: {
     Search,
   },
+  setup() {
+    const inputText = ref(null);
+    const router = useRouter();
+    const goSearchPage = () => {
+      router.push({
+        name: "search-result",
+        params: { categoryId: "0", menuId: "1", keyword: inputText.value },
+      });
+    };
+    return {
+      inputText,
+      goSearchPage,
+    };
+  },
 };
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .search-session {
   width: 100%;
   display: flex;
@@ -46,22 +67,26 @@ export default {
 .search-session__title-writing {
   margin-top: 30px;
 }
-
+.search-session__search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 30px 0px;
+}
 .search-session__search-bar {
   background-color: #ffeff2;
   padding: 15px 40px;
   border-radius: 30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   width: 500px;
   border: $bana-pink solid 1px;
-  justify-content: space-between;
   color: #606060;
-  margin: 30px 0px;
   font-size: 12px;
 }
-
+.search-session__search-icon {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+}
 .search-session__categorys {
   display: flex;
   flex-direction: row;
