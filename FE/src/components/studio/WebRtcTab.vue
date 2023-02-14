@@ -171,44 +171,24 @@ export default {
       return await this.createToken(sessionId);
     },
 
-    createSession(sessionId) {
-      // eslint-disable-next-line no-unused-vars, no-async-promise-executor
-      return new Promise(async (resolve, reject) => {
-        await axios
-          .post(
-            `${APPLICATION_SERVER_URL}api/sessions`,
-            { customSessionId: sessionId },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-              },
-            }
-          )
-          .then((response) => {
-            resolve(response.data.id);
-          })
-          .catch((response) => {
-            const err = { ...response };
-            if (err?.response?.status === 409) {
-              resolve(sessionId);
-            } else {
-              console.warn(
-                `No connection to OpenVidu Server. This may be a certificate error at ${process.env.VUE_APP_OPENVIDU_SERVER_URL}`
-              );
-              if (
-                window.confirm(
-                  `No connection to OpenVidu Server. This may be a certificate error at "${process.env.VUE_APP_OPENVIDU_SERVER_URL}"\\n\\nClick OK to navigate and accept it. ` +
-                    `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${process.env.VUE_APP_OPENVIDU_SERVER_URL}"`
-                )
-              ) {
-                window.location.assign(
-                  `${process.env.VUE_APP_OPENVIDU_SERVER_URL}/accept-certificate`
-                );
-              }
-            }
-          });
-      });
+    // eslint-disable-next-line consistent-return
+    async createSession(sessionId) {
+      console.log(sessionId);
+      const data = JSON.stringify({ customSessionId: sessionId });
+
+      const response = await axios.post(
+        `${APPLICATION_SERVER_URL}api/sessions`,
+        { customSessionId: sessionId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+          },
+        },
+        data
+      );
+      console.log(response);
+      return response.data.id; // The sessionId
     },
   },
 };
