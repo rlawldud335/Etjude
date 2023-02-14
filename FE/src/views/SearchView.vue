@@ -164,9 +164,11 @@ export default {
       console.log("검색");
       if (searchState.menu.id === "1") {
         searchWork(
-          keyword,
-          searchState.category.id,
-          searchState.page.work,
+          {
+            keyword,
+            category_id: searchState.category.id,
+            pageNum: searchState.page.work,
+          },
           ({ data }) => {
             console.log(data);
             searchResult.value = data;
@@ -177,9 +179,11 @@ export default {
         );
       } else {
         searchStory(
-          keyword,
-          searchState.category.id,
-          searchState.page.story,
+          {
+            keyword,
+            category_id: searchState.category.id,
+            pageNum: searchState.page.story,
+          },
           ({ data }) => {
             console.log(data);
             searchResult.value = data;
