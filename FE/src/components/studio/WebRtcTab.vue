@@ -186,11 +186,12 @@ export default {
           },
           data
         )
-        .catch((error) => {
-          if (error.response.status === 409) {
+        // eslint-disable-next-line no-shadow, consistent-return
+        .catch((response) => {
+          const err = { ...response };
+          if (err?.response?.status === 409) {
             return sessionId;
           }
-          return error.response.data;
         });
       return response.data.id; // The sessionId
     },
