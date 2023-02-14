@@ -167,7 +167,7 @@ export default {
     },
 
     async getToken(mySessionId) {
-      // const sessionId = await this.createSession(mySessionId);
+      await this.createSession(mySessionId);
       console.log("1", mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(mySessionId);
