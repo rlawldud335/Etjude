@@ -181,8 +181,7 @@ export default {
           {
             headers: {
               "Content-Type": "application/json",
-              // eslint-disable-next-line no-undef
-              Authorization: `Basic${encodedUsingBase64("OPENVIDUAPP", "MY_SECRET")}`,
+              Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
             },
           },
           data
