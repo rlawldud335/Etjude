@@ -188,6 +188,9 @@ export default {
         )
         .then((response) => {
           console.log("이게 되나용?");
+          console.log(response);
+          console.log(response.data);
+          console.log(response.data.id);
           return response.data.id; // The sessionId
         })
         // eslint-disable-next-line consistent-return
