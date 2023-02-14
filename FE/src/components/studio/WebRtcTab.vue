@@ -190,7 +190,13 @@ export default {
       const data = {};
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+          },
+        }
       );
       return openviduInstance.data.token; // The token
     },
