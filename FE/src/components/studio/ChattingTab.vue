@@ -27,7 +27,10 @@ export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
   props: { studioInfo: Object, user: Object },
-  setup() {
+  setup(props) {
+    const studioId = ref(props.studioInfo.studio_id);
+    const userId = ref(props.user.user_id);
+    const nickname = ref(props.user.nickname);
     const message = ref('');
     const recvList = ref([]);
 
@@ -45,7 +48,10 @@ export default {
       recvList,
       sendMessage,
       connect,
-      handleNewMessage
+      handleNewMessage,
+      studioId,
+      userId,
+      nickname
     };
   }
 };
