@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +112,7 @@ public class StudioController {
                      @DestinationVariable("userId") String userId,
                      @DestinationVariable("nickname") String nickname, String content) throws Exception{
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
         String formattedNow = now.format(formatter);
 
