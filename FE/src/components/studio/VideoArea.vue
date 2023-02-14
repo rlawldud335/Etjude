@@ -22,13 +22,13 @@
     <div class="video-controller">
       <button class="bana-btn" @click="toggleVideo()">
         <span>카메라</span>
-        <VideoOn v-show="constraints.video" />
-        <VideoOff v-show="!constraints.video" />
+        <VideoOn v-show="toggleBtn.video" />
+        <VideoOff v-show="!toggleBtn.video" />
       </button>
       <button class="bana-btn" @click="toggleAudio()">
         <span>마이크</span>
-        <MicOn v-show="constraints.audio" />
-        <MicOff v-show="!constraints.audio" />
+        <MicOn v-show="toggleBtn.audio" />
+        <MicOff v-show="!toggleBtn.audio" />
       </button>
       <button class="bana-btn" @click="state.videoMode = (state.videoMode + 1) % 3">
         <span>화면전환</span>
@@ -114,6 +114,9 @@ export default {
     const constraints = reactive({
       video: videoResolution, audio: true
     });
+    const toggleBtn = reactive({
+      video: true, audio: true
+    })
 
 
     let mediaRecorder = null;
@@ -132,13 +135,13 @@ export default {
     };
 
     const toggleVideo = () => {
-      constraints.video = constraints.video === false ? videoResolution : false;
-      mediaStream.value.getVideoTracks()[0].enabled = constraints.video;
+      toggleBtn.video = !toggleBtn.video;
+      mediaStream.value.getVideoTracks()[0].enabled = !mediaStream.value.getVideoTracks()[0].enabled;
     };
 
     const toggleAudio = () => {
-      constraints.audio = !constraints.audio;
-      mediaStream.value.getAudioTracks()[0].enabled = constraints.audio;
+      toggleBtn.audio = !toggleBtn.audio;
+      mediaStream.value.getAudioTracks()[0].enabled = !mediaStream.value.getAudioTracks()[0].enabled;
     };
 
     const startRecoding = async () => {
@@ -222,6 +225,7 @@ export default {
       endRecording,
       videoOutput,
       changeTimeHandler,
+      toggleBtn
     };
   },
 };

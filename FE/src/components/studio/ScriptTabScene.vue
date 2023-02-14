@@ -1,8 +1,8 @@
 <template>
   <div class="studio__scene__header">
     <span>#{{ scene.sceneNumber }}. {{ scene.roleName }}</span>
-    <div class="recording-btn" :class="{ 'recording-disable-btn': videoState.isRecording }" @click="startRecording">녹화히기
-    </div>
+    <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
+    <DisableRecordingIcon v-if="videoState.isRecording" />
   </div>
   <div class="studio__scene">
     <div class="studio__scene-actor-image">
@@ -20,10 +20,12 @@
 
 <script>
 import ScriptTabSceneLine from "@/components/studio/ScriptTabSceneLine.vue";
+import RecordingIcon from "@/assets/icons/recordingIcon.svg";
+import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
 
 export default {
   name: "ScriptTabScene",
-  components: { ScriptTabSceneLine },
+  components: { ScriptTabSceneLine, RecordingIcon, DisableRecordingIcon },
   props: {
     scene: Object, videoState: Object
   },
@@ -89,20 +91,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 30px;
+  padding-left: 20px;
   font-size: 15px;
-}
-
-.recording-btn {
-  background-color: $bana-pink;
-  padding: 7px 12px;
-  font-size: 5px;
-  border-radius: 5px;
-  font-weight: 300;
-  color: white;
-}
-
-.recording-disable-btn {
-  background-color: gray;
 }
 </style>
