@@ -39,12 +39,13 @@ public class Film {
     private List<Article> articles = new ArrayList<>();
 
     @Builder
-    public Film(Long filmId, String filmTitle, String filmVideoUrl, LocalDate filmCreatedDate, Studio studio, List<Article> articles) {
+    public Film(Long filmId, String filmTitle, String filmVideoUrl, LocalDate filmCreatedDate, Studio studio, User user) {
         this.filmId = filmId;
         this.filmTitle = filmTitle;
         this.filmVideoUrl = filmVideoUrl;
         this.filmCreatedDate = filmCreatedDate;
         this.studio = studio;
+        this.user = user;
     }
 
     public void addArticle(Article article) {
