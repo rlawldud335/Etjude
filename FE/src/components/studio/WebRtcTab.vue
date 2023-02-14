@@ -40,7 +40,7 @@
       <div id="video-container" class="col-md-6">
         <user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
         <div v-for="(sub, idx) in subscribers" :key="idx">
-          <div v-if="sub.stream.connection.connectionId !== connectionId">
+          <div v-if="sub.stream.streamId !== streamId">
             <user-video
               :key="sub.stream.connection.connectionId"
               :stream-manager="sub"
@@ -76,7 +76,7 @@ export default {
       OV: undefined,
       session: undefined,
       sessionId: null,
-      connectionId: null,
+      streamId: null,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
@@ -92,7 +92,7 @@ export default {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
         console.log(subscriber);
-        this.connectionId = subscriber.stream.connection.connectionId;
+        this.streamId = subscriber.stream.streamId;
         this.subscribers.push(subscriber);
       });
 
