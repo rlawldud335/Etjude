@@ -106,6 +106,7 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                 .select(Projections.constructor(StoriesOfWork.class,
                         story.storyId,
                         story.storyThumbnailUrl,
+                        story.storyTitle,
                         story.work.workTitle,
                         story.work.category.categoryName,
                         JPAExpressions.select(likes.count())
