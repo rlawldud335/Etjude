@@ -19,6 +19,9 @@
           <p class="text-center">
             <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
           </p>
+          <p class="text-center">
+            <button class="btn btn-lg btn-success" @click="connectSession()">Connect!</button>
+          </p>
         </div>
       </div>
     </div>
@@ -84,6 +87,9 @@ export default {
   },
 
   methods: {
+    connectSession() {
+      this.createToken(this.mySessionId);
+    },
     joinSession() {
       // --- 1) Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -190,22 +196,27 @@ export default {
       return await this.createToken(sessionId);
     },
 
+    // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
       console.log(sessionId);
       const data = JSON.stringify({ customSessionId: sessionId });
-      const response = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions`,
-        { customSessionId: sessionId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}api/sessions`,
+          { customSessionId: sessionId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+            },
           },
-        },
-        data
-      );
-      console.log(response);
-      return response.data.id; // The sessionId
+          data
+        );
+        console.log(response);
+        return response.data.id; // The sessionId
+      } catch {
+        this.createToken(sessionId);
+      }
     },
 
     async createToken(sessionId) {
