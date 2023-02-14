@@ -50,7 +50,8 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                     .select(Projections.constructor(WorkSearchResponse.class,
                             work.workId,
                             work.workTitle,
-                            work.category.categoryName))
+                            work.category.categoryName,
+                            work.workThumbnailUrl))
                     .from(work)
                     .where(work.workTitle.contains(keyword))
                     .fetch();
@@ -59,7 +60,8 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                     .select(Projections.constructor(WorkSearchResponse.class,
                             work.workId,
                             work.workTitle,
-                            work.category.categoryName))
+                            work.category.categoryName,
+                            work.workThumbnailUrl))
                     .from(work)
                     .where(work.workTitle.contains(keyword),work.category.categoryId.eq(categoryId))
                     .fetch();
