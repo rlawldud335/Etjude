@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import { getRecommendStory } from "@/api/story";
 import StoryCardItem from "@/components/common/StoryCardItem.vue";
@@ -42,13 +42,28 @@ export default defineComponent({
     const prevSlide = () => myCarousel.value.prev();
     getRecommendStory(
       ({ data }) => {
-        console.log("story-card-list : ", data);
         recommendStoryList.value = data;
       },
       (error) => {
         console.log(error);
       }
     );
+    const screenWidth = ref(window.innerWidth);
+    window.addEventListener("resize", () => {
+      screenWidth.value = window.innerWidth;
+    });
+    watch(screenWidth, (newVal) => {
+      if (newVal < 480) {
+        breakpoints[320] = { itemsToShow: 2 };
+      } else {
+        delete breakpoints[320];
+      }
+      if (newVal < 1440) {
+        breakpoints[768] = { itemsToShow: 3 };
+      } else {
+        delete breakpoints[768];
+      }
+    });
     // real data
     return {
       recommendStoryList,

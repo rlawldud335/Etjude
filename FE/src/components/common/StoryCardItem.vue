@@ -8,7 +8,7 @@
         },
       }"
     >
-      <img class="itemimg" :src=storyitem.storyThumbnailUrl alt="" />
+      <img class="itemimg" :src="storyitem.storyThumbnailUrl" alt="" />
       <div class="itemtext">
         <div class="itemtexttitle">{{ storyitem.storyTitle }}</div>
         <div class="itemtextcategory">{{ storyitem.categoryName }}</div>
@@ -27,11 +27,7 @@ export default {
   },
   setup(props) {
     const storyitem = ref(props.carditem);
-    console.log("스토리아이템 확인");
-    console.log(storyitem.value.storyId);
     const storyId = ref(storyitem.value.storyId);
-    console.log(typeof storyitem.value.storyId);
-
     return {
       storyitem,
       storyId,

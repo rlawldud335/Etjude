@@ -49,8 +49,8 @@ export default {
   data() {
     return {
       user: {},
-      auth: ""
-    }
+      auth: "",
+    };
   },
   components: {
     googleLogo,
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     handleSignInGoogle,
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -82,6 +82,7 @@ export default {
   flex-direction: column;
   margin-top: 50px;
   button {
+    cursor: pointer;
     display: flex;
     align-items: center;
     width: 400px;

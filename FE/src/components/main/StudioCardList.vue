@@ -9,9 +9,10 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import { getMyStudio } from "@/api/users";
+import { useStore } from "vuex";
 import StudioCardItem from "../common/StudioCardItem.vue";
 
 import "vue3-carousel/dist/carousel.css";
@@ -24,14 +25,19 @@ export default defineComponent({
     StudioCardItem,
   },
   setup() {
+    const store = useStore();
     // real data
     const myStudioList = ref([]);
+    const studioCount = computed(() => myStudioList.value.length);
+    const updateStudioCount = () => {
+      store.dispatch("getStudioCount", studioCount.value);
+    };
     const myCarousel = ref(null);
     // carousel settings
     const settings = {
       itemsToShow: 4,
       snapAlign: "start",
-      wrapAround: true,
+      wrapAround: false,
     };
     const breakpoints = {
       480: {
@@ -41,17 +47,25 @@ export default defineComponent({
     };
     const nextSlide = () => myCarousel.value.next();
     const prevSlide = () => myCarousel.value.prev();
-    getMyStudio(
-      {
-        user_id: 2,
-      },
-      ({ data }) => {
-        myStudioList.value = data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    const userId = computed(() => store.state.user.userId);
+    if (userId.value) {
+      getMyStudio(
+        {
+          user_id: userId.value,
+        },
+        ({ data }) => {
+          // const allStudioData = data
+          // const myStudioData = allStudioData.filter((studio)=> {
+          //   return (studio.)
+          // })
+          myStudioList.value = data;
+          updateStudioCount();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
     return {
       myStudioList,
       settings,
@@ -59,6 +73,7 @@ export default defineComponent({
       myCarousel,
       nextSlide,
       prevSlide,
+      userId,
     };
   },
 });

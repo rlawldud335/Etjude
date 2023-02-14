@@ -82,6 +82,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from) {
+    if (
+      to.matched[to.matched.length - 1]?.components.default ===
+      from.matched[from.matched.length - 1]?.components.default
+    ) {
+      return null;
+    }
+    return { top: 0 };
+  },
 });
 
 export default router;
