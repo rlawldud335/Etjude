@@ -1,9 +1,18 @@
+<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <template lang="">
   <div class="left_container">
     <h2>제목</h2>
-    <input class="input_title" placeholder="제목을 입력해주세요." />
+    <input
+      class="input_title"
+      @input="uploadData.articleTitle = $event.target.value"
+      placeholder="제목을 입력해주세요."
+    />
     <h2>설명</h2>
-    <input class="input_content" placeholder="내용을 입력해주세요." />
+    <input
+      class="input_content"
+      @input="uploadData.articleContent = $event.target.value"
+      placeholder="내용을 입력해주세요."
+    />
     <h2>썸네일</h2>
     <label for="img_upload">
       <input
@@ -17,72 +26,176 @@
       />
     </label>
     <div class="thumbnail_upload" @click="clickthumbnail"></div>
-    <img ref="preview" :src="files" alt="test" />
   </div>
   <div class="right_container" @load="refreshcarousel">
     필름 선택하기
-    <div ref="carouselref" class="carousel">
+    <select v-model="selectedStudio" @change="onChange($event)">
+      <option disabled value="">스튜디오 선택</option>
+      <option v-for="item in MyStudioData" :key="item.studioId" :value="item[1]">
+        {{ item[1] }}
+      </option>
+    </select>
+    <!-- <div class="carousel">
       <UploadCarousel :dummydata="dummydata"></UploadCarousel>
+    </div> -->
+    <div class="studioList">
+      <!-- <div class="studioNum" v-for="(item, index) in MyStudioData" :key="index">{{ item }},</div> -->
+    </div>
+    <div class="filmList">
+      <div class="filmItem" v-for="(item, index) in MyFilmData" :key="index">
+        <video :src="item.myPageFilmsResponse.filmVideoUrl" class="selectVideo" controls>
+          <track kind="captions" />
+        </video>
+        <button class="choiceVideo" @click="selectFilm(item.myPageFilmsResponse.filmId)"></button>
+      </div>
     </div>
     <div class="filmcontent">
-      <img :src="require(`@/assets/images/헤어질결심.jpg`)" alt="dummy" class="selectimg" />
+      <video :src="FilmDetailData.filmVideoUrl" class="filmVideo" controls>
+        <track kind="captions" />
+      </video>
       <div class="textcontent">
-        <div class="">필름정보</div>
-        <div class="">재벌집 막내아들</div>
+        필름정보
+        <div class="textcontent_info">
+          <div class="">카테고리 : {{ FilmDetailData.categoryName }}</div>
+          <div class="">작품 : {{ FilmDetailData.workTitle }}</div>
+          <div class="">스토리 : {{ FilmDetailData.storyTitle }}</div>
+          <div class="">팀원 : {{ FilmDetailData.teamMembers }}</div>
+        </div>
       </div>
     </div>
     <div class="uploadcontent">
-      <button class="uploadbutton">업로드</button>
+      <button class="uploadbutton" @click="createShareContent">업로드</button>
     </div>
   </div>
   <div class="main_container"></div>
 </template>
 <script>
-import { ref } from "vue";
-import { getFilmUpload } from "@/api/share";
+import { reactive, ref } from "vue";
+import { getMyStudio, getMyFilm } from "@/api/users";
+import { putFilmShare } from "@/api/share";
 import dummydata from "@/dummy/filmdummydata/page1.json";
-import UploadCarousel from "./UploadCarousel.vue";
+// import UploadCarousel from "./UploadCarousel.vue";
 
 export default {
   name: "UserUpload",
   components: {
-    UploadCarousel,
+    // UploadCarousel,
   },
   setup() {
-    const carouselref = ref();
+    // const carouselref = ref();
     const imgUpload = ref();
     const preview = ref();
+    const MyStudioData = ref([]);
+    const MyFilmData = ref([]);
+    const selectedStudio = ref("");
+    const selectedFilm = ref("");
+    const FilmDetailData = reactive({
+      filmVideoUrl: null,
+      categoryName: null,
+      workTitle: null,
+      storyTitle: null,
+      teamMembers: null,
+    });
+    const uploadData = reactive({
+      userId: "2",
+      filmId: "",
+      articleContent: "",
+      articleTitle: "",
+      articleThumbnailUrl: "",
+    });
     let files = ref();
-    getFilmUpload(
+    getMyStudio(
       "2",
       ({ data }) => {
-        console.log("film data:", data);
+        console.log("My studio data:", data);
+        data.forEach((array) => {
+          MyStudioData.value.push([array.studioId, array.studioTitle]);
+        });
+        console.log("데이터가 잘 들어갔나?", MyStudioData);
       },
       (error) => {
         console.log(error);
       }
     );
+    const createShareContent = () => {
+      putFilmShare(
+        uploadData,
+        ({ data }) => {
+          console.log(data, "생성 완료");
+        },
+        (error) => {
+          console.log(error);
+          console.log(uploadData);
+        }
+      );
+    };
+    const selectStudio = (studioTitle) => {
+      console.log(studioTitle);
+      MyFilmData.value = [];
+      FilmDetailData.value = {};
+      selectedFilm.value = "";
+      getMyFilm(
+        "2",
+        ({ data }) => {
+          console.log("Get My film data:", data);
+          data.forEach((array) => {
+            if (array.myPageFilmsResponse.studioTitle === studioTitle) {
+              MyFilmData.value.push(array);
+              FilmDetailData.categoryName = array.myPageFilmsResponse.categoryName;
+              FilmDetailData.workTitle = array.myPageFilmsResponse.workTitle;
+              FilmDetailData.storyTitle = array.myPageFilmsResponse.storyTitle;
+              FilmDetailData.teamMembers = array.teamMembers;
+            }
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    };
+    const onChange = (event) => {
+      selectStudio(event.target.value);
+    };
+    const selectFilm = (choiceFilm) => {
+      console.log(choiceFilm);
+      MyFilmData.value.forEach((array) => {
+        if (array.myPageFilmsResponse.filmId === choiceFilm) {
+          FilmDetailData.filmVideoUrl = array.myPageFilmsResponse.filmVideoUrl;
+          uploadData.filmId = choiceFilm;
+        }
+      });
+    };
     const getImageFiles = (e) => {
       files = `require(${e.currentTarget.value})`;
-      console.log(files);
+      console.log("image 가져오기 : ", files);
       console.log("==========");
       console.log(files.value);
     };
     const clickthumbnail = () => {
       imgUpload.value.click();
     };
-    const refreshcarousel = () => {
-      carouselref.value.refresh();
-    };
+    // const refreshcarousel = () => {
+    //   carouselref.value.refresh();
+    // };
     return {
-      carouselref,
+      // carouselref,
       dummydata,
       imgUpload,
       preview,
       files,
       clickthumbnail,
       getImageFiles,
-      refreshcarousel,
+      onChange,
+      MyStudioData,
+      selectedStudio,
+      MyFilmData,
+      FilmDetailData,
+      selectStudio,
+      selectFilm,
+      selectedFilm,
+      uploadData,
+      createShareContent,
+      // refreshcarousel,
     };
   },
 };
@@ -97,10 +210,10 @@ export default {
   border-right: #606060 solid 1px;
 }
 .right_container {
+  position: relative;
   flex-grow: 1;
   width: 524px;
   height: 100%;
-  background-color: aliceblue;
   box-sizing: border-box;
   padding: 20px;
   font-size: 18px;
@@ -113,7 +226,7 @@ export default {
 .thumbnail_upload {
   width: 200px;
   height: 200px;
-  background-color: rgb(247, 183, 100);
+  border: 1px solid gray;
 }
 h2 {
   font-size: 18;
@@ -133,7 +246,7 @@ h2 {
   border: $bana-pink solid 2px;
   justify-content: space-between;
   color: #606060;
-  margin: 0px 15px 0px 5px;
+  margin: 0px 15px 0px 0px;
   font-size: 14px;
 }
 .input_title {
@@ -147,9 +260,34 @@ h2 {
   margin: 20px 0px;
   width: 100%;
 }
-.selectimg {
-  width: 308px;
-  height: 204px;
+
+.studioList,
+.filmList {
+  display: flex;
+}
+.selectVideo {
+  width: 160px;
+  height: 120px;
+  margin: 10px 50px 0px 0px;
+  object-fit: cover;
+}
+.choiceVideo {
+  width: 80px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 40px;
+  background-color: white;
+  border: 1px solid $bana-pink;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.choiceVideo:focus {
+  background-color: $bana-pink;
+}
+.filmVideo {
+  width: 320px;
+  height: 240px;
 }
 .filmcontent {
   box-sizing: border-box;
@@ -158,10 +296,23 @@ h2 {
 }
 .textcontent {
   box-sizing: border-box;
-  margin: 0px 20px;
+  padding: 10px;
+  margin: 0px 10px;
+  font-size: 18px;
+  font-weight: 500;
+  .textcontent_info {
+    padding: 5px;
+    margin: 5px 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 130%;
+  }
 }
 .uploadcontent {
   margin-top: 60px;
+  position: absolute;
+  right: 20px;
+  bottom: 40px;
   .uploadbutton {
     width: 174px;
     height: 38px;
@@ -172,6 +323,7 @@ h2 {
     border: none;
     border-radius: 4px;
     float: right;
+    cursor: pointer;
   }
 }
 </style>

@@ -22,6 +22,9 @@ export default {
   props: {
     showModal: Boolean,
   },
+  setup() {
+    return {};
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -45,7 +48,7 @@ export default {
   align-items: center;
   width: 1186px;
   height: 100px;
-  padding: 30px 60px;
+  padding: 0px 60px;
   background-color: white;
 
   h1 {
@@ -58,7 +61,7 @@ export default {
   height: 554px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  padding: 20px 40px;
+  padding: 0px 40px;
   display: flex;
   background-color: white;
 }
