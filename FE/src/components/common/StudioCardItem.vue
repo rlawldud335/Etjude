@@ -1,12 +1,14 @@
 <template lang="">
   <div class="carousel__item">
     <router-link to="/studio">
-      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+      <img class="itemimg" :src=carditem.storyThumbnailUrl alt="" />
       <div class="itemtext">
         <div class="rightitem">
           <div class="itemtextteamname">{{ carditem.studioTitle }}</div>
           <div class="itemtexttitle">{{ carditem.storyTitle }}</div>
-          <div class="itemtextdate">{{ carditem.studioCreatedDate }} ~ {{ carditem.studioEndDate}}</div>
+          <div class="itemtextdate">
+            {{ carditem.studioCreatedDate }} ~ {{ carditem.studioEndDate }}
+          </div>
         </div>
         <div class="leftitem">
           <div class="itemtextdday">D - {{ diffDay }}</div>
@@ -31,8 +33,8 @@ export default {
       const diffDay = String(Math.floor(diff / (1000 * 60 * 60 * 24)));
 
       return diffDay;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -44,12 +46,13 @@ a {
 .carousel__item {
   background-color: #fff;
   //   border-radius: 0.5rem;
-  margin: 10px;
+  // margin: 10px;
   transition: all 0.3s ease-in-out;
 
   &:hover {
     transform: scale(1.05);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 0.5rem 0.5rem 0 0;
   }
 }
 
@@ -67,10 +70,12 @@ a {
 
 .itemtext {
   display: flex;
+  width: 257px;
   padding-top: 16px;
   padding-bottom: 16px;
-  padding-left: 26px;
-  padding-right: 26px;
+  padding-left: 24px;
+  padding-right: 24px;
+  text-align: center;
   justify-content: space-between;
 }
 
@@ -83,15 +88,14 @@ a {
 
 .itemtexttitle,
 .itemtextdate {
-  margin: 2px;
-  padding-left: 5px;
+  margin: 2px 0px;
   text-align: left;
   font-size: 12px;
 }
 
 .itemtextdday {
   display: inline;
-  padding-left: 3px;
+  padding-left: 2px;
   text-align: left;
   font-size: 16px;
 }

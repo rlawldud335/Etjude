@@ -12,10 +12,17 @@
         </div>
       </div>
     </div>
-    <div class="piece__story-list">
-      <span class="story-list__title"> {{ work.title }} 의 전체 스토리</span>
-      {{ work.storyList }}
-      <!-- <StoryCardItem></StoryCardItem> -->
+    <div class="piece__story-list main__1136width">
+      <div class="piece__piece-story-head">
+        <span class="piece__story-list-title"> "{{ work.title }}"의 스토리</span>
+      </div>
+      <div class="piece__story-cards">
+        <StoryCardItem
+          v-for="story in work.storyList"
+          :key="story.storyId"
+          :carditem="story"
+        ></StoryCardItem>
+      </div>
     </div>
   </div>
 </template>
@@ -24,12 +31,12 @@ import { reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import pieceDetail from "@/dummy/pieceDetailData.json";
 import { getWorkInfo, getStoriesOnWork } from "@/api/pieceDetail";
-// import StoryCardItem from "@/components/common/StoryCardItem.vue";
+import StoryCardItem from "@/components/common/StoryCardItem.vue";
 
 export default {
   name: "PieceCardItem",
   components: {
-    // StoryCardItem,
+    StoryCardItem,
   },
   setup() {
     const route = useRoute();
@@ -119,34 +126,53 @@ export default {
   border: 3px solid #ffffff;
   position: absolute;
   left: 0;
-  margin-left: 30px;
+  margin-left: 60px;
   top: 80px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
+  // overflow: hidden;
 }
 .piece-banner__pieceImg {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
 .piece-banner__text {
-  width: 60%;
+  width: 62%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin-right: 30px;
+  margin-right: 60px;
 }
 
 .piece-banner__pieceTitle {
   font-size: 24px;
   color: white;
+  margin-top: 80px;
   margin-bottom: 25px;
+  text-shadow: 1px 1px 1px #000;
 }
 
 .piece-banner__pieceInfo {
   color: white;
   font-weight: 200;
   font-size: 16px;
+  line-height: 140%;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.piece__story-list {
+  display: flex;
+  flex-direction: column;
+}
+.piece__story-list-title {
+  margin: 10px;
+  line-height: 140%;
+}
+.piece__story-cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 14px;
+  min-height: 200px;
 }
 </style>

@@ -8,7 +8,7 @@
         },
       }"
     >
-      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+      <img class="itemimg" :src=storyitem.storyThumbnailUrl alt="" />
       <div class="itemtext">
         <div class="itemtexttitle">{{ storyitem.storyTitle }}</div>
         <div class="itemtextcategory">{{ storyitem.categoryName }}</div>
@@ -31,6 +31,7 @@ export default {
     console.log(storyitem.value.storyId);
     const storyId = ref(storyitem.value.storyId);
     console.log(typeof storyitem.value.storyId);
+
     return {
       storyitem,
       storyId,
@@ -86,7 +87,7 @@ a {
 
 .itemtextcategory,
 .itemtextfavor {
-  margin: 3.5px;
+  margin: 3.5px 0px;
   text-align: left;
   font-size: 12px;
 }

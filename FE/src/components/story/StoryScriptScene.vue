@@ -31,12 +31,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .story__script-scene {
   display: flex;
   flex-direction: row;
-  margin: 50px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
 .story__script-scene-actor-image {
   width: 10%;
@@ -44,11 +43,12 @@ export default {
   justify-content: center;
 }
 .script__line-section {
+  // margin-top: 12px;
   width: 100%;
   margin-left: 30px;
 }
 .actor__profile-frame {
-  margin-top: 12px;
+  // margin-top: 12px;
   width: 50px;
   height: 50px;
   border-radius: 70%;

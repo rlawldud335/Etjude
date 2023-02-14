@@ -1,6 +1,6 @@
 <template lang="">
   <div class="carousel__item" @click="goPieceDetail">
-    <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+    <img class="itemimg" :src=carditem.workThumbnailUrl alt="" />
     <div class="itemtext">
       <div class="rightitem">
         <div class="itemtextteamname">{{ carditem.workTitle }}</div>
@@ -36,7 +36,7 @@ a {
 
 .carousel__item {
   background-color: #fff;
-  margin: 10px;
+  margin: 10px 10px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   &:hover {
@@ -48,6 +48,7 @@ a {
 .itemimg {
   height: 187px;
   width: 165px;
+  // float: left;
   object-fit: cover;
   /* // height: max(10rem, 25vh); */
   max-height: max(10rem, 30vh);
@@ -57,6 +58,7 @@ a {
 }
 
 .itemtext {
+  // float: left;
   display: flex;
   padding-top: 8px;
   padding-bottom: 8px;

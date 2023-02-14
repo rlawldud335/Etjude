@@ -25,10 +25,9 @@ const routes = [
         component: FilmView,
       },
       {
-        path: "/story",
+        path: "/story/:story_id",
         name: "story",
         component: StoryView,
-        props: { type: Number },
       },
       {
         path: "/login",
@@ -46,8 +45,20 @@ const routes = [
             component: SearchView,
             children: [
               {
-                path: "/search/category/:categoryId/menu/:menuId/keyword/:keyword",
+                path: "/search/category/:categoryId/menu/:menuId/keyword/:keyword/",
                 name: "search-result",
+                component: SearchView,
+                children: [
+                  {
+                    path: "/search/category/:categoryId/menu/:menuId/keyword/:keyword/page/:page",
+                    name: "search-result-page",
+                    component: SearchView,
+                  },
+                ],
+              },
+              {
+                path: "/search/category/:categoryId/menu/:menuId/page/:page",
+                name: "search-group-page",
                 component: SearchView,
               },
             ],
