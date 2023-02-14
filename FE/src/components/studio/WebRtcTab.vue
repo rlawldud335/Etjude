@@ -5,19 +5,19 @@
         <h1>Join a video session</h1>
         <div class="form-group">
           <div>
-            <div>Participant</div>
+            <div>NICKNAME</div>
             <label for="participants"
               ><input v-model="myUserName" class="form-control" type="text" required
             /></label>
           </div>
           <div>
-            <div>Session</div>
-            <label for="sessiong"
+            <div>STUDIO_ID</div>
+            <label for="session"
               ><input v-model="mySessionId" class="form-control" type="text" required
             /></label>
           </div>
           <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
+            <button class="btn btn-lg btn-success" @click="joinSession()">참여하기</button>
           </p>
         </div>
       </div>
@@ -93,9 +93,7 @@ export default {
     connection() {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
-        console.log(subscriber);
         this.streamId = subscriber.stream.streamId;
-        console.log(this.streamId);
         this.subscribers.push(subscriber);
       });
 
@@ -118,7 +116,7 @@ export default {
             this.OV.getUserMedia({
               audioSource: false,
               videoSource: undefined,
-              resolution: "640x480",
+              resolution: "320x240",
               frameRate: 30,
             }).then((mediaStream) => {
               const videoTrack = mediaStream.getVideoTracks()[0];
@@ -128,7 +126,7 @@ export default {
                 videoSource: videoTrack,
                 publishAudio: true,
                 publishVideo: true,
-                resolution: "640x480",
+                resolution: "320x240",
                 frameRate: 30,
                 insertMode: "APPEND",
                 mirror: false,
@@ -168,14 +166,12 @@ export default {
     },
 
     updateMainVideoStreamManager(stream) {
-      console.log(this.mainStreamManager);
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
 
     async getToken(mySessionId) {
       await this.createSession(mySessionId);
-      console.log("1", mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(mySessionId);
     },
@@ -194,18 +190,12 @@ export default {
           }
         )
         .then((response) => {
-          console.log("이게 되나용?");
-          console.log(response);
-          console.log(response.data);
-          console.log(response.data.id);
           this.sessionId = response.data.id;
-          // return response.data.id; // The sessionId
         })
         // eslint-disable-next-line consistent-return
         .catch((response) => {
           const err = { ...response };
           if (err?.response?.status === 409) {
-            console.log("409면 여기가 되야지!!");
             this.sessionId = sessionId;
           }
         });
@@ -237,7 +227,6 @@ export default {
         },
         data
       );
-      console.log(openviduInstance);
       return openviduInstance.data.token; // The token
     },
   },
