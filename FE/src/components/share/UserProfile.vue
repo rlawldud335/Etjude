@@ -4,7 +4,9 @@
       <img :src="profiledata.writerPhotoUrl" alt="" />
       <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
-    <QuitButton></QuitButton>
+    <div @click="$emit('close')">
+      <QuitButton></QuitButton>
+    </div>
   </div>
 </template>
 <script>

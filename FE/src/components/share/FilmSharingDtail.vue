@@ -6,7 +6,7 @@
       </video>
     </div>
     <div class="community_container">
-      <UserProfile :filmdata="profiledata"></UserProfile>
+      <UserProfile @close="$emit('close')" :filmdata="profiledata"></UserProfile>
       <UserPost :filmdata="postdata"></UserPost>
       <UserPostInput></UserPostInput>
     </div>
@@ -15,7 +15,7 @@
 <script>
 import { getFilmDetail } from "@/api/share";
 import { ref } from "vue";
-import UserProfile from "./UserProfile.vue";
+import UserProfile from "./UserProfile.vue"; 
 import UserPost from "./UserPost.vue";
 import UserPostInput from "./UserPostInput.vue";
 
