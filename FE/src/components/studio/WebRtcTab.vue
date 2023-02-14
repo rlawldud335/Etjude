@@ -167,6 +167,7 @@ export default {
 
     async getToken(mySessionId) {
       const sessionId = await this.createSession(mySessionId);
+      console.log("1", sessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(sessionId);
     },
@@ -195,9 +196,9 @@ export default {
         })
         // eslint-disable-next-line consistent-return
         .catch((response) => {
-          console.log("409면 여기가 되야지!!");
           const err = { ...response };
           if (err?.response?.status === 409) {
+            console.log("409면 여기가 되야지!!");
             return sessionId;
           }
         });
@@ -205,6 +206,7 @@ export default {
 
     async createToken(sessionId) {
       const data = {};
+      console.log("2", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
