@@ -422,9 +422,6 @@ export default {
   background-color: $soft-bana-pink;
   padding: 15px 40px;
   border-radius: 30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   width: 500px;
   border: $bana-pink solid 1px;
   justify-content: space-between;

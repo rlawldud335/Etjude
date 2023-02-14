@@ -122,12 +122,12 @@ export default {
 
 .piece-banner__image-frame {
   width: 22%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 2/3;
   border: 3px solid #ffffff;
   position: absolute;
   left: 0;
   margin-left: 60px;
-  top: 80px;
+  top: 30px;
   // overflow: hidden;
 }
 .piece-banner__pieceImg {
@@ -148,7 +148,7 @@ export default {
 .piece-banner__pieceTitle {
   font-size: 24px;
   color: white;
-  margin-top: 80px;
+  margin-top: 50px;
   margin-bottom: 25px;
   text-shadow: 1px 1px 1px #000;
 }

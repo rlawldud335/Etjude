@@ -1,6 +1,6 @@
 <template lang="">
   <div class="carousel__item" @click="goPieceDetail">
-    <img class="itemimg" :src=carditem.workThumbnailUrl alt="" />
+    <img class="itemimg" :src="carditem.workThumbnailUrl" alt="" />
     <div class="itemtext">
       <div class="rightitem">
         <div class="itemtextteamname">{{ carditem.workTitle }}</div>
@@ -46,13 +46,12 @@ a {
 }
 
 .itemimg {
-  height: 187px;
   width: 165px;
+  aspect-ratio: 2/3;
   // float: left;
   object-fit: cover;
   /* // height: max(10rem, 25vh); */
   max-height: max(10rem, 30vh);
-  aspect-ratio: 4/3;
   mix-blend-mode: var(--card-blend-mode);
   /* // filter: grayscale(100); */
 }
