@@ -34,7 +34,7 @@
           value="Leave session"
         />
       </div>
-      <div v-show="true">
+      <div v-show="false">
         <div id="main-video" class="col-md-6">
           <UserVideo :stream-manager="mainStreamManager" />
         </div>
