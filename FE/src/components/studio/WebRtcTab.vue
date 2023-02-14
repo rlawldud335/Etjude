@@ -45,13 +45,13 @@
       <div id="video-contaniner2" class="col-md-6">
         <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
-          <div v-show="JSON.parse(sub.stream.connection.data).clientData !== myUserName">
-            <UserVideo
-              :key="sub.stream.connection.connectionId"
-              :stream-manager="sub"
-              @click="updateMainVideoStreamManager(sub)"
-            />
-          </div>
+          <!-- <div v-show="JSON.parse(sub.stream.connection.data).clientData !== myUserName"> -->
+          <UserVideo
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click="updateMainVideoStreamManager(sub)"
+          />
+          <!-- </div> -->
         </div>
       </div>
     </div>
