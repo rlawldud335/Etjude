@@ -32,7 +32,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .story-script__line {
   width: 90%;
   border-radius: 10px;
