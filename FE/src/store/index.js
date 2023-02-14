@@ -15,6 +15,9 @@ export default createStore({
     LOGOUT(state) {
       state.user = "";
     },
+    GET_STUDIO_COUNT(state, studioCount) {
+      state.user.myStudioCount = studioCount;
+    },
   },
   actions: {
     login({ commit }, userInfo) {
@@ -22,6 +25,9 @@ export default createStore({
     },
     logout({ commit }) {
       commit("LOGOUT");
+    },
+    getStudioCount({ commit }, studioCount) {
+      commit("GET_STUDIO_COUNT", studioCount);
     },
   },
   modules: {},
