@@ -10,8 +10,12 @@
 </template>
 <script>
 export default {
-  props: { line: Object }
-}
+  name: "ChattingTabMyLine",
+  props: { line: Object },
+  setup(props) {
+    console.log("ChattingTabMyLine", props);
+  },
+};
 </script>
 <style lang="scss" scoped>
 .chatting-container__line {
@@ -22,7 +26,7 @@ export default {
 }
 
 .line__chat {
-  background-color: #FFE4E9;
+  background-color: #ffe4e9;
   border-radius: 15px 15px 0px 15px;
   padding: 7px;
   display: flex;
