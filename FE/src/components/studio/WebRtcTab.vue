@@ -75,6 +75,7 @@ export default {
       // OpenVidu objects
       OV: undefined,
       session: undefined,
+      sessionId: null,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
@@ -166,15 +167,14 @@ export default {
     },
 
     async getToken(mySessionId) {
-      const sessionId = await this.createSession(mySessionId);
-      console.log("1", sessionId);
+      // const sessionId = await this.createSession(mySessionId);
+      console.log("1", mySessionId);
       // eslint-disable-next-line no-return-await
-      return await this.createToken(sessionId);
+      return await this.createToken(mySessionId);
     },
 
     // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
-      const data = JSON.stringify({ customSessionId: sessionId });
       await axios
         .post(
           `${APPLICATION_SERVER_URL}api/sessions`,
@@ -184,22 +184,22 @@ export default {
               "Content-Type": "application/json",
               Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
             },
-          },
-          data
+          }
         )
         .then((response) => {
           console.log("이게 되나용?");
           console.log(response);
           console.log(response.data);
           console.log(response.data.id);
-          return response.data.id; // The sessionId
+          this.sessionId = response.data.id;
+          // return response.data.id; // The sessionId
         })
         // eslint-disable-next-line consistent-return
         .catch((response) => {
           const err = { ...response };
           if (err?.response?.status === 409) {
             console.log("409면 여기가 되야지!!");
-            return sessionId;
+            this.sessionId = sessionId;
           }
         });
     },
