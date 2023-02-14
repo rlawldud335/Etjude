@@ -13,7 +13,10 @@
 </template>
 <script>
 export default {
-  props: { line: Object }
+  props: { line: Object },
+  setup(props) {
+    console.log(props);
+  }
 }
 </script>
 <style lang="scss" scoped>

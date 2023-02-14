@@ -10,7 +10,10 @@
 </template>
 <script>
 export default {
-  props: { line: Object }
+  props: { line: Object },
+  setup(props) {
+    console.log("props입니다", props);
+  }
 }
 </script>
 <style lang="scss" scoped>
