@@ -144,44 +144,6 @@ export default {
       // --- 2) Init a session ---
       this.session = this.OV.initSession();
       this.connection();
-
-      // Get a token from the OpenVidu deployment
-      this.getToken(this.mySessionId).then((token) => {
-        // First param is the token. Second param can be retrieved by every user on event
-        // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-        this.session
-          .connect(token, { clientData: this.myUserName })
-          .then(() => {
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            // --- 5) Get your own camera stream with the desired properties ---
-
-            // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-            // element: we will manage it on our own) and with the desired properties
-            const publisher = this.OV.initPublisher(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
-              videoSource: undefined, // The source of video. If undefined default webcam
-              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-              publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: "640x480", // The resolution of your video
-              frameRate: 30, // The frame rate of your video
-              insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
-            });
-
-            // Set the main video in the page to display our webcam and store our Publisher
-            this.mainStreamManager = publisher;
-            this.publisher = publisher;
-
-            // --- 6) Publish your stream ---
-
-            this.session.publish(this.publisher);
-          })
-          .catch((error) => {
-            console.log("There was an error connecting to the session:", error.code, error.message);
-          });
-      });
-
-      window.addEventListener("beforeunload", this.leaveSession);
     },
 
     leaveSession() {
@@ -204,28 +166,12 @@ export default {
       this.mainStreamManager = stream;
     },
 
-    /**
-     * --------------------------------------------
-     * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-     * --------------------------------------------
-     * The methods below request the creation of a Session and a Token to
-     * your application server. This keeps your OpenVidu deployment secure.
-     *
-     * In this sample code, there is no user control at all. Anybody could
-     * access your application server endpoints! In a real production
-     * environment, your application server must identify the user to allow
-     * access to the endpoints.
-     *
-     * Visit https://docs.openvidu.io/en/stable/application-server to learn
-     * more about the integration of OpenVidu in your application server.
-     */
     async getToken(mySessionId) {
       const sessionId = await this.createSession(mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(sessionId);
     },
 
-    // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
       const response = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions`,
@@ -241,31 +187,10 @@ export default {
     },
 
     async createToken(sessionId) {
-      // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         data
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-        //   },
-        //   body: {
-        //     type: "WEBRTC",
-        //     data: "My Server Data",
-        //     record: true,
-        //     role: "PUBLISHER",
-        //     kurentoOptions: {
-        //       videoMaxRecvBandwidth: 1000,
-        //       videoMinRecvBandwidth: 300,
-        //       videoMaxSendBandwidth: 1000,
-        //       videoMinSendBandwidth: 300,
-        //       allowedFilters: ["GStreamerFilter", "ZBarFilter"],
-        //     },
-        //   },
-        // },
-        // data
       );
       return openviduInstance.data.token; // The token
     },
