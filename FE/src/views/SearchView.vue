@@ -9,6 +9,7 @@
           @input="inputKeyword"
           @blur="blurInput"
         />
+        <Search class="search__search-icon" />
       </div>
       <div class="search__body main__1136width">
         <div class="search__categoty-tab">
@@ -112,6 +113,7 @@ import StorySearchResult from "@/components/search/StorySearchResult.vue";
 import { searchWork, searchStory } from "@/api/search";
 import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
+import Search from "@/assets/icons/search.svg";
 
 export default {
   name: "SearchView",
@@ -119,6 +121,7 @@ export default {
     WorkSearchResult,
     StorySearchResult,
     VPagination,
+    Search,
   },
   setup() {
     // 라우드, 라우터 사용
@@ -409,6 +412,11 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+.search__search-icon {
+  right: 20px;
+  position: absolute;
 }
 .search__input {
   background-color: $soft-bana-pink;
