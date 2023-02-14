@@ -38,7 +38,11 @@
         <UserVideo :stream-manager="mainStreamManager" />
       </div>
       <div id="video-container" class="col-md-6">
-        <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+        <!-- <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" /> -->
+      </div>
+      <div id="video-contaniner2" class="col-md-6">
+        <hr />
+        >
         <div v-for="(sub, idx) in subscribers" :key="idx">
           <div v-if="sub.stream.streamId !== streamId">
             <UserVideo
