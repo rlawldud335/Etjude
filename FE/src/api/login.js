@@ -46,6 +46,8 @@ export function handleSignInGoogle() {
         ({ data }) => {
           userInfo = data;
           userInfo.accessToken = result.user.accessToken;
+          userInfo.email = result.user.email;
+          userInfo.userId = result.user.uid;
           this.$store.dispatch("login", userInfo);
           console.log(this.$route);
           const path = this.$route.query?.next;

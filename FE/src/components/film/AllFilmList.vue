@@ -15,7 +15,7 @@
         v-model="page"
         :pages="pageCount"
         :range-size="1"
-        active-color="#DCEDFF"
+        active-color="#ffeff2"
         @update:modelValue="updateHandler"
         class="film-list__pagination"
         @click="updatePage"

@@ -11,21 +11,21 @@
       <Search class="search-session__search-icon" @click="goSearchPage" />
     </div>
     <div class="search-session__categorys">
-      <div class="search-session__categorys__category">
-        <img src="@/assets/images/category1.png" alt="" />
-        <span>영화</span>
-      </div>
-      <div class="search-session__categorys__category">
+      <div class="search-session__categorys__category" @click="goCategory(1)">
         <img src="@/assets/images/category2.png" alt="" />
         <span>드라마</span>
       </div>
-      <div class="search-session__categorys__category">
+      <div class="search-session__categorys__category" @click="goCategory(2)">
+        <img src="@/assets/images/category4.png" alt="" />
+        <span>뮤지컬</span>
+      </div>
+      <div class="search-session__categorys__category" @click="goCategory(3)">
         <img src="@/assets/images/category3.png" alt="" />
         <span>연극</span>
       </div>
-      <div class="search-session__categorys__category">
-        <img src="@/assets/images/category4.png" alt="" />
-        <span>기타</span>
+      <div class="search-session__categorys__category" @click="goCategory(4)">
+        <img src="@/assets/images/category1.png" alt="" />
+        <span>영화</span>
       </div>
     </div>
   </div>
@@ -49,9 +49,23 @@ export default {
         params: { categoryId: "0", menuId: "1", keyword: inputText.value },
       });
     };
+    const goCategory = (categoryId) => {
+      if (inputText.value) {
+        router.push({
+          name: "search-result",
+          params: { categoryId, menuId: "1", keyword: inputText.value },
+        });
+      } else {
+        router.push({
+          name: "search-group",
+          params: { categoryId, menuId: "1" },
+        });
+      }
+    };
     return {
       inputText,
       goSearchPage,
+      goCategory,
     };
   },
 };
@@ -97,5 +111,6 @@ export default {
   margin: 30px;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 </style>
