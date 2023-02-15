@@ -11,8 +11,14 @@
       </div>
     </div>
     <div class="studio__tab-line-section">
-      <ScriptTabSceneLine v-for="(line, index) in scene.lines" :key="index" :lineIdx="index" :line="line"
-        :roleName="scene.roleName" @click="changeScriptTime(filterTime(line.lineTimeStamp))">
+      <ScriptTabSceneLine
+        v-for="(line, index) in scene.lines"
+        :key="index"
+        :lineIdx="index"
+        :line="line"
+        :roleName="scene.roleName"
+        @click="changeScriptTime(filterTime(line.lineTimeStamp))"
+      >
       </ScriptTabSceneLine>
     </div>
   </div>
@@ -27,27 +33,25 @@ export default {
   name: "ScriptTabScene",
   components: { ScriptTabSceneLine, RecordingIcon, DisableRecordingIcon },
   props: {
-    scene: Object, videoState: Object
+    scene: Object,
+    videoState: Object,
   },
-  emits: [
-    'change-script-time', 'start-recording'
-  ],
+  emits: ["change-script-time", "start-recording"],
   setup(props, { emit }) {
-
     const changeScriptTime = (time) => {
-      emit('change-script-time', time);
-    }
+      emit("change-script-time", time);
+    };
 
     const filterTime = (time) => {
-      const sptTime = time.split(':');
-      const result = parseInt(sptTime[0], 10) * 60 + parseInt(sptTime[1], 10) + (parseInt(sptTime[2], 10) / 10);
-      console.log(result);
+      const sptTime = time.split(":");
+      const result =
+        parseInt(sptTime[0], 10) * 60 + parseInt(sptTime[1], 10) + parseInt(sptTime[2], 10) / 10;
       return result;
-    }
+    };
 
     const startRecording = () => {
       emit("start-recording", props.scene.sceneNumber);
-    }
+    };
 
     return { changeScriptTime, filterTime, startRecording };
   },

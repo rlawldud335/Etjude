@@ -25,11 +25,10 @@ export default {
     const popularFilmList = ref(null);
     getPopularFilm(
       ({ data }) => {
-        console.log(data);
         popularFilmList.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("추천 필름 가져오기 에러:", error);
       }
     );
     return {

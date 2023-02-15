@@ -36,11 +36,10 @@ export default defineComponent({
     const prevSlide = () => myCarousel.value.prev();
     getRecommendWork(
       ({ data }) => {
-        console.log("recommend work:", data);
         recommendPieceList.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("추천 작품 에러:", error);
       }
     );
     return {

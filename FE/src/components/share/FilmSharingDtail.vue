@@ -15,7 +15,7 @@
 <script>
 import { getFilmDetail } from "@/api/share";
 import { ref } from "vue";
-import UserProfile from "./UserProfile.vue"; 
+import UserProfile from "./UserProfile.vue";
 import UserPost from "./UserPost.vue";
 import UserPostInput from "./UserPostInput.vue";
 
@@ -47,7 +47,6 @@ export default {
     getFilmDetail(
       articleId.value,
       ({ data }) => {
-        console.log(data);
         filmdata.value = data;
         profiledata.value.writerNickName = data.writerNickName;
         profiledata.value.writerPhotoUrl = data.writerPhotoUrl;
@@ -57,7 +56,7 @@ export default {
         postdata.value.comments = data.comments;
       },
       (error) => {
-        console.log(error);
+        console.log("필름 상세 에러:", error);
       }
     );
     // };

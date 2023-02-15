@@ -2,11 +2,14 @@
   <div class="studio__film-tab">
     <FilmTabFilm v-for="film in films" :key="film.film_id" :film="film"></FilmTabFilm>
     <div class="studio-tab__button-section">
-      <button :class="[
-        makingButton.active
-          ? 'studio-tab__making-button--active'
-          : 'studio-tab__making-button--disable',
-      ]" @click="plusMakingCount">
+      <button
+        :class="[
+          makingButton.active
+            ? 'studio-tab__making-button--active'
+            : 'studio-tab__making-button--disable',
+        ]"
+        @click="plusMakingCount"
+      >
         필름 생성하기 ( {{ films.length }} / {{ makingButton.possibleCount }} )
       </button>
     </div>
@@ -37,11 +40,19 @@ export default {
         testMakeFilm(
           props.studioInfo.studio_id,
           ({ data }) => {
-            saveMakedFilm(props.studioInfo.studio_id, data, (rst) => { console.log(rst); }, (er) => { console.log(er) })
-            console.log(data);
+            saveMakedFilm(
+              props.studioInfo.studio_id,
+              data,
+              (rst) => {
+                console.log("필름 저장 완료:", rst);
+              },
+              (er) => {
+                console.log("필릉 저장 오류:", er);
+              }
+            );
           },
           (err) => {
-            console.log(err);
+            console.log("필름 제작 완료:", err);
           }
         );
       } else {
