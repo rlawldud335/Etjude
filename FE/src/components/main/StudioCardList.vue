@@ -54,10 +54,6 @@ export default defineComponent({
           user_id: userId.value,
         },
         ({ data }) => {
-          // const allStudioData = data
-          // const myStudioData = allStudioData.filter((studio)=> {
-          //   return (studio.)
-          // })
           myStudioList.value = data;
           updateStudioCount();
         },

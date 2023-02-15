@@ -50,7 +50,6 @@ export default {
     const myStudioCount = computed(() => store.state.user.myStudioCount);
     const showStudio = ref(myStudioCount.value > 0);
     watch(myStudioCount, (newCount) => {
-      console.log("new", newCount);
       showStudio.value = newCount > 0;
     });
     return {
