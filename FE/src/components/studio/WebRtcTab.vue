@@ -4,8 +4,11 @@
       <div id="join-dialog" class="jumbotron vertical-center">
         <div class="form-group">
           <div>
+            {{ studioInfo }}
+            <hr />
+            {{ user }}
             <div>NICKNAME</div>
-            <div>{{ user.myPageSimpleResponse.userNickname }}</div>
+            <div>{{ user.myPageSimpleResponse.userNickName }}</div>
             <!-- <label for="participants"
               ><input
                 v-model="user.myPageSimpleResponse.userNickname"
@@ -16,7 +19,7 @@
           </div>
           <div>
             <div>STUDIO_ID</div>
-            <div>{{ mySessionId }}</div>
+            <div>{{ studioInfo.studio_id }}</div>
             <!-- <label for="session"
               ><input v-model="mySessionId" class="form-control" type="text" required
             /></label> -->
@@ -91,7 +94,7 @@ export default {
       subscribers: [],
 
       // Join form
-      mySessionId: this.studioInfo.studio_id,
+      // mySessionId: this.studioInfo.studio_id,
       // myUserName: this.user.myPageSimpleResponse.userNickname,
     };
   },
@@ -116,7 +119,7 @@ export default {
         console.warn(exception);
       });
 
-      this.getToken(this.mySessionId).then((token) => {
+      this.getToken(this.studioInfo.studio_id).then((token) => {
         this.session
           .connect(token, { clientData: this.user.myPageSimpleResponse.userNickname })
           .then(() => {
