@@ -44,7 +44,7 @@ export default {
       user_id: store.state.user.userId,
       studio_title: "",
       story_id: props.story_id,
-      team_member_Ids: ["2", "3"],
+      team_member_Ids: [store.state.user.userId, "3"],
     });
     const create = () => {
       createStudio(

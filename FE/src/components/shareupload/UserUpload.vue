@@ -71,9 +71,9 @@
 </template>
 <script>
 import { reactive, ref } from "vue";
+import { useStore } from "vuex";
 import { getMyStudio, getMyFilm } from "@/api/users";
 import { putFilmShare } from "@/api/share";
-import dummydata from "@/dummy/filmdummydata/page1.json";
 // import UploadCarousel from "./UploadCarousel.vue";
 
 export default {
@@ -83,6 +83,10 @@ export default {
   },
   setup() {
     // const carouselref = ref();
+    const store = useStore();
+    const userData = reactive({
+      userId: store.state.user.userId,
+    });
     const imgUpload = ref(null);
     const preview = ref("");
     const MyStudioData = ref([]);
@@ -97,15 +101,16 @@ export default {
       teamMembers: null,
     });
     const uploadData = reactive({
-      userId: "2",
+      userId: userData.userId,
       filmId: "",
       articleContent: "",
       articleTitle: "",
-      articleThumbnailUrl: "",
+      articleThumbnailUrl: preview.value,
     });
     const files = ref();
+    console.log(userData.userId);
     getMyStudio(
-      "2",
+      { user_id: userData.userId },
       ({ data }) => {
         console.log("My studio data:", data);
         data.forEach((array) => {
@@ -135,7 +140,7 @@ export default {
       FilmDetailData.value = {};
       selectedFilm.value = "";
       getMyFilm(
-        "2",
+        { user_id: userData.userId },
         ({ data }) => {
           console.log("Get My film data:", data);
           data.forEach((array) => {
@@ -165,16 +170,25 @@ export default {
         }
       });
     };
-    const getImageFiles = (e) => {
-      imgUpload.value = e.currentTarget.files;
-      preview.value = URL.createObjectURL(imgUpload.value[0]);
-    };
+    // const getImageFiles = (e) => {
+    //   imgUpload.value = e.currentTarget.files;
+    //   preview.value = URL.createObjectURL(imgUpload.value[0]);
+    // };
+    function getImageFiles(event) {
+      // eslint-disable-next-line prefer-destructuring
+      imgUpload.value = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(imgUpload.value);
+      reader.onload = () => {
+        preview.value = reader.result;
+      };
+    }
     // const refreshcarousel = () => {
     //   carouselref.value.refresh();
     // };
     return {
       // carouselref,
-      dummydata,
+      userData,
       imgUpload,
       preview,
       files,
