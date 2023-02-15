@@ -25,7 +25,6 @@
         </div>
       </div>
       <div id="video-contaniner2" class="col-md-6">
-        <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
           <div class="studio_video-section">
             <UserVideo

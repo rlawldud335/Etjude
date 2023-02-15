@@ -35,7 +35,7 @@
             @made-flim="madeFlim" />
           <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3" :studioId="studioId"
             :flimState="flimState" :stompClient="stompClient" :recvList="chatState.recvList" />
-          <WebRtcTab v-show="state.selectTab === 4" />
+          <WebRtcTab v-show="state.selectTab === 4" :studioInfo="studioData.studioInfo" />
         </div>
       </div>
       <div class="studio__tab">

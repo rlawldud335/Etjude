@@ -22,4 +22,9 @@ async function getMyFilm(user, success, fail) {
   await api.post(`/mypage/film`, user).then(success).catch(fail);
 }
 
-export { getMyPage, getMyLike, getMyStudio, getMyFilm };
+async function getUserSearch(email, success, fail) {
+  console.log("# POST : 이메일로 유저 아이디 검색 ");
+  await api.post(`/studio/search`, email).then(success).catch(fail);
+}
+
+export { getMyPage, getMyLike, getMyStudio, getMyFilm, getUserSearch };
