@@ -14,7 +14,6 @@
             :scriptState="scriptState"
             :studioInfo="studioData.studioInfo"
             :allLines="studioData.allLines"
-            :user="user"
           />
         </div>
         <div class="studio__video__script">
@@ -58,11 +57,7 @@
             :films="studioData.films"
             :studioInfo="studioData.studioInfo"
           />
-          <ChatTab
-            v-show="state.selectTab === 3"
-            :studioInfo="studioData.studioInfo"
-            :user="user"
-          />
+          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" />
           <WebRtcTab v-show="state.selectTab === 4" :studioInfo="studioData.studioInfo" />
         </div>
       </div>
@@ -120,12 +115,11 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import { reactive, ref, onBeforeMount, computed } from "vue";
+import { reactive, ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import { getStudioInfo, getStudioStoryScript, getSceneRecordList, getFlimList } from "@/api/studio";
 import Chatting from "@/assets/icons/Chatting.svg";
 import RTCIcon from "@/assets/icons/RTCIcon.svg";
-import { useStore } from "vuex";
 import ChatTab from "@/components/studio/ChattingTab.vue";
 import WebRtcTab from "@/components/studio/WebRtcTab.vue";
 
@@ -148,10 +142,7 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const store = useStore();
-    const user = computed(() => store.state.user);
 
-    console.log(store.state.user);
     const state = reactive({
       isOpenTab: true,
       selectTab: 0,
@@ -301,7 +292,6 @@ export default {
       scriptState,
       changeCurrentTime,
       changeCurrentSlide,
-      user,
     };
   },
 };
