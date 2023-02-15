@@ -10,6 +10,7 @@ import offworkseekers.unnamed.api.response.StudioRecordListResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.db.entity.Film;
 import offworkseekers.unnamed.db.entity.Scene;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,7 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
 
     @Override
     public List<StudioRecordListResponse> findRecordingByStudioId(Long studioId, Long storyId) {
+        System.out.println(studioId);
         List<Scene> storySceneList = queryFactory
                 .selectFrom(scene)
                 .where(
@@ -118,12 +120,13 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
         for (Scene nowScene : storySceneList) {
             Long nowSceneId = nowScene.getSceneId();
             int nowSceneNumber = nowScene.getSceneNumber();
+            System.out.println(nowSceneId);
 
             Tuple tuple = queryFactory
                     .select(recording.recordingVideoUrl, recording.scene.sceneId, recording.scene.sceneNumber, recording.userId)
                     .from(recording)
                     .where(
-                            recording.scene.sceneId.eq(nowSceneId),
+                            recording.scene.sceneId.eq(Long.valueOf(nowSceneNumber)),
                             recording.studio.studioId.eq(studioId)
                     )
                     .fetchOne();
