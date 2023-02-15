@@ -29,7 +29,7 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     @Override
     public List<MyPageStudiosResponse> getMyPageStudios(String userId) {
-        List<MyPageStudiosResponse> member = queryFactory
+        List<MyPageStudiosResponse> result = queryFactory
                 .select(Projections.constructor(MyPageStudiosResponse.class,
                         studio.studioId,
                         studio.story.storyThumbnailUrl,
@@ -42,29 +42,9 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .where(teamMember.studio.studioId.eq(studio.studioId), teamMember.user.userId.eq(userId))
                 .fetch();
 
-        List<MyPageStudiosResponse> captain = queryFactory
-                .select(Projections.constructor(MyPageStudiosResponse.class,
-                        studio.studioId,
-                        studio.story.storyThumbnailUrl,
-                        studio.studioTitle,
-                        studio.story.storyTitle,
-                        studio.studioEndDate,
-                        studio.studioEndDate
-                ))
-                .from(studio)
-                .where(studio.captainId.eq(userId))
-                .fetch();
-
-        for (MyPageStudiosResponse temp : member) {
+        for (MyPageStudiosResponse temp : result) {
             temp.setStudioCreatedDate(temp.getStudioCreatedDate().minusDays(7));
         }
-        for (MyPageStudiosResponse temp : captain) {
-            temp.setStudioCreatedDate(temp.getStudioCreatedDate().minusDays(7));
-        }
-
-        List<MyPageStudiosResponse> result = new ArrayList<>();
-        result.addAll(member);
-        result.addAll(captain);
 
         return result;
     }
@@ -87,28 +67,10 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         , film.studio.story.eq(story), studio.studioId.eq(studioId), film.studio.eq(studio))
                 .fetch();
 
-        List<MyPageFilmsResponse> captain = queryFactory
-                .select(Projections.constructor(MyPageFilmsResponse.class,
-                        film.filmId,
-                        story.category.categoryName,
-                        story.work.workTitle,
-                        story.storyTitle,
-                        studio.studioTitle,
-                        film.filmVideoUrl,
-                        film.filmCreatedDate,
-                        studio.studioEndDate))
-                .from(film, story, studio)
-                .where(studio.captainId.eq(userId), studio.studioId.eq(studioId), studio.story.eq(story), film.studio.eq(studio))
-                .fetch();
-
-        List<MyPageFilmsResponse> concat = new ArrayList<>();
-        concat.addAll(member);
-        concat.addAll(captain);
-
         List<MyPageFilmsWithMembersResponse> result = new ArrayList<>();
 
-        for (int i = 0, len = concat.size(); i < len; i++) {
-            MyPageFilmsResponse temp = concat.get(i);
+        for (int i = 0, len = member.size(); i < len; i++) {
+            MyPageFilmsResponse temp = member.get(i);
             List<String> Members = queryFactory
                     .select(teamMember.user.nickName)
                     .from(studio, teamMember)
