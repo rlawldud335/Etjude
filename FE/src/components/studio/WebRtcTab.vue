@@ -2,7 +2,6 @@
   <div id="main-container" class="container">
     <div id="join" v-if="!session">
       <div id="join-dialog" class="jumbotron vertical-center">
-        <h1>Join a video session</h1>
         <div class="form-group">
           <div>
             <div>NICKNAME</div>
@@ -16,23 +15,19 @@
               ><input v-model="mySessionId" class="form-control" type="text" required
             /></label>
           </div>
-          <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">참여하기</button>
-          </p>
+          <div class="studio-tab__button-section">
+            <button @click="joinSession()">화상 회의 참여하기</button>
+          </div>
+          <hr />
         </div>
       </div>
     </div>
 
     <div id="session" v-if="session">
       <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
+        <div class="studio-tab__button-section">
+          <button @click="leaveSession">화상 회의 떠나기</button>
+        </div>
       </div>
       <div v-show="false">
         <div id="main-video" class="col-md-6">
@@ -232,3 +227,23 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.studio-tab__button-section {
+  button {
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    padding: 8px 30px;
+    white-space: nowrap;
+    background-color: $bana-pink;
+    color: white;
+    border-radius: 8px;
+  }
+
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>
