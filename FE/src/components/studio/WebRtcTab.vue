@@ -121,7 +121,7 @@ export default {
 
       this.getToken(this.studioInfo.studio_id).then((token) => {
         this.session
-          .connect(token, { clientData: this.user.myPageSimpleResponse.userNickname })
+          .connect(token, { clientData: this.user.myPageSimpleResponse.userNickName })
           .then(() => {
             this.OV.getUserMedia({
               audioSource: false,
