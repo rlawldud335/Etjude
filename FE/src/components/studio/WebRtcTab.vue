@@ -6,7 +6,6 @@
           <div class="studio-tab__button-section">
             <button @click="joinSession()">화상 회의 참여하기</button>
           </div>
-          <hr />
         </div>
       </div>
     </div>
