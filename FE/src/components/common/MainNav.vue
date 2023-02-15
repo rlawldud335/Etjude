@@ -3,7 +3,7 @@
     <nav class="header">
       <div class="header__logo-nav">
         <router-link :to="{ name: 'main' }" class="header__logo">
-          <p>Logo</p>
+          <headerLogo />
         </router-link>
         <div class="header__nav">
           <router-link :to="{ name: 'search' }" class="header__nav-item">검색</router-link>
@@ -73,11 +73,13 @@ import { useRouter, useRoute } from "vue-router";
 import { handleSignOut } from "@/api/login";
 import logoutIcon from "@/assets/icons/logout.svg";
 import profileIcon from "@/assets/icons/profile.svg";
+import headerLogo from "@/assets/icons/logo_textrow_header.svg";
 
 export default {
   components: {
     logoutIcon,
     profileIcon,
+    headerLogo,
   },
   setup() {
     const router = useRouter();
@@ -144,7 +146,7 @@ nav {
 .header__logo-nav {
   display: flex;
   align-items: center;
-  margin-left: 30px;
+  margin-left: 20px;
 }
 
 .header__logo {
