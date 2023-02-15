@@ -3,28 +3,17 @@
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 0 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 2 },
-        ]"
-        ref="videoOutput"
-        :src="studioInfo.storyVideoUrl"
-        @timeupdate="changeTimeHandler"
-        controls
-        loop="loop"
-      ></video>
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 2 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 0 },
-        ]"
-        :srcObject="mediaStream"
-        autoplay
-        muted
-      ></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 0 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 2 },
+      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls
+        loop="loop"></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 2 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 0 },
+      ]" :srcObject="mediaStream" autoplay muted></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
@@ -51,7 +40,7 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
@@ -61,6 +50,7 @@ import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
 import { webmFixDuration } from "webm-fix-duration";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -76,13 +66,15 @@ export default {
     scriptState: Object,
     allLines: Array,
     studioInfo: Object,
-    user: Object,
   },
   emits: ["change-video-state", "save-recording-data", "change-current-slide"],
   setup(props, { emit }) {
     const state = reactive({
       videoMode: 1,
     });
+
+    const store = useStore();
+    const user = computed(() => store.state.user);
 
     const videoOutput = ref(null);
 
@@ -199,7 +191,7 @@ export default {
                 recording_video_url: data.Location,
                 scene_id: props.videoState.sceneIdx,
                 studio_id: props.studioInfo.studio_id,
-                user_id: props.user.user_id,
+                user_id: user.value.userId,
               };
               saveSceneRecord(
                 params,
@@ -215,7 +207,11 @@ export default {
                 "save-recording-data",
                 props.videoState.sceneIdx,
                 recordedMediaURL.value,
-                props.user
+                {
+                  user_id: user.value.userId,
+                  nickname: user.value.myPageSimpleResponse.userNickName,
+                  profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
+                }
               );
             },
             (err) => {
@@ -279,7 +275,7 @@ export default {
   position: relative;
 }
 
-.video-player > video {
+.video-player>video {
   height: 100%;
 }
 
