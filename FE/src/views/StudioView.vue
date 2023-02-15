@@ -8,7 +8,8 @@
         <div class="studio__video__video">
           <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
             @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" />
+            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines"
+            @change-record-sync-state="changeRecordSyncState" />
         </div>
         <div class="studio__video__script">
           <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
@@ -166,21 +167,25 @@ export default {
       return newAllLines;
     };
 
+    const callApiSceneRecordList = (studioId, storyId) => {
+      getSceneRecordList(
+        studioId,
+        storyId,
+        ({ data }) => {
+          studioData.records = data;
+        },
+        (error) => {
+          console.log("씬 레코드 리스트 오류:", error);
+        }
+      );
+    }
+
     const callApiStudioInfo = (studioId) => {
       getStudioInfo(
         studioId,
         ({ data }) => {
           studioData.studioInfo = data;
-          getSceneRecordList(
-            studioId,
-            data.story_id,
-            ({ data: data2 }) => {
-              studioData.records = data2;
-            },
-            (error) => {
-              console.log("씬 레코드 리스트 오류:", error);
-            }
-          );
+          callApiSceneRecordList(studioId, data.story_id);
         },
         (error) => {
           console.log("스튜디오 정보 오류:", error);
@@ -286,7 +291,11 @@ export default {
           if (temp.content === "3924873") {
             callApiFlimList(studioData.studioInfo.studio_id);
             chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
-          } else {
+          } else if (temp.connect === "ReloadRecordingFileCommend") {
+            callApiSceneRecordList(studioData.studioInfo.studio_id, studioData.studioInfo.story_id);
+            chatState.recvList.push("새로운 녹화영상을 생성했습니다.");
+          }
+          else {
             chatState.recvList.push(temp);
           }
           console.log(chatState.recvList)
@@ -296,6 +305,30 @@ export default {
     };
 
     const studioId = ref(null);
+
+    const recordSyncState = reactive({
+      userId: "",
+      sceneId: 0,
+      isRecording: true,
+    })
+
+    const changeRecordSyncState = (userId, sceneId, isRecording) => {
+      recordSyncState.userId = userId;
+      recordSyncState.sceneId = sceneId;
+      recordSyncState.isRecording = isRecording;
+      console.log(userId, sceneId, isRecording);
+      // isRecording이 false가 되면 녹화본 리로드 이벤트 전송
+      if (isRecording === false) {
+        if (stompClient && stompClient.connected) {
+          stompClient.send(
+            `/pub/api/v1/studio/chat/${studioId.value}/${user.value.userId}/${user.value.myPageSimpleResponse.userPhotoUrl}`,
+            {},
+            `ReloadRecordingFileCommend`
+          );
+        }
+      }
+    }
+
 
     onBeforeMount(() => {
       if (route.params?.studioId) {
@@ -324,7 +357,8 @@ export default {
       flimState,
       stompClient,
       chatState,
-      studioId
+      studioId,
+      changeRecordSyncState
     };
   },
 };
