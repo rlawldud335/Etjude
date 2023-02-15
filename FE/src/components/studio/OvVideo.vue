@@ -15,3 +15,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+video {
+  padding-bottom: 10px;
+}
+</style>
