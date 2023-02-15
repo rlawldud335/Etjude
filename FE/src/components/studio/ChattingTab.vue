@@ -1,4 +1,3 @@
-<!-- eslint-disable eqeqeq -->
 <template>
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
@@ -95,7 +94,7 @@ export default {
       }
     }
     watch(
-      () => state.recvList,
+      () => recvListData.value,
       () => {
         nextTick(() => {
           messages.value.scrollTo({ top: messages.value.scrollHeight, behavior: "smooth" });
