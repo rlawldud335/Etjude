@@ -2,9 +2,9 @@
 <template>
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
-      <div v-for="item in state.recvList" :key="item">
-        <ChattingTabLine v-if="item.studioId == state.studioId && item.userId !== user.userId" :line="item" />
-        <ChattingTabMyLine v-if="item.studioId == state.studioId && item.userId === user.userId" :line="item" />
+      <div v-for="item in recvListData" :key="item">
+        <ChattingTabLine v-if="item.studioId == studioId && item.userId !== user.userId" :line="item" />
+        <ChattingTabMyLine v-if="item.studioId == studioId && item.userId === user.userId" :line="item" />
       </div>
     </div>
     <div class="chatting-input">
@@ -12,7 +12,7 @@
       <label for="chattingInput" class="chatting-input__input">
         <input id="chattingInput" v-model="state.message" type="text" @keyup.enter="sendMessage" />
       </label>
-      <ChattingSend />
+      <ChattingSend @click="test" />
     </div>
   </div>
 </template>
@@ -22,71 +22,50 @@ import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
 import ChattingTabLine from "@/components/studio/ChattingTabLine.vue";
 import ChattingTabMyLine from "@/components/studio/ChattingTabMyLine.vue";
-import Stomp from "stompjs";
-import SockJS from "sockjs-client";
 import { useStore } from "vuex";
 
 export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
-  props: { studioInfo: Object, flimState: Object },
-  emits: ['call-api-film-list'],
-  setup(props, { emit }) {
-    const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
-    const socket = new SockJS(serverURL);
-    const stompClient = Stomp.over(socket);
+  props: { studioId: Number, flimState: Object, stompClient: Object, recvList: Array },
+  setup(props) {
     const store = useStore();
     const user = computed(() => store.state.user);
-
     const state = reactive({
-      studioId: props.studioInfo.studio_id,
       message: "",
-      recvList: [],
     });
+    const recvListData = computed(() => props.recvList);
+
 
     watch(() => props.flimState.madeCnt, () => {
-      console.log("커넥션이 있나?", stompClient.connected);
-      if (stompClient && stompClient.connected) {
+      console.log("커넥션이 있나?", props.stompClient.connected);
+      if (props.stompClient && props.stompClient.connected) {
         console.log("채팅탭의 필름 상태", props.flimState);
-        stompClient.send(
-          `/pub/api/v1/studio/chat/${state.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
+        props.stompClient.send(
+          `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
           {},
           `3924873`
         );
       }
     })
 
-    const connect = () => {
-      stompClient.connect({}, () => {
-        console.log("사용자 정보 ", user);
-        // 소켓 연결 성공
-        stompClient.connected = true;
-        stompClient.attender = {
-          userId: user.value.userId,
-          userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl
-        };
-        console.log(stompClient.attender);
-        // 서버의 메시지 전송 endpoint를 구독합니다.
-        stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, async (res) => {
-          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-          const temp = JSON.parse(res.body);
-          console.log("받은 메시지 ", temp);
-          if (temp.content === "3924873") {
-            emit('call-api-film-list', state.studioId);
-            state.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
-          } else {
-            state.recvList.push(temp);
-          }
-
-        });
-      });
-    };
+    const test = () => {
+      if (props.stompClient && props.stompClient.connected) {
+        console.log("채팅탭의 필름 상태", props.flimState);
+        props.stompClient.send(
+          `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
+          {},
+          `3924873`
+        );
+      }
+    }
 
     function send() {
       return new Promise((resolve) => {
-        if (stompClient && stompClient.connected) {
-          stompClient.send(
-            `/pub/api/v1/studio/chat/${state.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
+        if (props.stompClient && props.stompClient.connected) {
+          console.log("sendmessage", `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`, state.message)
+          props.stompClient.send(
+            `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
             {},
             state.message
           );
@@ -103,18 +82,12 @@ export default {
       }
     }
 
-    watch(
-      () => props.studioInfo,
-      () => {
-        state.studioId = props.studioInfo.studio_id;
-        connect();
-      }
-    );
-
     return {
       sendMessage,
       state,
-      user
+      user,
+      recvListData,
+      test
     };
   },
   watch: {

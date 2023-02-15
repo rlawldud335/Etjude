@@ -32,8 +32,8 @@
             :records="studioData.records" :storyScript="studioData.storyScript" />
           <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo"
             @made-flim="madeFlim" />
-          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3"
-            :studioInfo="studioData.studioInfo" :flimState="flimState" />
+          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3" :studioId="studioId"
+            :flimState="flimState" :stompClient="stompClient" :recvList="chatState.recvList" />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
@@ -76,13 +76,16 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import { reactive, ref, onBeforeMount } from "vue";
+import { reactive, ref, onBeforeMount, computed } from "vue";
 import { useRoute } from "vue-router";
 import { getStudioInfo, getStudioStoryScript, getSceneRecordList, getFlimList } from "@/api/studio";
 import Chatting from "@/assets/icons/Chatting.svg";
 import RTCIcon from "@/assets/icons/RTCIcon.svg";
 import ChatTab from "@/components/studio/ChattingTab.vue";
 import WebRtcTab from "@/components/studio/WebRtcTab.vue";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -210,15 +213,6 @@ export default {
       );
     }
 
-    onBeforeMount(() => {
-      if (route.params?.studioId) {
-        const studioId = route.params?.studioId;
-        callApiStudioInfo(studioId);
-        callApiStudioStoryScript(studioId);
-        callApiFlimList(studioId);
-      }
-    });
-
     const videoState = reactive({
       sceneIdx: 1,
       isRecording: false,
@@ -264,6 +258,55 @@ export default {
       scriptState.currentSlide = idx;
     };
 
+    const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
+    const socket = new SockJS(serverURL);
+    const stompClient = Stomp.over(socket);
+    const store = useStore();
+    const user = computed(() => store.state.user);
+    const chatState = reactive({
+      recvList: [],
+    })
+
+    const connect = () => {
+      stompClient.connect({}, () => {
+        // 소켓 연결 성공
+        stompClient.connected = true;
+        stompClient.attender = {
+          userId: user.value.userId,
+          userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl
+        };
+        console.log("스튜디오 참가자 ", stompClient.attender);
+        console.log(studioData.studioInfo.studio_id);
+        console.log(user.value.userId);
+        // 서버의 메시지 전송 endpoint를 구독합니다.
+        stompClient.subscribe(`/sub/api/v1/studio/chat/${studioData.studioInfo.studio_id}`, async (res) => {
+          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+          const temp = JSON.parse(res.body);
+          console.log("받은 메시지 ", temp);
+          if (temp.content === "3924873") {
+            callApiFlimList(studioData.studioInfo.studio_id);
+            chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
+          } else {
+            chatState.recvList.push(temp);
+          }
+          console.log(chatState.recvList)
+
+        });
+      });
+    };
+
+    const studioId = ref(null);
+
+    onBeforeMount(() => {
+      if (route.params?.studioId) {
+        studioId.value = route.params?.studioId;
+        callApiStudioInfo(studioId.value);
+        callApiStudioStoryScript(studioId.value);
+        callApiFlimList(studioId.value);
+        connect();
+      }
+    });
+
     return {
       state,
       tabs,
@@ -278,7 +321,10 @@ export default {
       changeCurrentSlide,
       callApiFlimList,
       madeFlim,
-      flimState
+      flimState,
+      stompClient,
+      chatState,
+      studioId
     };
   },
 };
