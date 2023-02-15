@@ -2,8 +2,8 @@
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
       <div v-for="item in state.recvList" :key="item">
-        <ChattingTabLine v-if="item.nickname !== state.nickname" :line="item" />
-        <ChattingTabMyLine v-if="item.nickname === state.nickname" :line="item" />
+        <ChattingTabLine v-if="item.studioId == state.studioId && item.userId !== user.userId" :line="item" />
+        <ChattingTabMyLine v-if="item.studioId == state.studioId && item.userId === user.userId" :line="item" />
       </div>
     </div>
     <div class="chatting-input">
@@ -16,45 +16,47 @@
   </div>
 </template>
 <script>
-import { reactive, watch } from "vue";
+import { reactive, watch, computed } from "vue";
 import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
 import ChattingTabLine from "@/components/studio/ChattingTabLine.vue";
 import ChattingTabMyLine from "@/components/studio/ChattingTabMyLine.vue";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import { useStore } from "vuex";
 
 export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
-  props: { studioInfo: Object, user: Object },
+  props: { studioInfo: Object },
   setup(props) {
     const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
     const socket = new SockJS(serverURL);
     const stompClient = Stomp.over(socket);
-
+    const store = useStore();
+    const user = computed(() => store.state.user);
 
     const state = reactive({
       studioId: props.studioInfo.studio_id,
-      userId: props.user.user_id,
-      userPhotoUrl: props.user.profile_url,
-      nickname: props.user.nickname,
       message: "",
       recvList: [],
     });
 
     const connect = () => {
       stompClient.connect({}, () => {
+        console.log("사용자 정보 ", user);
         // 소켓 연결 성공
         stompClient.connected = true;
         stompClient.attender = {
-          userId: state.userId,
-          userPhotoUrl: state.userPhotoUrl,
+          userId: user.value.userId,
+          userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl
         };
+        console.log(stompClient.attender);
         // 서버의 메시지 전송 endpoint를 구독합니다.
         stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, async (res) => {
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
           const temp = JSON.parse(res.body);
+          console.log("받은 메시지 ", temp);
           state.recvList.push(temp);
         });
       });
@@ -64,7 +66,7 @@ export default {
       return new Promise((resolve) => {
         if (stompClient && stompClient.connected) {
           stompClient.send(
-            `/pub/api/v1/studio/chat/${state.studioId}/${state.userId}/${state.nickname}`,
+            `/pub/api/v1/studio/chat/${state.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
             {},
             state.message
           );
@@ -74,7 +76,7 @@ export default {
     }
 
     function sendMessage() {
-      if (state.nickname !== "" && state.message !== "") {
+      if (user.value.myPageSimpleResponse.userNickName !== "" && state.message !== "") {
         send().then(() => {
           state.message = "";
           console.log("받은메시지 리스트", state.recvList);
@@ -91,19 +93,10 @@ export default {
       }
     );
 
-    watch(
-      () => props.user,
-      () => {
-        state.userId = props.user.user_id;
-        state.userPhotoUrl = props.user.profile_url;
-        state.nickname = props.user.nickname;
-        connect();
-      }
-    );
-
     return {
       sendMessage,
       state,
+      user
     };
   },
   watch: {
