@@ -1,3 +1,4 @@
+<!-- eslint-disable eqeqeq -->
 <template>
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
@@ -43,12 +44,14 @@ export default {
       recvList: [],
     });
 
-    watch(() => props.flimState, () => {
+    watch(() => props.flimState.madeCnt, () => {
+      console.log("커넥션이 있나?", stompClient.connected);
       if (stompClient && stompClient.connected) {
+        console.log("채팅탭의 필름 상태", props.flimState);
         stompClient.send(
           `/pub/api/v1/studio/chat/${state.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
           {},
-          `makeFilmAndReroadCommend`
+          `3924873`
         );
       }
     })
@@ -67,13 +70,14 @@ export default {
         stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, async (res) => {
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
           const temp = JSON.parse(res.body);
-          console.log("받은 메시지 ", temp.content);
-
-          if (temp.connect === "makeFilmAndReroadCommend") {
+          console.log("받은 메시지 ", temp);
+          if (temp.content === "3924873") {
             emit('call-api-film-list', state.studioId);
+            state.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
           } else {
             state.recvList.push(temp);
           }
+
         });
       });
     };

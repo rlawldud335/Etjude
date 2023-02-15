@@ -210,16 +210,6 @@ export default {
       );
     }
 
-    const flimState = reactive({
-      studioId: 0,
-      madeCnt: 0,
-    });
-
-    const madeFlim = (studioId, cnt) => {
-      flimState.studioId = studioId;
-      flimState.madeCnt = cnt;
-    }
-
     onBeforeMount(() => {
       if (route.params?.studioId) {
         const studioId = route.params?.studioId;
@@ -238,6 +228,17 @@ export default {
       currentTime: 0,
       currentSlide: 0,
     });
+
+    const flimState = reactive({
+      studioId: -1,
+      madeCnt: -1,
+    });
+
+    const madeFlim = (studioId, cnt) => {
+      console.log("madeFlim", studioId, cnt);
+      flimState.studioId = studioId;
+      flimState.madeCnt = cnt;
+    }
 
     const changeVideoState = (sceneIdx, isRecording) => {
       videoState.sceneIdx = sceneIdx;

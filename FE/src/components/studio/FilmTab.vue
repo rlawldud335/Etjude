@@ -1,6 +1,6 @@
 <template>
   <div class="studio__film-tab">
-    <FilmTabFilm v-for="film in films" :key="film.film_id" :film="film"></FilmTabFilm>
+    <FilmTabFilm v-for="film in FlimData" :key="film.film_id" :film="film"></FilmTabFilm>
     <div class="studio-tab__button-section" v-if="captainId == userId">
       <button :class="[
         makingButton.active
@@ -34,6 +34,7 @@ export default {
     const store = useStore();
     const userId = computed(() => store.state.user.userId);
     const captainId = computed(() => props.studioInfo.captain_id);
+    const FlimData = computed(() => props.films);
 
     const makingButton = reactive({
       possibleCount: 3,
@@ -78,7 +79,8 @@ export default {
       makingButton,
       plusMakingCount,
       userId,
-      captainId
+      captainId,
+      FlimData
     };
   },
 };
