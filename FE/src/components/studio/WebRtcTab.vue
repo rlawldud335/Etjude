@@ -184,6 +184,7 @@ export default {
     },
 
     async getToken(mySessionId) {
+      console.log(mySessionId);
       await this.createSession(mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(mySessionId);
@@ -191,6 +192,7 @@ export default {
 
     // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
+      console.log("createSession", sessionId);
       await axios
         .post(
           `${APPLICATION_SERVER_URL}api/sessions`,
