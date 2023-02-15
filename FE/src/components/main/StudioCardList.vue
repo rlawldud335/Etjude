@@ -39,7 +39,7 @@ export default defineComponent({
     const settings = {
       itemsToShow: 4,
       snapAlign: "start",
-      wrapAround: false,
+      wrapAround: true,
     };
     const breakpoints = {
       480: {

@@ -16,7 +16,7 @@
         @mouseout="state.isHovered = false"
         @focusout="state.isHovered = false"
       >
-        <CircleSetting />
+        <CircleSetting class="studio__setting-icon" />
 
         <div class="studio__setting-section" v-show="state.isHovered">
           <div class="studio__setting-dropdown">
@@ -126,6 +126,9 @@ export default {
 .studio__setting-section {
   position: absolute;
   z-index: 1;
+}
+.studio__setting-icon {
+  margin-left: 5px;
 }
 
 .studio__setting-dropdown {
