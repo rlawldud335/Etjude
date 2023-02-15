@@ -113,7 +113,7 @@ public class StudioController {
                      @DestinationVariable("nickname") String nickname, String content) throws Exception{
 
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedNow = now.format(formatter);
 
         simpMessagingTemplate.convertAndSend("/sub/api/v1/studio/chat/" + studioId , new SocketDTO(studioId, userId, nickname, content, formattedNow));
