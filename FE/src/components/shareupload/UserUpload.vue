@@ -15,6 +15,7 @@
     />
     <h2>썸네일</h2>
     <label for="img_upload">
+      <img :src="preview" class="thumbnail_upload" alt="" />
       <input
         ref="imgUpload"
         @change="getImageFiles"
@@ -25,7 +26,6 @@
         multiple
       />
     </label>
-    <div class="thumbnail_upload" @click="clickthumbnail"></div>
   </div>
   <div class="right_container" @load="refreshcarousel">
     필름 선택하기
@@ -83,8 +83,8 @@ export default {
   },
   setup() {
     // const carouselref = ref();
-    const imgUpload = ref();
-    const preview = ref();
+    const imgUpload = ref(null);
+    const preview = ref("");
     const MyStudioData = ref([]);
     const MyFilmData = ref([]);
     const selectedStudio = ref("");
@@ -103,7 +103,7 @@ export default {
       articleTitle: "",
       articleThumbnailUrl: "",
     });
-    let files = ref();
+    const files = ref();
     getMyStudio(
       "2",
       ({ data }) => {
@@ -166,13 +166,8 @@ export default {
       });
     };
     const getImageFiles = (e) => {
-      files = `require(${e.currentTarget.value})`;
-      console.log("image 가져오기 : ", files);
-      console.log("==========");
-      console.log(files.value);
-    };
-    const clickthumbnail = () => {
-      imgUpload.value.click();
+      imgUpload.value = e.currentTarget.files;
+      preview.value = URL.createObjectURL(imgUpload.value[0]);
     };
     // const refreshcarousel = () => {
     //   carouselref.value.refresh();
@@ -183,7 +178,6 @@ export default {
       imgUpload,
       preview,
       files,
-      clickthumbnail,
       getImageFiles,
       onChange,
       MyStudioData,
@@ -221,7 +215,6 @@ export default {
   // background-color: red;
 }
 .img_upload {
-  display: none;
 }
 .thumbnail_upload {
   width: 200px;
@@ -290,6 +283,9 @@ h2 {
   height: 240px;
 }
 .filmcontent {
+  position: absolute;
+  left: 20px;
+  bottom: 60px;
   box-sizing: border-box;
   display: flex;
   margin: 40px 0px;

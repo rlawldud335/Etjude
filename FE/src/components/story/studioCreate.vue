@@ -27,6 +27,7 @@
 // import QuitButton from "@/assets/icons/Quit Button.svg";
 import { createStudio } from "@/api/story";
 import { reactive } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "studioCreate",
@@ -38,8 +39,9 @@ export default {
     story_id: Number,
   },
   setup(props) {
+    const store = useStore();
     const studiodata = reactive({
-      user_id: "1",
+      user_id: store.state.user.userId,
       studio_title: "",
       story_id: props.story_id,
       team_member_Ids: ["2", "3"],
