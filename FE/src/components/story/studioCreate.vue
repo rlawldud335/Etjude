@@ -13,7 +13,15 @@
     </div>
     <div class="member_container">
       <div class="title_Name">팀원추가하기</div>
-      <input class="input_text" placeholder="ID를 입력해주세요." />
+      <input
+        class="input_text"
+        @input="emailData.keyword = $event.target.value"
+        placeholder="이메일을 입력해주세요."
+      />
+      <button @click="addMember" class="inputButton">추가</button>
+      <div class="emailData" v-for="(item, index) in viewemail.keyword" :key="index">
+        {{ item }}
+      </div>
       <!-- <inputDropdown></inputDropdown> -->
       <div class="member_list"></div>
     </div>
@@ -28,6 +36,7 @@
 import { createStudio } from "@/api/story";
 import { reactive } from "vue";
 import { useStore } from "vuex";
+import { getUserSearch } from "@/api/users";
 
 export default {
   name: "studioCreate",
@@ -40,17 +49,45 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    const emailData = reactive({
+      keyword: "",
+    });
+    const viewemail = reactive({
+      keyword: [],
+    });
     const studiodata = reactive({
       user_id: store.state.user.userId,
       studio_title: "",
       story_id: props.story_id,
       team_member_Ids: [],
     });
+
+    const addMember = () => {
+      getUserSearch(
+        emailData,
+        ({ data }) => {
+          console.log(data, "검색 완료");
+          data.forEach((array) => {
+            if (array.user_email === emailData.keyword) {
+              studiodata.team_member_Ids.push(array.user_id);
+              viewemail.keyword.push(array.user_email);
+            }
+          });
+          console.log(studiodata, "스튜디오 생성 전 확인");
+        },
+        (error) => {
+          console.log(error);
+          console.log(emailData);
+        }
+      );
+    };
+
     const create = () => {
       createStudio(
         studiodata,
         ({ data }) => {
-          console.log("스튜디오 생성 완료:", data);
+          console.log(data, "생성 완료");
+          console.log(studiodata);
         },
         (error) => {
           console.log("스튜디오 생성 오류:", error);
@@ -59,7 +96,10 @@ export default {
     };
     return {
       studiodata,
+      emailData,
+      addMember,
       create,
+      viewemail,
     };
   },
 };
@@ -108,6 +148,21 @@ export default {
   color: #606060;
   margin-bottom: 5px;
   font-size: 14px;
+}
+.inputButton {
+  margin-left: 10px;
+  padding: 5px 10px;
+  gap: 5px;
+  background: #ff5775;
+  border-radius: 4px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.emailData {
+  padding: 3px;
+  font-size: 14px;
+  font-weight: 500;
 }
 .button_container {
   text-align: center;
