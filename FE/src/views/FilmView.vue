@@ -13,12 +13,6 @@
           <input class="search__input" placeholder="검색어를 입력해주세요." />
           <Search class="search__glass-icon" />
         </div>
-        <div class="search__tag">
-          <button class="search__tag-button"># 드라마</button>
-          <button class="search__tag-button"># 영화</button>
-          <button class="search__tag-button"># 연극</button>
-          <button class="search__tag-button"># 기타</button>
-        </div>
       </div>
       <div class="upload">
         <button class="upload__button" @click="showModal = true">업로드</button>
@@ -86,7 +80,9 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
+
 .search__input {
   background-color: #ffeff2;
   padding: 15px 40px;
@@ -102,8 +98,10 @@ export default {
   font-size: 14px;
 }
 .search__glass-icon {
-  margin-left: 10px;
+  position: absolute;
   cursor: pointer;
+  right: 0;
+  margin-right: 10px;
 }
 
 .search__tag {
