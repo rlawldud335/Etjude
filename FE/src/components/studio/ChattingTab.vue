@@ -28,8 +28,9 @@ import { useStore } from "vuex";
 export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
-  props: { studioInfo: Object },
-  setup(props) {
+  props: { studioInfo: Object, flimState: Object },
+  emits: ['call-api-film-list'],
+  setup(props, { emit }) {
     const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
     const socket = new SockJS(serverURL);
     const stompClient = Stomp.over(socket);
@@ -41,6 +42,16 @@ export default {
       message: "",
       recvList: [],
     });
+
+    watch(() => props.flimState, () => {
+      if (stompClient && stompClient.connected) {
+        stompClient.send(
+          `/pub/api/v1/studio/chat/${state.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
+          {},
+          `makeFilmAndReroadCommend`
+        );
+      }
+    })
 
     const connect = () => {
       stompClient.connect({}, () => {
@@ -56,8 +67,13 @@ export default {
         stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, async (res) => {
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
           const temp = JSON.parse(res.body);
-          console.log("받은 메시지 ", temp);
-          state.recvList.push(temp);
+          console.log("받은 메시지 ", temp.content);
+
+          if (temp.connect === "makeFilmAndReroadCommend") {
+            emit('call-api-film-list', state.studioId);
+          } else {
+            state.recvList.push(temp);
+          }
         });
       });
     };

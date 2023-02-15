@@ -30,8 +30,10 @@
             @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
           <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
             :records="studioData.records" :storyScript="studioData.storyScript" />
-          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo" />
-          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" />
+          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo"
+            @made-flim="madeFlim" />
+          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3"
+            :studioInfo="studioData.studioInfo" :flimState="flimState" />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
@@ -161,47 +163,69 @@ export default {
       return newAllLines;
     };
 
+    const callApiStudioInfo = (studioId) => {
+      getStudioInfo(
+        studioId,
+        ({ data }) => {
+          studioData.studioInfo = data;
+          getSceneRecordList(
+            studioId,
+            data.story_id,
+            ({ data: data2 }) => {
+              studioData.records = data2;
+            },
+            (error) => {
+              console.log("씬 레코드 리스트 오류:", error);
+            }
+          );
+        },
+        (error) => {
+          console.log("스튜디오 정보 오류:", error);
+        }
+      );
+    }
+
+    const callApiStudioStoryScript = (studioId) => {
+      getStudioStoryScript(
+        studioId,
+        ({ data }) => {
+          studioData.storyScript = data;
+          studioData.allLines = makeAllLies(data);
+        },
+        (error) => {
+          console.log("스튜디오 스토리 스크립트 오류:", error);
+        }
+      );
+    }
+
+    const callApiFlimList = (studioId) => {
+      getFlimList(
+        studioId,
+        ({ data }) => {
+          studioData.films = data;
+        },
+        (error) => {
+          console.log("스토리 필름 리스트 오류:", error);
+        }
+      );
+    }
+
+    const flimState = reactive({
+      studioId: 0,
+      madeCnt: 0,
+    });
+
+    const madeFlim = (studioId, cnt) => {
+      flimState.studioId = studioId;
+      flimState.madeCnt = cnt;
+    }
+
     onBeforeMount(() => {
       if (route.params?.studioId) {
         const studioId = route.params?.studioId;
-        getStudioInfo(
-          studioId,
-          ({ data }) => {
-            studioData.studioInfo = data;
-            getSceneRecordList(
-              studioId,
-              data.story_id,
-              ({ data: data2 }) => {
-                studioData.records = data2;
-              },
-              (error) => {
-                console.log("씬 레코드 리스트 오류:", error);
-              }
-            );
-          },
-          (error) => {
-            console.log("스튜디오 정보 오류:", error);
-          }
-        );
-        getStudioStoryScript(
-          studioId,
-          ({ data }) => {
-            studioData.storyScript = data;
-            studioData.allLines = makeAllLies(data);
-          },
-          (error) => {
-            console.log("스튜디오 스토리 스크립트 오류:", error);
-          }
-        );
-        getFlimList(
-          studioId,
-          ({ data }) => {
-            studioData.films = data;
-          },
-          (error) => {
-            console.log("스토리 필름 리스트 오류:", error);
-          }
-        );
+        callApiStudioInfo(studioId);
+        callApiStudioStoryScript(studioId);
+        callApiFlimList(studioId);
       }
     });
 
@@ -251,6 +275,9 @@ export default {
       scriptState,
       changeCurrentTime,
       changeCurrentSlide,
+      callApiFlimList,
+      madeFlim,
+      flimState
     };
   },
 };
