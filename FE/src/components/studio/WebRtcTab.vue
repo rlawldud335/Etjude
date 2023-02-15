@@ -3,27 +3,6 @@
     <div id="join" v-if="!session">
       <div id="join-dialog" class="jumbotron vertical-center">
         <div class="form-group">
-          <div>
-            {{ studioInfo }}
-            <hr />
-            {{ user }}
-            <div>NICKNAME</div>
-            <div>{{ user.myPageSimpleResponse.userNickName }}</div>
-            <!-- <label for="participants"
-              ><input
-                v-model="user.myPageSimpleResponse.userNickname"
-                class="form-control"
-                type="text"
-                required
-            /></label> -->
-          </div>
-          <div>
-            <div>STUDIO_ID</div>
-            <div>{{ studioInfo.studio_id }}</div>
-            <!-- <label for="session"
-              ><input v-model="mySessionId" class="form-control" type="text" required
-            /></label> -->
-          </div>
           <div class="studio-tab__button-section">
             <button @click="joinSession()">화상 회의 참여하기</button>
           </div>
@@ -92,10 +71,6 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-
-      // Join form
-      // mySessionId: this.studioInfo.studio_id,
-      // myUserName: this.user.myPageSimpleResponse.userNickname,
     };
   },
 
@@ -184,7 +159,6 @@ export default {
     },
 
     async getToken(mySessionId) {
-      console.log(mySessionId);
       mySessionId = `studio${mySessionId}`;
       await this.createSession(mySessionId);
       // eslint-disable-next-line no-return-await
@@ -193,7 +167,6 @@ export default {
 
     // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
-      console.log("createSession", sessionId);
       await axios
         .post(
           `${APPLICATION_SERVER_URL}api/sessions`,
