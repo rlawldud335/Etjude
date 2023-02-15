@@ -1,28 +1,38 @@
 <template lang="">
   <div class="story_container">
     <div class="title_container">
-      <div v-if="storydetaildata.storyVideoUrl.includes('youtube.com')">
-        <object width="538" height="308" :data="storydetaildata.storyVideoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></object>
-      </div>
-      <div v-else>
-        <video :src="storydetaildata.storyVideoUrl" class="video_content" controls>
-          <track kind="captions" />
-        </video>
-      </div>
-      <div class="text_content">
-        <div class="category">
-          <HOT_BUTTON class="content_icon"></HOT_BUTTON>
-          {{ storydetaildata.categoryName }}
+      <div class="title-body main__1136width">
+        <div v-if="storydetaildata.storyVideoUrl?.includes('youtube.com')">
+          <object
+            width="538"
+            height="308"
+            :data="storydetaildata.storyVideoUrl"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></object>
         </div>
-        <div class="title">{{ storydetaildata.storyTitle }}</div>
-        <div class="main_text">
-          {{ storydetaildata.storySummary }}
+        <div v-else>
+          <video :src="storydetaildata.storyVideoUrl" class="video_content" controls>
+            <track kind="captions" />
+          </video>
         </div>
-        <div class="util">
-          <favor class="content_icon"></favor>
-          {{ storydetaildata.storyLikeCount }}
-          <speachbubble class="content_icon comment"></speachbubble>
-          댓글
+        <div class="text_content">
+          <div class="category">
+            <HOT_BUTTON class="content_icon"></HOT_BUTTON>
+            {{ storydetaildata.categoryName }}
+          </div>
+          <div class="title">{{ storydetaildata.storyTitle }}</div>
+          <div class="main_text">
+            {{ storydetaildata.storySummary }}
+          </div>
+          <div class="util">
+            <favor class="content_icon"></favor>
+            {{ storydetaildata.storyLikeCount }}
+            <speachbubble class="content_icon comment"></speachbubble>
+            댓글
+          </div>
         </div>
       </div>
     </div>
@@ -76,11 +86,11 @@
           <div class="card_title">스튜디오 생성하기</div>
           <div class="card_setting">
             <div class="setting_text">
-              스튜디오 대여기간
+              대여 기간
               <div class="setting_count">D-7</div>
             </div>
             <div class="setting_text">
-              스튜디오 배역인원
+              배역 인원
               <div class="setting_count">5명</div>
             </div>
           </div>
@@ -188,13 +198,18 @@ export default {
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  background-color: rgb(250, 250, 250);
+  background-color: $efefe-gray;
   padding: 0 10%;
 }
 .main_container {
   box-sizing: border-box;
   padding: 50px 0px;
   display: flex;
+}
+.title-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .left_content {
   display: flex;
@@ -206,7 +221,7 @@ export default {
   height: 308px;
 }
 .text_content {
-  width: 594px;
+  width: 400px;
   height: 250px;
   display: flex;
   flex-direction: column;
@@ -274,13 +289,14 @@ export default {
   transition: 0.3s ease;
 }
 .story__storyaccount {
-  right: 618px;
+  right: 676px;
+  bottom: 0;
 }
 .story__storycharacter {
-  right: 488px;
+  right: 546px;
 }
 .story__storyscript {
-  right: 358px;
+  right: 416px;
 }
 
 .createcard {
@@ -288,34 +304,34 @@ export default {
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  width: 358px;
-  height: 300px;
-  padding: 40px 20px;
+  width: 300px;
+  height: 280px;
+  padding: 0px 10px;
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   .card_title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
     box-sizing: border-box;
-    margin-bottom: 10px;
+    margin: 35px 0px 20px 0px;
   }
   .card_setting {
     display: flex;
     font-size: 14px;
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border-bottom: 1px solid rgb(187, 187, 187);
     .setting_text {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 10px;
+      margin: 15px;
     }
     .setting_count {
       box-sizing: border-box;
       font-size: 22px;
       font-weight: bold;
-      margin: 10px;
+      margin: 10px 10px 5px 10px;
     }
   }
   .card_util {
@@ -332,11 +348,13 @@ export default {
   }
 }
 .modal-button {
-  width: 315px;
-  height: 48px;
+  font-size: 14px;
+  margin: 5px 0px 20px 0px;
+  width: 250px;
+  height: 40px;
   border: none;
   color: white;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: $bana-pink;
   cursor: pointer;
 }
