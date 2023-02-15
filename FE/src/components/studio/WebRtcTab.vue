@@ -185,6 +185,7 @@ export default {
 
     async getToken(mySessionId) {
       console.log(mySessionId);
+      mySessionId = `studio${mySessionId}`;
       await this.createSession(mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(mySessionId);
