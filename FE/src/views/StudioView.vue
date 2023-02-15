@@ -6,59 +6,107 @@
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
         <div class="studio__video__video">
-          <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
-            @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines"
-            @change-record-sync-state="changeRecordSyncState" />
+          <VideoArea
+            @save-recording-data="saveRecordingData"
+            @change-video-state="changeVideoState"
+            @change-current-slide="changeCurrentSlide"
+            :videoState="videoState"
+            :scriptState="scriptState"
+            :studioInfo="studioData.studioInfo"
+            :allLines="studioData.allLines"
+            @change-record-sync-state="changeRecordSyncState"
+          />
         </div>
         <div class="studio__video__script">
-          <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
-            :scriptState="scriptState" :allLines="studioData.allLines" />
+          <ScriptArea
+            @change-current-time="changeCurrentTime"
+            @change-current-slide="changeCurrentSlide"
+            :scriptState="scriptState"
+            :allLines="studioData.allLines"
+          />
         </div>
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
+            <span class="openTab__header-notice" v-show="state.selectTab === 2"
+              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
+            >
           </div>
           <button class="close-btn" @click="closeTab()">
             <QuitButton />
           </button>
         </div>
         <div class="openTab__body">
-          <ScriptTab v-show="state.selectTab === 0" @change-current-time="changeCurrentTime"
-            @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
-          <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
-            :records="studioData.records" :storyScript="studioData.storyScript" />
-          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo"
-            @made-flim="madeFlim" />
-          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3" :studioId="studioId"
-            :flimState="flimState" :stompClient="stompClient" :recvList="chatState.recvList" />
+          <ScriptTab
+            v-show="state.selectTab === 0"
+            @change-current-time="changeCurrentTime"
+            @change-video-state="changeVideoState"
+            :videoState="videoState"
+            :storyScript="studioData.storyScript"
+          />
+          <SsinTab
+            v-show="state.selectTab === 1"
+            @change-video-state="changeVideoState"
+            :videoState="videoState"
+            :records="studioData.records"
+            :storyScript="studioData.storyScript"
+          />
+          <FilmTab
+            v-show="state.selectTab === 2"
+            :films="studioData.films"
+            :studioInfo="studioData.studioInfo"
+            @made-flim="madeFlim"
+          />
+          <ChatTab
+            @call-api-film-list="callApiFlimList"
+            v-show="state.selectTab === 3"
+            :studioId="studioId"
+            :flimState="flimState"
+            :stompClient="stompClient"
+            :recvList="chatState.recvList"
+            :studioInfo="studioData.studioInfo"
+          />
           <WebRtcTab v-show="state.selectTab === 4" :studioInfo="studioData.studioInfo" />
         </div>
       </div>
       <div class="studio__tab">
-        <button class="studio__tab__btn" @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
+        >
           <Scripts />
         </button>
-        <button class="studio__tab__btn" @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
+        >
           <Ssin />
         </button>
 
-        <button class="studio__tab__btn" @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
+        >
           <Film />
         </button>
-        <button class="studio__tab__btn" @click="clickTab(3)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(3)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }"
+        >
           <Chatting />
         </button>
 
-        <button class="studio__tab__btn" @click="clickTab(4)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(4)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }"
+        >
           <RTCIcon />
         </button>
       </div>
@@ -168,17 +216,19 @@ export default {
     };
 
     const callApiSceneRecordList = (studioId, storyId) => {
+      console.log("call api scene record list", studioId, storyId);
       getSceneRecordList(
         studioId,
         storyId,
         ({ data }) => {
           studioData.records = data;
+          console.log("call api scene record list", data);
         },
         (error) => {
           console.log("씬 레코드 리스트 오류:", error);
         }
       );
-    }
+    };
 
     const callApiStudioInfo = (studioId) => {
       getStudioInfo(
@@ -191,7 +241,7 @@ export default {
           console.log("스튜디오 정보 오류:", error);
         }
       );
-    }
+    };
 
     const callApiStudioStoryScript = (studioId) => {
       getStudioStoryScript(
@@ -204,7 +254,7 @@ export default {
           console.log("스튜디오 스토리 스크립트 오류:", error);
         }
       );
-    }
+    };
 
     const callApiFlimList = (studioId) => {
       getFlimList(
@@ -216,7 +266,7 @@ export default {
           console.log("스토리 필름 리스트 오류:", error);
         }
       );
-    }
+    };
 
     const videoState = reactive({
       sceneIdx: 1,
@@ -237,7 +287,7 @@ export default {
       console.log("madeFlim", studioId, cnt);
       flimState.studioId = studioId;
       flimState.madeCnt = cnt;
-    }
+    };
 
     const changeVideoState = (sceneIdx, isRecording) => {
       videoState.sceneIdx = sceneIdx;
@@ -270,7 +320,7 @@ export default {
     const user = computed(() => store.state.user);
     const chatState = reactive({
       recvList: [],
-    })
+    });
 
     const connect = () => {
       stompClient.connect({}, () => {
@@ -278,29 +328,33 @@ export default {
         stompClient.connected = true;
         stompClient.attender = {
           userId: user.value.userId,
-          userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl
+          userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl,
         };
         console.log("스튜디오 참가자 ", stompClient.attender);
         console.log(studioData.studioInfo.studio_id);
         console.log(user.value.userId);
         // 서버의 메시지 전송 endpoint를 구독합니다.
-        stompClient.subscribe(`/sub/api/v1/studio/chat/${studioData.studioInfo.studio_id}`, async (res) => {
-          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-          const temp = JSON.parse(res.body);
-          console.log("받은 메시지 ", temp);
-          if (temp.content === "3924873") {
-            callApiFlimList(studioData.studioInfo.studio_id);
-            chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
-          } else if (temp.connect === "ReloadRecordingFileCommend") {
-            callApiSceneRecordList(studioData.studioInfo.studio_id, studioData.studioInfo.story_id);
-            chatState.recvList.push("새로운 녹화영상을 생성했습니다.");
+        stompClient.subscribe(
+          `/sub/api/v1/studio/chat/${studioData.studioInfo.studio_id}`,
+          async (res) => {
+            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+            const temp = JSON.parse(res.body);
+            console.log("받은 메시지 ", temp);
+            if (temp.content === "3924873") {
+              callApiFlimList(studioData.studioInfo.studio_id);
+              chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
+            } else if (temp.connect === "ReloadRecordingFileCommend") {
+              callApiSceneRecordList(
+                studioData.studioInfo.studio_id,
+                studioData.studioInfo.story_id
+              );
+              chatState.recvList.push("새로운 녹화영상을 생성했습니다.");
+            } else {
+              chatState.recvList.push(temp);
+            }
+            console.log(chatState.recvList);
           }
-          else {
-            chatState.recvList.push(temp);
-          }
-          console.log(chatState.recvList)
-
-        });
+        );
       });
     };
 
@@ -310,7 +364,7 @@ export default {
       userId: "",
       sceneId: 0,
       isRecording: true,
-    })
+    });
 
     const changeRecordSyncState = (userId, sceneId, isRecording) => {
       recordSyncState.userId = userId;
@@ -327,8 +381,7 @@ export default {
           );
         }
       }
-    }
-
+    };
 
     onBeforeMount(() => {
       if (route.params?.studioId) {
@@ -358,7 +411,7 @@ export default {
       stompClient,
       chatState,
       studioId,
-      changeRecordSyncState
+      changeRecordSyncState,
     };
   },
 };

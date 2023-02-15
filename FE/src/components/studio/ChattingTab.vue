@@ -5,6 +5,7 @@
         <ChattingTabLine
           v-if="item.studioId == studioId && item.userId !== user.userId"
           :line="item"
+          :userProfileUrl="userProfileUrl"
         />
         <ChattingTabMyLine
           v-if="item.studioId == studioId && item.userId === user.userId"
@@ -32,7 +33,13 @@ import { useStore } from "vuex";
 export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
-  props: { studioId: Number, flimState: Object, stompClient: Object, recvList: Array },
+  props: {
+    studioId: Number,
+    flimState: Object,
+    stompClient: Object,
+    recvList: Array,
+    studioInfo: Object,
+  },
   setup(props) {
     const store = useStore();
     const user = computed(() => store.state.user);
@@ -41,6 +48,10 @@ export default {
     });
     const recvListData = computed(() => props.recvList);
     const messages = ref("");
+    const userProfileUrl = reactive({});
+    props.studioInfo.member_list.forEach((member) => {
+      userProfileUrl[member.user_id] = member.profile_url;
+    });
 
     watch(
       () => props.flimState.madeCnt,
@@ -109,6 +120,7 @@ export default {
       recvListData,
       messages,
       test,
+      userProfileUrl,
     };
   },
 };

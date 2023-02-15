@@ -1,7 +1,7 @@
 <template lang="">
     <div class="chatting-container__line">
         <img class="line__profile-image"
-          src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="" />
+          :src="userProfileUrl[line.userId]" alt="" />
         <div class="line__chat">
           <span class="line__chat__nickname">{{line.nickname}}</span>
           <span class="line__chat__chat">{{line.content}}</span>
@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "ChattingTabLine",
-  props: { line: Object },
+  props: { line: Object, userProfileUrl: Object },
   setup(props) {
     console.log("chattingTabLine", props);
   },
