@@ -6,56 +6,102 @@
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
         <div class="studio__video__video">
-          <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
-            @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" :user="user" />
+          <VideoArea
+            @save-recording-data="saveRecordingData"
+            @change-video-state="changeVideoState"
+            @change-current-slide="changeCurrentSlide"
+            :videoState="videoState"
+            :scriptState="scriptState"
+            :studioInfo="studioData.studioInfo"
+            :allLines="studioData.allLines"
+            :user="user"
+          />
         </div>
         <div class="studio__video__script">
-          <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
-            :scriptState="scriptState" :allLines="studioData.allLines" />
+          <ScriptArea
+            @change-current-time="changeCurrentTime"
+            @change-current-slide="changeCurrentSlide"
+            :scriptState="scriptState"
+            :allLines="studioData.allLines"
+          />
         </div>
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
+            <span class="openTab__header-notice" v-show="state.selectTab === 2"
+              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
+            >
           </div>
           <button class="close-btn" @click="closeTab()">
             <QuitButton />
           </button>
         </div>
         <div class="openTab__body">
-          <ScriptTab v-show="state.selectTab === 0" @change-current-time="changeCurrentTime"
-            @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
-          <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
-            :records="studioData.records" :storyScript="studioData.storyScript" />
-          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo" />
-          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" :user="user" />
+          <ScriptTab
+            v-show="state.selectTab === 0"
+            @change-current-time="changeCurrentTime"
+            @change-video-state="changeVideoState"
+            :videoState="videoState"
+            :storyScript="studioData.storyScript"
+          />
+          <SsinTab
+            v-show="state.selectTab === 1"
+            @change-video-state="changeVideoState"
+            :videoState="videoState"
+            :records="studioData.records"
+            :storyScript="studioData.storyScript"
+          />
+          <FilmTab
+            v-show="state.selectTab === 2"
+            :films="studioData.films"
+            :studioInfo="studioData.studioInfo"
+          />
+          <ChatTab
+            v-show="state.selectTab === 3"
+            :studioInfo="studioData.studioInfo"
+            :user="user"
+          />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
       <div class="studio__tab">
-        <button class="studio__tab__btn" @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
+        >
           <Scripts />
         </button>
-        <button class="studio__tab__btn" @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
+        >
           <Ssin />
         </button>
 
-        <button class="studio__tab__btn" @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
+        >
           <Film />
         </button>
-        <button class="studio__tab__btn" @click="clickTab(3)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(3)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }"
+        >
           <Chatting />
         </button>
 
-        <button class="studio__tab__btn" @click="clickTab(4)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }">
+        <button
+          class="studio__tab__btn"
+          @click="clickTab(4)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }"
+        >
           <RTCIcon />
         </button>
       </div>
@@ -168,48 +214,42 @@ export default {
     onBeforeMount(() => {
       if (route.params?.studioId) {
         const studioId = route.params?.studioId;
-        console.log("라우트 파람", route.params.studioId);
         getStudioInfo(
           studioId,
           ({ data }) => {
-            console.log("스튜디오인포", data);
             studioData.studioInfo = data;
-
             getSceneRecordList(
               studioId,
               data.story_id,
               ({ data: data2 }) => {
-                console.log("레코드리스트", data2);
                 studioData.records = data2;
               },
               (error) => {
-                console.log(error);
+                console.log("씬 레코드 리스트 오류:", error);
               }
             );
           },
           (error) => {
-            console.log(error);
+            console.log("스튜디오 정보 오류:", error);
           }
         );
         getStudioStoryScript(
           studioId,
           ({ data }) => {
-            console.log("스크립트", data);
             studioData.storyScript = data;
             studioData.allLines = makeAllLies(data);
           },
           (error) => {
-            console.log(error);
+            console.log("스튜디오 스토리 스크립트 오류:", error);
           }
         );
         getFlimList(
           studioId,
           ({ data }) => {
-            console.log("필름리스트", data);
             studioData.films = data;
           },
           (error) => {
-            console.log(error);
+            console.log("스토리 필름 리스트 오류:", error);
           }
         );
       }
@@ -232,7 +272,6 @@ export default {
 
     const saveRecordingData = (sceneIdx, recordedMediaURL, recordedUser) => {
       for (let i = 0; i < studioData.records.length; i += 1) {
-        console.log(studioData.records[i].sceneId, sceneIdx);
         if (studioData.records[i].sceneId === sceneIdx) {
           studioData.records[i].recordVideoUrl = recordedMediaURL;
           studioData.records[i].nickname = recordedUser.nickname;
@@ -262,7 +301,7 @@ export default {
       scriptState,
       changeCurrentTime,
       changeCurrentSlide,
-      user
+      user,
     };
   },
 };

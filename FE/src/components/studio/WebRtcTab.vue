@@ -40,7 +40,7 @@
       <div id="video-contaniner2" class="col-md-6">
         <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
-          <div class="studio__film-section">
+          <div class="studio_video-section">
             <UserVideo
               :key="sub.stream.connection.connectionId"
               :stream-manager="sub"
@@ -200,7 +200,6 @@ export default {
 
     async createToken(sessionId) {
       const data = {};
-      console.log("2", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
@@ -249,9 +248,7 @@ export default {
   align-items: center;
 }
 
-.studio__film-section {
-  margin-left: 15px;
-  width: calc(100% - 150px - 15px);
+.studio_video-section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

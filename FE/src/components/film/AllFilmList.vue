@@ -44,11 +44,10 @@ export default {
       getFilmPage(
         page.value,
         ({ data }) => {
-          console.log(data);
           allFilmList.value = data;
         },
         (error) => {
-          console.log(error);
+          console.log("영화 페이지 에러:", error);
           allFilmList.value = null;
         }
       );

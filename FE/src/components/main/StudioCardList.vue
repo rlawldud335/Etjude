@@ -1,11 +1,13 @@
 <template>
-  <Carousel ref="myCarousel" :settings="settings" :breakpoints="breakpoints">
-    <Slide v-for="slide in myStudioList" :key="slide" class="Slide">
-      <StudioCardItem :carditem="slide"></StudioCardItem>
-    </Slide>
-  </Carousel>
-  <button class="prev" @click="prevSlide">&lt;</button>
-  <button class="next" @click="nextSlide">></button>
+  <div v-if="myStudioList.length">
+    <Carousel ref="myCarousel" :settings="settings" :breakpoints="breakpoints">
+      <Slide v-for="slide in myStudioList" :key="slide" class="Slide">
+        <StudioCardItem :carditem="slide"></StudioCardItem>
+      </Slide>
+    </Carousel>
+    <button class="prev" @click="prevSlide">&lt;</button>
+    <button class="next" @click="nextSlide">></button>
+  </div>
 </template>
 
 <script>
@@ -58,10 +60,11 @@ export default defineComponent({
           updateStudioCount();
         },
         (error) => {
-          console.log(error);
+          console.log("마이 스튜디오 가져오기 에러:", error);
         }
       );
     }
+
     return {
       myStudioList,
       settings,

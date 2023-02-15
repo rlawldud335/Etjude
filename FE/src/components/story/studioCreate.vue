@@ -48,11 +48,10 @@ export default {
       createStudio(
         studiodata,
         ({ data }) => {
-          console.log(data, "생성 완료");
+          console.log("스튜디오 생성 완료:", data);
         },
         (error) => {
-          console.log(error);
-          console.log(studiodata);
+          console.log("스튜디오 생성 오류:", error);
         }
       );
     };

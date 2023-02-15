@@ -1,9 +1,7 @@
 <template>
-  <div v-if="streamManager">
-    <div class="video-container">
-      <div class="video-section">
-        <ov-video :stream-manager="streamManager" />
-      </div>
+  <div class="studio-film-tab__film">
+    <div v-if="streamManager">
+      <ov-video :stream-manager="streamManager" />
       <div class="nickname-section">
         {{ clientData }}
       </div>
@@ -42,8 +40,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.video-container {
+.studio-film-tab__film {
+  margin: 6px 5%;
+  padding: 18px;
+  border-radius: 15px;
+  background-color: $efefe-gray;
+  display: inline-block;
+  flex-direction: row;
   position: relative;
+
+  ov-video {
+    position: absolute;
+    top: 0;
+  }
 }
 
 .video-section {
@@ -51,9 +60,6 @@ export default {
 }
 
 .nickname-section {
-  position: absolute;
-  bottom: 0;
-  background-color: white;
   color: black;
   border-radius: 8px;
   flex-direction: column;
