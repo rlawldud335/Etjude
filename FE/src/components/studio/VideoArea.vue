@@ -67,7 +67,7 @@ export default {
     allLines: Array,
     studioInfo: Object,
   },
-  emits: ["change-video-state", "save-recording-data", "change-current-slide"],
+  emits: ["change-video-state", "save-recording-data", "change-current-slide", "change-record-sync-state"],
   setup(props, { emit }) {
     const state = reactive({
       videoMode: 1,
@@ -162,6 +162,7 @@ export default {
     };
 
     const startRecoding = async () => {
+      emit('change-record-sync-state', user.value.userId, props.videoState.sceneIdx, true);
       const dateStarted = new Date().getTime();
       const recordedChunks = [];
       mediaRecorder = new MediaRecorder(mediaStream.value, {
@@ -197,6 +198,8 @@ export default {
                 params,
                 (dt) => {
                   console.log("녹화 영상 업로드 성공", dt);
+                  console.log(user.value.userId, props.videoState.sceneIdx, false);
+                  emit('change-record-sync-state', user.value.userId, props.videoState.sceneIdx, false);
                 },
                 (er) => {
                   console.log("녹화 영상 업로드 실패", er);

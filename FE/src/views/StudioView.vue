@@ -8,7 +8,8 @@
         <div class="studio__video__video">
           <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
             @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" />
+            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines"
+            @change-record-sync-state="changeRecordSyncState" />
         </div>
         <div class="studio__video__script">
           <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
@@ -32,9 +33,9 @@
             :records="studioData.records" :storyScript="studioData.storyScript" />
           <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo"
             @made-flim="madeFlim" />
-          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3"
-            :studioInfo="studioData.studioInfo" :flimState="flimState" />
-          <WebRtcTab v-show="state.selectTab === 4"  :studioInfo="studioData.studioInfo"/>
+          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3" :studioId="studioId"
+            :flimState="flimState" :stompClient="stompClient" :recvList="chatState.recvList" />
+          <WebRtcTab v-show="state.selectTab === 4" :studioInfo="studioData.studioInfo" />
         </div>
       </div>
       <div class="studio__tab">
@@ -76,13 +77,16 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import { reactive, ref, onBeforeMount } from "vue";
+import { reactive, ref, onBeforeMount, computed } from "vue";
 import { useRoute } from "vue-router";
 import { getStudioInfo, getStudioStoryScript, getSceneRecordList, getFlimList } from "@/api/studio";
 import Chatting from "@/assets/icons/Chatting.svg";
 import RTCIcon from "@/assets/icons/RTCIcon.svg";
 import ChatTab from "@/components/studio/ChattingTab.vue";
 import WebRtcTab from "@/components/studio/WebRtcTab.vue";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -163,21 +167,25 @@ export default {
       return newAllLines;
     };
 
+    const callApiSceneRecordList = (studioId, storyId) => {
+      getSceneRecordList(
+        studioId,
+        storyId,
+        ({ data }) => {
+          studioData.records = data;
+        },
+        (error) => {
+          console.log("씬 레코드 리스트 오류:", error);
+        }
+      );
+    }
+
     const callApiStudioInfo = (studioId) => {
       getStudioInfo(
         studioId,
         ({ data }) => {
           studioData.studioInfo = data;
-          getSceneRecordList(
-            studioId,
-            data.story_id,
-            ({ data: data2 }) => {
-              studioData.records = data2;
-            },
-            (error) => {
-              console.log("씬 레코드 리스트 오류:", error);
-            }
-          );
+          callApiSceneRecordList(studioId, data.story_id);
         },
         (error) => {
           console.log("스튜디오 정보 오류:", error);
@@ -210,25 +218,6 @@ export default {
       );
     }
 
-    const flimState = reactive({
-      studioId: 0,
-      madeCnt: 0,
-    });
-
-    const madeFlim = (studioId, cnt) => {
-      flimState.studioId = studioId;
-      flimState.madeCnt = cnt;
-    }
-
-    onBeforeMount(() => {
-      if (route.params?.studioId) {
-        const studioId = route.params?.studioId;
-        callApiStudioInfo(studioId);
-        callApiStudioStoryScript(studioId);
-        callApiFlimList(studioId);
-      }
-    });
-
     const videoState = reactive({
       sceneIdx: 1,
       isRecording: false,
@@ -238,6 +227,17 @@ export default {
       currentTime: 0,
       currentSlide: 0,
     });
+
+    const flimState = reactive({
+      studioId: -1,
+      madeCnt: -1,
+    });
+
+    const madeFlim = (studioId, cnt) => {
+      console.log("madeFlim", studioId, cnt);
+      flimState.studioId = studioId;
+      flimState.madeCnt = cnt;
+    }
 
     const changeVideoState = (sceneIdx, isRecording) => {
       videoState.sceneIdx = sceneIdx;
@@ -263,6 +263,83 @@ export default {
       scriptState.currentSlide = idx;
     };
 
+    const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
+    const socket = new SockJS(serverURL);
+    const stompClient = Stomp.over(socket);
+    const store = useStore();
+    const user = computed(() => store.state.user);
+    const chatState = reactive({
+      recvList: [],
+    })
+
+    const connect = () => {
+      stompClient.connect({}, () => {
+        // 소켓 연결 성공
+        stompClient.connected = true;
+        stompClient.attender = {
+          userId: user.value.userId,
+          userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl
+        };
+        console.log("스튜디오 참가자 ", stompClient.attender);
+        console.log(studioData.studioInfo.studio_id);
+        console.log(user.value.userId);
+        // 서버의 메시지 전송 endpoint를 구독합니다.
+        stompClient.subscribe(`/sub/api/v1/studio/chat/${studioData.studioInfo.studio_id}`, async (res) => {
+          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+          const temp = JSON.parse(res.body);
+          console.log("받은 메시지 ", temp);
+          if (temp.content === "3924873") {
+            callApiFlimList(studioData.studioInfo.studio_id);
+            chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
+          } else if (temp.connect === "ReloadRecordingFileCommend") {
+            callApiSceneRecordList(studioData.studioInfo.studio_id, studioData.studioInfo.story_id);
+            chatState.recvList.push("새로운 녹화영상을 생성했습니다.");
+          }
+          else {
+            chatState.recvList.push(temp);
+          }
+          console.log(chatState.recvList)
+
+        });
+      });
+    };
+
+    const studioId = ref(null);
+
+    const recordSyncState = reactive({
+      userId: "",
+      sceneId: 0,
+      isRecording: true,
+    })
+
+    const changeRecordSyncState = (userId, sceneId, isRecording) => {
+      recordSyncState.userId = userId;
+      recordSyncState.sceneId = sceneId;
+      recordSyncState.isRecording = isRecording;
+      console.log(userId, sceneId, isRecording);
+      // isRecording이 false가 되면 녹화본 리로드 이벤트 전송
+      if (isRecording === false) {
+        if (stompClient && stompClient.connected) {
+          stompClient.send(
+            `/pub/api/v1/studio/chat/${studioId.value}/${user.value.userId}/${user.value.myPageSimpleResponse.userPhotoUrl}`,
+            {},
+            `ReloadRecordingFileCommend`
+          );
+        }
+      }
+    }
+
+
+    onBeforeMount(() => {
+      if (route.params?.studioId) {
+        studioId.value = route.params?.studioId;
+        callApiStudioInfo(studioId.value);
+        callApiStudioStoryScript(studioId.value);
+        callApiFlimList(studioId.value);
+        connect();
+      }
+    });
+
     return {
       state,
       tabs,
@@ -277,7 +354,11 @@ export default {
       changeCurrentSlide,
       callApiFlimList,
       madeFlim,
-      flimState
+      flimState,
+      stompClient,
+      chatState,
+      studioId,
+      changeRecordSyncState
     };
   },
 };
