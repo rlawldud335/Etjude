@@ -60,6 +60,8 @@ export default {
 }
 
 .nickname-section {
+  padding-top: 10px;
+  text-align: center;
   color: black;
   border-radius: 8px;
   flex-direction: column;
