@@ -94,7 +94,11 @@
       </div>
     </div>
   </div>
-  <studioCreate v-model="showModal" :story_id="storyinfo.story_id"></studioCreate>
+  <studioCreate
+    @close="showModal = false"
+    v-model="showModal"
+    :story_id="storyinfo.story_id"
+  ></studioCreate>
 </template>
 <script>
 import { reactive, ref } from "vue";

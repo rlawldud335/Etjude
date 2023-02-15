@@ -31,7 +31,7 @@
     필름 선택하기
     <select v-model="selectedStudio" @change="onChange($event)">
       <option disabled value="">스튜디오 선택</option>
-      <option v-for="item in MyStudioData" :key="item.studioId" :value="item[1]">
+      <option v-for="item in MyStudioData" :key="item.studioId" :value="item[0]">
         {{ item[1] }}
       </option>
     </select>
@@ -102,10 +102,10 @@ export default {
     });
     const uploadData = reactive({
       userId: userData.userId,
-      filmId: "",
+      filmId: Number,
       articleContent: "",
       articleTitle: "",
-      articleThumbnailUrl: preview.value,
+      articleThumbnailUrl: "",
     });
     const files = ref();
     console.log(userData.userId);
@@ -140,18 +140,20 @@ export default {
       FilmDetailData.value = {};
       selectedFilm.value = "";
       getMyFilm(
-        { user_id: userData.userId },
+        { user_id: userData.userId, studio_id: studioTitle },
         ({ data }) => {
           console.log("Get My film data:", data);
           data.forEach((array) => {
-            if (array.myPageFilmsResponse.studioTitle === studioTitle) {
-              MyFilmData.value.push(array);
-              FilmDetailData.categoryName = array.myPageFilmsResponse.categoryName;
-              FilmDetailData.workTitle = array.myPageFilmsResponse.workTitle;
-              FilmDetailData.storyTitle = array.myPageFilmsResponse.storyTitle;
-              FilmDetailData.teamMembers = array.teamMembers;
-            }
+            MyFilmData.value.push(array);
+            FilmDetailData.categoryName = array.myPageFilmsResponse.categoryName;
+            FilmDetailData.workTitle = array.myPageFilmsResponse.workTitle;
+            FilmDetailData.storyTitle = array.myPageFilmsResponse.storyTitle;
+            FilmDetailData.teamMembers = array.teamMembers;
           });
+
+          console.log("내 필름 정보랑 상세 정보가 들어갔나?");
+          console.log(MyFilmData);
+          console.log(FilmDetailData);
         },
         (error) => {
           console.log(error);
@@ -181,6 +183,8 @@ export default {
       reader.readAsDataURL(imgUpload.value);
       reader.onload = () => {
         preview.value = reader.result;
+        uploadData.articleThumbnailUrl = reader.result;
+        console.log("이미지가 잘 들어갔나?", uploadData.articleThumbnailUrl);
       };
     }
     // const refreshcarousel = () => {
