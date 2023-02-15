@@ -17,7 +17,7 @@
       <!-- <inputDropdown></inputDropdown> -->
       <div class="member_list"></div>
     </div>
-    <div class="button_container">
+    <div class="button_container" @click="$emit('close')">
       <button @click="create">생성하기</button>
     </div>
     <!-- </div> -->
@@ -44,7 +44,7 @@ export default {
       user_id: store.state.user.userId,
       studio_title: "",
       story_id: props.story_id,
-      team_member_Ids: [store.state.user.userId, "3"],
+      team_member_Ids: [store.state.user.userId],
     });
     const create = () => {
       createStudio(
