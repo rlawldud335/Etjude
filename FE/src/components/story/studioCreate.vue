@@ -90,8 +90,7 @@ export default {
           console.log(studiodata);
         },
         (error) => {
-          console.log(error);
-          console.log(studiodata);
+          console.log("스튜디오 생성 오류:", error);
         }
       );
     };

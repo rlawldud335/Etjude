@@ -21,17 +21,14 @@ export default {
     roles: Number,
   },
   setup(props) {
-    console.log("배역 설명");
     const storyDetailRules = ref({});
-    console.log(storyDetailRules.value);
     getDetailRules(
       props.roles,
       ({ data }) => {
-        console.log(data);
         storyDetailRules.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("역할 상세 오류:", error);
       }
     );
     return {

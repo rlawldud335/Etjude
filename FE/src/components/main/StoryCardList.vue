@@ -45,7 +45,7 @@ export default defineComponent({
         recommendStoryList.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("추천 스토리 목록", error);
       }
     );
     const screenWidth = ref(window.innerWidth);

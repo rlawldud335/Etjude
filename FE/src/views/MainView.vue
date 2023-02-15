@@ -3,7 +3,6 @@
     <div class="main__fullwidth">
       <event-banner />
     </div>
-
     <div class="main__1136width">
       <SearchSession />
     </div>
@@ -13,11 +12,9 @@
     <div class="content__1136width">
       <StoryCard></StoryCard>
     </div>
-
     <div class="content__1136width">
       <PieceCard></PieceCard>
     </div>
-
     <div class="main__fullwidth">
       <ShortcutFlim />
     </div>
@@ -46,14 +43,12 @@ export default {
   },
   setup() {
     const store = useStore();
-    const user = computed(() => store.state.user);
-    const myStudioCount = computed(() => store.state.user.myStudioCount);
+    const myStudioCount = computed(() => store.state.user?.myStudioCount);
     const showStudio = ref(myStudioCount.value > 0);
     watch(myStudioCount, (newCount) => {
       showStudio.value = newCount > 0;
     });
     return {
-      user,
       showStudio,
       myStudioCount,
     };

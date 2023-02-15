@@ -1,7 +1,7 @@
 <template>
   <div class="studio__film-tab">
     <FilmTabFilm v-for="film in films" :key="film.film_id" :film="film"></FilmTabFilm>
-    <div class="studio-tab__button-section">
+    <div class="studio-tab__button-section" v-if="captainId == userId">
       <button :class="[
         makingButton.active
           ? 'studio-tab__making-button--active'
@@ -13,10 +13,11 @@
   </div>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import FilmTabFilm from "@/components/studio/FilmTabFilm.vue";
 import { testMakeFilm } from "@/api/index";
 import { saveMakedFilm } from "@/api/films";
+import { useStore } from "vuex";
 
 export default {
   name: "FilmTab",
@@ -27,21 +28,42 @@ export default {
     films: Array,
     studioInfo: Object,
   },
-  setup(props) {
+  emits: ['made-flim'],
+  setup(props, { emit }) {
+
+    const store = useStore();
+    const userId = computed(() => store.state.user.userId);
+    const captainId = computed(() => props.studioInfo.captain_id);
+
     const makingButton = reactive({
       possibleCount: 3,
       active: true,
     });
     const plusMakingCount = () => {
       if (props.films.length < makingButton.possibleCount) {
+        makingButton.active = false;
         testMakeFilm(
           props.studioInfo.studio_id,
           ({ data }) => {
-            saveMakedFilm(props.studioInfo.studio_id, data, (rst) => { console.log(rst); }, (er) => { console.log(er) })
-            console.log(data);
+            saveMakedFilm(
+              props.studioInfo.studio_id,
+              data,
+              (rst) => {
+                console.log("필름 저장 완료:", rst);
+                emit('made-flim', props.studioInfo.studio_id, props.films.length + 1);
+                makingButton.active = true;
+              },
+              (er) => {
+                console.log("필릉 저장 오류:", er);
+                makingButton.active = true;
+                alert("필름 저장 오류");
+              }
+            );
           },
           (err) => {
-            console.log(err);
+            console.log("필름 제작 오류:", err);
+            makingButton.active = true;
+            alert("필름 저장 오류");
           }
         );
       } else {
@@ -55,6 +77,8 @@ export default {
     return {
       makingButton,
       plusMakingCount,
+      userId,
+      captainId
     };
   },
 };

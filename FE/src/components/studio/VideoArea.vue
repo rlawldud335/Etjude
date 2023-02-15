@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
@@ -50,7 +50,7 @@ import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
 import { webmFixDuration } from "webm-fix-duration";
-
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -61,13 +61,20 @@ export default {
     RecordCircle,
     ChangeVideo2,
   },
-  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object, user: Object },
+  props: {
+    videoState: Object,
+    scriptState: Object,
+    allLines: Array,
+    studioInfo: Object,
+  },
   emits: ["change-video-state", "save-recording-data", "change-current-slide"],
   setup(props, { emit }) {
-
     const state = reactive({
       videoMode: 1,
     });
+
+    const store = useStore();
+    const user = computed(() => store.state.user);
 
     const videoOutput = ref(null);
 
@@ -102,15 +109,20 @@ export default {
         emit("change-current-slide", props.allLines.length - 1);
       }
     };
-    const videoResolution = { width: { min: 640, ideal: 640, max: 640 }, height: { min: 480, ideal: 480, max: 480 } };
+    const videoResolution = {
+      width: { min: 640, ideal: 640, max: 640 },
+      height: { min: 480, ideal: 480, max: 480 },
+    };
 
     const mediaStream = ref(null);
     const constraints = reactive({
-      video: videoResolution, audio: true
+      video: videoResolution,
+      audio: true,
     });
     const toggleBtn = reactive({
-      video: true, audio: true
-    })
+      video: true,
+      audio: true,
+    });
 
     // const filterTime = (sec) => {
     //   let h = (sec / (1000 * 60 * 60)) % 24;
@@ -139,12 +151,14 @@ export default {
 
     const toggleVideo = () => {
       toggleBtn.video = !toggleBtn.video;
-      mediaStream.value.getVideoTracks()[0].enabled = !mediaStream.value.getVideoTracks()[0].enabled;
+      mediaStream.value.getVideoTracks()[0].enabled =
+        !mediaStream.value.getVideoTracks()[0].enabled;
     };
 
     const toggleAudio = () => {
       toggleBtn.audio = !toggleBtn.audio;
-      mediaStream.value.getAudioTracks()[0].enabled = !mediaStream.value.getAudioTracks()[0].enabled;
+      mediaStream.value.getAudioTracks()[0].enabled =
+        !mediaStream.value.getAudioTracks()[0].enabled;
     };
 
     const startRecoding = async () => {
@@ -166,7 +180,6 @@ export default {
           const dateEnd = new Date().getTime();
           const blob = await new Blob(recordedChunks, { type: "video/webm;" });
           const fixedBlob = await webmFixDuration(blob, dateEnd - dateStarted);
-          console.log(fixedBlob);
           recordedMediaURL.value = URL.createObjectURL(fixedBlob);
           const awsUrl = fileUpload(
             fixedBlob,
@@ -178,22 +191,31 @@ export default {
                 recording_video_url: data.Location,
                 scene_id: props.videoState.sceneIdx,
                 studio_id: props.studioInfo.studio_id,
-                user_id: props.user.user_id,
+                user_id: user.value.userId,
               };
               saveSceneRecord(
                 params,
                 (dt) => {
-                  console.log("녹화영상업로드성공", dt);
+                  console.log("녹화 영상 업로드 성공", dt);
                 },
                 (er) => {
-                  console.log("녹화영상업로드실패", er);
+                  console.log("녹화 영상 업로드 실패", er);
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, props.user);
+              emit(
+                "save-recording-data",
+                props.videoState.sceneIdx,
+                recordedMediaURL.value,
+                {
+                  user_id: user.value.userId,
+                  nickname: user.value.myPageSimpleResponse.userNickName,
+                  profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
+                }
+              );
             },
             (err) => {
-              console.log(err);
+              console.log("aws 업로드 실패", err);
             }
           );
         }
@@ -231,7 +253,7 @@ export default {
       endRecording,
       videoOutput,
       changeTimeHandler,
-      toggleBtn
+      toggleBtn,
     };
   },
 };

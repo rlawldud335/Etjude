@@ -8,7 +8,7 @@
         <div class="studio__video__video">
           <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
             @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" :user="user" />
+            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" />
         </div>
         <div class="studio__video__script">
           <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
@@ -30,9 +30,11 @@
             @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
           <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
             :records="studioData.records" :storyScript="studioData.storyScript" />
-          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo" />
-          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" :user="user" />
-          <WebRtcTab v-show="state.selectTab === 4" />
+          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo"
+            @made-flim="madeFlim" />
+          <ChatTab @call-api-film-list="callApiFlimList" v-show="state.selectTab === 3"
+            :studioInfo="studioData.studioInfo" :flimState="flimState" />
+          <WebRtcTab v-show="state.selectTab === 4"  :studioInfo="studioData.studioInfo"/>
         </div>
       </div>
       <div class="studio__tab">
@@ -74,12 +76,11 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import { reactive, ref, onBeforeMount, computed } from "vue";
+import { reactive, ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import { getStudioInfo, getStudioStoryScript, getSceneRecordList, getFlimList } from "@/api/studio";
 import Chatting from "@/assets/icons/Chatting.svg";
 import RTCIcon from "@/assets/icons/RTCIcon.svg";
-import { useStore } from "vuex";
 import ChatTab from "@/components/studio/ChattingTab.vue";
 import WebRtcTab from "@/components/studio/WebRtcTab.vue";
 
@@ -102,13 +103,6 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const store = useStore();
-    const user = computed(() => store.state.user || {
-      user_id: "1",
-      nickname: "user1",
-      profile_url:
-        "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
-    })
 
     const state = reactive({
       isOpenTab: true,
@@ -169,53 +163,69 @@ export default {
       return newAllLines;
     };
 
+    const callApiStudioInfo = (studioId) => {
+      getStudioInfo(
+        studioId,
+        ({ data }) => {
+          studioData.studioInfo = data;
+          getSceneRecordList(
+            studioId,
+            data.story_id,
+            ({ data: data2 }) => {
+              studioData.records = data2;
+            },
+            (error) => {
+              console.log("씬 레코드 리스트 오류:", error);
+            }
+          );
+        },
+        (error) => {
+          console.log("스튜디오 정보 오류:", error);
+        }
+      );
+    }
+
+    const callApiStudioStoryScript = (studioId) => {
+      getStudioStoryScript(
+        studioId,
+        ({ data }) => {
+          studioData.storyScript = data;
+          studioData.allLines = makeAllLies(data);
+        },
+        (error) => {
+          console.log("스튜디오 스토리 스크립트 오류:", error);
+        }
+      );
+    }
+
+    const callApiFlimList = (studioId) => {
+      getFlimList(
+        studioId,
+        ({ data }) => {
+          studioData.films = data;
+        },
+        (error) => {
+          console.log("스토리 필름 리스트 오류:", error);
+        }
+      );
+    }
+
+    const flimState = reactive({
+      studioId: 0,
+      madeCnt: 0,
+    });
+
+    const madeFlim = (studioId, cnt) => {
+      flimState.studioId = studioId;
+      flimState.madeCnt = cnt;
+    }
+
     onBeforeMount(() => {
       if (route.params?.studioId) {
         const studioId = route.params?.studioId;
-        console.log("라우트 파람", route.params.studioId);
-        getStudioInfo(
-          studioId,
-          ({ data }) => {
-            console.log("스튜디오인포", data);
-            studioData.studioInfo = data;
-
-            getSceneRecordList(
-              studioId,
-              data.story_id,
-              ({ data: data2 }) => {
-                console.log("레코드리스트", data2);
-                studioData.records = data2;
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-        getStudioStoryScript(
-          studioId,
-          ({ data }) => {
-            console.log("스크립트", data);
-            studioData.storyScript = data;
-            studioData.allLines = makeAllLies(data);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-        getFlimList(
-          studioId,
-          ({ data }) => {
-            console.log("필름리스트", data);
-            studioData.films = data;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        callApiStudioInfo(studioId);
+        callApiStudioStoryScript(studioId);
+        callApiFlimList(studioId);
       }
     });
 
@@ -236,7 +246,6 @@ export default {
 
     const saveRecordingData = (sceneIdx, recordedMediaURL, recordedUser) => {
       for (let i = 0; i < studioData.records.length; i += 1) {
-        console.log(studioData.records[i].sceneId, sceneIdx);
         if (studioData.records[i].sceneId === sceneIdx) {
           studioData.records[i].recordVideoUrl = recordedMediaURL;
           studioData.records[i].nickname = recordedUser.nickname;
@@ -266,7 +275,9 @@ export default {
       scriptState,
       changeCurrentTime,
       changeCurrentSlide,
-      user
+      callApiFlimList,
+      madeFlim,
+      flimState
     };
   },
 };

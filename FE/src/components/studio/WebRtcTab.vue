@@ -3,22 +3,9 @@
     <div id="join" v-if="!session">
       <div id="join-dialog" class="jumbotron vertical-center">
         <div class="form-group">
-          <div>
-            <div>NICKNAME</div>
-            <label for="participants"
-              ><input v-model="myUserName" class="form-control" type="text" required
-            /></label>
-          </div>
-          <div>
-            <div>STUDIO_ID</div>
-            <label for="session"
-              ><input v-model="mySessionId" class="form-control" type="text" required
-            /></label>
-          </div>
           <div class="studio-tab__button-section">
             <button @click="joinSession()">화상 회의 참여하기</button>
           </div>
-          <hr />
         </div>
       </div>
     </div>
@@ -38,9 +25,8 @@
         </div>
       </div>
       <div id="video-contaniner2" class="col-md-6">
-        <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
-          <div class="studio__film-section">
+          <div class="studio_video-section">
             <UserVideo
               :key="sub.stream.connection.connectionId"
               :stream-manager="sub"
@@ -57,6 +43,7 @@
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import UserVideo from "@/components/studio/UserVideo.vue";
+import { mapState } from "vuex";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -69,6 +56,9 @@ export default {
     UserVideo,
   },
 
+  props: {
+    studioInfo: Object,
+  },
   data() {
     return {
       // OpenVidu objects
@@ -79,10 +69,6 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-
-      // Join form
-      mySessionId: "SessionA",
-      myUserName: `Participant${Math.floor(Math.random() * 100)}`,
     };
   },
 
@@ -106,9 +92,9 @@ export default {
         console.warn(exception);
       });
 
-      this.getToken(this.mySessionId).then((token) => {
+      this.getToken(this.studioInfo.studio_id).then((token) => {
         this.session
-          .connect(token, { clientData: this.myUserName })
+          .connect(token, { clientData: this.user.myPageSimpleResponse.userNickName })
           .then(() => {
             this.OV.getUserMedia({
               audioSource: false,
@@ -118,16 +104,19 @@ export default {
             }).then((mediaStream) => {
               const videoTrack = mediaStream.getVideoTracks()[0];
 
-              const newPublisher = this.OV.initPublisher(this.myUserName, {
-                audioSource: undefined,
-                videoSource: videoTrack,
-                publishAudio: true,
-                publishVideo: true,
-                resolution: "320x240",
-                frameRate: 30,
-                insertMode: "APPEND",
-                mirror: false,
-              });
+              const newPublisher = this.OV.initPublisher(
+                this.user.myPageSimpleResponse.userNickname,
+                {
+                  audioSource: undefined,
+                  videoSource: videoTrack,
+                  publishAudio: true,
+                  publishVideo: true,
+                  resolution: "320x240",
+                  frameRate: 30,
+                  insertMode: "APPEND",
+                  mirror: false,
+                }
+              );
               newPublisher.once("accessAllowed", () => {
                 this.session.publish(newPublisher);
                 this.publisher = newPublisher;
@@ -168,6 +157,7 @@ export default {
     },
 
     async getToken(mySessionId) {
+      mySessionId = `studio${mySessionId}`;
       await this.createSession(mySessionId);
       // eslint-disable-next-line no-return-await
       return await this.createToken(mySessionId);
@@ -200,7 +190,6 @@ export default {
 
     async createToken(sessionId) {
       const data = {};
-      console.log("2", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
@@ -227,6 +216,9 @@ export default {
       return openviduInstance.data.token; // The token
     },
   },
+  computed: {
+    ...mapState(["user"]),
+  },
 };
 </script>
 
@@ -249,9 +241,7 @@ export default {
   align-items: center;
 }
 
-.studio__film-section {
-  margin-left: 15px;
-  width: calc(100% - 150px - 15px);
+.studio_video-section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

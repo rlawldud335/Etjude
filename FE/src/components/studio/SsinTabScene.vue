@@ -63,9 +63,6 @@ export default {
         document.body.removeChild(link);
       }
     };
-
-    console.log(props.scene);
-
     return {
       lines,
       toggleOpen,

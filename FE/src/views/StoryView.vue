@@ -130,9 +130,6 @@ export default {
   },
   setup() {
     const route = useRoute();
-    console.log("데이터를 받아 오는가?");
-    console.log(route.params.story_id);
-    console.log(typeof route.params.story_id);
     const storyinfo = reactive({
       user_id: "1",
       story_id: Number.parseInt(route.params.story_id, 10),
@@ -141,11 +138,10 @@ export default {
     getStoryDetail(
       storyinfo,
       ({ data }) => {
-        console.log("story-card-list : ", data);
         storydetaildata.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("스토리 상세 탐색 오류:", error);
       }
     );
     const showModal = ref(false);
@@ -154,15 +150,12 @@ export default {
     });
     const storyaccount = () => {
       tab = "storyaccount";
-      console.log(tab, "스토리설명");
     };
     const stroycharacter = () => {
       tab = "storycharacter";
-      console.log(tab, "배역설명");
     };
     const storyscript = () => {
       tab = "storyscript";
-      console.log(tab, "스크립트");
     };
     return {
       showModal,
