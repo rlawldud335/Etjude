@@ -57,6 +57,7 @@
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import UserVideo from "@/components/studio/UserVideo.vue";
+import { mapState } from "vuex";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -69,6 +70,9 @@ export default {
     UserVideo,
   },
 
+  props: {
+    studioInfo: Object,
+  },
   data() {
     return {
       // OpenVidu objects
@@ -81,8 +85,8 @@ export default {
       subscribers: [],
 
       // Join form
-      mySessionId: "SessionA",
-      myUserName: `Participant${Math.floor(Math.random() * 100)}`,
+      mySessionId: this.studioInfo.studio_id,
+      myUserName: this.user.myPageSimpleResponse.userNickname,
     };
   },
 
@@ -225,6 +229,9 @@ export default {
       );
       return openviduInstance.data.token; // The token
     },
+  },
+  computed: {
+    ...mapState(["user"]),
   },
 };
 </script>

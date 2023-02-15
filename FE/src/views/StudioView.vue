@@ -63,7 +63,7 @@
             :studioInfo="studioData.studioInfo"
             :user="user"
           />
-          <WebRtcTab v-show="state.selectTab === 4" />
+          <WebRtcTab v-show="state.selectTab === 4" :studioInfo="studioData.studioInfo" />
         </div>
       </div>
       <div class="studio__tab">
@@ -149,7 +149,7 @@ export default {
   setup() {
     const route = useRoute();
     const store = useStore();
-    const user = computed(() => store.state.user)
+    const user = computed(() => store.state.user);
 
     console.log(store.state.user);
     const state = reactive({
