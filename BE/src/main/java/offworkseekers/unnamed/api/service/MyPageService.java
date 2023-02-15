@@ -19,8 +19,8 @@ public class MyPageService {
         return myPageRepository.getMyPageStudios(userId);
     }
 
-    public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId){
-        return myPageRepository.getMyPageFilms(userId);
+    public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId, Long studioId){
+        return myPageRepository.getMyPageFilms(userId, studioId);
     }
 
     public List<MyPageArticlesResponse> getMyPageArticle(String userId){

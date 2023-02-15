@@ -24,7 +24,7 @@ public class MyPageController {
 
     @PostMapping("/api/v1/mypage/film")
     public List<MyPageFilmsWithMembersResponse> getMyPageFilms(@RequestBody Map<String, String> request){
-        return myPageService.getMyPageFilms(request.get("user_id"));
+        return myPageService.getMyPageFilms(request.get("user_id"), Long.parseLong(request.get("studio_id")));
     }
 
     @PostMapping("/api/v1/mypage/articles")
