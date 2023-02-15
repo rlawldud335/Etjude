@@ -1,6 +1,6 @@
 <template>
-  <div v-if="streamManager">
-    <div class="video-container">
+  <div class="studio-film-tab__film">
+    <div v-if="streamManager">
       <div class="video-section">
         <ov-video :stream-manager="streamManager" />
       </div>
@@ -42,8 +42,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.video-container {
-  position: relative;
+.studio-film-tab__film {
+  margin: 6px 5%;
+  padding: 18px;
+  border-radius: 15px;
+  background-color: $efefe-gray;
+  display: flex;
+  flex-direction: row;
 }
 
 .video-section {
