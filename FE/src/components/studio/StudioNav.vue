@@ -2,15 +2,20 @@
   <div class="studio-nav">
     <div class="studio-info">
       <div class="studio-info__logo">
-        <router-link :to="{ name: 'main' }"> Logo </router-link>
+        <router-link :to="{ name: 'main' }"> <studioLogo /></router-link>
       </div>
       <div class="studio-info__title">
         <span>{{ studioInfo.storyTitle }}</span>
         <span> > </span>
         <span>{{ studioInfo.studioTitle }}</span>
       </div>
-      <div class="studio__setting" @mouseover="state.isHovered = true" @focus="state.isHovered = true"
-        @mouseout="state.isHovered = false" @focusout="state.isHovered = false">
+      <div
+        class="studio__setting"
+        @mouseover="state.isHovered = true"
+        @focus="state.isHovered = true"
+        @mouseout="state.isHovered = false"
+        @focusout="state.isHovered = false"
+      >
         <CircleSetting />
 
         <div class="studio__setting-section" v-show="state.isHovered">
@@ -30,7 +35,11 @@
       </div>
     </div>
     <div class="studio-users">
-      <div v-for="member in studioInfo.member_list" :key="member.user_id" @click="state.detailUser = member.user_id">
+      <div
+        v-for="member in studioInfo.member_list"
+        :key="member.user_id"
+        @click="state.detailUser = member.user_id"
+      >
         <div :class="{ 'studio-users__detail': state.detailUser == member.user_id }">
           <div class="profile-img-frame">
             <img class="profile-img" :src="member.profile_url" alt="" />
@@ -44,10 +53,12 @@
 <script>
 import CircleSetting from "@/assets/icons/CircleSetting.svg";
 import { reactive } from "vue";
+import studioLogo from "@/assets/icons/whiteLogo2.svg";
 
 export default {
   components: {
     CircleSetting,
+    studioLogo,
   },
   props: {
     studioInfo: Object,
@@ -103,7 +114,7 @@ export default {
   color: white;
 }
 
-.studio-info__title>span {
+.studio-info__title > span {
   margin: 0px 5px;
 }
 
@@ -142,6 +153,8 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-right: 20px;
+  gap: 2px;
 }
 
 .studio-users__detail {
@@ -156,7 +169,7 @@ export default {
   transition: all 0.5s;
 }
 
-.studio-users__detail>span {
+.studio-users__detail > span {
   margin: 0px 10px;
   cursor: pointer;
 }
@@ -191,7 +204,7 @@ export default {
   margin-right: 20px;
 }
 
-.profile-detail>span {
+.profile-detail > span {
   margin: 0px 10px;
 }
 
