@@ -22,15 +22,13 @@ export default {
   },
   setup(props) {
     const storyDetaileScript = ref({});
-    console.log(getDetaileScript.value);
     getDetaileScript(
       props.scenes,
       ({ data }) => {
-        console.log(data);
         storyDetaileScript.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("스크립트 상세 오류:", error);
       }
     );
     return {

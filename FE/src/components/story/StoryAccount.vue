@@ -18,16 +18,14 @@ export default {
     describtion: Number,
   },
   setup(props) {
-    console.log("스토리 설명");
     const storyDetailAccount = ref();
     getDetailAccount(
       props.describtion,
       ({ data }) => {
-        console.log(data);
         storyDetailAccount.value = data;
       },
       (error) => {
-        console.log(error);
+        console.log("스토리 상세 오류:", error);
       }
     );
     return {

@@ -161,7 +161,6 @@ export default {
     });
     // 검색값과 state 값을 받아서 검색, 결과를 searchResult에 저장
     const search = (keyword, searchState) => {
-      console.log("검색");
       if (searchState.menu.id === "1") {
         searchWork(
           {
@@ -170,11 +169,10 @@ export default {
             pageNum: searchState.page.work,
           },
           ({ data }) => {
-            console.log(data);
             searchResult.value = data;
           },
           (error) => {
-            console.log(error);
+            console.log("작품 검색 오류:", error);
           }
         );
       } else {
@@ -185,11 +183,10 @@ export default {
             pageNum: searchState.page.story,
           },
           ({ data }) => {
-            console.log(data);
             searchResult.value = data;
           },
           (error) => {
-            console.log(error);
+            console.log("스토리 검색 오류:", error);
           }
         );
       }

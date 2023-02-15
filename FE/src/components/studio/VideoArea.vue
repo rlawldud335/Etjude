@@ -3,17 +3,28 @@
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video :class="[
-        { 'video-zero-size': state.videoMode == 0 },
-        { 'video-default-size': state.videoMode == 1 },
-        { 'video-full-size': state.videoMode == 2 },
-      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls
-        loop="loop"></video>
-      <video :class="[
-        { 'video-zero-size': state.videoMode == 2 },
-        { 'video-default-size': state.videoMode == 1 },
-        { 'video-full-size': state.videoMode == 0 },
-      ]" :srcObject="mediaStream" autoplay muted></video>
+      <video
+        :class="[
+          { 'video-zero-size': state.videoMode == 0 },
+          { 'video-default-size': state.videoMode == 1 },
+          { 'video-full-size': state.videoMode == 2 },
+        ]"
+        ref="videoOutput"
+        :src="studioInfo.storyVideoUrl"
+        @timeupdate="changeTimeHandler"
+        controls
+        loop="loop"
+      ></video>
+      <video
+        :class="[
+          { 'video-zero-size': state.videoMode == 2 },
+          { 'video-default-size': state.videoMode == 1 },
+          { 'video-full-size': state.videoMode == 0 },
+        ]"
+        :srcObject="mediaStream"
+        autoplay
+        muted
+      ></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
@@ -51,7 +62,6 @@ import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
 import { webmFixDuration } from "webm-fix-duration";
 
-
 export default {
   components: {
     VideoOn,
@@ -61,10 +71,15 @@ export default {
     RecordCircle,
     ChangeVideo2,
   },
-  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object, user: Object },
+  props: {
+    videoState: Object,
+    scriptState: Object,
+    allLines: Array,
+    studioInfo: Object,
+    user: Object,
+  },
   emits: ["change-video-state", "save-recording-data", "change-current-slide"],
   setup(props, { emit }) {
-
     const state = reactive({
       videoMode: 1,
     });
@@ -102,15 +117,20 @@ export default {
         emit("change-current-slide", props.allLines.length - 1);
       }
     };
-    const videoResolution = { width: { min: 640, ideal: 640, max: 640 }, height: { min: 480, ideal: 480, max: 480 } };
+    const videoResolution = {
+      width: { min: 640, ideal: 640, max: 640 },
+      height: { min: 480, ideal: 480, max: 480 },
+    };
 
     const mediaStream = ref(null);
     const constraints = reactive({
-      video: videoResolution, audio: true
+      video: videoResolution,
+      audio: true,
     });
     const toggleBtn = reactive({
-      video: true, audio: true
-    })
+      video: true,
+      audio: true,
+    });
 
     // const filterTime = (sec) => {
     //   let h = (sec / (1000 * 60 * 60)) % 24;
@@ -139,12 +159,14 @@ export default {
 
     const toggleVideo = () => {
       toggleBtn.video = !toggleBtn.video;
-      mediaStream.value.getVideoTracks()[0].enabled = !mediaStream.value.getVideoTracks()[0].enabled;
+      mediaStream.value.getVideoTracks()[0].enabled =
+        !mediaStream.value.getVideoTracks()[0].enabled;
     };
 
     const toggleAudio = () => {
       toggleBtn.audio = !toggleBtn.audio;
-      mediaStream.value.getAudioTracks()[0].enabled = !mediaStream.value.getAudioTracks()[0].enabled;
+      mediaStream.value.getAudioTracks()[0].enabled =
+        !mediaStream.value.getAudioTracks()[0].enabled;
     };
 
     const startRecoding = async () => {
@@ -166,7 +188,6 @@ export default {
           const dateEnd = new Date().getTime();
           const blob = await new Blob(recordedChunks, { type: "video/webm;" });
           const fixedBlob = await webmFixDuration(blob, dateEnd - dateStarted);
-          console.log(fixedBlob);
           recordedMediaURL.value = URL.createObjectURL(fixedBlob);
           const awsUrl = fileUpload(
             fixedBlob,
@@ -183,17 +204,22 @@ export default {
               saveSceneRecord(
                 params,
                 (dt) => {
-                  console.log("녹화영상업로드성공", dt);
+                  console.log("녹화 영상 업로드 성공", dt);
                 },
                 (er) => {
-                  console.log("녹화영상업로드실패", er);
+                  console.log("녹화 영상 업로드 실패", er);
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, props.user);
+              emit(
+                "save-recording-data",
+                props.videoState.sceneIdx,
+                recordedMediaURL.value,
+                props.user
+              );
             },
             (err) => {
-              console.log(err);
+              console.log("aws 업로드 실패", err);
             }
           );
         }
@@ -231,7 +257,7 @@ export default {
       endRecording,
       videoOutput,
       changeTimeHandler,
-      toggleBtn
+      toggleBtn,
     };
   },
 };
@@ -253,7 +279,7 @@ export default {
   position: relative;
 }
 
-.video-player>video {
+.video-player > video {
   height: 100%;
 }
 

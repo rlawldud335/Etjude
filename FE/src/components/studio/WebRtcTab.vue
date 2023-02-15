@@ -200,7 +200,6 @@ export default {
 
     async createToken(sessionId) {
       const data = {};
-      console.log("2", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
