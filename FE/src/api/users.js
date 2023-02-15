@@ -19,7 +19,7 @@ async function getMyStudio(user, success, fail) {
 
 async function getMyFilm(user, success, fail) {
   console.log("# POST : 마이페이지 내 필름 ");
-  await api.post(`/mypage/film`, { user_id: user }).then(success).catch(fail);
+  await api.post(`/mypage/film`, user).then(success).catch(fail);
 }
 
 export { getMyPage, getMyLike, getMyStudio, getMyFilm };
