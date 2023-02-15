@@ -6,7 +6,11 @@
           <div>
             <div>NICKNAME</div>
             <label for="participants"
-              ><input v-model="myUserName" class="form-control" type="text" required
+              ><input
+                v-model="user.myPageSimpleResponse.userNickname"
+                class="form-control"
+                type="text"
+                required
             /></label>
           </div>
           <div>
@@ -86,7 +90,7 @@ export default {
 
       // Join form
       mySessionId: this.studioInfo.studio_id,
-      myUserName: this.user.myPageSimpleResponse.userNickname,
+      // myUserName: this.user.myPageSimpleResponse.userNickname,
     };
   },
 
@@ -112,7 +116,7 @@ export default {
 
       this.getToken(this.mySessionId).then((token) => {
         this.session
-          .connect(token, { clientData: this.myUserName })
+          .connect(token, { clientData: this.user.myPageSimpleResponse.userNickname })
           .then(() => {
             this.OV.getUserMedia({
               audioSource: false,
@@ -122,16 +126,19 @@ export default {
             }).then((mediaStream) => {
               const videoTrack = mediaStream.getVideoTracks()[0];
 
-              const newPublisher = this.OV.initPublisher(this.myUserName, {
-                audioSource: undefined,
-                videoSource: videoTrack,
-                publishAudio: true,
-                publishVideo: true,
-                resolution: "320x240",
-                frameRate: 30,
-                insertMode: "APPEND",
-                mirror: false,
-              });
+              const newPublisher = this.OV.initPublisher(
+                this.user.myPageSimpleResponse.userNickname,
+                {
+                  audioSource: undefined,
+                  videoSource: videoTrack,
+                  publishAudio: true,
+                  publishVideo: true,
+                  resolution: "320x240",
+                  frameRate: 30,
+                  insertMode: "APPEND",
+                  mirror: false,
+                }
+              );
               newPublisher.once("accessAllowed", () => {
                 this.session.publish(newPublisher);
                 this.publisher = newPublisher;
