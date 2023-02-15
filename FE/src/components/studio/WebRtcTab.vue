@@ -250,7 +250,6 @@ export default {
 }
 
 .studio_video-section {
-  margin-left: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
