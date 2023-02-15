@@ -40,11 +40,13 @@
       <div id="video-contaniner2" class="col-md-6">
         <hr />
         <div v-for="(sub, idx) in subscribers" :key="idx">
-          <UserVideo
-            :key="sub.stream.connection.connectionId"
-            :stream-manager="sub"
-            @click="updateMainVideoStreamManager(sub)"
-          />
+          <div class="studio__film-section">
+            <UserVideo
+              :key="sub.stream.connection.connectionId"
+              :stream-manager="sub"
+              @click="updateMainVideoStreamManager(sub)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -245,5 +247,13 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.studio__film-section {
+  margin-left: 15px;
+  width: calc(100% - 150px - 15px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>
