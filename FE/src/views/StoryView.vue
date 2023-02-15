@@ -1,9 +1,14 @@
 <template lang="">
   <div class="story_container">
     <div class="title_container">
-      <video :src="storydetaildata.storyVideoUrl" class="video_content" controls>
-        <track kind="captions" />
-      </video>
+      <div v-if="storydetaildata.storyVideoUrl.includes('youtube.com')">
+        <object width="538" height="308" :data="storydetaildata.storyVideoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></object>
+      </div>
+      <div v-else>
+        <video :src="storydetaildata.storyVideoUrl" class="video_content" controls>
+          <track kind="captions" />
+        </video>
+      </div>
       <div class="text_content">
         <div class="category">
           <HOT_BUTTON class="content_icon"></HOT_BUTTON>
