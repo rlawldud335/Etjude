@@ -7,7 +7,7 @@ import java.util.List;
 public interface MyPageRepositorySupport {
 
     List<MyPageStudiosResponse> getMyPageStudios(String userId);
-    List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId);
+    List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId, Long studioId);
     List<MyPageArticlesResponse> getMyPageArticles(String userId);
     MyPageLikesResponse getMyPageLikes(String userId);
     List<MyPageCommentsResponse> getMyPageComments(String userId);

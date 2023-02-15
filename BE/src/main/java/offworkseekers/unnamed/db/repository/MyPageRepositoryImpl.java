@@ -70,26 +70,45 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
     }
 
     @Override
-    public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId) {
+    public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId, Long studioId) {
 
-        List<MyPageFilmsResponse> myFilms = queryFactory
+        List<MyPageFilmsResponse> member = queryFactory
                 .select(Projections.constructor(MyPageFilmsResponse.class,
                         film.filmId,
                         story.category.categoryName,
                         story.work.workTitle,
                         story.storyTitle,
-                        film.studio.studioTitle,
+                        studio.studioTitle,
                         film.filmVideoUrl,
                         film.filmCreatedDate,
-                        film.studio.studioEndDate))
-                .from(film, story, teamMember)
-                .where(teamMember.user.userId.eq(userId), film.studio.eq(teamMember.studio), film.studio.story.eq(story))
+                        studio.studioEndDate))
+                .from(film, story, teamMember, studio)
+                .where(teamMember.user.userId.eq(userId), film.studio.eq(teamMember.studio)
+                        , film.studio.story.eq(story), studio.studioId.eq(studioId), film.studio.eq(studio))
                 .fetch();
+
+        List<MyPageFilmsResponse> captain = queryFactory
+                .select(Projections.constructor(MyPageFilmsResponse.class,
+                        film.filmId,
+                        story.category.categoryName,
+                        story.work.workTitle,
+                        story.storyTitle,
+                        studio.studioTitle,
+                        film.filmVideoUrl,
+                        film.filmCreatedDate,
+                        studio.studioEndDate))
+                .from(film, story, studio)
+                .where(studio.captainId.eq(userId), studio.studioId.eq(studioId), studio.story.eq(story), film.studio.eq(studio))
+                .fetch();
+
+        List<MyPageFilmsResponse> concat = new ArrayList<>();
+        concat.addAll(member);
+        concat.addAll(captain);
 
         List<MyPageFilmsWithMembersResponse> result = new ArrayList<>();
 
-        for (int i = 0, len = myFilms.size(); i < len; i++) {
-            MyPageFilmsResponse temp = myFilms.get(i);
+        for (int i = 0, len = concat.size(); i < len; i++) {
+            MyPageFilmsResponse temp = concat.get(i);
             List<String> Members = queryFactory
                     .select(teamMember.user.nickName)
                     .from(studio, teamMember)
