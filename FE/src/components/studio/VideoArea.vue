@@ -1,27 +1,19 @@
+<!-- eslint-disable import/no-extraneous-dependencies -->
 <!-- eslint-disable vuejs-accessibility/media-has-caption -->
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 0 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 2 },
-        ]"
-        ref="videoOutput"
-        :src="studioInfo.storyVideoUrl"
-        @timeupdate="changeTimeHandler"
-        controls
-      ></video>
-      <video
-        :class="[
-          { 'video-zero-size': state.videoMode == 2 },
-          { 'video-default-size': state.videoMode == 1 },
-          { 'video-full-size': state.videoMode == 0 },
-        ]"
-        :srcObject="mediaStream"
-        autoplay
-      ></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 0 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 2 },
+      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls
+        loop="loop"></video>
+      <video :class="[
+        { 'video-zero-size': state.videoMode == 2 },
+        { 'video-default-size': state.videoMode == 1 },
+        { 'video-full-size': state.videoMode == 0 },
+      ]" :srcObject="mediaStream" autoplay muted></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
@@ -31,13 +23,13 @@
     <div class="video-controller">
       <button class="bana-btn" @click="toggleVideo()">
         <span>카메라</span>
-        <VideoOn v-show="constraints.video" />
-        <VideoOff v-show="!constraints.video" />
+        <VideoOn v-show="toggleBtn.video" />
+        <VideoOff v-show="!toggleBtn.video" />
       </button>
       <button class="bana-btn" @click="toggleAudio()">
         <span>마이크</span>
-        <MicOn v-show="constraints.audio" />
-        <MicOff v-show="!constraints.audio" />
+        <MicOn v-show="toggleBtn.audio" />
+        <MicOff v-show="!toggleBtn.audio" />
       </button>
       <button class="bana-btn" @click="state.videoMode = (state.videoMode + 1) % 3">
         <span>화면전환</span>
@@ -57,6 +49,8 @@ import RecordCircle from "@/assets/icons/RecordCircle.svg";
 import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
+import { webmFixDuration } from "webm-fix-duration";
+
 
 export default {
   components: {
@@ -67,15 +61,9 @@ export default {
     RecordCircle,
     ChangeVideo2,
   },
-  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object },
+  props: { videoState: Object, scriptState: Object, allLines: Array, studioInfo: Object, user: Object },
   emits: ["change-video-state", "save-recording-data", "change-current-slide"],
   setup(props, { emit }) {
-    const user = {
-      user_id: "1",
-      nickname: "user1",
-      profile_url:
-        "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
-    };
 
     const state = reactive({
       videoMode: 1,
@@ -114,9 +102,26 @@ export default {
         emit("change-current-slide", props.allLines.length - 1);
       }
     };
+    const videoResolution = { width: { min: 640, ideal: 640, max: 640 }, height: { min: 480, ideal: 480, max: 480 } };
 
     const mediaStream = ref(null);
-    const constraints = reactive({ video: true, audio: true });
+    const constraints = reactive({
+      video: videoResolution, audio: true
+    });
+    const toggleBtn = reactive({
+      video: true, audio: true
+    })
+
+    // const filterTime = (sec) => {
+    //   let h = (sec / (1000 * 60 * 60)) % 24;
+    //   let m = (sec / (1000 * 60)) % 60;
+    //   let s = (sec / 1000) % 60;
+    //   h = (`0${Math.floor(h)}`).slice(-2);
+    //   m = (`0${Math.floor(m)}`).slice(-2);
+    //   s = (`0${Math.floor(s)}`).slice(-2);
+    //   return `${h}:${m}:${s}`;
+    // }
+
     let mediaRecorder = null;
     const recordedMediaURL = ref(null);
 
@@ -133,16 +138,17 @@ export default {
     };
 
     const toggleVideo = () => {
-      constraints.video = !constraints.video;
-      mediaStream.value.getVideoTracks()[0].enabled = constraints.video;
+      toggleBtn.video = !toggleBtn.video;
+      mediaStream.value.getVideoTracks()[0].enabled = !mediaStream.value.getVideoTracks()[0].enabled;
     };
 
     const toggleAudio = () => {
-      constraints.audio = !constraints.audio;
-      mediaStream.value.getAudioTracks()[0].enabled = constraints.audio;
+      toggleBtn.audio = !toggleBtn.audio;
+      mediaStream.value.getAudioTracks()[0].enabled = !mediaStream.value.getAudioTracks()[0].enabled;
     };
 
     const startRecoding = async () => {
+      const dateStarted = new Date().getTime();
       const recordedChunks = [];
       mediaRecorder = new MediaRecorder(mediaStream.value, {
         mimeType: "video/webm;",
@@ -157,11 +163,13 @@ export default {
           URL.revokeObjectURL(recordedMediaURL.value);
         }
         if (recordedChunks && recordedChunks.length !== 0) {
+          const dateEnd = new Date().getTime();
           const blob = await new Blob(recordedChunks, { type: "video/webm;" });
-          recordedMediaURL.value = await URL.createObjectURL(blob);
-          console.log("녹화종료", recordedMediaURL.value);
+          const fixedBlob = await webmFixDuration(blob, dateEnd - dateStarted);
+          console.log(fixedBlob);
+          recordedMediaURL.value = URL.createObjectURL(fixedBlob);
           const awsUrl = fileUpload(
-            blob,
+            fixedBlob,
             props.studioInfo,
             props.videoState.sceneIdx,
             (data) => {
@@ -170,7 +178,7 @@ export default {
                 recording_video_url: data.Location,
                 scene_id: props.videoState.sceneIdx,
                 studio_id: props.studioInfo.studio_id,
-                user_id: user.user_id,
+                user_id: props.user.user_id,
               };
               saveSceneRecord(
                 params,
@@ -182,7 +190,7 @@ export default {
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, user);
+              emit("save-recording-data", props.videoState.sceneIdx, recordedMediaURL.value, props.user);
             },
             (err) => {
               console.log(err);
@@ -223,6 +231,7 @@ export default {
       endRecording,
       videoOutput,
       changeTimeHandler,
+      toggleBtn
     };
   },
 };
@@ -244,7 +253,7 @@ export default {
   position: relative;
 }
 
-.video-player > video {
+.video-player>video {
   height: 100%;
 }
 

@@ -1,11 +1,7 @@
 <template>
   <div class="script-tab">
-    <ScriptTabScene
-      v-for="scene in storyScript"
-      :key="scene.sceneNumber"
-      :scene="scene"
-      @change-script-time="changeScriptTime"
-    ></ScriptTabScene>
+    <ScriptTabScene v-for="scene in storyScript" :key="scene.sceneNumber" :scene="scene" :videoState="videoState"
+      @change-script-time="changeScriptTime" @start-recording="startRecording"></ScriptTabScene>
   </div>
 </template>
 
@@ -19,15 +15,21 @@ export default {
   },
   props: {
     storyScript: Array,
+    videoState: Object
   },
-  emits: ["change-current-time"],
+  emits: ["change-current-time", "change-video-state"],
   setup(props, { emit }) {
     const changeScriptTime = (time) => {
       emit("change-current-time", time);
     };
 
+    const startRecording = (sceneIdx) => {
+      emit("change-video-state", sceneIdx, true);
+    }
+
     return {
       changeScriptTime,
+      startRecording
     };
   },
 };

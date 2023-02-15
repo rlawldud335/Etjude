@@ -4,7 +4,9 @@
       <img :src="profiledata.writerPhotoUrl" alt="" />
       <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
-    <QuitButton></QuitButton>
+    <div @click="$emit('close')">
+      <QuitButton></QuitButton>
+    </div>
   </div>
 </template>
 <script>
@@ -36,6 +38,7 @@ export default {
   padding-right: 16px;
   border: none;
   background-color: rgb(219, 218, 218);
+  height: 10%;
 }
 .profile {
   display: flex;

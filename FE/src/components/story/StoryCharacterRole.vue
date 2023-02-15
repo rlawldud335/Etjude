@@ -57,8 +57,8 @@ export default {
 .story__role-desc-body {
   height: 140px;
   margin-top: 10px;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 400;
+  font-size: 14px;
   line-height: 18px;
   overflow: auto;
   // overflow: hidden;

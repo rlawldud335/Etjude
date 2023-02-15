@@ -1,11 +1,12 @@
 <template lang="">
   <div class="studiogate">
     <div class="studiotitle">
-      <router-link to="/main"> 내 스튜디오 </router-link>
+      <span> 내 스튜디오 </span>
       <HeheheIcon />
       >
     </div>
     <StudioCardList></StudioCardList>
+    <div class="line"></div>
   </div>
 </template>
 <script>
@@ -40,5 +41,10 @@ a {
 }
 .studiogate {
   position: relative;
+}
+.line {
+  width: 1136px;
+  border: 1px solid rgb(211, 211, 211);
+  margin: 30px 0px;
 }
 </style>

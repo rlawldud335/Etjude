@@ -75,6 +75,7 @@ export default {
   flex-direction: column;
   box-sizing: border-box;
   padding: 24px;
+  height: 75%;
 }
 .post_header {
   display: flex;
@@ -100,13 +101,14 @@ export default {
   justify-content: space-between;
   padding: 16px 3px 0 7px;
   font-weight: 300;
+  height: 50%;
 }
 .post_menu {
   margin-bottom: 24px;
 }
 .post_text {
-  height: 200px;
-  min-height: 100%;
+  height: 80px;
+  // min-height: 100%;
   max-height: 200px;
   //   box-shadow: 0 0 0 1px #000 inset;
 }
@@ -126,7 +128,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 250px;
-  min-height: 100%;
+  // min-height: 100%;
   max-height: 250px;
   // height: 40%;
   margin-top: 16px;

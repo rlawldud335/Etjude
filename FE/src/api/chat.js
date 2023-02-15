@@ -42,24 +42,25 @@ export function sendChatParticipants(e) {
 export function send() {
   if (this.stompClient && this.stompClient.connected) {
     this.stompClient.send(
-      `/pub/api/v1/studio/chat/${this.studioId}/${this.userId}/${this.nickname}`, {},
+      `/pub/api/v1/studio/chat/${this.studioId}/${this.userId}/${this.nickname}`,
+      {},
       JSON.stringify(this.message)
     );
   }
 }
 
 export function connect() {
-  this.serverURL = `https://withs.r-e.kr/api/v1/studio/chat`;
+  this.serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
   const socket = new SockJS(this.serverURL);
   this.stompClient = Stomp.over(socket);
   this.stompClient.connect({}, () => {
     // 소켓 연결 성공
     this.connected = true;
     this.attender = {
-      userId : this.userId,
-      userPhotoUrl : this.userPhotoUrl,
-    }
-    
+      userId: this.userId,
+      userPhotoUrl: this.userPhotoUrl,
+    };
+
     // 서버의 메시지 전송 endpoint를 구독합니다.
     this.stompClient.subscribe(`/sub/api/v1/studio/chat/${this.studioId}`, (res) => {
       // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
@@ -84,7 +85,6 @@ export function connect() {
           }
         }
       }
-    })
-  })
+    });
+  });
 }
-

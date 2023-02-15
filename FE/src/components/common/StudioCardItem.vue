@@ -1,7 +1,7 @@
 <template lang="">
   <div class="carousel__item">
-    <router-link to="/studio">
-      <img class="itemimg" :src="require(`@/assets/images/NoImage.png`)" alt="" />
+    <router-link :to="{ name: 'studio', params: { studioId: carditem.studioId } }">
+      <img class="itemimg" :src="carditem.storyThumbnailUrl" alt="" />
       <div class="itemtext">
         <div class="rightitem">
           <div class="itemtextteamname">{{ carditem.studioTitle }}</div>
@@ -84,6 +84,11 @@ a {
   text-align: left;
   font-size: 16px;
   font-weight: bold;
+  max-width: calc(100% - 15px);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .itemtexttitle,
@@ -98,5 +103,6 @@ a {
   padding-left: 2px;
   text-align: left;
   font-size: 16px;
+  white-space: nowrap;
 }
 </style>

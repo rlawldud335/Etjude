@@ -1,60 +1,111 @@
 <template>
-  <div>
-    유저 아이디:
-    <label for="유저아이디"><input v-model="userId" type="text" @keyup.enter="connect" /></label>
-    <br />
-    유저 닉네임:
-    <label for="유저닉네임"><input v-model="nickname" type="text" /></label>
-    <br />
-    내용:
-    <label for="내용"><input v-model="message" type="text" @keyup.enter="sendMessage" /></label>
-    <hr />
-    <div class="container" ref="messages">
-      <div>
-        채팅 내역
-        <div v-for="(item, idx) in recvList" :key="idx" class="messages">
-          <div v-if="item.studioId === studioId">
-            <div v-if="item.userId === this.userId" style="color: blue">
-              <div>({{ item.chatTime }}) {{ item.nickname }}: {{ item.content }}</div>
-            </div>
-            <div v-else>
-              <div>({{ item.chatTime }}) {{ item.nickname }}: {{ item.content }}</div>
-            </div>
-          </div>
-        </div>
+  <div class="chatting">
+    <div ref="messages" id="chattingContainer" class="chatting-container">
+      <div v-for="item in state.recvList" :key="item">
+        <ChattingTabLine v-if="item.nickname !== state.nickname" :line="item" />
+        <ChattingTabMyLine v-if="item.nickname === state.nickname" :line="item" />
       </div>
+    </div>
+    <div class="chatting-input">
+      <ChattingAdd />
+      <label for="chattingInput" class="chatting-input__input">
+        <input id="chattingInput" v-model="state.message" type="text" @keyup.enter="sendMessage" />
+      </label>
+      <ChattingSend />
     </div>
   </div>
 </template>
 <script>
-import { sendMessage, send, connect } from "@/api/chat";
+import { reactive, watch } from "vue";
+import ChattingSend from "@/assets/icons/ChattingSend.svg";
+import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
+import ChattingTabLine from "@/components/studio/ChattingTabLine.vue";
+import ChattingTabMyLine from "@/components/studio/ChattingTabMyLine.vue";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 export default {
   name: "ChattingTab",
-  data() {
-    return {
-      studioId: "1",
-      sceneNumber: "",
-      userId: "1",
-      nickname: "1",
+  components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
+  props: { studioInfo: Object, user: Object },
+  setup(props) {
+    const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
+    const socket = new SockJS(serverURL);
+    const stompClient = Stomp.over(socket);
+
+
+    const state = reactive({
+      studioId: props.studioInfo.studio_id,
+      userId: props.user.user_id,
+      userPhotoUrl: props.user.profile_url,
+      nickname: props.user.nickname,
       message: "",
-      attender: {},
       recvList: [],
+    });
+
+    const connect = () => {
+      stompClient.connect({}, () => {
+        // 소켓 연결 성공
+        stompClient.connected = true;
+        stompClient.attender = {
+          userId: state.userId,
+          userPhotoUrl: state.userPhotoUrl,
+        };
+        // 서버의 메시지 전송 endpoint를 구독합니다.
+        stompClient.subscribe(`/sub/api/v1/studio/chat/${state.studioId}`, async (res) => {
+          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+          const temp = JSON.parse(res.body);
+          state.recvList.push(temp);
+        });
+      });
+    };
+
+    function send() {
+      return new Promise((resolve) => {
+        if (stompClient && stompClient.connected) {
+          stompClient.send(
+            `/pub/api/v1/studio/chat/${state.studioId}/${state.userId}/${state.nickname}`,
+            {},
+            state.message
+          );
+        }
+        resolve();
+      });
+    }
+
+    function sendMessage() {
+      if (state.nickname !== "" && state.message !== "") {
+        send().then(() => {
+          state.message = "";
+          console.log("받은메시지 리스트", state.recvList);
+        });
+      }
+    }
+
+    watch(
+      () => props.studioInfo,
+      () => {
+        state.studioId = props.studioInfo.studio_id;
+        console.log(props.studioInfo);
+        connect();
+      }
+    );
+
+    watch(
+      () => props.user,
+      () => {
+        state.userId = props.user.user_id;
+        state.userPhotoUrl = props.user.profile_url;
+        state.nickname = props.user.nickname;
+        connect();
+      }
+    );
+
+    return {
+      sendMessage,
+      state,
     };
   },
-  props: { studioInfo: Object },
-  created() {
-    this.connect();
-  },
-  // computed: {
-  //   releng() {
-  //     return this.recvList.length;
-  //   },
-  // },
-  // updated() {
-  //   const { messages } = this.$refs;
-  //   messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-  // },
   watch: {
     recvList: {
       handler() {
@@ -67,16 +118,42 @@ export default {
       deep: true,
     },
   },
-  methods: {
-    sendMessage,
-    send,
-    connect,
-  },
+
 };
 </script>
-<style lang="scss">
-.container {
-  height: 44rem;
-  overflow: auto;
+<style lang="scss" scoped>
+.chatting {
+  height: 100%;
+}
+
+.chatting-container {
+  background-color: white;
+  height: 92%;
+  overflow-y: scroll;
+}
+
+.chatting-input {
+  background-color: #e9e9e9;
+  height: 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 12px;
+}
+
+.chatting-input input {
+  background-color: white;
+  width: 100%;
+  height: 90%;
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.chatting-input__input {
+  width: 80%;
+  height: 60%;
 }
 </style>

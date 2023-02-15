@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-  <FilmSharingDtail v-model="showDtailModal" :filmDetailData="film.articleId"></FilmSharingDtail>
+  <FilmSharingDtail @close="showDtailModal = false" v-model="showDtailModal" :filmDetailData="film.articleId"></FilmSharingDtail>
 </template>
 <script>
 import { computed, ref } from "vue";

@@ -1,4 +1,9 @@
 <template>
+  <div class="studio__scene__header">
+    <span>#{{ scene.sceneNumber }}. {{ scene.roleName }}</span>
+    <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
+    <DisableRecordingIcon v-if="videoState.isRecording" />
+  </div>
   <div class="studio__scene">
     <div class="studio__scene-actor-image">
       <div class="actor__profile-frame--script">
@@ -15,15 +20,17 @@
 
 <script>
 import ScriptTabSceneLine from "@/components/studio/ScriptTabSceneLine.vue";
+import RecordingIcon from "@/assets/icons/recordingIcon.svg";
+import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
 
 export default {
   name: "ScriptTabScene",
-  components: { ScriptTabSceneLine },
+  components: { ScriptTabSceneLine, RecordingIcon, DisableRecordingIcon },
   props: {
-    scene: Object,
+    scene: Object, videoState: Object
   },
   emits: [
-    'change-script-time'
+    'change-script-time', 'start-recording'
   ],
   setup(props, { emit }) {
 
@@ -37,7 +44,12 @@ export default {
       console.log(result);
       return result;
     }
-    return { changeScriptTime, filterTime };
+
+    const startRecording = () => {
+      emit("start-recording", props.scene.sceneNumber);
+    }
+
+    return { changeScriptTime, filterTime, startRecording };
   },
 };
 </script>
@@ -72,5 +84,15 @@ export default {
     max-width: 40px;
     height: auto;
   }
+}
+
+.studio__scene__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  padding-left: 20px;
+  font-size: 15px;
 }
 </style>

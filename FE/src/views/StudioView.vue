@@ -6,91 +6,56 @@
     <div class="studio__content">
       <div class="studio__video" :class="{ openTab: !state.isOpenTab }">
         <div class="studio__video__video">
-          <VideoArea
-            @save-recording-data="saveRecordingData"
-            @change-video-state="changeVideoState"
-            @change-current-slide="changeCurrentSlide"
-            :videoState="videoState"
-            :scriptState="scriptState"
-            :studioInfo="studioData.studioInfo"
-            :allLines="studioData.allLines"
-          />
+          <VideoArea @save-recording-data="saveRecordingData" @change-video-state="changeVideoState"
+            @change-current-slide="changeCurrentSlide" :videoState="videoState" :scriptState="scriptState"
+            :studioInfo="studioData.studioInfo" :allLines="studioData.allLines" :user="user" />
         </div>
         <div class="studio__video__script">
-          <ScriptArea
-            @change-current-time="changeCurrentTime"
-            @change-current-slide="changeCurrentSlide"
-            :scriptState="scriptState"
-            :allLines="studioData.allLines"
-          />
+          <ScriptArea @change-current-time="changeCurrentTime" @change-current-slide="changeCurrentSlide"
+            :scriptState="scriptState" :allLines="studioData.allLines" />
         </div>
       </div>
       <div class="studio__openTab" v-show="state.isOpenTab">
         <div class="openTab__header">
           <div class="openTab__header-text">
             <span class="openTab__header-tabName">{{ tabs[state.selectTab].tabName }}</span>
-            <span class="openTab__header-notice" v-show="state.selectTab === 2"
-              >필름 만들기 권한은 팀장에게만 권한이 있습니다.</span
-            >
+            <span class="openTab__header-notice" v-show="state.selectTab === 2">필름 만들기 권한은 팀장에게만 권한이 있습니다.</span>
           </div>
           <button class="close-btn" @click="closeTab()">
             <QuitButton />
           </button>
         </div>
         <div class="openTab__body">
-          <ScriptTab
-            v-show="state.selectTab === 0"
-            @change-current-time="changeCurrentTime"
-            :storyScript="studioData.storyScript"
-          />
-          <SsinTab
-            v-show="state.selectTab === 1"
-            @change-video-state="changeVideoState"
-            :videoState="videoState"
-            :records="studioData.records"
-            :storyScript="studioData.storyScript"
-          />
-          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" />
-          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" />
+          <ScriptTab v-show="state.selectTab === 0" @change-current-time="changeCurrentTime"
+            @change-video-state="changeVideoState" :videoState="videoState" :storyScript="studioData.storyScript" />
+          <SsinTab v-show="state.selectTab === 1" @change-video-state="changeVideoState" :videoState="videoState"
+            :records="studioData.records" :storyScript="studioData.storyScript" />
+          <FilmTab v-show="state.selectTab === 2" :films="studioData.films" :studioInfo="studioData.studioInfo" />
+          <ChatTab v-show="state.selectTab === 3" :studioInfo="studioData.studioInfo" :user="user" />
           <WebRtcTab v-show="state.selectTab === 4" />
         </div>
       </div>
       <div class="studio__tab">
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(0)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(0)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '0' }">
           <Scripts />
         </button>
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(1)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(1)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '1' }">
           <Ssin />
         </button>
 
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(2)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(2)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '2' }">
           <Film />
         </button>
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(3)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(3)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '3' }">
           <Chatting />
         </button>
 
-        <button
-          class="studio__tab__btn"
-          @click="clickTab(4)"
-          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }"
-        >
+        <button class="studio__tab__btn" @click="clickTab(4)"
+          :class="{ 'studio__tab__btn--select': state.isOpenTab && state.selectTab == '4' }">
           <RTCIcon />
         </button>
       </div>
@@ -109,12 +74,12 @@ import QuitButton from "@/assets/icons/QuitButton.svg";
 import StudioNav from "@/components/studio/StudioNav.vue";
 import ScriptArea from "@/components/studio/ScriptArea.vue";
 import VideoArea from "@/components/studio/VideoArea.vue";
-import { reactive, ref, onBeforeMount } from "vue";
+import { reactive, ref, onBeforeMount, computed } from "vue";
 import { useRoute } from "vue-router";
 import { getStudioInfo, getStudioStoryScript, getSceneRecordList, getFlimList } from "@/api/studio";
 import Chatting from "@/assets/icons/Chatting.svg";
 import RTCIcon from "@/assets/icons/RTCIcon.svg";
-
+import { useStore } from "vuex";
 import ChatTab from "@/components/studio/ChattingTab.vue";
 import WebRtcTab from "@/components/studio/WebRtcTab.vue";
 
@@ -137,6 +102,13 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const store = useStore();
+    const user = computed(() => store.state.user || {
+      user_id: "1",
+      nickname: "user1",
+      profile_url:
+        "https://www.highziumstudio.com/wp-content/uploads/2023/02/%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%B0%B0%EC%9A%B0-%EA%B6%8C%EC%8A%B9%EC%9A%B0-%ED%95%98%EC%9D%B4%EC%A7%80%EC%9D%8C%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%99%80-%EB%A7%A4%EB%8B%88%EC%A7%80%EB%A8%BC%ED%8A%B8-%EA%B3%84%EC%95%BD-%EC%B2%B4%EA%B2%B0_230202-2-853x1280.jpg",
+    })
 
     const state = reactive({
       isOpenTab: true,
@@ -294,6 +266,7 @@ export default {
       scriptState,
       changeCurrentTime,
       changeCurrentSlide,
+      user
     };
   },
 };
@@ -397,6 +370,15 @@ export default {
 .openTab__body {
   height: 93%;
   width: 100%;
+  overflow-y: scroll;
+}
+
+.openTab__body {
+  -ms-overflow-style: none;
+}
+
+.openTab__body::-webkit-scrollbar {
+  display: none;
 }
 
 .close-btn {

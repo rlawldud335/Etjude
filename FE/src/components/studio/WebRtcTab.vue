@@ -2,49 +2,52 @@
   <div id="main-container" class="container">
     <div id="join" v-if="!session">
       <div id="join-dialog" class="jumbotron vertical-center">
-        <h1>Join a video session</h1>
         <div class="form-group">
           <div>
-            <div>Participant</div>
+            <div>NICKNAME</div>
             <label for="participants"
               ><input v-model="myUserName" class="form-control" type="text" required
             /></label>
           </div>
           <div>
-            <div>Session</div>
-            <label for="sessiong"
+            <div>STUDIO_ID</div>
+            <label for="session"
               ><input v-model="mySessionId" class="form-control" type="text" required
             /></label>
           </div>
-          <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
-          </p>
+          <div class="studio-tab__button-section">
+            <button @click="joinSession()">화상 회의 참여하기</button>
+          </div>
+          <hr />
         </div>
       </div>
     </div>
 
     <div id="session" v-if="session">
       <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
+        <div class="studio-tab__button-section">
+          <button @click="leaveSession">화상 회의 떠나기</button>
+        </div>
       </div>
-      <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
+      <div v-show="false">
+        <div id="main-video" class="col-md-6">
+          <UserVideo :stream-manager="mainStreamManager" />
+        </div>
+        <div id="video-container" class="col-md-6">
+          <UserVideo :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+        </div>
       </div>
-      <div id="video-container" class="col-md-6">
-        <user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click="updateMainVideoStreamManager(sub)"
-        />
+      <div id="video-contaniner2" class="col-md-6">
+        <hr />
+        <div v-for="(sub, idx) in subscribers" :key="idx">
+          <div class="studio__film-section">
+            <UserVideo
+              :key="sub.stream.connection.connectionId"
+              :stream-manager="sub"
+              @click="updateMainVideoStreamManager(sub)"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -53,9 +56,7 @@
 <script>
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
-// eslint-disable-next-line import/extensions
-import UserVideo from "@/components/studio/UserVideo";
-// import { base64Encode } from "@firebase/util";
+import UserVideo from "@/components/studio/UserVideo.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -73,6 +74,8 @@ export default {
       // OpenVidu objects
       OV: undefined,
       session: undefined,
+      sessionId: null,
+      streamId: null,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
@@ -84,15 +87,10 @@ export default {
   },
 
   methods: {
-    joinSession() {
-      // --- 1) Get an OpenVidu object ---
-      this.OV = new OpenVidu();
-      // --- 2) Init a session ---
-      this.session = this.OV.initSession();
-      // --- 3) Specify the actions when events take place in the session ---
-      // On every new Stream received...
+    connection() {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
+        this.streamId = subscriber.stream.streamId;
         this.subscribers.push(subscriber);
       });
 
@@ -108,45 +106,45 @@ export default {
         console.warn(exception);
       });
 
-      // --- 4) Connect to the session with a valid user token ---
-
-      // Get a token from the OpenVidu deployment
       this.getToken(this.mySessionId).then((token) => {
-        // First param is the token. Second param can be retrieved by every user on event
-        // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            // --- 5) Get your own camera stream with the desired properties ---
+            this.OV.getUserMedia({
+              audioSource: false,
+              videoSource: undefined,
+              resolution: "320x240",
+              frameRate: 30,
+            }).then((mediaStream) => {
+              const videoTrack = mediaStream.getVideoTracks()[0];
 
-            // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-            // element: we will manage it on our own) and with the desired properties
-            const publisher = this.OV.initPublisher(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
-              videoSource: undefined, // The source of video. If undefined default webcam
-              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-              publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: "640x480", // The resolution of your video
-              frameRate: 30, // The frame rate of your video
-              insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
+              const newPublisher = this.OV.initPublisher(this.myUserName, {
+                audioSource: undefined,
+                videoSource: videoTrack,
+                publishAudio: true,
+                publishVideo: true,
+                resolution: "320x240",
+                frameRate: 30,
+                insertMode: "APPEND",
+                mirror: false,
+              });
+              newPublisher.once("accessAllowed", () => {
+                this.session.publish(newPublisher);
+                this.publisher = newPublisher;
+              });
             });
-
-            // Set the main video in the page to display our webcam and store our Publisher
-            this.mainStreamManager = publisher;
-            this.publisher = publisher;
-
-            // --- 6) Publish your stream ---
-
-            this.session.publish(this.publisher);
           })
           .catch((error) => {
             console.log("There was an error connecting to the session:", error.code, error.message);
           });
       });
-
-      window.addEventListener("beforeunload", this.leaveSession);
+    },
+    joinSession() {
+      // --- 1) Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+      // --- 2) Init a session ---
+      this.session = this.OV.initSession();
+      this.connection();
     },
 
     leaveSession() {
@@ -169,49 +167,40 @@ export default {
       this.mainStreamManager = stream;
     },
 
-    /**
-     * --------------------------------------------
-     * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-     * --------------------------------------------
-     * The methods below request the creation of a Session and a Token to
-     * your application server. This keeps your OpenVidu deployment secure.
-     *
-     * In this sample code, there is no user control at all. Anybody could
-     * access your application server endpoints! In a real production
-     * environment, your application server must identify the user to allow
-     * access to the endpoints.
-     *
-     * Visit https://docs.openvidu.io/en/stable/application-server to learn
-     * more about the integration of OpenVidu in your application server.
-     */
     async getToken(mySessionId) {
-      const sessionId = await this.createSession(mySessionId);
+      await this.createSession(mySessionId);
       // eslint-disable-next-line no-return-await
-      return await this.createToken(sessionId);
+      return await this.createToken(mySessionId);
     },
 
+    // eslint-disable-next-line consistent-return
     async createSession(sessionId) {
-      console.log(sessionId);
-      const data = JSON.stringify({ customSessionId: sessionId });
-      const response = await axios.post(
-        `${APPLICATION_SERVER_URL}api/sessions`,
-        { customSessionId: sessionId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
-          },
-        },
-        data
-      );
-      console.log(response);
-      return response.data.id; // The sessionId
+      await axios
+        .post(
+          `${APPLICATION_SERVER_URL}api/sessions`,
+          { customSessionId: sessionId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+            },
+          }
+        )
+        .then((response) => {
+          this.sessionId = response.data.id;
+        })
+        // eslint-disable-next-line consistent-return
+        .catch((response) => {
+          const err = { ...response };
+          if (err?.response?.status === 409) {
+            this.sessionId = sessionId;
+          }
+        });
     },
 
     async createToken(sessionId) {
-      // const data = JSON.stringify({ customSessionId: sessionId });
       const data = {};
-      console.log("제발요 ", sessionId);
+      console.log("2", sessionId);
       const openviduInstance = await axios.post(
         `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connection`,
         {
@@ -219,12 +208,52 @@ export default {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
+          body: {
+            type: "WEBRTC",
+            data: "My Server Data",
+            record: true,
+            role: "PUBLISHER",
+            kurentoOptions: {
+              videoMaxRecvBandwidth: 1000,
+              videoMinRecvBandwidth: 300,
+              videoMaxSendBandwidth: 1000,
+              videoMinSendBandwidth: 300,
+              allowedFilters: ["GStreamerFilter", "ZBarFilter"],
+            },
+          },
         },
         data
       );
-      // console.log(openviduInstance);
       return openviduInstance.data.token; // The token
     },
   },
 };
 </script>
+
+<style scoped lang="scss">
+.studio-tab__button-section {
+  button {
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    padding: 8px 30px;
+    white-space: nowrap;
+    background-color: $bana-pink;
+    color: white;
+    border-radius: 8px;
+  }
+
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.studio__film-section {
+  margin-left: 15px;
+  width: calc(100% - 150px - 15px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+</style>

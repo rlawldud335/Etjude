@@ -1,5 +1,5 @@
 {
-  "name": "FE",
+  "name": "Etjude",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -31,7 +31,8 @@
     "vue3-icon": "^2.1.0",
     "vuex": "^4.0.0",
     "vuex-persistedstate": "^4.1.0",
-    "webfonts-generator": "^0.4.0"
+    "webfonts-generator": "^0.4.0",
+    "webm-fix-duration": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
