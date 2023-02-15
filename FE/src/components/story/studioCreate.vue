@@ -64,7 +64,7 @@
 // import QuitButton from "@/assets/icons/Quit Button.svg";
 import { createStudio } from "@/api/story";
 import { reactive, ref, computed } from "vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getUserSearch } from "@/api/users";
 import deleteButton from "@/assets/icons/memberdelete.svg";
@@ -79,7 +79,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    const router = useRouter();
+    // const router = useRouter();
     const emailData = reactive({
       keyword: "",
     });
