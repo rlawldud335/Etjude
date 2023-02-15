@@ -14,7 +14,7 @@ async function getMyLike(user, success, fail) {
 
 async function getMyStudio(user, success, fail) {
   console.log("# POST : 마이페이지 내 스튜디오 ");
-  await api.post(`/mypage/studio`, { user_id: user }).then(success).catch(fail);
+  await api.post(`/mypage/studio`, user).then(success).catch(fail);
 }
 
 async function getMyFilm(user, success, fail) {
