@@ -50,13 +50,12 @@ export default {
     getWorkInfo(
       route.params.pieceId,
       ({ data }) => {
-        console.log(data);
         work.title = data.workTitle;
         work.description = data.workDesc;
         work.thumbnailUrl = data.workThumbnailUrl;
       },
       (error) => {
-        console.log(error);
+        console.log("작품 정보 오류:", error);
       }
     );
     const backgroundStyle = computed(() => ({
@@ -68,11 +67,10 @@ export default {
     getStoriesOnWork(
       route.params.pieceId,
       ({ data }) => {
-        console.log(data);
         work.storyList = data;
       },
       (error) => {
-        console.log(error);
+        console.log("작품 별 스토리 모아보기 오류:", error);
       }
     );
     return {

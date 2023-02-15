@@ -1,20 +1,18 @@
 <template lang="">
-    <div class="chatting-container__line">
-        <div class="line__time">
-          <span>{{line.chatTime}}</span>
-        </div>
-        <div class="line__chat">
-          <span class="line__chat__chat">{{line.content}}</span>
-        </div>
-      </div>
+  <div class="chatting-container__line">
+    <div class="line__time">
+      <span>{{ line.chatTime }}</span>
+    </div>
+    <div class="line__chat">
+      <span class="line__chat__chat">{{ line.content }}</span>
+    </div>
+  </div>
 </template>
 <script>
 export default {
   name: "ChattingTabMyLine",
   props: { line: Object },
-  setup(props) {
-    console.log("ChattingTabMyLine", props);
-  },
+  setup() {},
 };
 </script>
 <style lang="scss" scoped>

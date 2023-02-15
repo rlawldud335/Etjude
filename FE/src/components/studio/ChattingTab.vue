@@ -77,7 +77,6 @@ export default {
       if (state.nickname !== "" && state.message !== "") {
         send().then(() => {
           state.message = "";
-          console.log("받은메시지 리스트", state.recvList);
         });
       }
     }
@@ -86,7 +85,6 @@ export default {
       () => props.studioInfo,
       () => {
         state.studioId = props.studioInfo.studio_id;
-        console.log(props.studioInfo);
         connect();
       }
     );
