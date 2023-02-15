@@ -1,6 +1,6 @@
 <template>
   <div class="chatting">
-    <div id="chattingContainer" class="chatting-container">
+    <div ref="messages" id="chattingContainer" class="chatting-container">
       <div v-for="item in state.recvList" :key="item">
         <ChattingTabLine v-if="item.nickname !== state.nickname" :line="item" />
         <ChattingTabMyLine v-if="item.nickname === state.nickname" :line="item" />
@@ -32,7 +32,7 @@ export default {
     const serverURL = `https://etjude.r-e.kr/api/v1/studio/chat`;
     const socket = new SockJS(serverURL);
     const stompClient = Stomp.over(socket);
-    const chattingContainer = document.getElementById("chattingContainer");
+
 
     const state = reactive({
       studioId: props.studioInfo.studio_id,
@@ -56,7 +56,6 @@ export default {
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
           const temp = JSON.parse(res.body);
           state.recvList.push(temp);
-          chattingContainer.scrollTop = chattingContainer.scrollHeight;
         });
       });
     };
@@ -107,6 +106,19 @@ export default {
       state,
     };
   },
+  watch: {
+    recvList: {
+      handler() {
+        console.log(1);
+        this.$nextTick(() => {
+          const { messages } = this.$refs;
+          messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+        });
+      },
+      deep: true,
+    },
+  },
+
 };
 </script>
 <style lang="scss" scoped>
@@ -117,7 +129,7 @@ export default {
 .chatting-container {
   background-color: white;
   height: 92%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .chatting-input {
