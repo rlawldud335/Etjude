@@ -48,6 +48,8 @@ public class StudioService {
             User user = userRepository.findById(teamMembersId).orElse(null);
             userList.add(user);
         }
+        User captain = userRepository.findById(request.getCaptainId()).orElse(null);
+        userList.add(captain);
         studio.addTeamMember(userList);
         studioRepository.save(studio);
     }
