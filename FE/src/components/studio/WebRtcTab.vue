@@ -5,19 +5,21 @@
         <div class="form-group">
           <div>
             <div>NICKNAME</div>
-            <label for="participants"
+            <div>{{ user.myPageSimpleResponse.userNickname }}</div>
+            <!-- <label for="participants"
               ><input
                 v-model="user.myPageSimpleResponse.userNickname"
                 class="form-control"
                 type="text"
                 required
-            /></label>
+            /></label> -->
           </div>
           <div>
             <div>STUDIO_ID</div>
-            <label for="session"
+            <div>{{ mySessionId }}</div>
+            <!-- <label for="session"
               ><input v-model="mySessionId" class="form-control" type="text" required
-            /></label>
+            /></label> -->
           </div>
           <div class="studio-tab__button-section">
             <button @click="joinSession()">화상 회의 참여하기</button>
