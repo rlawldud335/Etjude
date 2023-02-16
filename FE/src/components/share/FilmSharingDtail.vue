@@ -6,16 +6,25 @@
       </video>
     </div>
     <div class="community_container">
-      <UserProfile class="user-profile-container" @close="$emit('close')" :filmdata="profiledata"></UserProfile>
+      <UserProfile
+        class="user-profile-container"
+        @close="$emit('close')"
+        :filmdata="profiledata"
+      ></UserProfile>
       <FlimContents class="contents-container" :filmdata="postdata" />
-      <div class="comment-container" :filmdata="postdata"></div>
+      <div class="comment-container" :filmdata="postdata">
+        <FlimComment
+          :comments="postdata.comments"
+          :articleId="articleId"
+          @update-comment-list="updateCommentList"
+        ></FlimComment>
+      </div>
     </div>
   </vue-final-modal>
 </template>
 <script>
-
-
 import { getFilmDetail } from "@/api/share";
+import FlimComment from "@/components/share/FlimComment.vue";
 import { ref } from "vue";
 import UserProfile from "./UserProfile.vue";
 import FlimContents from "./FlimContents.vue";
@@ -24,7 +33,8 @@ export default {
   name: "FilmSharingDtail",
   components: {
     UserProfile,
-    FlimContents
+    FlimContents,
+    FlimComment,
   },
   props: {
     showModal: Boolean,
@@ -41,24 +51,32 @@ export default {
       articleTitle: String,
       articleContent: String,
       articleCreatedDate: Date,
-      comments: Object,
+      comments: Array,
     });
-    // const getFilmDetailmodal = () => {
-    getFilmDetail(
-      articleId.value,
-      ({ data }) => {
-        filmdata.value = data;
-        profiledata.value.writerNickName = data.writerNickName;
-        profiledata.value.writerPhotoUrl = data.writerPhotoUrl;
-        postdata.value.articleTitle = data.articleTitle;
-        postdata.value.articleContent = data.articleContent;
-        postdata.value.articleCreatedDate = data.articleCreatedDate;
-        postdata.value.comments = data.comments;
-      },
-      (error) => {
-        console.log("필름 상세 에러:", error);
-      }
-    );
+    const getFilmDetailmodal = () => {
+      getFilmDetail(
+        articleId.value,
+        ({ data }) => {
+          console.log(data);
+          filmdata.value = data;
+          profiledata.value.writerNickName = data.writerNickName;
+          profiledata.value.writerPhotoUrl = data.writerPhotoUrl;
+          postdata.value.articleTitle = data.articleTitle;
+          postdata.value.articleContent = data.articleContent;
+          postdata.value.articleCreatedDate = data.articleCreatedDate;
+          postdata.value.comments = data.comments;
+        },
+        (error) => {
+          console.log("필름 상세 에러:", error);
+        }
+      );
+      console.log("고고");
+    };
+    getFilmDetailmodal();
+    const updateCommentList = () => {
+      console.log("고고");
+      getFilmDetailmodal();
+    };
     // };
     // getFilmDetailmodal();
     return {
@@ -66,6 +84,7 @@ export default {
       filmdata,
       profiledata,
       postdata,
+      updateCommentList,
     };
   },
 };
@@ -81,6 +100,8 @@ export default {
   display: flex;
   width: 1136px;
   aspect-ratio: 2.5/1.5;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .video_container {
@@ -103,17 +124,15 @@ video {
   background-color: white;
 }
 
-
 .user-profile-container {
-  height: 12%;
+  height: 8%;
 }
 
 .contents-container {
-  height: 35%;
+  height: 40%;
 }
 
 .comment-container {
-  height: 53%;
-  background-color: yellow;
+  height: 48.1%;
 }
 </style>
