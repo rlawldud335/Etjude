@@ -126,7 +126,7 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
                     .select(recording.recordingVideoUrl, recording.scene.sceneId, recording.scene.sceneNumber, recording.userId)
                     .from(recording)
                     .where(
-                            recording.scene.sceneId.eq(Long.valueOf(nowSceneNumber)),
+                            recording.scene.sceneId.eq(nowSceneId),
                             recording.studio.studioId.eq(studioId)
                     )
                     .fetchOne();
