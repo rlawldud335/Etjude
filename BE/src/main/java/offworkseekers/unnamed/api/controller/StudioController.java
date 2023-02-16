@@ -67,7 +67,8 @@ public class StudioController {
     @PostMapping(value = "/api/v1/studio/search")
     public List<UserSearchResponse> searchUser(@RequestBody @Valid Map<String, String> param){
         String keyword = param.get("keyword");
-        return studioService.searchUser(keyword);
+        String userId = param.get("user_id");
+        return studioService.searchUser(keyword, userId);
     }
 
     @PostMapping(value = "/api/v1/studio/story/video")
