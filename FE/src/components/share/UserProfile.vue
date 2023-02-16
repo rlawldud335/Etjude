@@ -1,10 +1,7 @@
 <template lang="">
   <div class="profile_container">
     <div class="profile">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/6/62/Alt%C4%B1n_Portakal.jpg"
-        alt=""
-      />
+      <img :src="profiledata.writerPhotoUrl" alt="" />
       <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
     <div class="close-btn" @click="$emit('close')">
