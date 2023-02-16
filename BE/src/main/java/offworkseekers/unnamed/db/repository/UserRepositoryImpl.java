@@ -17,7 +17,7 @@ public class UserRepositoryImpl implements UserRepositorySupport{
 
 
     @Override
-    public List<UserSearchResponse> findUserSimple(String keyword) {
+    public List<UserSearchResponse> findUserSimple(String keyword, String userId) {
         List<User> fetch = queryFactory
                 .selectFrom(user)
                 .where(user.email.contains(keyword))
@@ -25,6 +25,7 @@ public class UserRepositoryImpl implements UserRepositorySupport{
 
         List<UserSearchResponse> userSearchResponses = new ArrayList<>();
         for (User fetch1 : fetch) {
+            if(fetch1.getUserId().equals(userId)) continue;
             userSearchResponses.add(
                     UserSearchResponse.builder()
                             .userId(fetch1.getUserId())

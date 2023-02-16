@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface UserRepositorySupport {
 
-    List<UserSearchResponse> findUserSimple(String keyword);
+    List<UserSearchResponse> findUserSimple(String keyword, String userId);
 
 }
