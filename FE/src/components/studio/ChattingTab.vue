@@ -2,15 +2,9 @@
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
       <div v-for="item in recvListData" :key="item">
-        <ChattingTabLine
-          v-if="item.studioId == studioId && item.userId !== user.userId"
-          :line="item"
-          :userProfileUrl="userProfileUrl"
-        />
-        <ChattingTabMyLine
-          v-if="item.studioId == studioId && item.userId === user.userId"
-          :line="item"
-        />
+        <ChattingTabLine v-if="item.studioId == studioId && item.userId !== user.userId" :line="item"
+          :userMemberList="userMemberList" />
+        <ChattingTabMyLine v-if="item.studioId == studioId && item.userId === user.userId" :line="item" />
       </div>
     </div>
     <div class="chatting-input">
@@ -20,9 +14,10 @@
       </label>
       <ChattingSend @click="test" />
     </div>
-  </div>
+</div>
 </template>
 <script>
+
 import { reactive, watch, computed, ref, nextTick } from "vue";
 import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
@@ -48,10 +43,7 @@ export default {
     });
     const recvListData = computed(() => props.recvList);
     const messages = ref("");
-    const userProfileUrl = reactive({});
-    props.studioInfo.member_list.forEach((member) => {
-      userProfileUrl[member.user_id] = member.profile_url;
-    });
+    const userMemberList = computed(() => props.studioInfo.member_list);
 
     watch(
       () => props.flimState.madeCnt,
@@ -120,7 +112,7 @@ export default {
       recvListData,
       messages,
       test,
-      userProfileUrl,
+      userMemberList,
     };
   },
 };

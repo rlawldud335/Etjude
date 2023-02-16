@@ -1,7 +1,7 @@
 <template lang="">
     <div class="chatting-container__line">
         <img class="line__profile-image"
-          :src="userProfileUrl[line.userId]" alt="" />
+          :src="getUserProfile(line.userId)" alt="" />
         <div class="line__chat">
           <span class="line__chat__nickname">{{line.nickname}}</span>
           <span class="line__chat__chat">{{line.content}}</span>
@@ -12,11 +12,23 @@
       </div>
 </template>
 <script>
+
 export default {
   name: "ChattingTabLine",
-  props: { line: Object, userProfileUrl: Object },
+  props: { line: Object, userMemberList: Array },
   setup(props) {
     console.log("chattingTabLine", props);
+    const getUserProfile = (userId) => {
+      for (let i = 0; i < props.userMemberList.length; i += 1) {
+        if (props.userMemberList[i].user_id === userId) {
+          return props.userMemberList[i].profile_url;
+        }
+      }
+      return "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg";
+    }
+    return {
+      getUserProfile
+    }
   },
 };
 </script>
