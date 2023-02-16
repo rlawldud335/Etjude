@@ -187,7 +187,7 @@ export default {
   position: relative;
   flex-direction: column;
   width: 450px;
-  height: 420px;
+  height: 440px;
   box-sizing: border-box;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -315,7 +315,6 @@ export default {
   min-height: 36px;
   max-height: 65px;
   overflow: auto;
-
   background-color: white;
   padding: 6px 8px;
   box-sizing: border-box;
