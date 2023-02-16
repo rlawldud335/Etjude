@@ -314,23 +314,6 @@ export default {
         });
       }
     };
-    // const replacePath = () => {
-    //   if (inputText.value) {
-    //     router.replace({
-    //       name: "search-result",
-    //       params: {
-    //         categoryId: state.category.id,
-    //         menuId: state.menu.id,
-    //         keyword: inputText.value,
-    //       },
-    //     });
-    //   } else {
-    //     router.replace({
-    //       name: "search-group",
-    //       params: { categoryId: state.category.id, menuId: state.menu.id },
-    //     });
-    //   }
-    // };
     // path 즉 state가 변화될 때 외에 키워드가 입력될 때마다 검색
     const inputKeyword = (event) => {
       inputText.value = event.target.value;
@@ -485,6 +468,7 @@ export default {
     border: none;
     width: 130px;
     padding: 10px 5px 10px 5px;
+    cursor: pointer;
   }
 }
 
