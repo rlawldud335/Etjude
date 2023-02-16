@@ -1,11 +1,8 @@
 package offworkseekers.unnamed.api.response;
 
 import lombok.Getter;
-import lombok.Setter;
-import offworkseekers.unnamed.db.entity.User;
 
 import java.time.LocalDate;
-import java.util.List;
 @Getter
 public class MyPageFilmsResponse {
     Long filmId;

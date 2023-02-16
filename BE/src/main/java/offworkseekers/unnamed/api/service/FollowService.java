@@ -2,14 +2,10 @@ package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.db.entity.Follow;
-import offworkseekers.unnamed.db.entity.User;
 import offworkseekers.unnamed.db.repository.FollowRepository;
 import offworkseekers.unnamed.db.repository.UserRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
 
 @Service
 @Transactional

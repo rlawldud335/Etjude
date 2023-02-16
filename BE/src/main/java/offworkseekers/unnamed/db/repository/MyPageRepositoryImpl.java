@@ -9,7 +9,8 @@ import offworkseekers.unnamed.api.dto.MyPageLikesArticlesDto;
 import offworkseekers.unnamed.api.dto.MyPageLikesStoriesDto;
 import offworkseekers.unnamed.api.response.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static offworkseekers.unnamed.db.entity.QArticle.article;
 import static offworkseekers.unnamed.db.entity.QComment.comment;

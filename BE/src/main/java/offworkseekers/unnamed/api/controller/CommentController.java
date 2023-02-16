@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.request.CreateCommentRequest;
 import offworkseekers.unnamed.api.request.UpdateCommentRequest;
 import offworkseekers.unnamed.api.service.CommentService;
-import offworkseekers.unnamed.db.entity.Comment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

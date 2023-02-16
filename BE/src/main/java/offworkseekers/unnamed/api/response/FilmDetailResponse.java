@@ -2,9 +2,6 @@ package offworkseekers.unnamed.api.response;
 
 import lombok.Builder;
 import lombok.Data;
-import offworkseekers.unnamed.db.entity.Comment;
-import offworkseekers.unnamed.db.entity.TeamMember;
-import offworkseekers.unnamed.db.entity.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
