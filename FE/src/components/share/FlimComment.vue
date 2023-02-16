@@ -47,6 +47,7 @@ export default {
         },
         ({ data }) => {
           console.log(data);
+          inputComment.value = null;
           emit("update-comment-list");
         },
         (error) => {
