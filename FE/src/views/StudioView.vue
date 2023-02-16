@@ -69,6 +69,9 @@
 
 <script>
 
+
+
+
 import Scripts from "@/assets/icons/scripts.svg";
 import Ssin from "@/assets/icons/ssin.svg";
 import Film from "@/assets/icons/film.svg";
@@ -223,7 +226,8 @@ export default {
     };
 
     const videoState = reactive({
-      sceneIdx: 1,
+      sceneNumber: 0,
+      sceneId: 0,
       isRecording: false,
     });
 
@@ -243,14 +247,15 @@ export default {
       flimState.madeCnt = cnt;
     };
 
-    const changeVideoState = (sceneIdx, isRecording) => {
-      videoState.sceneIdx = sceneIdx;
+    const changeVideoState = (sceneNumber, sceneId, isRecording) => {
+      videoState.sceneNumber = sceneNumber;
+      videoState.sceneId = sceneId;
       videoState.isRecording = isRecording;
     };
 
-    const saveRecordingData = (sceneIdx, recordedMediaURL, recordedUser) => {
+    const saveRecordingData = (sceneId, recordedMediaURL, recordedUser) => {
       for (let i = 0; i < studioData.records.length; i += 1) {
-        if (studioData.records[i].sceneId === sceneIdx) {
+        if (studioData.records[i].sceneId === sceneId) {
           studioData.records[i].recordVideoUrl = recordedMediaURL;
           studioData.records[i].nickname = recordedUser.nickname;
           studioData.records[i].profile_url = recordedUser.profile_url;

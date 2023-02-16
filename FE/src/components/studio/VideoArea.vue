@@ -16,7 +16,7 @@
       ]" :srcObject="mediaStream" autoplay muted></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
-        <span>On Air - #{{ videoState.sceneIdx }} 녹화 중</span>
+        <span>On Air - #{{ videoState.sceneNumber }} 녹화 중</span>
         <button class="bana-btn" @click="endRecording()">녹화 종료</button>
       </div>
     </div>
@@ -40,6 +40,9 @@
 </template>
 
 <script>
+
+
+
 
 
 import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
@@ -164,7 +167,7 @@ export default {
     };
 
     const startRecoding = async () => {
-      emit('change-record-sync-state', user.value.userId, props.videoState.sceneIdx, true);
+      emit('change-record-sync-state', user.value.userId, props.videoState.sceneId, true);
       const dateStarted = new Date().getTime();
       const recordedChunks = [];
       mediaRecorder = new MediaRecorder(mediaStream.value, {
@@ -187,12 +190,12 @@ export default {
           const awsUrl = fileUpload(
             fixedBlob,
             props.studioInfo,
-            props.videoState.sceneIdx,
+            props.videoState.sceneId,
             (data) => {
               console.log("aws 업로드 확인 ", awsUrl);
               const params = {
                 recording_video_url: data.Location,
-                scene_id: props.videoState.sceneIdx,
+                scene_id: props.videoState.sceneId,
                 studio_id: props.studioInfo.studio_id,
                 user_id: user.value.userId,
               };
@@ -200,14 +203,24 @@ export default {
                 params,
                 (dt) => {
                   console.log("녹화 영상 업로드 성공", dt);
-                  console.log(user.value.userId, props.videoState.sceneIdx, false);
-                  emit('change-record-sync-state', user.value.userId, props.videoState.sceneIdx, false);
+                  console.log(user.value.userId, props.videoState.sceneId, false);
+                  emit('change-record-sync-state', user.value.userId, props.videoState.sceneId, false);
                 },
                 (er) => {
                   console.log("녹화 영상 업로드 실패", er);
                 }
               );
               recordedMediaURL.value = data.Location;
+              emit(
+                "save-recording-data",
+                props.videoState.sceneId,
+                recordedMediaURL.value,
+                {
+                  user_id: user.value.userId,
+                  nickname: user.value.myPageSimpleResponse.userNickName,
+                  profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
+                }
+              );
             },
             (err) => {
               console.log("aws 업로드 실패", err);
@@ -216,13 +229,14 @@ export default {
         }
       };
       mediaRecorder.start();
+
     };
 
     const endRecording = () => {
       if (mediaRecorder) {
         mediaRecorder.stop();
       }
-      emit("change-video-state", props.videoState.sceneIdx, false);
+      emit("change-video-state", props.videoState.sceneNumber, props.videoState.sceneId, false);
     };
 
     onMounted(() => getStream());
