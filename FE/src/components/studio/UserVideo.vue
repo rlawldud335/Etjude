@@ -1,6 +1,6 @@
 <template>
   <div class="studio-film-tab__film">
-    <div v-if="streamManager">
+    <div class="studio__video-section" v-if="streamManager">
       <ov-video :stream-manager="streamManager" />
       <div class="nickname-section">
         {{ clientData }}
@@ -58,7 +58,12 @@ export default {
 .video-section {
   position: absolute;
 }
-
+.studio__video-section {
+  display: flex;
+  align-content: flex-end;
+  justify-content: center;
+  flex-direction: column;
+}
 .nickname-section {
   padding-top: 10px;
   text-align: center;
