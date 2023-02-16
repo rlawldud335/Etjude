@@ -2,18 +2,15 @@
 <!-- eslint-disable no-restricted-syntax -->
 <template>
   <div class="studio__ssin-tab-list">
-    <SsinTabScene
-      v-for="scene in ssinData"
-      :key="scene.index"
-      :scene="scene"
-      :videoState="videoState"
-      @start-recording="startRecording"
-    >
+    <SsinTabScene v-for="scene in ssinData" :key="scene.index" :scene="scene" :videoState="videoState"
+      @start-recording="startRecording">
     </SsinTabScene>
-  </div>
+</div>
 </template>
 
 <script>
+
+
 import SsinTabScene from "@/components/studio/SsinTabScene.vue";
 import { computed } from "vue";
 
@@ -23,8 +20,8 @@ export default {
   props: { videoState: Object, records: Array, storyScript: Array },
   emits: ["change-video-state"],
   setup(props, { emit }) {
-    const startRecording = (sceneIdx) => {
-      emit("change-video-state", sceneIdx, true);
+    const startRecording = (sceneNumber, sceneId) => {
+      emit("change-video-state", sceneNumber, sceneId, true);
     };
 
     const ssinData = computed(() => {

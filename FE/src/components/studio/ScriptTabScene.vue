@@ -11,20 +11,16 @@
       </div>
     </div>
     <div class="studio__tab-line-section">
-      <ScriptTabSceneLine
-        v-for="(line, index) in scene.lines"
-        :key="index"
-        :lineIdx="index"
-        :line="line"
-        :roleName="scene.roleName"
-        @click="changeScriptTime(filterTime(line.lineTimeStamp))"
-      >
+      <ScriptTabSceneLine v-for="(line, index) in scene.lines" :key="index" :lineIdx="index" :line="line"
+        :roleName="scene.roleName" @click="changeScriptTime(filterTime(line.lineTimeStamp))">
       </ScriptTabSceneLine>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
+
+
 import ScriptTabSceneLine from "@/components/studio/ScriptTabSceneLine.vue";
 import RecordingIcon from "@/assets/icons/recordingIcon.svg";
 import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
@@ -50,7 +46,7 @@ export default {
     };
 
     const startRecording = () => {
-      emit("start-recording", props.scene.sceneNumber);
+      emit("start-recording", props.scene.sceneNumber, props.scene.sceneId);
     };
 
     return { changeScriptTime, filterTime, startRecording };
