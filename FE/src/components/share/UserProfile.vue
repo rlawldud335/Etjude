@@ -1,7 +1,7 @@
 <template lang="">
   <div class="profile_container">
     <div class="profile">
-      <img :src="profiledata.writerPhotoUrl" alt="" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Alt%C4%B1n_Portakal.jpg" alt="" />
       <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
     <div @click="$emit('close')">
@@ -10,6 +10,9 @@
   </div>
 </template>
 <script>
+
+
+
 import QuitButton from "@/assets/icons/Quit Button.svg";
 import { ref } from "vue";
 
@@ -37,22 +40,25 @@ export default {
   padding-left: 16px;
   padding-right: 16px;
   border: none;
-  background-color: rgb(219, 218, 218);
+  border-bottom: 1px solid #dfdfdf;
   height: 10%;
 }
+
 .profile {
   display: flex;
   align-items: center;
 }
+
 img {
   width: 48px;
   height: 48px;
   object-fit: cover;
   border-radius: 50%;
 }
+
 .nickname {
   margin-left: 16px;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 </style>

@@ -13,6 +13,7 @@
   </vue-final-modal>
 </template>
 <script>
+
 import { getFilmDetail } from "@/api/share";
 import { ref } from "vue";
 import UserProfile from "./UserProfile.vue";
@@ -76,32 +77,36 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 ::v-deep .modal-cont {
   display: flex;
-  height: 70%;
-  // flex-direction: column;
-  // margin: 0 1rem;
-  // padding: 1rem;
-  // border: 1px solid #e2e8f0;
-  // border-radius: 0.25rem;
-  // background: rgb(66, 44, 44);
+  width: 1136px;
+  aspect-ratio: 2.5/1.5;
 }
+
 .video_container {
-  width: 680;
+  width: 50%;
+  height: 100%;
 }
+
+.community_container {
+  width: 50%;
+  height: 100%;
+  background-color: white;
+}
+
+
 video {
   width: 100%;
   height: 100%;
 }
-.community_container {
-  width: 582px;
-  height: 100%;
-  background-color: white;
-}
+
+
 .video_container img {
   width: 100%;
   height: 100%;
 }
+
 .profile_container img {
   object-fit: cover;
   width: auto;
