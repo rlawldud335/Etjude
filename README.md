@@ -131,21 +131,23 @@ git clone https://lab.ssafy.com/s08-webmobile1-sub2/S08P12A605.git
 
 백엔드 디렉토리 구조
 
-<details 
-         unnamed
-             ┣ api
-             ┃ ┣ controller
-             ┃ ┣ dto
-             ┃ ┣ request
-             ┃ ┣ response
-             ┃ ┣ service
-             ┣ common
-             ┃ ┗ Scheduler
-             ┣ config
-             ┣ db
-             ┃ ┣ entity
-             ┃ ┗ repository
-             ┗ UnnamedApplication.java
+<details>
+    unnamed
+    ┣ api
+    ┃ ┣ controller
+    ┃ ┣ dto
+    ┃ ┣ request
+    ┃ ┣ response
+    ┃ ┣ service
+    ┣ common
+    ┃ ┗ Scheduler
+    ┣ config
+    ┣ db
+    ┃ ┣ entity
+    ┃ ┗ repository
+    ┗ UnnamedApplication.java
+ </details>
+
 
 ​         
 
