@@ -14,33 +14,33 @@
   <table>
     <tr>
         <td align="center">
-        <a href="https://github.com/variety82/">
-          <img src="" alt="임두현 프로필" width=120 height=120 />
+        <a href="">
+          <img src="./assets/dh.PNG" alt="임두현 프로필" width=120 height=120 />
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/variety82/">
-          <img src="" alt="김지영 프로필" width=120 height=120 />
+        <a href="">
+          <img src="./assets/jy.PNG" alt="김지영 프로필" width=120 height=120 />
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/parkgr95">
-          <img src="https://avatars.githubusercontent.com/u/78781975?v=4" alt="김창현 프로필" width=120 height=120 />
+        <a href="">
+          <img src="./assets/tk.PNG" alt="김창현 프로필" width=120 height=120 />
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/kkt4828/">
-          <img src="" alt="김태균 프로필" width=120 height=120 />
+        <a href="">
+          <img src="./assets/tk.PNG" alt="김태균 프로필" width=120 height=120 />
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/mata1139">
-          <img src="" alt="박병우 프로필" width=120 height=120 />
+        <a href="">
+          <img src="./assets/by.PNG" alt="박병우 프로필" width=120 height=120 />
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/Somang-Kang">
-          <img src="" alt="황수정 프로필" width=120 height=120 />
+        <a href="">
+          <img src="./assets/sj.PNG" alt="황수정 프로필" width=120 height=120 />
         </a>
       </td>
     </tr>
@@ -61,7 +61,7 @@
         </a>
       </td>
       <td align="center">
-        <a href="">
+        <a href="https://github.com/TannyKim">
           김태균
         </a>
       </td>
@@ -71,7 +71,7 @@
         </a>
       </td>
         <td align="center">
-        <a href="">
+        <a href="https://github.com/sujunghwang">
           황수정
         </a>
       </td>
@@ -129,61 +129,72 @@ git clone https://lab.ssafy.com/s08-webmobile1-sub2/S08P12A605.git
 
 ### 📂디렉토리 구조
 
-백엔드 디렉토리 구조
-
 <details>
-    unnamed
-    ┣ api
-    ┃ ┣ controller
-    ┃ ┣ dto
-    ┃ ┣ request
-    ┃ ┣ response
-    ┃ ┣ service
-    ┣ common
-    ┃ ┗ Scheduler
-    ┣ config
-    ┣ db
-    ┃ ┣ entity
-    ┃ ┗ repository
-    ┗ UnnamedApplication.java
+  <summary>
+  백엔드 디렉토리 구조
+  </summary>
+  ```
+  
+      unnamed
+      ┣ api
+      ┃ ┣ controller
+      ┃ ┣ dto
+      ┃ ┣ request
+      ┃ ┣ response
+      ┃ ┣ service
+      ┣ common
+      ┃ ┗ Scheduler
+      ┣ config
+      ┣ db
+      ┃ ┣ entity
+      ┃ ┗ repository
+      ┗ UnnamedApplication.java
  </details>
 
 
-​         
 
-프론트엔드 디렉토리 구조
+
 
 <details>
-  FE
-  ┣ public
-  ┃ ┗ index.html
-  ┣ src
-  ┃ ┣ api
-  ┃ ┣ assets
-  ┃ ┃ ┣ scss
-  ┃ ┃ ┣ video
-  ┃ ┃ ┗ logo.png
-  ┃ ┣ components
-  ┃ ┃ ┣ common
-  ┃ ┃ ┣ film
-  ┃ ┃ ┣ main
-  ┃ ┃ ┣ search
-  ┃ ┃ ┣ share
-  ┃ ┃ ┣ shareupload
-  ┃ ┃ ┣ story
-  ┃ ┃ ┣ studio
-  ┃ ┣ dummy
-  ┃ ┣ fonts
-  ┃ ┣ mixins
-  ┃ ┣ plugins
-  ┃ ┣ router
-  ┃ ┣ store
-  ┃ ┣ translations
-  ┃ ┣ utils
-  ┃ ┣ views
-  ┃ ┣ App.vue
-  ┃ ┗ main.js
+  <summary>
+  프론트엔드 디렉토리 구조
+  </summary>
+    ```
+
+
+    FE
+    ┣ public
+    ┃ ┗ index.html
+    ┣ src
+    ┃ ┣ api
+    ┃ ┣ assets
+    ┃ ┃ ┣ scss
+    ┃ ┃ ┣ video
+    ┃ ┃ ┗ logo.png
+    ┃ ┣ components
+    ┃ ┃ ┣ common
+    ┃ ┃ ┣ film
+    ┃ ┃ ┣ main
+    ┃ ┃ ┣ search
+    ┃ ┃ ┣ share
+    ┃ ┃ ┣ shareupload
+    ┃ ┃ ┣ story
+    ┃ ┃ ┣ studio
+    ┃ ┣ dummy
+    ┃ ┣ fonts
+    ┃ ┣ mixins
+    ┃ ┣ plugins
+    ┃ ┣ router
+    ┃ ┣ store
+    ┃ ┣ translations
+    ┃ ┣ utils
+    ┃ ┣ views
+    ┃ ┣ App.vue
+    ┃ ┗ main.js
+
 </details>
+
+
 
 
 ## 주요기능 및 화면
