@@ -1,7 +1,10 @@
 <template lang="">
   <div class="profile_container">
     <div class="profile">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Alt%C4%B1n_Portakal.jpg" alt="" />
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/6/62/Alt%C4%B1n_Portakal.jpg"
+        alt=""
+      />
       <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
     <div class="close-btn" @click="$emit('close')">
@@ -10,8 +13,6 @@
   </div>
 </template>
 <script>
-
-
 import QuitButton from "@/assets/icons/Quit Button.svg";
 import { ref } from "vue";
 
@@ -40,7 +41,7 @@ export default {
   padding-right: 16px;
   border: none;
   border-bottom: 1px solid #dedede;
-  height: 10%;
+  height: 7%;
 }
 
 .profile {
