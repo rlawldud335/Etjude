@@ -13,7 +13,7 @@
         />
       </div>
       <div class="member_container">
-        <div class="title_Name">팀 원추가하기</div>
+        <div class="title_Name">팀원 추가하기</div>
         <div class="studio-modal__email">
           <label for="studio-email" class="studio-modal__email-label"
             >이메일
@@ -32,19 +32,24 @@
           </label>
           <div class="studio-modal__email-result-dropdown" v-if="emailSearchResult?.length > 0">
             <div class="studio-modal__dropdown-list">
-              <ul
-                v-for="(user, index) in emailSearchResult"
-                :key="user.user_id"
-                :user="user"
-                :index="index"
-              >
+              <ul>
                 <li
+                  v-for="(user, index) in emailSearchResult"
+                  :key="user.user_id"
+                  :user="user"
+                  :index="index"
                   @mousedown="addMember(user)"
-                  :class="{
-                    'last-list': index === emailSearchResult.length - 1,
-                    'first-list': index === 0,
-                  }"
+                  :class="[
+                    'studio__email-list',
+                    {
+                      'last-list': index === emailSearchResult.length - 1,
+                      'first-list': index === 0,
+                    },
+                  ]"
                 >
+                  <div class="studio__email-profile-frame">
+                    <img :src="user.picture" alt="" />
+                  </div>
                   <span>{{ user.user_email }}</span>
                 </li>
               </ul>
@@ -59,7 +64,6 @@
             :key="index"
             :member="member"
           >
-            <!-- <span> 팀원 {{ index + 1 }} </span> -->
             <span class="studio-modal__member-nickname"> {{ member.nickname }} </span>
             <div class="studio-modal__icon-container">
               <deleteButton class="studio-modal__delete-button" @click="deleteMember(member)" />
@@ -250,7 +254,6 @@ export default {
     li {
       height: 36px;
       span {
-        padding: 6px 8px;
         line-height: 36px;
         font-size: 12px;
       }
@@ -331,11 +334,32 @@ export default {
   // height: 70%;
   width: 5px;
 }
+.studio__email-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .member_list::-webkit-scrollbar-thumb {
   background-color: $soft-bana-pink;
 }
 .container::-webkit-scrollbar-track {
   background-color: grey;
+}
+
+.studio__email-profile-frame {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  box-sizing: content-box;
+  margin: 2px 8px;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
 }
 .studio-modal__member-nickname {
   overflow: hidden;
