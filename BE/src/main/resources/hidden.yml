@@ -1,0 +1,10 @@
+# S3
+cloud:
+      aws:
+            credentials:
+                  accessKey: AKIAQUIHCELPJ3PJXH55
+                  secretKey: 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
+            s3:
+                  bucket: s3ffmpegtest
+            region:
+                  static: ap-northeast-2
