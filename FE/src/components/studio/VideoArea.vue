@@ -36,10 +36,12 @@
         <ChangeVideo2 />
       </button>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
+
+
 import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
@@ -206,16 +208,6 @@ export default {
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit(
-                "save-recording-data",
-                props.videoState.sceneIdx,
-                recordedMediaURL.value,
-                {
-                  user_id: user.value.userId,
-                  nickname: user.value.myPageSimpleResponse.userNickName,
-                  profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
-                }
-              );
             },
             (err) => {
               console.log("aws 업로드 실패", err);
