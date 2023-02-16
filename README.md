@@ -153,37 +153,37 @@ git clone https://lab.ssafy.com/s08-webmobile1-sub2/S08P12A605.git
 
 프론트엔드 디렉토리 구조
 
-<details 
-         FE
-         ┣ public
-         ┃ ┗ index.html
-         ┣ src
-         ┃ ┣ api
-         ┃ ┣ assets
-         ┃ ┃ ┣ scss
-         ┃ ┃ ┣ video
-         ┃ ┃ ┗ logo.png
-         ┃ ┣ components
-         ┃ ┃ ┣ common
-         ┃ ┃ ┣ film
-         ┃ ┃ ┣ main
-         ┃ ┃ ┣ search
-         ┃ ┃ ┣ share
-         ┃ ┃ ┣ shareupload
-         ┃ ┃ ┣ story
-         ┃ ┃ ┣ studio
-         ┃ ┣ dummy
-         ┃ ┣ fonts
-         ┃ ┣ mixins
-         ┃ ┣ plugins
-         ┃ ┣ router
-         ┃ ┣ store
-         ┃ ┣ translations
-         ┃ ┣ utils
-         ┃ ┣ views
-         ┃ ┣ App.vue
-         ┃ ┗ main.js
-
+<details>
+  FE
+  ┣ public
+  ┃ ┗ index.html
+  ┣ src
+  ┃ ┣ api
+  ┃ ┣ assets
+  ┃ ┃ ┣ scss
+  ┃ ┃ ┣ video
+  ┃ ┃ ┗ logo.png
+  ┃ ┣ components
+  ┃ ┃ ┣ common
+  ┃ ┃ ┣ film
+  ┃ ┃ ┣ main
+  ┃ ┃ ┣ search
+  ┃ ┃ ┣ share
+  ┃ ┃ ┣ shareupload
+  ┃ ┃ ┣ story
+  ┃ ┃ ┣ studio
+  ┃ ┣ dummy
+  ┃ ┣ fonts
+  ┃ ┣ mixins
+  ┃ ┣ plugins
+  ┃ ┣ router
+  ┃ ┣ store
+  ┃ ┣ translations
+  ┃ ┣ utils
+  ┃ ┣ views
+  ┃ ┣ App.vue
+  ┃ ┗ main.js
+</details>
 
 
 ## 주요기능 및 화면
