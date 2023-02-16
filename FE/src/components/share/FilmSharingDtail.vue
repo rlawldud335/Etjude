@@ -9,11 +9,11 @@
       <UserProfile class="user-profile-container" @close="$emit('close')" :filmdata="profiledata"></UserProfile>
       <FlimContents class="contents-container" :filmdata="postdata" />
       <div class="comment-container" :filmdata="postdata"></div>
-      
     </div>
   </vue-final-modal>
 </template>
 <script>
+
 
 import { getFilmDetail } from "@/api/share";
 import { ref } from "vue";
