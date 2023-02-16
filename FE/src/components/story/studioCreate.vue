@@ -5,7 +5,7 @@
     <div class="title">스튜디오 생성하기</div>
     <div class="show-modal__body">
       <div class="team_name_container">
-        <div class="title_Name">팀이름</div>
+        <div class="title_Name">팀 이름</div>
         <input
           class="input_text"
           @input="studiodata.studio_title = $event.target.value"
@@ -13,7 +13,7 @@
         />
       </div>
       <div class="member_container">
-        <div class="title_Name">팀원추가하기</div>
+        <div class="title_Name">팀 원추가하기</div>
         <div class="studio-modal__email">
           <label for="studio-email" class="studio-modal__email-label"
             >이메일
@@ -30,10 +30,21 @@
               autocomplete="off"
             />
           </label>
-          <div class="studio-modal__email-result-dropdown">
+          <div class="studio-modal__email-result-dropdown" v-if="emailSearchResult?.length > 0">
             <div class="studio-modal__dropdown-list">
-              <ul v-for="user in emailSearchResult" :key="user.user_id" :user="user">
-                <li @mousedown="addMember(user)">
+              <ul
+                v-for="(user, index) in emailSearchResult"
+                :key="user.user_id"
+                :user="user"
+                :index="index"
+              >
+                <li
+                  @mousedown="addMember(user)"
+                  :class="{
+                    'last-list': index === emailSearchResult.length - 1,
+                    'first-list': index === 0,
+                  }"
+                >
                   <span>{{ user.user_email }}</span>
                 </li>
               </ul>
@@ -48,8 +59,11 @@
             :key="index"
             :member="member"
           >
-            <span> 팀원 {{ index + 1 }} </span>
-            <deleteButton class="studio-modal__delete-button" @click="deleteMember(member)" />
+            <!-- <span> 팀원 {{ index + 1 }} </span> -->
+            <span class="studio-modal__member-nickname"> {{ member.nickname }} </span>
+            <div class="studio-modal__icon-container">
+              <deleteButton class="studio-modal__delete-button" @click="deleteMember(member)" />
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +78,7 @@
 // import QuitButton from "@/assets/icons/Quit Button.svg";
 import { createStudio } from "@/api/story";
 import { reactive, ref, computed } from "vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getUserSearch } from "@/api/users";
 import deleteButton from "@/assets/icons/memberdelete.svg";
@@ -79,8 +93,11 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    // const router = useRouter();
+    const router = useRouter();
+    const userId = computed(() => store.state.user.userId);
+
     const emailData = reactive({
+      user_id: userId.value,
       keyword: "",
     });
     const emailSearchResult = ref([]);
@@ -89,7 +106,7 @@ export default {
     });
     const selectedMember = ref([]);
     const studiodata = reactive({
-      user_id: store.state.user.userId,
+      user_id: userId.value,
       studio_title: "",
       story_id: props.story_id,
       team_member_Ids: computed(() => selectedMember.value.map((member) => member.user_id)),
@@ -131,9 +148,7 @@ export default {
       createStudio(
         studiodata,
         ({ data }) => {
-          console.log(data, "생성 완료");
-          // console.log(studiodata);
-          // router.push({ name: "studio", params: { studioId: data.studio_id } });
+          router.push({ name: "studio", params: { studioId: data } });
         },
         (error) => {
           console.log("스튜디오 생성 오류:", error);
@@ -223,7 +238,7 @@ export default {
   position: absolute;
   background-color: white;
   left: 88.5px;
-  top: 248px;
+  top: 245px;
   width: calc(100% - 132.5px);
   display: flex;
   flex-direction: column;
@@ -243,6 +258,12 @@ export default {
     li:hover {
       background: $soft-bana-pink;
       font-weight: 500;
+    }
+    .first-list {
+      border-top: 1px solid $efefe-gray;
+    }
+    .last-list {
+      border-radius: 0px 0px 10px 10px;
     }
   }
 }
@@ -268,13 +289,12 @@ export default {
   font-weight: 500;
 }
 .button_container {
-  text-align: center;
   position: absolute;
-
   left: 50%;
   bottom: 8%;
-  transform: translate(-50%);
   align-content: center;
+  text-align: center;
+  transform: translate(-50%);
   button {
     width: 158px;
     height: 38px;
@@ -289,11 +309,15 @@ export default {
 }
 .member_list {
   width: 100%;
-  height: 36px;
+  min-height: 36px;
+  max-height: 65px;
+  overflow: auto;
+
   background-color: white;
   padding: 6px 8px;
   box-sizing: border-box;
   color: $bana-pink;
+  flex-wrap: wrap;
   margin-top: 20px;
   border-radius: 14px;
   display: flex;
@@ -302,16 +326,36 @@ export default {
   align-items: center;
   border: gray solid 2px;
 }
+.member_list::-webkit-scrollbar {
+  margin: 3px 0px;
+  // height: 70%;
+  width: 5px;
+}
+.member_list::-webkit-scrollbar-thumb {
+  background-color: $soft-bana-pink;
+}
+.container::-webkit-scrollbar-track {
+  background-color: grey;
+}
+.studio-modal__member-nickname {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.studio-modal__icon-container {
+  height: 15px;
+  width: 15px;
+}
 .studio-modal__selected {
   height: 12px;
-  max-width: 50px;
+  max-width: 100px;
   border: $bana-pink solid 1px;
   border-radius: 8px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding: 4px 4px;
+  padding: 4px 6px;
   gap: 2px;
   background: rgba(255, 87, 117, 0.4);
   span {
