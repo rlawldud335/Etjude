@@ -60,8 +60,8 @@ public class StudioController {
 
 
     @PostMapping(value = "/api/v1/studio/create")
-    public void createStudio(@RequestBody @Valid StudioCreateRequest studioCreateRequest) {
-        studioService.saveStudio(studioCreateRequest);
+    public Long createStudio(@RequestBody @Valid StudioCreateRequest studioCreateRequest) {
+        return studioService.saveStudio(studioCreateRequest);
     }
 
     @PostMapping(value = "/api/v1/studio/search")

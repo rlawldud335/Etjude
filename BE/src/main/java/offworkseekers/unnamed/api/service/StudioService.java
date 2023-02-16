@@ -37,7 +37,7 @@ public class StudioService {
     }
 
     @Transactional
-    public void saveStudio(StudioCreateRequest request) {
+    public Long saveStudio(StudioCreateRequest request) {
         Story story = storyRepository.findById(request.getStoryId()).orElse(null);
         Studio studio = request.toStudioEntity();
         studio.connectStory(story);
@@ -52,6 +52,8 @@ public class StudioService {
         userList.add(captain);
         studio.addTeamMember(userList);
         studioRepository.save(studio);
+
+        return studio.getStudioId();
     }
 
     public List<UserSearchResponse> searchUser(String keyword) {
