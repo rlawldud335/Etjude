@@ -138,13 +138,13 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
         }
 
         for (Comment comment : comments) {
-            result.addComment(
-                    comment.builder()
-                            .commentId(comment.getCommentId())
-                            .commentContents(comment.getCommentContents())
-                            .commentCreateTime(comment.getCommentCreateTime())
-                            .build()
-            );
+            FilmCommentResponse res = new FilmCommentResponse(
+                    comment.getCommentId()
+                    , comment.getCommentContents()
+                    , comment.getCommentCreateTime()
+                    , comment.getUser().getNickName()
+                    , comment.getUser().getPicture());
+            result.addComment(res);
         }
         return result;
     }
