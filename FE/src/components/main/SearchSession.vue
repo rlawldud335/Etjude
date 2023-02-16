@@ -1,6 +1,6 @@
 <template>
   <div class="search-session">
-    <span class="search-session__title-writing">당신이 만든, 당신만을 위한, 당신의 예술작품</span>
+    <span class="search-session__title-writing">당신이 만들, 당신이 만든, 당신의 작품</span>
     <div class="search-session__search">
       <input
         class="search-session__search-bar"
