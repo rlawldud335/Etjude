@@ -2,14 +2,9 @@
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
       <div v-for="item in recvListData" :key="item">
-        <ChattingTabLine
-          v-if="item.studioId == studioId && item.userId !== user.userId"
-          :line="item"
-        />
-        <ChattingTabMyLine
-          v-if="item.studioId == studioId && item.userId === user.userId"
-          :line="item"
-        />
+        <ChattingTabLine v-if="item.studioId == studioId && item.userId !== user.userId" :line="item"
+          :userMemberList="userMemberList" />
+        <ChattingTabMyLine v-if="item.studioId == studioId && item.userId === user.userId" :line="item" />
       </div>
     </div>
     <div class="chatting-input">
@@ -19,9 +14,10 @@
       </label>
       <ChattingSend @click="test" />
     </div>
-  </div>
+</div>
 </template>
 <script>
+
 import { reactive, watch, computed, ref, nextTick } from "vue";
 import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
@@ -32,7 +28,13 @@ import { useStore } from "vuex";
 export default {
   name: "ChattingTab",
   components: { ChattingSend, ChattingAdd, ChattingTabLine, ChattingTabMyLine },
-  props: { studioId: Number, flimState: Object, stompClient: Object, recvList: Array },
+  props: {
+    studioId: Number,
+    flimState: Object,
+    stompClient: Object,
+    recvList: Array,
+    studioInfo: Object,
+  },
   setup(props) {
     const store = useStore();
     const user = computed(() => store.state.user);
@@ -41,6 +43,7 @@ export default {
     });
     const recvListData = computed(() => props.recvList);
     const messages = ref("");
+    const userMemberList = computed(() => props.studioInfo.member_list);
 
     watch(
       () => props.flimState.madeCnt,
@@ -109,6 +112,7 @@ export default {
       recvListData,
       messages,
       test,
+      userMemberList,
     };
   },
 };
