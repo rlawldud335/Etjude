@@ -11,7 +11,12 @@
     <div class="borderline"></div>
     <div class="input_container">
       <div class="smile"><smile></smile></div>
-      <input type="text" v-model="inputComment" aria-labelledby="firstname" />
+      <input
+        type="text"
+        v-model="inputComment"
+        @keyup.enter="sendComment"
+        aria-labelledby="firstname"
+      />
       <div class="send" @click="sendComment"><send></send></div>
     </div>
   </div>

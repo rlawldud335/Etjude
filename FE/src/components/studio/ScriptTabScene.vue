@@ -1,8 +1,10 @@
 <template>
   <div class="studio__scene__header">
     <span>#{{ scene.sceneNumber }}. {{ scene.roleName }}</span>
-    <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
-    <DisableRecordingIcon v-if="videoState.isRecording" />
+    <div class="recording-btn">
+      <RecordingIcon v-if="!videoState.isRecording" @click="startRecording" />
+      <DisableRecordingIcon v-if="videoState.isRecording" />
+    </div>
   </div>
   <div class="studio__scene">
     <div class="studio__scene-actor-image">
@@ -11,16 +13,20 @@
       </div>
     </div>
     <div class="studio__tab-line-section">
-      <ScriptTabSceneLine v-for="(line, index) in scene.lines" :key="index" :lineIdx="index" :line="line"
-        :roleName="scene.roleName" @click="changeScriptTime(filterTime(line.lineTimeStamp))">
+      <ScriptTabSceneLine
+        v-for="(line, index) in scene.lines"
+        :key="index"
+        :lineIdx="index"
+        :line="line"
+        :roleName="scene.roleName"
+        @click="changeScriptTime(filterTime(line.lineTimeStamp))"
+      >
       </ScriptTabSceneLine>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
-
-
 import ScriptTabSceneLine from "@/components/studio/ScriptTabSceneLine.vue";
 import RecordingIcon from "@/assets/icons/recordingIcon.svg";
 import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
@@ -84,6 +90,9 @@ export default {
     max-width: 40px;
     height: auto;
   }
+}
+.recording-btn {
+  cursor: pointer;
 }
 
 .studio__scene__header {

@@ -238,6 +238,7 @@ export default {
 }
 
 .controller__btn {
+  cursor: pointer;
   padding: 5px;
   border-radius: 50%;
   margin: 0px 2px;
@@ -262,6 +263,7 @@ export default {
   display: flex;
   flex-direction: center;
   align-items: center;
+  cursor: pointer;
   height: 30px;
   background-color: $white;
   border-radius: 20px;

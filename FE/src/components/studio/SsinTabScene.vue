@@ -17,18 +17,19 @@
       </div>
     </div>
     <div class="studio-tab__scene--opened" v-if="lines.isOpened">
-      <video :src="
-        scene.recordVideoUrl && scene.recordVideoUrl !== ''
-          ? scene.recordVideoUrl
-          : scene.sceneFileName
-      " controls></video>
+      <video
+        :src="
+          scene.recordVideoUrl && scene.recordVideoUrl !== ''
+            ? scene.recordVideoUrl
+            : scene.sceneFileName
+        "
+        controls
+      ></video>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
-
-
 import RecordingIcon from "@/assets/icons/recordingIcon.svg";
 import DisableRecordingIcon from "@/assets/icons/disableRecodingIcon.svg";
 import downIcon from "@/assets/icons/down.svg";
@@ -79,7 +80,6 @@ export default {
   border-radius: 10px;
   background-color: transparentize($bana-pink, 0.8);
   border: 2px solid $white;
-  cursor: pointer;
 }
 
 .studio-ssin-tab:hover {
@@ -124,7 +124,7 @@ export default {
 .studio-tab__scene-icon {
   display: flex;
 
-  >* {
+  > * {
     margin: 0px 4px;
     cursor: pointer;
   }

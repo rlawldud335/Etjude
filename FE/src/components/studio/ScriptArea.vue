@@ -1,21 +1,25 @@
 <template lang="">
-    <div class="script-area">
-       <Carousel ref="scriptCarousel" v-model="currentSlide" :wrap-around="true"  :items-to-show="1.3" class="script-carousel">
-            <Slide v-for="script in allLines" :key="script" class="script-carousel__slide">
-                <div class="script-carousel__slide__card">
-                    <div class="script-icons">
-                        <div class="script-icon">1x</div>
-                        <div class="script-icon"><Repeat/></div>
-                    </div>
-                    <div class="script-script">
-                        {{script.roleName}}  :  
-                        {{script.line}}</div>
-                </div>
-            </Slide>
-       </Carousel>
-       <PrevDirec class=" direction-prev" @click="slideTo(currentSlide - 1)"/>
-       <NextDirec class=" direction-next" @click="slideTo(currentSlide + 1)"/>
-    </div>
+  <div class="script-area">
+    <Carousel
+      ref="scriptCarousel"
+      v-model="currentSlide"
+      :wrap-around="true"
+      :items-to-show="1.3"
+      class="script-carousel"
+    >
+      <Slide v-for="script in allLines" :key="script" class="script-carousel__slide">
+        <div class="script-carousel__slide__card">
+          <div class="script-icons">
+            <div class="script-icon">1x</div>
+            <div class="script-icon"><Repeat /></div>
+          </div>
+          <div class="script-script">{{ script.roleName }} : {{ script.line }}</div>
+        </div>
+      </Slide>
+    </Carousel>
+    <PrevDirec class="direction-prev" @click="slideTo(currentSlide - 1)" />
+    <NextDirec class="direction-next" @click="slideTo(currentSlide + 1)" />
+  </div>
 </template>
 <script>
 import { Carousel, Slide } from "vue3-carousel";
@@ -130,12 +134,14 @@ export default {
 }
 
 .direction-prev {
+  cursor: pointer;
   position: absolute;
   top: 50px;
   left: 20px;
 }
 
 .direction-next {
+  cursor: pointer;
   position: absolute;
   top: 50px;
   right: 20px;

@@ -15,7 +15,7 @@
         <div class="post_icon">
           <heart class="heart"></heart><talk class="talk"></talk><share class="share"></share>
         </div>
-        <div class="post_favor">좋아요 9321개</div>
+        <div class="post_favor">좋아요 93개</div>
       </div>
     </div>
   </div>

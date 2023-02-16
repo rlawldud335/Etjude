@@ -242,7 +242,7 @@ export default {
   position: absolute;
   background-color: white;
   left: 88.5px;
-  top: 245px;
+  top: 250px;
   width: calc(100% - 132.5px);
   display: flex;
   flex-direction: column;
@@ -340,9 +340,6 @@ export default {
 }
 .member_list::-webkit-scrollbar-thumb {
   background-color: $bana-pink;
-}
-.container::-webkit-scrollbar-track {
-  background-color: grey;
 }
 
 .studio__email-profile-frame {
