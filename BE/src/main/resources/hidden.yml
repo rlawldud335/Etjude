@@ -1,0 +1,17 @@
+# S3
+cloud:
+      aws:
+            credentials:
+                  accessKey: AKIAQUIHCELPJ3PJXH55
+                  secretKey: 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
+            s3:
+                  bucket: s3ffmpegtest
+            region:
+                  static: ap-northeast-2
+
+spring:
+      datasource:
+            url: jdbc:mysql://i8a605.p.ssafy.io:3306/unnamed?useUnicode=true&serverTimezone=Asia/Seoul
+            username: testuser
+            password: 1234
+            driver-class-name: com.mysql.cj.jdbc.Driver
