@@ -16,7 +16,11 @@
       </div>
     </div>
   </div>
-  <FilmSharingDtail @close="showDtailModal = false" v-model="showDtailModal" :filmDetailData="film.articleId"></FilmSharingDtail>
+  <FilmSharingDtail
+    @close="showDtailModal = false"
+    v-model="showDtailModal"
+    :filmDetailData="film.articleId"
+  ></FilmSharingDtail>
 </template>
 <script>
 import { computed, ref } from "vue";
@@ -111,6 +115,7 @@ export default {
 .film__card-body {
   display: flex;
   flex-direction: column;
+  margin-left: 5px;
   span {
     margin: 2px 0px;
   }
