@@ -23,7 +23,7 @@ public class FilmDetailResponse {
     String storyTitle;
     String studioTitle;
     List<String> teamMembers = new ArrayList<>();
-    List<Comment> comments = new ArrayList<>();
+    List<FilmCommentResponse> comments = new ArrayList<>();
 
     @Builder
     public FilmDetailResponse(String articleTitle, String articleContent, LocalDate articleCreatedDate, String writerId, String writerNickName, String writerPhotoUrl, String filmVideoUrl, String studioTitle){
@@ -49,9 +49,8 @@ public class FilmDetailResponse {
         teamMembers.add(userName);
     }
 
-    public void addComment(Comment comment){
+    public void addComment(FilmCommentResponse comment){
         comments.add(comment);
     }
-
 
 }
