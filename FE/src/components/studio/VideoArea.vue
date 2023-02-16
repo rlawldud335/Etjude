@@ -45,6 +45,7 @@
 
 
 
+
 import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
@@ -190,7 +191,7 @@ export default {
           const awsUrl = fileUpload(
             fixedBlob,
             props.studioInfo,
-            props.videoState.sceneId,
+            props.videoState.sceneNumber,
             (data) => {
               console.log("aws 업로드 확인 ", awsUrl);
               const params = {

@@ -12,22 +12,35 @@
         <span class="studio__film-deleted">{{ film.film_end_date }} 삭제</span>
       </div>
       <div class="studio__film-button">
-        <button>다운로드</button>
+        <button @click="downloadFlim">다운로드</button>
         <button>필름 삭제</button>
       </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
+
 export default {
   name: "FilmTabFilm",
   components: {},
   props: {
     film: Object,
   },
-  setup() {
-    return {};
+  setup(props) {
+
+    const downloadFlim = () => {
+      if (props.film.film_video_url) {
+        const link = document.createElement("a");
+        document.body.appendChild(link);
+        link.href = props.film.film_video_url;
+        link.download = "video.webm";
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
+
+    return { downloadFlim };
   },
 };
 </script>
@@ -68,7 +81,7 @@ export default {
     font-weight: 500;
   }
 
-  > span {
+  >span {
     font-size: 14px;
     line-height: 150%;
   }
