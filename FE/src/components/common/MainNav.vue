@@ -270,15 +270,20 @@ nav {
   align-items: center;
   padding: 15px 20px 10px 20px;
   span {
-    margin-left: 20px;
+    max-width: 100px;
+    margin-left: 15px;
     font-size: 18px;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
 .header__profile-dropdown-profile-frame {
   height: 35px;
   width: 35px;
+  min-height: 35px;
+  min-width: 35px;
   border-radius: 50%;
   overflow: hidden;
   justify-content: center;
