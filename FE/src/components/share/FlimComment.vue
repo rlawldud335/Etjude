@@ -76,11 +76,9 @@ export default {
   // background-color: coral;
   // box-shadow: 0 0 0 1px #000 inset;
 }
-.film-share__comment-area {
-  margin: 20px 0px;
-}
+
 .film-share__comment-list {
-  height: 265px;
+  height: 284px;
   overflow: auto;
 }
 .comment_list {
