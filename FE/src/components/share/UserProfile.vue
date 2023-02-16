@@ -4,13 +4,12 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Alt%C4%B1n_Portakal.jpg" alt="" />
       <div class="nickname">{{ profiledata.writerNickName }}</div>
     </div>
-    <div @click="$emit('close')">
+    <div class="close-btn" @click="$emit('close')">
       <QuitButton></QuitButton>
     </div>
   </div>
 </template>
 <script>
-
 
 
 import QuitButton from "@/assets/icons/Quit Button.svg";
@@ -40,7 +39,7 @@ export default {
   padding-left: 16px;
   padding-right: 16px;
   border: none;
-  border-bottom: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dedede;
   height: 10%;
 }
 
@@ -60,5 +59,9 @@ img {
   margin-left: 16px;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+.close-btn {
+  padding: 10px;
 }
 </style>

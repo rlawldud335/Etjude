@@ -40,8 +40,24 @@ const deleteObjectByKey = (key) => {
     Key: key,
   };
   const data = s3.deleteObject(params).promise();
-
   return data;
 };
 
-export { fileUpload, deleteObjectByKey };
+const uploadFlimShareImageUpload = (file, success, fail) => {
+  s3.upload(
+    {
+      Key: `articles/image_${Date.now()}.${file.type.split("/")[1]}`,
+      Body: file,
+      ACL: "public-read",
+    },
+    (err, data) => {
+      if (err) {
+        fail(err);
+      } else {
+        success(data);
+      }
+    }
+  );
+};
+
+export { fileUpload, deleteObjectByKey, uploadFlimShareImageUpload };
