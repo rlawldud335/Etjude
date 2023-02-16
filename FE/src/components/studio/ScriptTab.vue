@@ -2,10 +2,12 @@
   <div class="script-tab">
     <ScriptTabScene v-for="scene in storyScript" :key="scene.sceneNumber" :scene="scene" :videoState="videoState"
       @change-script-time="changeScriptTime" @start-recording="startRecording"></ScriptTabScene>
-  </div>
+</div>
 </template>
 
 <script>
+
+
 import ScriptTabScene from "@/components/studio/ScriptTabScene.vue";
 
 export default {
@@ -23,8 +25,8 @@ export default {
       emit("change-current-time", time);
     };
 
-    const startRecording = (sceneIdx) => {
-      emit("change-video-state", sceneIdx, true);
+    const startRecording = (sceneNumber, sceneId) => {
+      emit("change-video-state", sceneNumber, sceneId, true);
     }
 
     return {
