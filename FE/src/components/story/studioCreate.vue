@@ -64,6 +64,7 @@
 // import QuitButton from "@/assets/icons/Quit Button.svg";
 import { createStudio } from "@/api/story";
 import { reactive, ref, computed } from "vue";
+// import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getUserSearch } from "@/api/users";
 import deleteButton from "@/assets/icons/memberdelete.svg";
@@ -78,6 +79,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    // const router = useRouter();
     const emailData = reactive({
       keyword: "",
     });
@@ -130,12 +132,15 @@ export default {
         studiodata,
         ({ data }) => {
           console.log(data, "생성 완료");
-          console.log(studiodata);
+          // console.log(studiodata);
+          // router.push({ name: "studio", params: { studioId: data.studio_id } });
         },
         (error) => {
           console.log("스튜디오 생성 오류:", error);
         }
       );
+      emailData.keyword = "";
+      studiodata.studio_title = "";
     };
     return {
       studiodata,
