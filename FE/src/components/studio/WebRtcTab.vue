@@ -246,4 +246,9 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
+#main-video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>
