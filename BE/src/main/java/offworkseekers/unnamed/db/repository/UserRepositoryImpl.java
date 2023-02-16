@@ -28,7 +28,8 @@ public class UserRepositoryImpl implements UserRepositorySupport{
             userSearchResponses.add(
                     UserSearchResponse.builder()
                             .userId(fetch1.getUserId())
-                            .nickname(fetch1.getUserId())
+                            .nickname(fetch1.getNickName())
+                            .picture(fetch1.getPicture())
                             .userEmail(fetch1.getEmail())
                             .build()
             );
