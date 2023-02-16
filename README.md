@@ -25,7 +25,7 @@
       </td>
       <td align="center">
         <a href="">
-          <img src="./assets/tk.PNG" alt="김창현 프로필" width=120 height=120 />
+          <img src="./assets/ch.PNG" alt="김창현 프로필" width=120 height=120 />
         </a>
       </td>
       <td align="center">
@@ -51,7 +51,7 @@
         </a>
       </td>
       <td align="center">
-        <a href="">
+        <a href="https://github.com/rlawldud335">
           김지영
         </a>
       </td>
@@ -66,7 +66,7 @@
         </a>
       </td>
       <td align="center">
-        <a href="">
+        <a href="https://github.com/bottler3123">
           박병우
         </a>
       </td>
