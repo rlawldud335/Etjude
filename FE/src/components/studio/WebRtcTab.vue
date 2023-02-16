@@ -225,6 +225,7 @@ export default {
 <style scoped lang="scss">
 .studio-tab__button-section {
   button {
+    cursor: pointer;
     font-size: 14px;
     font-weight: 500;
     border: none;

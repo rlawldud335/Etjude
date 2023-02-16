@@ -3,17 +3,28 @@
 <template>
   <div class="video-area">
     <div class="video-player">
-      <video :class="[
-        { 'video-zero-size': state.videoMode == 0 },
-        { 'video-default-size': state.videoMode == 1 },
-        { 'video-full-size': state.videoMode == 2 },
-      ]" ref="videoOutput" :src="studioInfo.storyVideoUrl" @timeupdate="changeTimeHandler" controls
-        loop="loop"></video>
-      <video :class="[
-        { 'video-zero-size': state.videoMode == 2 },
-        { 'video-default-size': state.videoMode == 1 },
-        { 'video-full-size': state.videoMode == 0 },
-      ]" :srcObject="mediaStream" autoplay muted></video>
+      <video
+        :class="[
+          { 'video-zero-size': state.videoMode == 0 },
+          { 'video-default-size': state.videoMode == 1 },
+          { 'video-full-size': state.videoMode == 2 },
+        ]"
+        ref="videoOutput"
+        :src="studioInfo.storyVideoUrl"
+        @timeupdate="changeTimeHandler"
+        controls
+        loop="loop"
+      ></video>
+      <video
+        :class="[
+          { 'video-zero-size': state.videoMode == 2 },
+          { 'video-default-size': state.videoMode == 1 },
+          { 'video-full-size': state.videoMode == 0 },
+        ]"
+        :srcObject="mediaStream"
+        autoplay
+        muted
+      ></video>
       <div class="on-air" v-if="videoState.isRecording">
         <RecordCircle />
         <span>On Air - #{{ videoState.sceneNumber }} 녹화 중</span>
@@ -36,16 +47,10 @@
         <ChangeVideo2 />
       </button>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
-
-
-
-
-
-
 import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
@@ -73,7 +78,12 @@ export default {
     allLines: Array,
     studioInfo: Object,
   },
-  emits: ["change-video-state", "save-recording-data", "change-current-slide", "change-record-sync-state"],
+  emits: [
+    "change-video-state",
+    "save-recording-data",
+    "change-current-slide",
+    "change-record-sync-state",
+  ],
   setup(props, { emit }) {
     const state = reactive({
       videoMode: 1,
@@ -168,7 +178,7 @@ export default {
     };
 
     const startRecoding = async () => {
-      emit('change-record-sync-state', user.value.userId, props.videoState.sceneId, true);
+      emit("change-record-sync-state", user.value.userId, props.videoState.sceneId, true);
       const dateStarted = new Date().getTime();
       const recordedChunks = [];
       mediaRecorder = new MediaRecorder(mediaStream.value, {
@@ -205,23 +215,23 @@ export default {
                 (dt) => {
                   console.log("녹화 영상 업로드 성공", dt);
                   console.log(user.value.userId, props.videoState.sceneId, false);
-                  emit('change-record-sync-state', user.value.userId, props.videoState.sceneId, false);
+                  emit(
+                    "change-record-sync-state",
+                    user.value.userId,
+                    props.videoState.sceneId,
+                    false
+                  );
                 },
                 (er) => {
                   console.log("녹화 영상 업로드 실패", er);
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit(
-                "save-recording-data",
-                props.videoState.sceneId,
-                recordedMediaURL.value,
-                {
-                  user_id: user.value.userId,
-                  nickname: user.value.myPageSimpleResponse.userNickName,
-                  profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
-                }
-              );
+              emit("save-recording-data", props.videoState.sceneId, recordedMediaURL.value, {
+                user_id: user.value.userId,
+                nickname: user.value.myPageSimpleResponse.userNickName,
+                profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
+              });
             },
             (err) => {
               console.log("aws 업로드 실패", err);
@@ -230,7 +240,6 @@ export default {
         }
       };
       mediaRecorder.start();
-
     };
 
     const endRecording = () => {
@@ -285,7 +294,7 @@ export default {
   position: relative;
 }
 
-.video-player>video {
+.video-player > video {
   height: 100%;
 }
 
@@ -300,6 +309,7 @@ export default {
 }
 
 .bana-btn {
+  cursor: pointer;
   background-color: $bana-pink;
   color: white;
   padding: 7px 15px;
