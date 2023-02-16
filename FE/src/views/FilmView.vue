@@ -20,13 +20,19 @@
       <AllFilmList> </AllFilmList>
     </div>
   </div>
-  <FilmSharingUpload v-model="showModal" @close="showModal = false"></FilmSharingUpload>
+  <FilmSharingUpload
+    v-model="showModal"
+    @close="showModal = false"
+    @updateFilmList="refreshAll"
+  ></FilmSharingUpload>
 </template>
 
 <script>
 import PopularFilmList from "@/components/film/PopularFilmList.vue";
 import AllFilmList from "@/components/film/AllFilmList.vue";
 import FilmSharingUpload from "@/components/shareupload/FilmSharingUpload.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 import Search from "@/assets/icons/search-large.svg";
 
@@ -38,9 +44,18 @@ export default {
     Search,
     FilmSharingUpload,
   },
-  data: () => ({
-    showModal: false,
-  }),
+
+  setup() {
+    const showModal = ref(false);
+    const router = useRouter();
+    const refreshAll = () => {
+      router.go();
+    };
+    return {
+      showModal,
+      refreshAll,
+    };
+  },
 };
 </script>
 

@@ -12,19 +12,19 @@
         <div class="left_container">
           <div class="left_container__input">
             <h2>제목</h2>
-              <input
-                class="left_container__input__input_title"
-                @input="uploadData.articleTitle = $event.target.value"
-                placeholder="제목을 입력해주세요."
-              />
+            <input
+              class="left_container__input__input_title"
+              @input="uploadData.articleTitle = $event.target.value"
+              placeholder="제목을 입력해주세요."
+            />
           </div>
           <div class="left_container__input">
             <h2>설명</h2>
-              <input
-                class="left_container__input__input_content"
-                @input="uploadData.articleContent = $event.target.value"
-                placeholder="설명을 입력해주세요."
-              />
+            <input
+              class="left_container__input__input_content"
+              @input="uploadData.articleContent = $event.target.value"
+              placeholder="설명을 입력해주세요."
+            />
           </div>
           <div class="left_container__input">
             <h2>썸네일</h2>
@@ -41,35 +41,43 @@
                 hidden
               />
               <label for="upload-image">
-                <img id="thumbnailsibal" ref="uploadImageEle" src="@/assets/images/SelectImage.png" class="thumbnail_upload" alt="" />
+                <img
+                  id="thumbnailsibal"
+                  ref="uploadImageEle"
+                  src="@/assets/images/SelectImage.png"
+                  class="thumbnail_upload"
+                  alt=""
+                />
               </label>
             </div>
           </div>
         </div>
         <div class="right_container">
-          
           <div class="select-studio">
             <span>스튜디오 선택하기</span>
             <label for="studioSelect">
               <select id="studioSelect" v-model="selectedStudio" @change="onChangeStudio($event)">
-              <option disabled value="">스튜디오 선택</option>
-              <option v-for="item in MyStudioData" :key="item.studioId" :value="item[0]">
-                {{ item[1] }}
-              </option>
-            </select>
+                <option disabled value="">스튜디오 선택</option>
+                <option v-for="item in MyStudioData" :key="item.studioId" :value="item[0]">
+                  {{ item[1] }}
+                </option>
+              </select>
             </label>
           </div>
-
 
           <div class="select-film">
             <span>필름 선택하기</span>
             <label for="filmSelect">
               <select id="filmSelect" v-model="selectedFilm" @change="onChangeFlim($event)">
-              <option disabled value="">필름 선택</option>
-              <option v-for="item in MyFilmData" :key="item.myPageFilmsResponse.filmId" :value="item.myPageFilmsResponse.filmId">
-                {{ item.myPageFilmsResponse.filmId }}
-              </option>
-            </select>
+                <option disabled value="">필름 선택</option>
+                <option
+                  v-for="item in MyFilmData"
+                  :key="item.myPageFilmsResponse.filmId"
+                  :value="item.myPageFilmsResponse.filmId"
+                >
+                  {{ item.myPageFilmsResponse.filmId }}
+                </option>
+              </select>
             </label>
           </div>
 
@@ -77,20 +85,20 @@
             <span>미리보기</span>
             <div class="preview-film__content">
               <video :src="FilmDetailData.filmVideoUrl" class="filmVideo" controls>
-              <track kind="captions" />
-            </video>
-            <div class="preview-film__info">
-              <!-- <div class="">{{ FilmDetailData.categoryName }}</div>
+                <track kind="captions" />
+              </video>
+              <div class="preview-film__info">
+                <!-- <div class="">{{ FilmDetailData.categoryName }}</div>
                   <div class="">{{ FilmDetailData.workTitle }}</div>
                   <div class="">{{ FilmDetailData.storyTitle }}</div>
                   <div class="">{{ FilmDetailData.teamMembers }}</div> -->
-            </div>
+              </div>
             </div>
           </div>
 
-          <div class="uploadcontent">
-      <button class="uploadbutton" @click="createShareContent">업로드</button>
-    </div>
+          <div class="uploadcontent" @click="$emit('close')">
+            <button class="uploadbutton" @click="createShareContent">업로드</button>
+          </div>
         </div>
       </div>
     </div>
@@ -98,87 +106,6 @@
 </template>
 
 <script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import QuitButton from "@/assets/icons/Quit Button.svg";
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
@@ -195,7 +122,8 @@ export default {
   props: {
     showModal: Boolean,
   },
-  setup() {
+  emits: ["updateFilmList"],
+  setup(props, { emit }) {
     // const carouselref = ref();
     const store = useStore();
     const userData = reactive({
@@ -221,16 +149,17 @@ export default {
     });
     const thumbNailFile = ref(null);
 
-
     const createShareContent = () => {
-      uploadFlimShareImageUpload(thumbNailFile.value,
+      uploadFlimShareImageUpload(
+        thumbNailFile.value,
         ({ Location }) => {
           console.log(Location);
-          uploadData.articleThumbnailUrl = Location
+          uploadData.articleThumbnailUrl = Location;
           putFilmShare(
             uploadData,
             ({ data }) => {
               console.log(data, "생성 완료");
+              emit("updateFilmList");
             },
             (error) => {
               console.log(error);
@@ -238,8 +167,10 @@ export default {
             }
           );
         },
-        (err) => { console.log(err) });
-
+        (err) => {
+          console.log(err);
+        }
+      );
     };
 
     function getImageFiles(event) {
@@ -251,7 +182,6 @@ export default {
         const temp = document.getElementById("thumbnailsibal");
         temp.src = reader.result;
       };
-
     }
 
     getMyStudio(
@@ -303,7 +233,7 @@ export default {
       MyFilmData.value.forEach((array) => {
         console.log(array.myPageFilmsResponse.filmId, choiceFilm);
         if (array.myPageFilmsResponse.filmId === parseInt(choiceFilm, 10)) {
-          console.log("choice Flim url ", array.myPageFilmsResponse.filmVideoUrl)
+          console.log("choice Flim url ", array.myPageFilmsResponse.filmVideoUrl);
           FilmDetailData.filmVideoUrl = array.myPageFilmsResponse.filmVideoUrl;
           uploadData.filmId = choiceFilm;
         }
@@ -313,8 +243,7 @@ export default {
       console.log("event", event.target);
       console.log("onChageFlim", event.target.value);
       selectFilm(event.target.value);
-    }
-
+    };
 
     return {
       userData,
@@ -330,7 +259,6 @@ export default {
       selectedFilm,
       uploadData,
       createShareContent,
-
     };
   },
 };
@@ -407,8 +335,8 @@ export default {
   align-items: center;
   padding: 10px;
   gap: 5px;
-  background: #FFFFFF;
-  border: 1px solid #FF5775;
+  background: #ffffff;
+  border: 1px solid #ff5775;
   width: 90%;
   border-radius: 10px;
 }
@@ -417,8 +345,8 @@ export default {
   align-items: center;
   padding: 10px;
   gap: 5px;
-  background: #FFFFFF;
-  border: 1px solid #FF5775;
+  background: #ffffff;
+  border: 1px solid #ff5775;
   border-radius: 10px;
   width: 90%;
   height: 60px;
@@ -434,7 +362,7 @@ export default {
 .thumbnail_upload {
   width: 200px;
   height: 100px;
-  border: 1px solid #FF5775;
+  border: 1px solid #ff5775;
   margin: 0px 10px;
   border-radius: 20px;
   display: flex;
@@ -466,7 +394,6 @@ export default {
   padding: 10px;
   display: flex;
   flex-direction: column;
-
 }
 
 .preview-film__info {
@@ -495,7 +422,7 @@ export default {
 .uploadbutton {
   width: 174px;
   height: 38px;
-  background-color: #FF5775;
+  background-color: #ff5775;
   color: white;
   font-size: 16px;
   font-weight: 400;
