@@ -339,7 +339,7 @@ export default {
   align-items: center;
 }
 .member_list::-webkit-scrollbar-thumb {
-  background-color: $soft-bana-pink;
+  background-color: $bana-pink;
 }
 .container::-webkit-scrollbar-track {
   background-color: grey;
