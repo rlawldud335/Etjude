@@ -1,7 +1,6 @@
 package offworkseekers.unnamed.api.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

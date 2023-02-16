@@ -1,11 +1,13 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.*;
+import offworkseekers.unnamed.api.response.GetWorkResponse;
+import offworkseekers.unnamed.api.response.StoriesOfWork;
+import offworkseekers.unnamed.api.response.WorkListWithTotalCountResponse;
+import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
 import offworkseekers.unnamed.api.service.WorkService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 

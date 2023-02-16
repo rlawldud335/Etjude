@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.StoryService;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

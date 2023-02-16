@@ -1,7 +1,9 @@
 package offworkseekers.unnamed.db.repository;
 
-import offworkseekers.unnamed.api.response.*;
-import offworkseekers.unnamed.db.entity.Work;
+import offworkseekers.unnamed.api.response.GetWorkResponse;
+import offworkseekers.unnamed.api.response.StoriesOfWork;
+import offworkseekers.unnamed.api.response.WorkListWithTotalCountResponse;
+import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
 
 import java.util.List;
 

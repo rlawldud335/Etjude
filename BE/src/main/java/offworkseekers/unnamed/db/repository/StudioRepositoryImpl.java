@@ -10,7 +10,6 @@ import offworkseekers.unnamed.api.response.StudioRecordListResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.db.entity.Film;
 import offworkseekers.unnamed.db.entity.Scene;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;

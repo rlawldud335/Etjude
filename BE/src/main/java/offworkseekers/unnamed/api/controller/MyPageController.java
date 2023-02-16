@@ -3,7 +3,6 @@ package offworkseekers.unnamed.api.controller;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.MyPageService;
-import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

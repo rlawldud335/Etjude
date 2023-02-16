@@ -1,7 +1,10 @@
 package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.*;
+import offworkseekers.unnamed.api.response.GetWorkResponse;
+import offworkseekers.unnamed.api.response.StoriesOfWork;
+import offworkseekers.unnamed.api.response.WorkListWithTotalCountResponse;
+import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
 import offworkseekers.unnamed.db.repository.WorkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

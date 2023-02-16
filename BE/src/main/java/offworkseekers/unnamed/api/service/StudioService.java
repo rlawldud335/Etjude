@@ -1,9 +1,7 @@
 package offworkseekers.unnamed.api.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import offworkseekers.unnamed.api.dto.SimpleUserDTO;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.*;

@@ -3,8 +3,8 @@ package offworkseekers.unnamed.api.service;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import offworkseekers.unnamed.config.S3Config;
 import offworkseekers.unnamed.db.entity.Recording;
-import offworkseekers.unnamed.db.entity.Studio;
 import offworkseekers.unnamed.db.repository.RecordingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,14 +18,13 @@ import java.util.List;
 public class RecordingService {
 
     private final RecordingRepository recordingRepository;
+    private final S3Config s3Config;
 
     public void deleteRecordingsByDate(List<Long> expiredStudioId, AmazonS3 s3Client){
 
-        System.out.println("===========================1");
-        // s3에 있는 거 지우기
-        // recording list 받아와서 지우는 거 돌리기
+        String bucketName = s3Config.getBucketName();
+        // recording list 받아와서 지움
         List<Recording> expiredRecordings = recordingRepository.findAllByStudio_StudioId(expiredStudioId);
-        String bucketName = "s3ffmpegtest";
         for (Recording recording : expiredRecordings) {
             String[] urls = recording.getRecordingVideoUrl().split("/");
             int len = urls.length;
@@ -34,8 +33,7 @@ public class RecordingService {
             s3Client.deleteObject(bucketName, fileName);
         }
 
-        System.out.println("===========================2");
-        // db에 있는 거 지우기
+        // db에 있는 거 지움
         recordingRepository.deleteByStudio(expiredStudioId);
     }
 }
