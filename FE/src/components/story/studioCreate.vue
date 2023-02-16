@@ -341,9 +341,6 @@ export default {
 .member_list::-webkit-scrollbar-thumb {
   background-color: $bana-pink;
 }
-.container::-webkit-scrollbar-track {
-  background-color: grey;
-}
 
 .studio__email-profile-frame {
   height: 22px;

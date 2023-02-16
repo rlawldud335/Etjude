@@ -67,8 +67,10 @@ export default {
   // -webkit-line-clamp: 8;
   // -webkit-box-orient: vertical;
 }
-
 .story__role-desc-body::-webkit-scrollbar {
-  display: none;
+  width: 5px;
+}
+.story__role-desc-body::-webkit-scrollbar-thumb {
+  background-color: $soft-bana-pink;
 }
 </style>
