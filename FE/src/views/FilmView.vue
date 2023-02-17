@@ -48,6 +48,7 @@ export default {
   setup() {
     const showModal = ref(false);
     const router = useRouter();
+    // 새로고침으로 데이터 다시 불러오기
     const refreshAll = () => {
       router.go();
     };
