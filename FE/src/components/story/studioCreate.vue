@@ -231,7 +231,7 @@ export default {
   position: absolute;
   background-color: white;
   left: 88.5px;
-  top: 250px;
+  top: 244px;
   width: calc(100% - 132.5px);
   display: flex;
   flex-direction: column;
