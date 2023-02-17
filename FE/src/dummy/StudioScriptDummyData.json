@@ -1,0 +1,62 @@
+[
+  {
+    "roleId": 1,
+    "rolePhotoUrl": "https://w.namu.la/s/4e3a6f95f0790418d5a7fed457a680dd753b494e747e8fc4be49394758d84fd09578ae4e53cf9c39648eec45bbb61951168371d5d01af4b11347b65b8174cbf40c3be2738d6f157ee611d238cd0b3f0a08ca3050f7f873bb9507121469edcbc7",
+    "roleName": "손석구",
+    "sceneId": 1,
+    "sceneNumber": 1,
+    "sceneFileName": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+    "lines": [
+      {
+        "lineTimeStamp": "08:15:00",
+        "line": "돈 필요해? 반반할까?"
+      },
+      {
+        "lineTimeStamp": "08:20:00",
+        "line": "콜?"
+      }
+    ]
+  },
+  {
+    "roleId": 2,
+    "rolePhotoUrl": "https://jmagazine.joins.com/_data/photo/2019/05/3717398825_UlFG9YVn_1.jpg",
+    "roleName": "마동석",
+    "sceneId": 2,
+    "sceneNumber": 2,
+    "sceneFileName": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+    "lines": [
+      {
+        "lineTimeStamp": "08:30:00",
+        "line": "누가 5야?"
+      }
+    ]
+  },
+  {
+    "roleId": 1,
+    "rolePhotoUrl": "https://w.namu.la/s/4e3a6f95f0790418d5a7fed457a680dd753b494e747e8fc4be49394758d84fd09578ae4e53cf9c39648eec45bbb61951168371d5d01af4b11347b65b8174cbf40c3be2738d6f157ee611d238cd0b3f0a08ca3050f7f873bb9507121469edcbc7",
+    "roleName": "손석구",
+    "sceneId": 3,
+    "sceneNumber": 3,
+    "sceneFileName": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+    "lines": [
+      {
+        "lineTimeStamp": "08:50:00",
+        "line": "(흔들리는 눈동자)"
+      }
+    ]
+  },
+  {
+    "roleId": 2,
+    "rolePhotoUrl": "https://jmagazine.joins.com/_data/photo/2019/05/3717398825_UlFG9YVn_1.jpg",
+    "roleName": "마동석",
+    "sceneId": 4,
+    "sceneNumber": 4,
+    "sceneFileName": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+    "lines": [
+      {
+        "lineTimeStamp": "09:10:00",
+        "line": "뀨"
+      }
+    ]
+  }
+]
