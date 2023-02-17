@@ -198,12 +198,11 @@ export default {
           const blob = await new Blob(recordedChunks, { type: "video/webm;" });
           const fixedBlob = await webmFixDuration(blob, dateEnd - dateStarted);
           recordedMediaURL.value = URL.createObjectURL(fixedBlob);
-          const awsUrl = fileUpload(
+          fileUpload(
             fixedBlob,
             props.studioInfo,
             props.videoState.sceneNumber,
             (data) => {
-              console.log("aws 업로드 확인 ", awsUrl);
               const params = {
                 recording_video_url: data.Location,
                 scene_id: props.videoState.sceneId,
@@ -212,8 +211,7 @@ export default {
               };
               saveSceneRecord(
                 params,
-                (dt) => {
-                  console.log("녹화 영상 업로드 성공", dt);
+                () => {
                   console.log(user.value.userId, props.videoState.sceneId, false);
                   emit(
                     "change-record-sync-state",

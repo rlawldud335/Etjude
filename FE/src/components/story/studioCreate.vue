@@ -1,7 +1,5 @@
-<!-- eslint-disable import/no-extraneous-dependencies -->
 <template lang="">
   <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
-    <!-- <div> -->
     <div class="title">스튜디오 생성하기</div>
     <div class="show-modal__body">
       <div class="team_name_container">
@@ -17,7 +15,6 @@
         <div class="studio-modal__email">
           <label for="studio-email" class="studio-modal__email-label"
             >이메일
-
             <input
               class="input_text"
               type="text"
@@ -56,7 +53,6 @@
             </div>
           </div>
         </div>
-
         <div class="member_list">
           <div
             class="studio-modal__selected"
@@ -75,11 +71,9 @@
     <div class="button_container" @click="$emit('close')">
       <button @click="create">생성하기</button>
     </div>
-    <!-- </div> -->
   </vue-final-modal>
 </template>
 <script>
-// import QuitButton from "@/assets/icons/Quit Button.svg";
 import { createStudio } from "@/api/story";
 import { reactive, ref, computed } from "vue";
 import { useRouter } from "vue-router";
@@ -121,10 +115,6 @@ export default {
       getUserSearch(
         emailData,
         ({ data }) => {
-          // console.log(data);
-          // console.log(selectedMember.value);
-          // const unSelectedData = data.filter((user) => selectedMember.value.indexOf(user) < 0);
-          // console.log(emailSearchResult.value);
           emailSearchResult.value = data;
         },
         (error) => {
@@ -135,7 +125,6 @@ export default {
     const blurInput = () => {
       emailSearchResult.value = "";
     };
-    // const membersNames = ref([])
     const addMember = (user) => {
       if (studiodata.team_member_Ids.indexOf(user.user_id) === -1) {
         selectedMember.value.push(user);

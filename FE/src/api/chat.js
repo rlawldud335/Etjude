@@ -69,7 +69,6 @@ export function connect() {
 
     // 서버의 녹화 현황 endpoint
     this.stompClient.subscribe(`/status/api/v1/studio/chat/${this.studioId}`, (res) => {
-      // console.log("구독으로 받은 녹화 상태 입니다.", res.body);
       const parsedData = JSON.parse(res.body);
       if (parsedData.status === "REC") {
         for (let i = 0; i < this.recordingList.length; i += 1) {

@@ -12,12 +12,10 @@ const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
 async function login(user, success, fail) {
-  console.log("# POST : 회원가입 및 로그인");
   await api.post(`/user/login`, user).then(success).catch(fail);
 }
 
 async function getUserInfo(userId, success, fail) {
-  console.log("# POST : 유저 정보 가져오기");
   await api({
     method: "post",
     url: "/mypage",
@@ -49,7 +47,6 @@ export function handleSignInGoogle() {
           userInfo.email = result.user.email;
           userInfo.userId = result.user.uid;
           this.$store.dispatch("login", userInfo);
-          console.log(this.$route);
           const path = this.$route.query?.next;
           if (path) {
             this.$router.push({ path });
@@ -58,12 +55,12 @@ export function handleSignInGoogle() {
           }
         },
         (error) => {
-          console.log(error);
+          console.log("유저 정보 에러", error);
         }
       );
     })
     .catch((error) => {
-      console.log(error);
+      console.log("소셜 로그인 에러", error);
     });
 }
 
@@ -74,7 +71,7 @@ export function handleSignOut() {
       this.$store.dispatch("logout");
     })
     .catch((error) => {
-      console.log(error);
+      console.log("로그아웃 에러:", error);
     });
 }
 

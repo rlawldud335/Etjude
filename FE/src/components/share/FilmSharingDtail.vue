@@ -57,7 +57,6 @@ export default {
       getFilmDetail(
         articleId.value,
         ({ data }) => {
-          console.log(data);
           filmdata.value = data;
           profiledata.value.writerNickName = data.writerNickName;
           profiledata.value.writerPhotoUrl = data.writerPhotoUrl;
@@ -70,11 +69,9 @@ export default {
           console.log("필름 상세 에러:", error);
         }
       );
-      console.log("고고");
     };
     getFilmDetailmodal();
     const updateCommentList = () => {
-      console.log("고고");
       getFilmDetailmodal();
     };
     // };

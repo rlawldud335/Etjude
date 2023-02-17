@@ -2,11 +2,14 @@
   <div class="studio__film-tab">
     <FilmTabFilm v-for="film in FlimData" :key="film.film_id" :film="film"></FilmTabFilm>
     <div class="studio-tab__button-section" v-if="captainId == userId">
-      <button :class="[
-        makingButton.active
-          ? 'studio-tab__making-button--active'
-          : 'studio-tab__making-button--disable',
-      ]" @click="plusMakingCount">
+      <button
+        :class="[
+          makingButton.active
+            ? 'studio-tab__making-button--active'
+            : 'studio-tab__making-button--disable',
+        ]"
+        @click="plusMakingCount"
+      >
         필름 생성하기 ( {{ films.length }} / {{ makingButton.possibleCount }} )
       </button>
     </div>
@@ -28,9 +31,8 @@ export default {
     films: Array,
     studioInfo: Object,
   },
-  emits: ['made-flim'],
+  emits: ["made-flim"],
   setup(props, { emit }) {
-
     const store = useStore();
     const userId = computed(() => store.state.user.userId);
     const captainId = computed(() => props.studioInfo.captain_id);
@@ -49,22 +51,19 @@ export default {
             saveMakedFilm(
               props.studioInfo.studio_id,
               data,
-              (rst) => {
-                console.log("필름 저장 완료:", rst);
-                emit('made-flim', props.studioInfo.studio_id, props.films.length + 1);
+              () => {
+                emit("made-flim", props.studioInfo.studio_id, props.films.length + 1);
                 makingButton.active = true;
               },
-              (er) => {
-                console.log("필릉 저장 오류:", er);
+              (error) => {
                 makingButton.active = true;
-                alert("필름 저장 오류");
+                console.log("필름 저장 오류", error);
               }
             );
           },
-          (err) => {
-            console.log("필름 제작 오류:", err);
+          (error) => {
+            console.log("필름 제작 오류:", error);
             makingButton.active = true;
-            alert("필름 저장 오류");
           }
         );
       } else {
@@ -80,7 +79,7 @@ export default {
       plusMakingCount,
       userId,
       captainId,
-      FlimData
+      FlimData,
     };
   },
 };

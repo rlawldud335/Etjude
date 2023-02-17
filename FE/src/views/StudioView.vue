@@ -216,13 +216,11 @@ export default {
     };
 
     const callApiSceneRecordList = (studioId, storyId) => {
-      console.log("call api scene record list", studioId, storyId);
       getSceneRecordList(
         studioId,
         storyId,
         ({ data }) => {
           studioData.records = data;
-          console.log("call api scene record list", data);
         },
         (error) => {
           console.log("씬 레코드 리스트 오류:", error);
@@ -285,7 +283,6 @@ export default {
     });
 
     const madeFlim = (studioId, cnt) => {
-      console.log("madeFlim", studioId, cnt);
       flimState.studioId = studioId;
       flimState.madeCnt = cnt;
     };
@@ -332,16 +329,12 @@ export default {
           userId: user.value.userId,
           userPhotoUrl: user.value.myPageSimpleResponse.userPhotoUrl,
         };
-        console.log("스튜디오 참가자 ", stompClient.attender);
-        console.log(studioData.studioInfo.studio_id);
-        console.log(user.value.userId);
         // 서버의 메시지 전송 endpoint를 구독합니다.
         stompClient.subscribe(
           `/sub/api/v1/studio/chat/${studioData.studioInfo.studio_id}`,
           async (res) => {
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             const temp = JSON.parse(res.body);
-            console.log("받은 메시지 ", temp);
             if (temp.content === "3924873") {
               callApiFlimList(studioData.studioInfo.studio_id);
               chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
@@ -354,7 +347,6 @@ export default {
             } else {
               chatState.recvList.push(temp);
             }
-            console.log(chatState.recvList);
           }
         );
       });
@@ -372,7 +364,6 @@ export default {
       recordSyncState.userId = userId;
       recordSyncState.sceneId = sceneId;
       recordSyncState.isRecording = isRecording;
-      console.log(userId, sceneId, isRecording);
       // isRecording이 false가 되면 녹화본 리로드 이벤트 전송
       if (isRecording === false) {
         if (stompClient && stompClient.connected) {

@@ -2,9 +2,15 @@
   <div class="chatting">
     <div ref="messages" id="chattingContainer" class="chatting-container">
       <div v-for="item in recvListData" :key="item">
-        <ChattingTabLine v-if="item.studioId == studioId && item.userId !== user.userId" :line="item"
-          :userMemberList="userMemberList" />
-        <ChattingTabMyLine v-if="item.studioId == studioId && item.userId === user.userId" :line="item" />
+        <ChattingTabLine
+          v-if="item.studioId == studioId && item.userId !== user.userId"
+          :line="item"
+          :userMemberList="userMemberList"
+        />
+        <ChattingTabMyLine
+          v-if="item.studioId == studioId && item.userId === user.userId"
+          :line="item"
+        />
       </div>
     </div>
     <div class="chatting-input">
@@ -14,10 +20,9 @@
       </label>
       <ChattingSend @click="test" />
     </div>
-</div>
+  </div>
 </template>
 <script>
-
 import { reactive, watch, computed, ref, nextTick } from "vue";
 import ChattingSend from "@/assets/icons/ChattingSend.svg";
 import ChattingAdd from "@/assets/icons/ChattingAdd.svg";
@@ -48,9 +53,7 @@ export default {
     watch(
       () => props.flimState.madeCnt,
       () => {
-        console.log("커넥션이 있나?", props.stompClient.connected);
         if (props.stompClient && props.stompClient.connected) {
-          console.log("채팅탭의 필름 상태", props.flimState);
           props.stompClient.send(
             `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
             {},
@@ -62,7 +65,6 @@ export default {
 
     const test = () => {
       if (props.stompClient && props.stompClient.connected) {
-        console.log("채팅탭의 필름 상태", props.flimState);
         props.stompClient.send(
           `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
           {},
@@ -74,11 +76,6 @@ export default {
     function send() {
       return new Promise((resolve) => {
         if (props.stompClient && props.stompClient.connected) {
-          console.log(
-            "sendmessage",
-            `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
-            state.message
-          );
           props.stompClient.send(
             `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
             {},

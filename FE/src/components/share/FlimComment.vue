@@ -50,13 +50,12 @@ export default {
           articleId: props.articleId,
           commentContents: inputComment.value,
         },
-        ({ data }) => {
-          console.log(data);
+        () => {
           inputComment.value = null;
           emit("update-comment-list");
         },
         (error) => {
-          console.log(error);
+          console.log("댓글 등록 에러", error);
         }
       );
     };
