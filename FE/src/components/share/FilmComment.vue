@@ -68,10 +68,15 @@ export default {
     const commentsArea = ref(null);
     watch(
       () => props.comments,
-      () => {
-        nextTick(() => {
-          commentsArea.value.scrollTo({ top: commentsArea.value.scrollHeight, behavior: "smooth" });
-        });
+      (newList, oldList) => {
+        if (newList.length > oldList.length) {
+          nextTick(() => {
+            commentsArea.value.scrollTo({
+              top: commentsArea.value.scrollHeight,
+              behavior: "smooth",
+            });
+          });
+        }
       },
       { deep: true }
     );
