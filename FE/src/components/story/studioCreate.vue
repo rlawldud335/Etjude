@@ -117,7 +117,8 @@ export default {
         getUserSearch(
           emailData,
           ({ data }) => {
-            emailSearchResult.value = data.slice(0, 10);
+            // emailSearchResult.value = data.slice(0, 10);
+            emailSearchResult.value = data;
           },
           (error) => {
             console.log("이메일 검색 에러:", error);
@@ -272,6 +273,15 @@ export default {
 }
 .studio-modal__dropdown-list {
   margin-top: 10px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.studio-modal__dropdown-list::-webkit-scrollbar {
+  width: 5px;
+}
+.studio-modal__dropdown-list::-webkit-scrollbar-thumb {
+  background-color: $bana-pink;
 }
 .inputButton {
   margin-left: 10px;
