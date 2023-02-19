@@ -16,7 +16,8 @@
   </div>
 </template>
 <script>
-import { computed } from "vue";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 import deleteIcon from "@/assets/icons/CommentDeleteButton.svg";
 import { deleteComment } from "@/api/comment";
 
@@ -30,6 +31,7 @@ export default {
   },
   emits: ["update-comment-list"],
   setup(props, { emit }) {
+    const store = useStore();
     const diffCreated = computed(() => {
       const createdDate = new Date(props.comment.commentCreateTime);
       const now = new Date();
@@ -51,7 +53,11 @@ export default {
       }
       return diffText;
     });
-    // const isCommentUser = props.comment;
+    const isCommentUser = ref(false);
+    const setCommentUser = () => {
+      isCommentUser.value = props.comment.userId === store.state.user.userId;
+    };
+    setCommentUser();
     const clickCommentDelete = () => {
       deleteComment(
         {
@@ -65,7 +71,12 @@ export default {
         }
       );
     };
-    return { diffCreated, clickCommentDelete };
+
+    return {
+      diffCreated,
+      clickCommentDelete,
+      isCommentUser,
+    };
   },
 };
 </script>
