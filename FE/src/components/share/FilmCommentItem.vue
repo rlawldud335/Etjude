@@ -10,7 +10,7 @@
       </div>
       <span class="film-share__comment-content">{{ comment.commentContents }}</span>
     </div>
-    <div class="film-share__comment-delete" @click="clickCommentDelete">
+    <div class="film-share__comment-delete" @click="clickCommentDelete" v-if="isCommentUser">
       <deleteIcon />
     </div>
   </div>
@@ -51,6 +51,7 @@ export default {
       }
       return diffText;
     });
+    // const isCommentUser = props.comment;
     const clickCommentDelete = () => {
       deleteComment(
         {
