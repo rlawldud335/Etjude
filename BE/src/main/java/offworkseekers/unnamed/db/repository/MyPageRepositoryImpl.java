@@ -10,6 +10,7 @@ import offworkseekers.unnamed.api.dto.MyPageLikesStoriesDto;
 import offworkseekers.unnamed.api.response.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static offworkseekers.unnamed.db.entity.QArticle.article;
@@ -42,6 +43,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .from(studio, teamMember)
                 .where(teamMember.studio.studioId.eq(studio.studioId), teamMember.user.userId.eq(userId))
                 .fetch();
+
+        Collections.sort(result, (o1, o2) -> o2.getStudioId()-o1.getStudioId()>0?1:-1);
 
         for (MyPageStudiosResponse temp : result) {
             temp.setStudioCreatedDate(temp.getStudioCreatedDate().minusDays(7));
