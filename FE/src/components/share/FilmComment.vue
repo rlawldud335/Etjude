@@ -1,6 +1,6 @@
 <template lang="">
   <div class="film-share__comment-area">
-    <div class="film-share__comment-list">
+    <div class="film-share__comment-list" ref="commentsArea">
       <FilmCommenntItem
         v-for="comment in comments"
         :key="comment.commentId"
@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, watch, nextTick } from "vue";
 import smile from "@/assets/icons/smile.svg";
 import send from "@/assets/icons/send.svg";
 import FilmCommenntItem from "@/components/share/FilmCommentItem.vue";
@@ -65,10 +65,21 @@ export default {
         );
       }
     };
+    const commentsArea = ref(null);
+    watch(
+      () => props.comments,
+      () => {
+        nextTick(() => {
+          commentsArea.value.scrollTo({ top: commentsArea.value.scrollHeight, behavior: "smooth" });
+        });
+      },
+      { deep: true }
+    );
     return {
       inputComment,
       sendComment,
       updateCommentList,
+      commentsArea,
     };
   },
 };
