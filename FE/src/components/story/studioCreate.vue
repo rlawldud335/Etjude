@@ -123,6 +123,8 @@ export default {
             console.log("이메일 검색 에러:", error);
           }
         );
+      } else {
+        emailSearchResult.value = [];
       }
     };
     const blurInput = () => {
