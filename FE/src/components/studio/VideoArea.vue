@@ -225,11 +225,11 @@ export default {
                 }
               );
               recordedMediaURL.value = data.Location;
-              // emit("save-recording-data", props.videoState.sceneId, recordedMediaURL.value, {
-              //   user_id: user.value.userId,
-              //   nickname: user.value.myPageSimpleResponse.userNickName,
-              //   profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
-              // });
+              emit("save-recording-data", props.videoState.sceneId, recordedMediaURL.value, {
+                user_id: user.value.userId,
+                nickname: user.value.myPageSimpleResponse.userNickName,
+                profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
+              });
             },
             (err) => {
               console.log("aws 업로드 실패", err);
