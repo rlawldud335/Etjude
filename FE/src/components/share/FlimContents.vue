@@ -41,24 +41,6 @@ export default {
     const postdata = ref(props.filmdata);
     return { postdata };
   },
-  data() {
-    return {
-      profilelist: [
-        {
-          // eslint-disable-next-line global-require
-          profileimg: require("@/assets/images/profile.jpg"),
-          nickname: "jung_DM",
-          content: "농구가 하고 싶어요...",
-        },
-        {
-          // eslint-disable-next-line global-require
-          profileimg: require("@/assets/images/profile.jpg"),
-          nickname: "jung_DM",
-          content: "코딩도... 하고 싶어요",
-        },
-      ],
-    };
-  },
 };
 </script>
 <style lang="scss" scoped>
