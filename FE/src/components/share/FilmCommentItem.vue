@@ -56,12 +56,11 @@ export default {
         {
           comment_id: props.comment.commentId,
         },
-        ({ data }) => {
-          console.log(data);
+        () => {
           emit("update-comment-list");
         },
         (error) => {
-          console.log(error);
+          console.log("댓글 삭제 오류:", error);
         }
       );
     };
