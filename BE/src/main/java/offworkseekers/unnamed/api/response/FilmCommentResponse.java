@@ -10,16 +10,14 @@ public class FilmCommentResponse {
     Long commentId;
     String commentContents;
     LocalDateTime commentCreateTime;
-    String userId;
     String userNickname;
     String UserPicture;
 
     @Builder
-    public FilmCommentResponse(Long commentId, String commentContents, LocalDateTime commentCreateTime, String userId, String userNickname, String userPicture) {
+    public FilmCommentResponse(Long commentId, String commentContents, LocalDateTime commentCreateTime, String userNickname, String userPicture) {
         this.commentId = commentId;
         this.commentContents = commentContents;
         this.commentCreateTime = commentCreateTime;
-        this.userId = userId;
         this.userNickname = userNickname;
         UserPicture = userPicture;
     }

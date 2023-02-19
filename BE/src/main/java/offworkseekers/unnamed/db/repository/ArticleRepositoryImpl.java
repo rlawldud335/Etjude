@@ -54,9 +54,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
             articleWithFilmUrlResponse.addArticleLikeCount(getArticleLikeCount(articleId));
             articleWithFilmUrlResponse.addTotalArticleNumber(totalArticleNumbers);
         }
-
-        Collections.sort(result, (o1, o2) -> o2.getArticleId()-o1.getArticleId()>0?1:-1);
-
         int totalNum = result.size();
         int startIdx = 12 * (pageNum - 1);
         int endIdx = startIdx + 12;
@@ -145,7 +142,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                     comment.getCommentId()
                     , comment.getCommentContents()
                     , comment.getCommentCreateTime()
-                    , comment.getUser().getUserId()
                     , comment.getUser().getNickName()
                     , comment.getUser().getPicture());
             result.addComment(res);
