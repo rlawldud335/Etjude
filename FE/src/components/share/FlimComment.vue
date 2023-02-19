@@ -5,6 +5,7 @@
         v-for="comment in comments"
         :key="comment.commentId"
         :comment="comment"
+        @update-comment-list="updateCommentList"
       ></FilmCommenntItem>
     </div>
 
@@ -43,6 +44,9 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const inputComment = ref(null);
+    const updateCommentList = () => {
+      emit("update-comment-list");
+    };
     const sendComment = () => {
       postComment(
         {
@@ -52,7 +56,7 @@ export default {
         },
         () => {
           inputComment.value = null;
-          emit("update-comment-list");
+          updateCommentList();
         },
         (error) => {
           console.log("댓글 등록 에러", error);
@@ -62,6 +66,7 @@ export default {
     return {
       inputComment,
       sendComment,
+      updateCommentList,
     };
   },
 };
