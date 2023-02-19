@@ -49,6 +49,7 @@
           <SsinTab
             v-show="state.selectTab === 1"
             @change-video-state="changeVideoState"
+            @change-current-slide="changeCurrentSlide"
             :videoState="videoState"
             :records="studioData.records"
             :storyScript="studioData.storyScript"
@@ -335,10 +336,10 @@ export default {
           async (res) => {
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             const temp = JSON.parse(res.body);
-            if (temp.content === "3924873") {
+            if (temp.content === "ReloadFlimFileCommend") {
               callApiFlimList(studioData.studioInfo.studio_id);
               chatState.recvList.push("팀장님이 새로운 필름을 생성했습니다.");
-            } else if (temp.connect === "ReloadRecordingFileCommend") {
+            } else if (temp.content === "ReloadRecordingFileCommend") {
               callApiSceneRecordList(
                 studioData.studioInfo.studio_id,
                 studioData.studioInfo.story_id
