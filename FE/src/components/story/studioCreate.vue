@@ -16,7 +16,7 @@
           <label for="studio-email" class="studio-modal__email-label"
             >이메일
             <input
-              class="input_text"
+              :class="['input_text', { 'modal-open': emailSearchResult.length > 0 }]"
               type="text"
               id="studio-email"
               @blur="blurInput"
@@ -220,7 +220,13 @@ export default {
   justify-content: space-between;
   color: #606060;
   font-size: 14px;
+  z-index: 2;
   position: relative;
+}
+.modal-open {
+  border-bottom: none;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 2px;
 }
 .studio-modal__email-label {
   display: flex;
