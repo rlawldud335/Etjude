@@ -48,20 +48,22 @@ export default {
       emit("update-comment-list");
     };
     const sendComment = () => {
-      postComment(
-        {
-          userId: store.state.user.userId,
-          articleId: props.articleId,
-          commentContents: inputComment.value,
-        },
-        () => {
-          inputComment.value = null;
-          updateCommentList();
-        },
-        (error) => {
-          console.log("댓글 등록 에러", error);
-        }
-      );
+      if (inputComment.value) {
+        postComment(
+          {
+            userId: store.state.user.userId,
+            articleId: props.articleId,
+            commentContents: inputComment.value,
+          },
+          () => {
+            inputComment.value = null;
+            updateCommentList();
+          },
+          (error) => {
+            console.log("댓글 등록 에러", error);
+          }
+        );
+      }
     };
     return {
       inputComment,
