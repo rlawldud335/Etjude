@@ -57,7 +57,7 @@ export default {
           props.stompClient.send(
             `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
             {},
-            `3924873`
+            `ReloadFlimFileCommend`
           );
         }
       }
@@ -68,7 +68,7 @@ export default {
         props.stompClient.send(
           `/pub/api/v1/studio/chat/${props.studioId}/${user.value.userId}/${user.value.myPageSimpleResponse.userNickName}`,
           {},
-          `3924873`
+          `ReloadFlimFileCommend`
         );
       }
     };

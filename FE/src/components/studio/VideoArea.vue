@@ -52,6 +52,7 @@
 
 <script>
 import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
+import { useStore } from "vuex";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
@@ -61,7 +62,6 @@ import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
 import { webmFixDuration } from "webm-fix-duration";
-import { useStore } from "vuex";
 
 export default {
   components: {
@@ -167,14 +167,14 @@ export default {
 
     const toggleVideo = () => {
       toggleBtn.video = !toggleBtn.video;
-      mediaStream.value.getVideoTracks()[0].enabled =
-        !mediaStream.value.getVideoTracks()[0].enabled;
+      mediaStream.value.getVideoTracks()[0].enabled = !mediaStream.value.getVideoTracks()[0]
+        .enabled;
     };
 
     const toggleAudio = () => {
       toggleBtn.audio = !toggleBtn.audio;
-      mediaStream.value.getAudioTracks()[0].enabled =
-        !mediaStream.value.getAudioTracks()[0].enabled;
+      mediaStream.value.getAudioTracks()[0].enabled = !mediaStream.value.getAudioTracks()[0]
+        .enabled;
     };
 
     const startRecoding = async () => {
@@ -225,11 +225,11 @@ export default {
                 }
               );
               recordedMediaURL.value = data.Location;
-              emit("save-recording-data", props.videoState.sceneId, recordedMediaURL.value, {
-                user_id: user.value.userId,
-                nickname: user.value.myPageSimpleResponse.userNickName,
-                profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
-              });
+              // emit("save-recording-data", props.videoState.sceneId, recordedMediaURL.value, {
+              //   user_id: user.value.userId,
+              //   nickname: user.value.myPageSimpleResponse.userNickName,
+              //   profile_url: user.value.myPageSimpleResponse.userPhotoUrl,
+              // });
             },
             (err) => {
               console.log("aws 업로드 실패", err);
