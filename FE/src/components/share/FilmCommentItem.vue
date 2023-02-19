@@ -10,18 +10,26 @@
       </div>
       <span class="film-share__comment-content">{{ comment.commentContents }}</span>
     </div>
+    <div class="film-share__comment-delete" @click="clickCommentDelete" v-if="isCommentUser">
+      <deleteIcon />
+    </div>
   </div>
 </template>
 <script>
 import { computed } from "vue";
+import deleteIcon from "@/assets/icons/CommentDeleteButton.svg";
+import { deleteComment } from "@/api/comment";
 
 export default {
   name: "FilmCommenntItem",
-  components: {},
+  components: {
+    deleteIcon,
+  },
   props: {
     comment: Object,
   },
-  setup(props) {
+  emits: ["update-comment-list"],
+  setup(props, { emit }) {
     const diffCreated = computed(() => {
       const createdDate = new Date(props.comment.commentCreateTime);
       const now = new Date();
@@ -43,7 +51,21 @@ export default {
       }
       return diffText;
     });
-    return { diffCreated };
+    // const isCommentUser = props.comment;
+    const clickCommentDelete = () => {
+      deleteComment(
+        {
+          comment_id: props.comment.commentId,
+        },
+        () => {
+          emit("update-comment-list");
+        },
+        (error) => {
+          console.log("댓글 삭제 오류:", error);
+        }
+      );
+    };
+    return { diffCreated, clickCommentDelete };
   },
 };
 </script>
@@ -54,8 +76,11 @@ export default {
   margin: 0px 20px 10px 20px;
 }
 .film-share__profile-frame {
+  flex: 1;
   min-height: 30px;
   min-width: 30px;
+  max-height: 30px;
+  max-width: 30px;
   height: 30px;
   width: 30px;
   border-radius: 50%;
@@ -74,6 +99,7 @@ export default {
   margin-left: 5px;
   display: flex;
   flex-direction: column;
+  flex: 10.5;
 }
 .film-share__comment-nickname {
   font-size: 14px;
@@ -82,7 +108,7 @@ export default {
 }
 .film-share__comment-created {
   font-size: 14px;
-  margin-left: 5px;
+  margin-left: 8px;
   line-height: 140%;
   font-weight: 300;
 }
@@ -90,5 +116,15 @@ export default {
   line-height: 140%;
   font-weight: 400;
   font-size: 14px;
+}
+.film-share__comment-delete {
+  flex: 0.5;
+  float: right;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.film-share__comment-item:hover .film-share__comment-delete {
+  display: flex;
 }
 </style>
