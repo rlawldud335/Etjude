@@ -60,7 +60,9 @@
             :key="index"
             :member="member"
           >
-            <span class="studio-modal__member-nickname"> {{ member.nickname }} </span>
+            <span class="studio-modal__member-nickname">
+              {{ member.nickname }}
+            </span>
             <div class="studio-modal__icon-container">
               <deleteButton class="studio-modal__delete-button" @click="deleteMember(member)" />
             </div>
@@ -111,16 +113,17 @@ export default {
     });
     const searchEmail = (event) => {
       emailData.keyword = event.target.value;
-
-      getUserSearch(
-        emailData,
-        ({ data }) => {
-          emailSearchResult.value = data;
-        },
-        (error) => {
-          console.log("이메일 검색 에러:", error);
-        }
-      );
+      if (emailData.keyword) {
+        getUserSearch(
+          emailData,
+          ({ data }) => {
+            emailSearchResult.value = data.slice(0, 10);
+          },
+          (error) => {
+            console.log("이메일 검색 에러:", error);
+          }
+        );
+      }
     };
     const blurInput = () => {
       emailSearchResult.value = "";
