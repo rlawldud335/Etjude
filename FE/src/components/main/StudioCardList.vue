@@ -41,12 +41,18 @@ export default defineComponent({
       snapAlign: "start",
       wrapAround: true,
     };
+    const itemSet = () => {
+      if (myStudioList.value.length < 4) {
+        settings.wrapAround = false;
+      }
+    };
     const breakpoints = {
       480: {
         itemsToShow: 3,
       },
       1440: {},
     };
+    itemSet();
     const nextSlide = () => myCarousel.value.next();
     const prevSlide = () => myCarousel.value.prev();
     const userId = computed(() => store.state.user.userId);
