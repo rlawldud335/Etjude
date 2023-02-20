@@ -8,13 +8,17 @@
         <span> {{ userInfo?.myPageSimpleResponse.userNickName }} </span>
       </div>
     </div>
-    <div>
-      <div class="profile__category-button">
+    <div class="profile__category-section main__1136width">
+      <div class="profile__category-buttons">
         <div><span>나의 스튜디오</span></div>
         <div><span>나의 필름</span></div>
         <div><span>나의 게시글</span></div>
-        <div><span>나의 좋아요</span></div>
+        <!-- <div><span>나의 좋아요</span></div> -->
         <div><span>내가 작성한 댓글</span></div>
+      </div>
+      <div class="profile__category-line"></div>
+      <div>
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -85,8 +89,17 @@ export default {
   font-size: 18px;
   font-weight: 500;
 }
-.profile__category-button {
+.profile__category-buttons {
+  margin-top: 50px;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  div {
+    width: 120px;
+  }
+}
+.profile__category-line {
+  width: 1136px;
+  border: 1px solid rgb(211, 211, 211);
 }
 </style>
