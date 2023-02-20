@@ -40,16 +40,20 @@
       </div>
       <div class="header__profile--login" v-else-if="user">
         <div class="header__profile-frame">
-          <img class="header__profile_image" :src="user.myPageSimpleResponse.userPhotoUrl" alt="" />
+          <img
+            class="header__profile_image"
+            :src="user?.myPageSimpleResponse.userPhotoUrl"
+            alt=""
+          />
         </div>
         <ul class="header__profile-dropdown">
           <div class="header__profile-dropdown-title">
             <div class="header__profile-dropdown-profile-frame">
-              <img :src="user.myPageSimpleResponse.userPhotoUrl" alt="" />
+              <img :src="user?.myPageSimpleResponse.userPhotoUrl" alt="" />
             </div>
             <span>{{ user.myPageSimpleResponse.userNickName }}</span>
           </div>
-          <li>
+          <li @click="clickProfile">
             <div class="header__dropdown-icon-section">
               <profileIcon />
             </div>
@@ -68,7 +72,7 @@
 </template>
 <script>
 import { reactive, computed } from "vue";
-import { mapState } from "vuex";
+import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import { handleSignOut } from "@/api/login";
 import logoutIcon from "@/assets/icons/logout.svg";
@@ -84,6 +88,8 @@ export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const store = useStore();
+    const user = computed(() => store.state.user);
     const category = reactive({ isHovered: false });
     const categoryHover = () => {
       category.isHovered = true;
@@ -103,16 +109,21 @@ export default {
       }
       return path;
     });
+    const clickProfile = () => {
+      router.push({
+        name: "profile",
+        params: { userId: user.value.userId },
+      });
+    };
     return {
       category,
+      clickProfile,
       categoryHover,
       categoryUnhover,
       goCategory,
       lastPath,
+      user,
     };
-  },
-  computed: {
-    ...mapState(["user"]),
   },
   methods: {
     handleSignOut,

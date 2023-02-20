@@ -134,6 +134,7 @@ export default {
   display: none;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .film-share__comment-item:hover .film-share__comment-delete {
   display: flex;
