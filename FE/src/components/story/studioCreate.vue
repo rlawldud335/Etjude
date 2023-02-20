@@ -140,7 +140,7 @@ export default {
     };
     const deleteMember = (member) => {
       if (selectedMember.value.indexOf(member) !== -1) {
-        selectedMember.value.splice(member, 1);
+        selectedMember.value.splice(selectedMember.value.indexOf(member), 1);
       }
     };
     const create = () => {
