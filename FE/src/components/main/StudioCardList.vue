@@ -55,7 +55,7 @@ export default defineComponent({
     itemSet();
     const nextSlide = () => myCarousel.value.next();
     const prevSlide = () => myCarousel.value.prev();
-    const userId = computed(() => store.state.user.userId);
+    const userId = computed(() => store.state.user?.userId);
     if (userId.value) {
       getMyStudio(
         {

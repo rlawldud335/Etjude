@@ -37,25 +37,32 @@ export function handleSignInGoogle() {
         picture: result.user.photoURL,
         roleType: "USER",
       };
-      login(this.user);
-      let userInfo = {};
-      getUserInfo(
-        this.user.userId,
-        ({ data }) => {
-          userInfo = data;
-          userInfo.accessToken = result.user.accessToken;
-          userInfo.email = result.user.email;
-          userInfo.userId = result.user.uid;
-          this.$store.dispatch("login", userInfo);
-          const path = this.$route.query?.next;
-          if (path) {
-            this.$router.push({ path });
-          } else {
-            this.$router.push({ name: "main" });
-          }
+      login(
+        this.user,
+        () => {
+          let userInfo = {};
+          getUserInfo(
+            this.user.userId,
+            ({ data }) => {
+              userInfo = data;
+              userInfo.accessToken = result.user.accessToken;
+              userInfo.email = result.user.email;
+              userInfo.userId = result.user.uid;
+              this.$store.dispatch("login", userInfo);
+              const path = this.$route.query?.next;
+              if (path) {
+                this.$router.push({ path });
+              } else {
+                this.$router.push({ name: "main" });
+              }
+            },
+            (error) => {
+              console.log("유저 정보 에러", error);
+            }
+          );
         },
         (error) => {
-          console.log("유저 정보 에러", error);
+          console.log("로그인 오류:", error);
         }
       );
     })
