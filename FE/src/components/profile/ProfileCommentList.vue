@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-comments"></div>
+  <div class="profile-comments">내 댓글</div>
 </template>
 
 <script>

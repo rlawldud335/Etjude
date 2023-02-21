@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-boards"></div>
+  <div class="profile-boards">내 게시글</div>
 </template>
 
 <script>

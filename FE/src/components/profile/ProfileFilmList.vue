@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-films"></div>
+  <div class="profile-films">나의 필름</div>
 </template>
 
 <script>
