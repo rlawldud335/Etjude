@@ -28,7 +28,7 @@
         ></div>
       </div>
       <div class="profile__category-section">
-        <ProfileStudioList v-if="state.tab === 'studios'"> </ProfileStudioList>
+        <ProfileStudioList v-if="state.tab === 'studios'" :userId="userId"> </ProfileStudioList>
         <ProfileFilmList v-if="state.tab === 'films'"></ProfileFilmList>
         <ProfileBoardList v-if="state.tab === 'boards'"></ProfileBoardList>
         <ProfileCommentList v-if="state.tab === 'comments'"></ProfileCommentList>
