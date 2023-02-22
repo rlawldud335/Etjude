@@ -117,6 +117,7 @@ const routes = [
             if (isMember) {
               next();
             } else {
+              // eslint-disable-next-line no-alert
               alert("스튜디오에 초대된 회원만 입장하실 수 있습니다.");
               next("/");
             }
