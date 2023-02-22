@@ -44,7 +44,9 @@
           <div class="profile-img-frame">
             <img class="profile-img" :src="member.profile_url" alt="" />
           </div>
-          <span v-if="state.detailUser == member.user_id">{{ member.nickname }}</span>
+          <span @click="clickProfile(member.user_id)" v-if="state.detailUser == member.user_id">{{
+            member.nickname
+          }}</span>
         </div>
       </div>
     </div>
@@ -53,6 +55,7 @@
 <script>
 import CircleSetting from "@/assets/icons/CircleSetting.svg";
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
 import studioLogo from "@/assets/icons/whiteLogo2.svg";
 
 export default {
@@ -64,13 +67,17 @@ export default {
     studioInfo: Object,
   },
   setup() {
+    const router = useRouter();
     const state = reactive({
       isHovered: false,
       detailUser: null,
     });
-
+    const clickProfile = (userId) => {
+      router.push({ name: "profile", params: { userId } });
+    };
     return {
       state,
+      clickProfile,
     };
   },
   methods: {},
