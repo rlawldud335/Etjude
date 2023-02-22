@@ -75,6 +75,28 @@ const routes = [
         path: "/profile/:userId",
         name: "profile",
         component: ProfileView,
+        children: [
+          {
+            path: "/profile/:userId/studios",
+            name: "profile-studios",
+            component: ProfileView,
+          },
+          {
+            path: "/profile/:userId/films",
+            name: "profile-films",
+            component: ProfileView,
+          },
+          {
+            path: "/profile/:userId/boards",
+            name: "profile-boards",
+            component: ProfileView,
+          },
+          {
+            path: "/profile/:userId/comments",
+            name: "profile-comments",
+            component: ProfileView,
+          },
+        ],
       },
     ],
   },

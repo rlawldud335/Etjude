@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-studios"></div>
+  <div class="profile-studios">나의 스튜디오</div>
 </template>
 
 <script>
