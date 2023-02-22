@@ -1,26 +1,15 @@
 <!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable vuejs-accessibility/alt-text -->
 <template class="event-banner">
-  <Carousel
-    ref="event-carousel"
-    v-model="currentSlide"
-    :items-to-show="1.6"
-    :wrap-around="true"
-    :autoplay="20000"
-    class="event-carousel"
-  >
+  <Carousel ref="event-carousel" v-model="currentSlide" :items-to-show="1.6" :wrap-around="true" :autoplay="20000"
+    class="event-carousel">
     <Slide v-for="slide in eventList" :key="slide" class="event-carousel__slide">
       <div class="event-carousel__slide__card">
-        <div
-          class="slide-card"
-          :style="{ backgroundColor: slide.backColor, color: slide.fontColor }"
-        >
+        <div class="slide-card" :style="{ backgroundColor: slide.backColor, color: slide.fontColor }">
           <div class="slide-card__text">
-            <div class="slide-card__text__tag">고민은 이제 그만!</div>
-            <span class="slide-card__text__title">인기 있는 작품, 스토리 특가</span>
-            <span class="slide-card__text__sub-title"
-              >어디서부터 시작해야할지 모르는 당신을 위한 이벤트</span
-            >
+            <div class="slide-card__text__tag">{{ slide.eventTag }}</div>
+            <span class="slide-card__text__title">{{ slide.title }}</span>
+            <span class="slide-card__text__sub-title">{{ slide.subTitle }}</span>
           </div>
           <div class="slide-card__img">
             <img :src="require(`@/assets/images/${slide.image}`)" />
@@ -43,12 +32,7 @@
       <Line style="margin: 0px 30px" />
 
       <div class="event-navigation__tags" ref="eventTags">
-        <div
-          v-for="(event, index) in eventList"
-          :key="index"
-          class="event-navigation__tags__tag"
-          @click="sildeTo(index)"
-        >
+        <div v-for="(event, index) in eventList" :key="index" class="event-navigation__tags__tag" @click="sildeTo(index)">
           {{ event.eventName }}
         </div>
       </div>
@@ -83,6 +67,9 @@ export default {
           eventName: "이벤트1",
           backColor: "#FE907C",
           fontColor: "white",
+          eventTag: "고민은 이제 그만",
+          title: "인기있는 작품, 스토리 특가",
+          subTitle: "어디서부터 시작해야 할지 모르는 당신을 위한 이벤트",
         },
         {
           url: "",
@@ -90,6 +77,9 @@ export default {
           eventName: "이벤트2",
           backColor: "#F8D24A",
           fontColor: "white",
+          eventTag: "엄청난 기회",
+          title: "필름 올리고 팬미팅 응모 하자",
+          subTitle: "대배우 임두현을 만날 수 있는 기회",
         },
         {
           url: "",
@@ -97,6 +87,9 @@ export default {
           eventName: "이벤트3",
           backColor: "#F8EFE8",
           fontColor: "black",
+          eventTag: "싸피 할인",
+          title: "싸피 학생증 인증하고 할인받자",
+          subTitle: "최고의 교육 기관 싸피와의 콜라보레이션",
         },
       ],
       currentSlide: 0,
