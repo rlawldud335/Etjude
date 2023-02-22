@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { getStudioInfo } from "@/api/studio";
+import store from "@/store/index";
 import MainView from "@/views/MainView.vue";
 import FilmView from "@/views/FilmView.vue";
 import LoginView from "@/views/LogInView.vue";
@@ -104,6 +106,30 @@ const routes = [
     path: "/studio/:studioId",
     name: "studio",
     component: StudioView,
+    beforeEnter: (to, from, next) => {
+      try {
+        let members = [];
+        getStudioInfo(
+          to.params.studioId,
+          ({ data }) => {
+            members = data.member_list;
+            const isMember = members.some((member) => member.user_id === store.state.user.userId);
+            if (isMember) {
+              next();
+            } else {
+              alert("스튜디오에 초대된 회원만 입장하실 수 있습니다.");
+              next("/");
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+        next(false);
+      }
+    },
   },
 ];
 
