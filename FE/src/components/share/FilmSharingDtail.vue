@@ -13,18 +13,18 @@
       ></UserProfile>
       <FlimContents class="contents-container" :filmdata="postdata" />
       <div class="comment-container" :filmdata="postdata">
-        <FlimComment
+        <FilmComment
           :comments="postdata.comments"
           :articleId="articleId"
           @update-comment-list="updateCommentList"
-        ></FlimComment>
+        ></FilmComment>
       </div>
     </div>
   </vue-final-modal>
 </template>
 <script>
 import { getFilmDetail } from "@/api/share";
-import FlimComment from "@/components/share/FlimComment.vue";
+import FilmComment from "@/components/share/FilmComment.vue";
 import { ref } from "vue";
 import UserProfile from "./UserProfile.vue";
 import FlimContents from "./FlimContents.vue";
@@ -34,7 +34,7 @@ export default {
   components: {
     UserProfile,
     FlimContents,
-    FlimComment,
+    FilmComment,
   },
   props: {
     showModal: Boolean,
@@ -57,7 +57,6 @@ export default {
       getFilmDetail(
         articleId.value,
         ({ data }) => {
-          console.log(data);
           filmdata.value = data;
           profiledata.value.writerNickName = data.writerNickName;
           profiledata.value.writerPhotoUrl = data.writerPhotoUrl;
@@ -70,11 +69,9 @@ export default {
           console.log("필름 상세 에러:", error);
         }
       );
-      console.log("고고");
     };
     getFilmDetailmodal();
     const updateCommentList = () => {
-      console.log("고고");
       getFilmDetailmodal();
     };
     // };

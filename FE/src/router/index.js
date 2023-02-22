@@ -7,6 +7,7 @@ import StudioView from "@/views/StudioView.vue";
 import SearchView from "@/views/SearchView.vue";
 import PieceDetailView from "@/views/PieceDetailView.vue";
 import StoryView from "@/views/StoryView.vue";
+import ProfileView from "@/views/ProfileView.vue";
 
 const routes = [
   {
@@ -69,6 +70,33 @@ const routes = [
         path: "/piece/:pieceId",
         name: "piece",
         component: PieceDetailView,
+      },
+      {
+        path: "/profile/:userId",
+        name: "profile",
+        component: ProfileView,
+        children: [
+          {
+            path: "/profile/:userId/studios",
+            name: "profile-studios",
+            component: ProfileView,
+          },
+          {
+            path: "/profile/:userId/films",
+            name: "profile-films",
+            component: ProfileView,
+          },
+          {
+            path: "/profile/:userId/boards",
+            name: "profile-boards",
+            component: ProfileView,
+          },
+          {
+            path: "/profile/:userId/comments",
+            name: "profile-comments",
+            component: ProfileView,
+          },
+        ],
       },
     ],
   },

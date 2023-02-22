@@ -52,6 +52,7 @@
 
 <script>
 import { reactive, ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
+import { useStore } from "vuex";
 import VideoOn from "@/assets/icons/VideoOn.svg";
 import VideoOff from "@/assets/icons/VideoOff.svg";
 import MicOn from "@/assets/icons/MicOn.svg";
@@ -61,7 +62,6 @@ import ChangeVideo2 from "@/assets/icons/ChangeVideo2.svg";
 import { fileUpload } from "@/api/aws";
 import { saveSceneRecord } from "@/api/studio";
 import { webmFixDuration } from "webm-fix-duration";
-import { useStore } from "vuex";
 
 export default {
   components: {
@@ -167,14 +167,14 @@ export default {
 
     const toggleVideo = () => {
       toggleBtn.video = !toggleBtn.video;
-      mediaStream.value.getVideoTracks()[0].enabled =
-        !mediaStream.value.getVideoTracks()[0].enabled;
+      mediaStream.value.getVideoTracks()[0].enabled = !mediaStream.value.getVideoTracks()[0]
+        .enabled;
     };
 
     const toggleAudio = () => {
       toggleBtn.audio = !toggleBtn.audio;
-      mediaStream.value.getAudioTracks()[0].enabled =
-        !mediaStream.value.getAudioTracks()[0].enabled;
+      mediaStream.value.getAudioTracks()[0].enabled = !mediaStream.value.getAudioTracks()[0]
+        .enabled;
     };
 
     const startRecoding = async () => {
@@ -198,12 +198,11 @@ export default {
           const blob = await new Blob(recordedChunks, { type: "video/webm;" });
           const fixedBlob = await webmFixDuration(blob, dateEnd - dateStarted);
           recordedMediaURL.value = URL.createObjectURL(fixedBlob);
-          const awsUrl = fileUpload(
+          fileUpload(
             fixedBlob,
             props.studioInfo,
             props.videoState.sceneNumber,
             (data) => {
-              console.log("aws 업로드 확인 ", awsUrl);
               const params = {
                 recording_video_url: data.Location,
                 scene_id: props.videoState.sceneId,
@@ -212,8 +211,7 @@ export default {
               };
               saveSceneRecord(
                 params,
-                (dt) => {
-                  console.log("녹화 영상 업로드 성공", dt);
+                () => {
                   console.log(user.value.userId, props.videoState.sceneId, false);
                   emit(
                     "change-record-sync-state",

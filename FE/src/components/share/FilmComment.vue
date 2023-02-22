@@ -1,10 +1,11 @@
 <template lang="">
   <div class="film-share__comment-area">
-    <div class="film-share__comment-list">
+    <div class="film-share__comment-list" ref="commentsArea">
       <FilmCommenntItem
         v-for="comment in comments"
         :key="comment.commentId"
         :comment="comment"
+        @update-comment-list="updateCommentList"
       ></FilmCommenntItem>
     </div>
 
@@ -22,7 +23,7 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, watch, nextTick } from "vue";
 import smile from "@/assets/icons/smile.svg";
 import send from "@/assets/icons/send.svg";
 import FilmCommenntItem from "@/components/share/FilmCommentItem.vue";
@@ -43,26 +44,47 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const inputComment = ref(null);
-    const sendComment = () => {
-      postComment(
-        {
-          userId: store.state.user.userId,
-          articleId: props.articleId,
-          commentContents: inputComment.value,
-        },
-        ({ data }) => {
-          console.log(data);
-          inputComment.value = null;
-          emit("update-comment-list");
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    const updateCommentList = () => {
+      emit("update-comment-list");
     };
+    const sendComment = () => {
+      if (inputComment.value) {
+        postComment(
+          {
+            userId: store.state.user.userId,
+            articleId: props.articleId,
+            commentContents: inputComment.value,
+          },
+          () => {
+            inputComment.value = null;
+            updateCommentList();
+          },
+          (error) => {
+            console.log("댓글 등록 에러", error);
+          }
+        );
+      }
+    };
+    const commentsArea = ref(null);
+    watch(
+      () => props.comments,
+      (newList, oldList) => {
+        if (newList.length > oldList.length) {
+          nextTick(() => {
+            commentsArea.value.scrollTo({
+              top: commentsArea.value.scrollHeight,
+              behavior: "smooth",
+            });
+          });
+        }
+      },
+      { deep: true }
+    );
     return {
       inputComment,
       sendComment,
+      updateCommentList,
+      commentsArea,
     };
   },
 };

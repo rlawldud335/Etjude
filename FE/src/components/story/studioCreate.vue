@@ -1,7 +1,5 @@
-<!-- eslint-disable import/no-extraneous-dependencies -->
 <template lang="">
   <vue-final-modal :value="showModal" classes="modal-contain" content-class="modal-cont">
-    <!-- <div> -->
     <div class="title">스튜디오 생성하기</div>
     <div class="show-modal__body">
       <div class="team_name_container">
@@ -17,9 +15,8 @@
         <div class="studio-modal__email">
           <label for="studio-email" class="studio-modal__email-label"
             >이메일
-
             <input
-              class="input_text"
+              :class="['input_text', { 'modal-open': emailSearchResult.length > 0 }]"
               type="text"
               id="studio-email"
               @blur="blurInput"
@@ -56,7 +53,6 @@
             </div>
           </div>
         </div>
-
         <div class="member_list">
           <div
             class="studio-modal__selected"
@@ -64,7 +60,9 @@
             :key="index"
             :member="member"
           >
-            <span class="studio-modal__member-nickname"> {{ member.nickname }} </span>
+            <span class="studio-modal__member-nickname">
+              {{ member.nickname }}
+            </span>
             <div class="studio-modal__icon-container">
               <deleteButton class="studio-modal__delete-button" @click="deleteMember(member)" />
             </div>
@@ -75,11 +73,9 @@
     <div class="button_container" @click="$emit('close')">
       <button @click="create">생성하기</button>
     </div>
-    <!-- </div> -->
   </vue-final-modal>
 </template>
 <script>
-// import QuitButton from "@/assets/icons/Quit Button.svg";
 import { createStudio } from "@/api/story";
 import { reactive, ref, computed } from "vue";
 import { useRouter } from "vue-router";
@@ -117,25 +113,24 @@ export default {
     });
     const searchEmail = (event) => {
       emailData.keyword = event.target.value;
-
-      getUserSearch(
-        emailData,
-        ({ data }) => {
-          // console.log(data);
-          // console.log(selectedMember.value);
-          // const unSelectedData = data.filter((user) => selectedMember.value.indexOf(user) < 0);
-          // console.log(emailSearchResult.value);
-          emailSearchResult.value = data;
-        },
-        (error) => {
-          console.log("이메일 검색 에러:", error);
-        }
-      );
+      if (emailData.keyword) {
+        getUserSearch(
+          emailData,
+          ({ data }) => {
+            // emailSearchResult.value = data.slice(0, 10);
+            emailSearchResult.value = data;
+          },
+          (error) => {
+            console.log("이메일 검색 에러:", error);
+          }
+        );
+      } else {
+        emailSearchResult.value = [];
+      }
     };
     const blurInput = () => {
       emailSearchResult.value = "";
     };
-    // const membersNames = ref([])
     const addMember = (user) => {
       if (studiodata.team_member_Ids.indexOf(user.user_id) === -1) {
         selectedMember.value.push(user);
@@ -145,7 +140,7 @@ export default {
     };
     const deleteMember = (member) => {
       if (selectedMember.value.indexOf(member) !== -1) {
-        selectedMember.value.splice(member, 1);
+        selectedMember.value.splice(selectedMember.value.indexOf(member), 1);
       }
     };
     const create = () => {
@@ -226,7 +221,13 @@ export default {
   justify-content: space-between;
   color: #606060;
   font-size: 14px;
+  z-index: 2;
   position: relative;
+}
+.modal-open {
+  border-bottom: none;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 2px;
 }
 .studio-modal__email-label {
   display: flex;
@@ -242,7 +243,7 @@ export default {
   position: absolute;
   background-color: white;
   left: 88.5px;
-  top: 250px;
+  top: 244px;
   width: calc(100% - 132.5px);
   display: flex;
   flex-direction: column;
@@ -272,6 +273,15 @@ export default {
 }
 .studio-modal__dropdown-list {
   margin-top: 10px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.studio-modal__dropdown-list::-webkit-scrollbar {
+  width: 5px;
+}
+.studio-modal__dropdown-list::-webkit-scrollbar-thumb {
+  background-color: $bana-pink;
 }
 .inputButton {
   margin-left: 10px;

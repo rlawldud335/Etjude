@@ -61,5 +61,6 @@ img {
 
 .close-btn {
   padding: 10px;
+  cursor: pointer;
 }
 </style>

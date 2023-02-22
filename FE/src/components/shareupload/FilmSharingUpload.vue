@@ -153,22 +153,19 @@ export default {
       uploadFlimShareImageUpload(
         thumbNailFile.value,
         ({ Location }) => {
-          console.log(Location);
           uploadData.articleThumbnailUrl = Location;
           putFilmShare(
             uploadData,
-            ({ data }) => {
-              console.log(data, "생성 완료");
+            () => {
               emit("updateFilmList");
             },
             (error) => {
-              console.log(error);
-              console.log(uploadData);
+              console.log("필름 업로드 에러:", error);
             }
           );
         },
-        (err) => {
-          console.log(err);
+        (error) => {
+          console.log("필름 업로드 에러:", error);
         }
       );
     };
@@ -187,26 +184,22 @@ export default {
     getMyStudio(
       { user_id: userData.userId },
       ({ data }) => {
-        console.log("My studio data:", data);
         data.forEach((array) => {
           MyStudioData.value.push([array.studioId, array.studioTitle]);
         });
-        console.log("데이터가 잘 들어갔나?", MyStudioData);
       },
       (error) => {
-        console.log(error);
+        console.log("내 스튜디오 찾기 에러:", error);
       }
     );
 
     const selectStudio = (studioTitle) => {
-      console.log(studioTitle);
       MyFilmData.value = [];
       FilmDetailData.value = {};
       selectedFilm.value = "";
       getMyFilm(
         { user_id: userData.userId, studio_id: studioTitle },
         ({ data }) => {
-          console.log("Get My film data:", data);
           data.forEach((array) => {
             MyFilmData.value.push(array);
             FilmDetailData.categoryName = array.myPageFilmsResponse.categoryName;
@@ -214,34 +207,24 @@ export default {
             FilmDetailData.storyTitle = array.myPageFilmsResponse.storyTitle;
             FilmDetailData.teamMembers = array.teamMembers;
           });
-
-          console.log("내 필름 정보랑 상세 정보가 들어갔나?");
-          console.log(MyFilmData);
-          console.log(FilmDetailData);
         },
         (error) => {
-          console.log(error);
+          console.log("내 필름 가져오기 에러 :", error);
         }
       );
     };
     const onChangeStudio = (event) => {
       selectStudio(event.target.value);
     };
-
     const selectFilm = (choiceFilm) => {
-      console.log("choice Flim", choiceFilm);
       MyFilmData.value.forEach((array) => {
-        console.log(array.myPageFilmsResponse.filmId, choiceFilm);
         if (array.myPageFilmsResponse.filmId === parseInt(choiceFilm, 10)) {
-          console.log("choice Flim url ", array.myPageFilmsResponse.filmVideoUrl);
           FilmDetailData.filmVideoUrl = array.myPageFilmsResponse.filmVideoUrl;
           uploadData.filmId = choiceFilm;
         }
       });
     };
     const onChangeFlim = (event) => {
-      console.log("event", event.target);
-      console.log("onChageFlim", event.target.value);
       selectFilm(event.target.value);
     };
 
