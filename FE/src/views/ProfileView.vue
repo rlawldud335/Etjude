@@ -11,21 +11,41 @@
     <div class="profile__category-section main__1136width">
       <div class="profile__category-buttons">
         <div @click="changeCategory('studios')">
-          <span v-if="isUser"> 나의 스튜디오 </span>
-          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 스튜디오 </span>
+          <div v-if="isUser">나의 스튜디오</div>
+          <div v-else class="profile__category-name">
+            <span class="profile__category-nickname">
+              {{ userInfo?.myPageSimpleResponse.userNickName.slice(0, 3) }}
+            </span>
+            <span>의 스튜디오 </span>
+          </div>
         </div>
         <div @click="changeCategory('films')">
-          <span v-if="isUser"> 나의 필름 </span>
-          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 필름 </span>
+          <div v-if="isUser">나의 필름</div>
+          <div v-else class="profile__category-name">
+            <span class="profile__category-nickname">
+              {{ userInfo?.myPageSimpleResponse.userNickName.slice(0, 3) }}
+            </span>
+            <span>의 필름 </span>
+          </div>
         </div>
         <div @click="changeCategory('boards')">
-          <span v-if="isUser"> 나의 게시글 </span>
-          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 게시글 </span>
+          <div v-if="isUser">나의 게시글</div>
+          <div v-else class="profile__category-name">
+            <span class="profile__category-nickname">
+              {{ userInfo?.myPageSimpleResponse.userNickName.slice(0, 3) }}
+            </span>
+            <span>의 게시글 </span>
+          </div>
         </div>
         <!-- <div><span>나의 좋아요</span></div> -->
         <div @click="changeCategory('comments')">
-          <span v-if="isUser"> 나의 댓글 </span>
-          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 댓글 </span>
+          <div v-if="isUser">나의 댓글</div>
+          <div v-else class="profile__category-name">
+            <span class="profile__category-nickname">
+              {{ userInfo?.myPageSimpleResponse.userNickName.slice(0, 3) }}
+            </span>
+            <span>의 댓글</span>
+          </div>
         </div>
         <div
           :class="[
@@ -43,7 +63,7 @@
         <ProfileStudioList v-if="tab === 'studios'" :userId="userId"> </ProfileStudioList>
         <ProfileFilmList v-if="tab === 'films'"></ProfileFilmList>
         <ProfileBoardList v-if="tab === 'boards'"></ProfileBoardList>
-        <ProfileCommentList v-if="tab === 'comments'"></ProfileCommentList>
+        <ProfileCommentList v-if="tab === 'comments'" :userId="userId"></ProfileCommentList>
       </div>
     </div>
   </div>
@@ -133,11 +153,23 @@ export default {
     object-fit: cover;
   }
 }
-
+.profile__category-name {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
 .profile__nickname {
   margin-top: 15px;
   font-size: 20px;
   font-weight: 500;
+  span {
+    white-space: nowrap;
+  }
+}
+.profile__user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .profile__category-buttons {
   margin-top: 30px;
@@ -150,10 +182,16 @@ export default {
   div {
     width: 130px;
     cursor: pointer;
-    span {
+    * {
       font-weight: 500;
     }
   }
+}
+.profile__category-nickname {
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: "";
+  white-space: nowrap;
 }
 .active-bar {
   position: absolute;
