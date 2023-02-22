@@ -23,7 +23,6 @@ export default {
     getMyStudio(
       { user_id: props.userId },
       ({ data }) => {
-        console.log("내 아이디:", props.userId);
         data.forEach((array) => {
           MyStudioData.value.push({
             studioId: array.studioId,

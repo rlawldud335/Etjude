@@ -10,36 +10,49 @@
     </div>
     <div class="profile__category-section main__1136width">
       <div class="profile__category-buttons">
-        <div @click="changeCategory('studios')"><span>나의 스튜디오</span></div>
-        <div @click="changeCategory('films')"><span>나의 필름</span></div>
-        <div @click="changeCategory('boards')"><span>나의 게시글</span></div>
+        <div @click="changeCategory('studios')">
+          <span v-if="isUser"> 나의 스튜디오 </span>
+          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 스튜디오 </span>
+        </div>
+        <div @click="changeCategory('films')">
+          <span v-if="isUser"> 나의 필름 </span>
+          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 필름 </span>
+        </div>
+        <div @click="changeCategory('boards')">
+          <span v-if="isUser"> 나의 게시글 </span>
+          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 게시글 </span>
+        </div>
         <!-- <div><span>나의 좋아요</span></div> -->
-        <div @click="changeCategory('comments')"><span>내가 작성한 댓글</span></div>
+        <div @click="changeCategory('comments')">
+          <span v-if="isUser"> 나의 댓글 </span>
+          <span v-else> {{ userInfo?.myPageSimpleResponse.userNickName }}의 댓글 </span>
+        </div>
         <div
           :class="[
             {
-              'profile__bar-studios': state.tab === 'studios',
-              'profile__bar-films': state.tab === 'films',
-              'profile__bar-boards': state.tab === 'boards',
-              'profile__bar-comments': state.tab === 'comments',
+              'profile__bar-studios': tab === 'studios',
+              'profile__bar-films': tab === 'films',
+              'profile__bar-boards': tab === 'boards',
+              'profile__bar-comments': tab === 'comments',
             },
             'active-bar',
           ]"
         ></div>
       </div>
       <div class="profile__category-section">
-        <ProfileStudioList v-if="state.tab === 'studios'" :userId="userId"> </ProfileStudioList>
-        <ProfileFilmList v-if="state.tab === 'films'"></ProfileFilmList>
-        <ProfileBoardList v-if="state.tab === 'boards'"></ProfileBoardList>
-        <ProfileCommentList v-if="state.tab === 'comments'"></ProfileCommentList>
+        <ProfileStudioList v-if="tab === 'studios'" :userId="userId"> </ProfileStudioList>
+        <ProfileFilmList v-if="tab === 'films'"></ProfileFilmList>
+        <ProfileBoardList v-if="tab === 'boards'"></ProfileBoardList>
+        <ProfileCommentList v-if="tab === 'comments'"></ProfileCommentList>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { getMyPage } from "@/api/users";
-import { reactive, ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 import ProfileStudioList from "@/components/profile/ProfileStudioList.vue";
 import ProfileFilmList from "@/components/profile/ProfileFilmList.vue";
 import ProfileCommentList from "@/components/profile/ProfileCommentList.vue";
@@ -56,18 +69,18 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const store = useStore();
     const userId = ref(route.params.userId);
     const userInfo = ref(null);
-    const state = reactive({
-      tab: "studios",
-    });
+    const isUser = computed(() => store.state.user?.userId === userId.value);
+    const tab = ref("studios");
     onBeforeMount(() => {
       if (route.params.userId) {
         userId.value = route.params.userId;
       }
       if (route.name.startsWith("profile-")) {
         console.log(route.name.slice(8));
-        state.tab = route.name.slice(8);
+        tab.value = route.name.slice(8);
       }
     });
     getMyPage(
@@ -82,14 +95,16 @@ export default {
       }
     );
     const changeCategory = (categoryName) => {
-      state.tab = categoryName;
+      tab.value = categoryName;
       router.push({ name: `profile-${categoryName}` });
     };
     return {
       route,
-      state,
+      tab,
       userId,
       userInfo,
+      store,
+      isUser,
       changeCategory,
     };
   },
