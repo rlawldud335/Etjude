@@ -124,7 +124,7 @@ export default {
   font-size: 14px;
   font-weight: 600;
   justify-content: space-between;
-  max-width: calc(100% - 15px);
+  max-width: 143px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
