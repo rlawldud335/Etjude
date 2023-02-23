@@ -27,7 +27,6 @@
               @input="uploadData.articleContent = $event.target.value"
               placeholder="설명을 입력해주세요."
             ></textarea>
-            {{ uploadData.articleContent }}
           </div>
           <div class="left_container__input">
             <h2>썸네일</h2>
@@ -342,6 +341,7 @@ export default {
   width: 90%;
   height: 100px;
   vertical-align: top;
+  resize: none;
 }
 </style>
 
