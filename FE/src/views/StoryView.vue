@@ -176,6 +176,7 @@ export default {
       if (store.state.user) {
         showModal.value = true;
       } else {
+        // eslint-disable-next-line no-alert
         alert("로그인이 필요합니다.");
         router.push({ name: "login", query: { next: lastPath.value } });
       }
