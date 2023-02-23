@@ -116,8 +116,8 @@
   ></studioCreate>
 </template>
 <script>
-import { reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { reactive, ref, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getStoryDetail } from "@/api/story";
 import StoryAccount from "@/components/story/StoryAccount.vue";
@@ -146,6 +146,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
     const storyinfo = reactive({
       user_id: "1",
@@ -162,11 +163,21 @@ export default {
       }
     );
     const showModal = ref(false);
+    const lastPath = computed(() => {
+      let path;
+      if (route.query.next) {
+        path = route.query.next;
+      } else {
+        path = route.path;
+      }
+      return path;
+    });
     const clickCreatedButton = () => {
       if (store.state.user) {
         showModal.value = true;
       } else {
         alert("로그인이 필요합니다.");
+        router.push({ name: "login", query: { next: lastPath.value } });
       }
     };
     let tab = reactive({
