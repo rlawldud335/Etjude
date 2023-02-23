@@ -104,7 +104,7 @@
               공유
             </div>
           </div>
-          <button class="modal-button" @click="showModal = true">스튜디오 생성하기</button>
+          <button class="modal-button" @click="clickCreatedButton">스튜디오 생성하기</button>
         </div>
       </div>
     </div>
@@ -118,6 +118,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import { getStoryDetail } from "@/api/story";
 import StoryAccount from "@/components/story/StoryAccount.vue";
 import StoryScript from "@/components/story/StoryScript.vue";
@@ -145,6 +146,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const store = useStore();
     const storyinfo = reactive({
       user_id: "1",
       story_id: Number.parseInt(route.params.story_id, 10),
@@ -160,6 +162,13 @@ export default {
       }
     );
     const showModal = ref(false);
+    const clickCreatedButton = () => {
+      if (store.state.user) {
+        showModal.value = true;
+      } else {
+        alert("로그인이 필요합니다.");
+      }
+    };
     let tab = reactive({
       tabvalue: "storyaccount",
     });
@@ -181,6 +190,7 @@ export default {
       storyaccount,
       stroycharacter,
       storyscript,
+      clickCreatedButton,
     };
   },
 };
