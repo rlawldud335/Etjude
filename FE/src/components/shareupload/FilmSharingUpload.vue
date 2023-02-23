@@ -20,11 +20,14 @@
           </div>
           <div class="left_container__input">
             <h2>설명</h2>
-            <input
+            <label for="input-content"></label>
+            <textarea
               class="left_container__input__input_content"
+              id="input-content"
               @input="uploadData.articleContent = $event.target.value"
               placeholder="설명을 입력해주세요."
-            />
+            ></textarea>
+            {{ uploadData.articleContent }}
           </div>
           <div class="left_container__input">
             <h2>썸네일</h2>
@@ -41,13 +44,15 @@
                 hidden
               />
               <label for="upload-image">
-                <img
-                  id="thumbnailsibal"
-                  ref="uploadImageEle"
-                  src="@/assets/images/SelectImage.png"
-                  class="thumbnail_upload"
-                  alt=""
-                />
+                <div class="select-image-frame">
+                  <img
+                    id="thumbnailsibal"
+                    ref="uploadImageEle"
+                    src="@/assets/images/SelectImage.png"
+                    class="thumbnail_upload"
+                    alt=""
+                  />
+                </div>
               </label>
             </div>
           </div>
@@ -278,6 +283,10 @@ export default {
   width: 100%;
   padding: 0px 20px;
   box-sizing: border-box;
+  span {
+    font-size: 20px;
+    font-weight: 500;
+  }
 }
 
 .film-upload-container__main {
@@ -293,7 +302,6 @@ export default {
   border-right: 1px solid rgb(211, 211, 211);
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
 }
 
 .right_container {
@@ -310,7 +318,7 @@ export default {
 
 .left_container__input h2 {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   margin: 7px;
 }
 
@@ -332,7 +340,8 @@ export default {
   border: 1px solid #ff5775;
   border-radius: 10px;
   width: 90%;
-  height: 60px;
+  height: 100px;
+  vertical-align: top;
 }
 </style>
 
@@ -343,16 +352,24 @@ export default {
 }
 
 .thumbnail_upload {
-  width: 200px;
-  height: 100px;
-  border: 1px solid #ff5775;
-  margin: 0px 10px;
-  border-radius: 20px;
+  width: 300px;
+  height: 150px;
+  display: flex;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+}
+.select-image-frame {
+  height: 150px;
+  width: 300px;
+  border: #ff5775 1px solid;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
-
 .img_upload {
   display: none;
 }
@@ -363,6 +380,7 @@ export default {
 
 .select-studio span {
   margin-right: 30px;
+  font-weight: 500;
 }
 
 .select-film {
@@ -371,12 +389,12 @@ export default {
 
 .select-film span {
   margin-right: 60px;
+  font-weight: 500;
 }
 
 .preview-film {
   padding: 10px;
   display: flex;
-  flex-direction: column;
 }
 
 .preview-film__info {
@@ -387,12 +405,13 @@ export default {
 }
 
 .filmVideo {
-  width: 70%;
+  width: 400px;
   aspect-ratio: 2.5/1.5;
 }
 
 .preview-film span {
   margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .preview-film__content {
@@ -400,6 +419,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 90px;
 }
 
 .uploadbutton {
@@ -413,11 +433,6 @@ export default {
   border-radius: 4px;
   float: right;
   cursor: pointer;
-}
-
-.thumbnail_upload {
-  width: 150px;
-  height: 80px;
-  object-fit: cover;
+  margin-right: 20px;
 }
 </style>
