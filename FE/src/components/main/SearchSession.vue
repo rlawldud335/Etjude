@@ -4,7 +4,7 @@
     <div class="search-session__search">
       <input
         class="search-session__search-bar"
-        placeholder="검색어를 입력해주세요."
+        placeholder="작품 혹은 스토리를 검색해주세요."
         v-model="inputText"
         @keyup.enter="goSearchPage"
       />
@@ -96,7 +96,7 @@ export default {
   width: 500px;
   border: $bana-pink solid 1px;
   color: #606060;
-  font-size: 12px;
+  font-size: 14px;
 }
 .search-session__search-icon {
   cursor: pointer;
